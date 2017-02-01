@@ -1,0 +1,6 @@
+; Top-Most EditorConfig file
+root = true
+
+; Space indentation
+indent_style = space
+indent_size = 4
