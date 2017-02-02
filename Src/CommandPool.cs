@@ -92,7 +92,7 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying parameters of a newly created command pool.
     /// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct CommandPoolCreateInfo
     {
         internal StructureType Type;

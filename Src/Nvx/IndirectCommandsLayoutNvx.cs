@@ -88,7 +88,7 @@ namespace VulkanCore.Nvx
             Tokens = tokens;
         }
 
-	    [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
             public StructureType Type;

@@ -329,7 +329,7 @@ namespace VulkanCore
     /// <summary>
     /// Bitmask specifying intended usage of an image.
     /// </summary>
-	[Flags]
+    [Flags]
     public enum ImageUsages
     {
         /// <summary>

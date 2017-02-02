@@ -1283,7 +1283,7 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying the allocation parameters for command buffer object.
     /// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct CommandBufferAllocateInfo
     {
         internal StructureType Type;
@@ -1357,7 +1357,7 @@ namespace VulkanCore
             InheritanceInfo = inheritanceInfo;
         }
 
-	    [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
             public StructureType Type;
@@ -1488,7 +1488,7 @@ namespace VulkanCore
     /// <summary>
     /// Bitmask specifying queried pipeline statistics.
     /// </summary>
-	[Flags]
+    [Flags]
     public enum QueryPipelineStatistics
     {
         None = 0,
@@ -1554,7 +1554,7 @@ namespace VulkanCore
     /// <summary>
     /// Type of index buffer indices.
     /// </summary>
-	public enum IndexType
+    public enum IndexType
     {
         UInt16 = 0,
         UInt32 = 1
@@ -1697,7 +1697,7 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying a buffer image copy operation.
     /// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct BufferImageCopy
     {
         /// <summary>

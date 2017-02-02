@@ -114,7 +114,7 @@ namespace VulkanCore
             Dependencies = dependencies;
         }
 
-	    [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
             public StructureType Type;

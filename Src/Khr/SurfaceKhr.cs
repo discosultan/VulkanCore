@@ -377,7 +377,7 @@ namespace VulkanCore.Khr
     /// <summary>
     /// Structure specifying parameters of a newly created display plane surface object.
     /// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct DisplaySurfaceCreateInfoKhr
     {
         internal StructureType Type;

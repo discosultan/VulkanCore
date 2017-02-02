@@ -370,7 +370,7 @@ namespace VulkanCore
             Binds = binds;
         }
 
-	    [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
             public long Buffer;
@@ -556,7 +556,7 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying sparse image memory bind.
     /// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageMemoryBind
     {
         /// <summary>
