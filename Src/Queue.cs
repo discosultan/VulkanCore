@@ -171,8 +171,8 @@ namespace VulkanCore
         /// Semaphores which will be signaled when the command buffers for this batch have completed
         /// execution. If semaphores to be signaled are provided, they define a semaphore signal operation.
         /// </param>
-        public SubmitInfo(Semaphore[] waitSemaphores, PipelineStages[] waitDstStageMask,
-            CommandBuffer[] commandBuffers, Semaphore[] signalSemaphores)
+        public SubmitInfo(Semaphore[] waitSemaphores = null, PipelineStages[] waitDstStageMask = null,
+            CommandBuffer[] commandBuffers = null, Semaphore[] signalSemaphores = null)
         {
             WaitSemaphores = waitSemaphores?.ToHandleArray();
             WaitDstStageMask = waitDstStageMask;
