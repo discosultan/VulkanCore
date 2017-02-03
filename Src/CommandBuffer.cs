@@ -34,7 +34,7 @@ namespace VulkanCore
         /// Defines additional information about how the command buffer begins recording.
         /// </param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void Begin(CommandBufferBeginInfo beginInfo)
+        public void Begin(CommandBufferBeginInfo beginInfo = default(CommandBufferBeginInfo))
         {
             beginInfo.ToNative(out CommandBufferBeginInfo.Native nativeBeginInfo);
             Result result = BeginCommandBuffer(this, &nativeBeginInfo);
@@ -1350,7 +1350,7 @@ namespace VulkanCore
         /// </summary>
         /// <param name="flags">A bitmask indicating usage behavior for the command buffer.</param>
         /// <param name="inheritanceInfo">The inheritance info for secondary command buffers.</param>
-        public CommandBufferBeginInfo(CommandBufferUsages flags, 
+        public CommandBufferBeginInfo(CommandBufferUsages flags = 0, 
             CommandBufferInheritanceInfo? inheritanceInfo = null)
         {
             Flags = flags;
