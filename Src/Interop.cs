@@ -111,8 +111,6 @@ namespace VulkanCore
 
         public static int SizeOf<T>() => Unsafe.SizeOf<T>();
 
-        public static void* AsPointer<T>(ref T value) => Unsafe.AsPointer(ref value);
-
         public static TDelegate GetDelegateForFunctionPointer<TDelegate>(IntPtr ptr)
             => Marshal.GetDelegateForFunctionPointer<TDelegate>(ptr);
 

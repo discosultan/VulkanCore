@@ -660,7 +660,7 @@ namespace VulkanCore
             public IntPtr* EnabledLayerNames;
             public int EnabledExtensionCount;
             public IntPtr* EnabledExtensionNames;
-            public void* EnabledFeatures;
+            public IntPtr EnabledFeatures;
 
             public void Free()
             {
@@ -668,6 +668,7 @@ namespace VulkanCore
                     QueueCreateInfos[i].Free();
                 Interop.Free(QueueCreateInfos);
                 Interop.Free(EnabledExtensionNames, EnabledExtensionCount);
+                Interop.Free(EnabledFeatures);
             }
         }
 
@@ -687,7 +688,7 @@ namespace VulkanCore
             val.EnabledLayerNames = null;
             val.EnabledExtensionCount = EnabledExtensionNames?.Length ?? 0;
             val.EnabledExtensionNames = Interop.AllocStringsToPtrs(EnabledExtensionNames);
-            val.EnabledFeatures = Interop.AsPointer(ref EnabledFeatures);
+            val.EnabledFeatures = Interop.AllocStructToPtr(ref EnabledFeatures);
         }
     }
 
