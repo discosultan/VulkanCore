@@ -94,7 +94,7 @@ namespace VulkanCore
         {
             native.Type = StructureType.ShaderModuleCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = ShaderModuleCreateFlags.None;
+            native.Flags = 0;
             native.CodeSize = Code?.Length ?? 0;
             native.Code = code;
         }

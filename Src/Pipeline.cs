@@ -605,7 +605,7 @@ namespace VulkanCore
 
             native->Type = StructureType.PipelineShaderStageCreateInfo;
             native->Next = IntPtr.Zero;
-            native->Flags = PipelineShaderStageCreateFlags.None;
+            native->Flags = 0;
             native->Stage = Stage;
             native->Module = Module;
             native->Name = Interop.AllocStringToPtr(Name);
@@ -734,7 +734,7 @@ namespace VulkanCore
         {
             native->Type = StructureType.PipelineVertexInputStateCreateInfo;
             native->Next = IntPtr.Zero;
-            native->Flags = PipelineVertexInputStateCreateFlags.None;
+            native->Flags = 0;
             native->VertexBindingDescriptionCount = VertexBindingDescriptions?.Length ?? 0;
             native->VertexBindingDescriptions = Interop.AllocStructsToPtr(VertexBindingDescriptions);
             native->VertexAttributeDescriptionCount = VertexAttributeDescriptions?.Length ?? 0;
@@ -891,7 +891,7 @@ namespace VulkanCore
         {
             Type = StructureType.PipelineTessellationStateCreateInfo;
             Next = IntPtr.Zero;
-            Flags = PipelineTessellationStateCreateFlags.None;
+            Flags = 0;
             PatchControlPoints = patchControlPoints;
         }
 
@@ -946,7 +946,7 @@ namespace VulkanCore
         {
             native->Type = StructureType.PipelineViewportStateCreateInfo;
             native->Next = IntPtr.Zero;
-            native->Flags = PipelineViewportStateCreateFlags.None;
+            native->Flags = 0;
             native->ViewportCount = Viewports?.Length ?? 0;
             native->Viewports = Interop.AllocStructsToPtr(Viewports);
             native->ScissorCount = Scissors?.Length ?? 0;
@@ -1189,7 +1189,7 @@ namespace VulkanCore
 
             native->Type = StructureType.PipelineMultisampleStateCreateInfo;
             native->Next = IntPtr.Zero;
-            native->Flags = PipelineMultisampleStateCreateFlags.None;
+            native->Flags = 0;
             native->RasterizationSamples = RasterizationSamples;
             native->SampleShadingEnable = SampleShadingEnable;
             native->MinSampleShading = MinSampleShading;
@@ -1305,7 +1305,7 @@ namespace VulkanCore
         {
             native->Type = StructureType.PipelineColorBlendStateCreateInfo;
             native->Next = IntPtr.Zero;
-            native->Flags = PipelineColorBlendStateCreateFlags.None;
+            native->Flags = 0;
             native->LogicOpEnable = LogicOpEnable;
             native->LogicOp = LogicOp;
             native->AttachmentCount = Attachments?.Length ?? 0;
@@ -1600,7 +1600,7 @@ namespace VulkanCore
         {
             native->Type = StructureType.PipelineDynamicStateCreateInfo;
             native->Next = IntPtr.Zero;
-            native->Flags = PipelineDynamicStateCreateFlags.None;
+            native->Flags = 0;
             native->DynamicStateCount = DynamicStates?.Length ?? 0;
             native->DynamicStates = Interop.AllocStructsToPtr(DynamicStates);
         }

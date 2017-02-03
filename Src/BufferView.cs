@@ -97,7 +97,7 @@ namespace VulkanCore
         {
             Type = StructureType.BufferViewCreateInfo;
             Next = IntPtr.Zero;
-            Flags = BufferViewCreateFlags.None;
+            Flags = 0;
             Buffer = 0;
             Format = format;
             Offset = offset;

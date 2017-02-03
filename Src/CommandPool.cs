@@ -43,7 +43,7 @@ namespace VulkanCore
         /// the resources from the command pool back to the system.
         /// </param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void Reset(CommandPoolResetFlags flags = CommandPoolResetFlags.None)
+        public void Reset(CommandPoolResetFlags flags = 0)
         {
             Result result = ResetCommandPool(Parent, this, flags);
             VulkanException.ThrowForInvalidResult(result);
@@ -118,8 +118,7 @@ namespace VulkanCore
         /// <param name="flags">
         /// A bitmask indicating usage behavior for the pool and command buffers allocated from it.
         /// </param>
-        public CommandPoolCreateInfo(int queueFamilyIndex, 
-            CommandPoolCreateFlags flags = CommandPoolCreateFlags.None)
+        public CommandPoolCreateInfo(int queueFamilyIndex, CommandPoolCreateFlags flags = 0)
         {
             Type = StructureType.CommandPoolCreateInfo;
             Next = IntPtr.Zero;

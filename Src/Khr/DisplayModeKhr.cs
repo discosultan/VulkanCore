@@ -85,7 +85,7 @@ namespace VulkanCore.Khr
         {
             Type = StructureType.DisplayModeCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = DisplayModeCreateFlagsKhr.None;
+            Flags = 0;
             Parameters = parameters;
         }
 

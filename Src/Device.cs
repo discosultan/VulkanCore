@@ -681,7 +681,7 @@ namespace VulkanCore
 
             val.Type = StructureType.DeviceCreateInfo;
             val.Next = Next;
-            val.Flags = DeviceCreateFlags.None;
+            val.Flags = 0;
             val.QueueCreateInfoCount = queueCreateInfoCount;
             val.QueueCreateInfos = ptr;
             val.EnabledLayerCount = 0;
@@ -753,7 +753,7 @@ namespace VulkanCore
         {
             native.Type = StructureType.DeviceQueueCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = DeviceQueueCreateFlags.None;
+            native.Flags = 0;
             native.QueueFamilyIndex = QueueFamilyIndex;
             native.QueueCount = QueuePriorities.Length;
             native.QueuePriorities = Interop.AllocStructsToPtr(QueuePriorities);

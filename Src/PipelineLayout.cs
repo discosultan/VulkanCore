@@ -112,7 +112,7 @@ namespace VulkanCore
         {
             native.Type = StructureType.PipelineLayoutCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = PipelineLayoutCreateFlags.None;
+            native.Flags = 0;
             native.SetLayoutCount = SetLayouts?.Length ?? 0;
             native.SetLayouts = setLayouts;
             native.PushConstantRangeCount = PushConstantRanges?.Length ?? 0;

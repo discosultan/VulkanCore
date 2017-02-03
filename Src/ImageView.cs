@@ -105,7 +105,7 @@ namespace VulkanCore
         {
             Type = StructureType.ImageViewCreateInfo;
             Next = IntPtr.Zero;
-            Flags = ImageViewCreateFlags.None;
+            Flags = 0;
             Image = 0;
             Format = format;
             SubresourceRange = subresourceRange;

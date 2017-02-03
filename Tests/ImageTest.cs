@@ -64,7 +64,7 @@ namespace VulkanCore.Tests
 
         public ImageTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
 
-        private Image CreateImage(ImageCreateFlags flags = ImageCreateFlags.None)
+        private Image CreateImage(ImageCreateFlags flags = 0)
         {
             var createInfo = new ImageCreateInfo
             {

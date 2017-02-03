@@ -391,7 +391,7 @@ namespace VulkanCore.Khr
         {
             native.Type = StructureType.SwapchainCreateInfoKhr;
             native.Next = IntPtr.Zero;
-            native.Flags = SwapchainCreateFlagsKhr.None;
+            native.Flags = 0;
             native.Surface = Surface;
             native.MinImageCount = MinImageCount;
             native.ImageFormat = ImageFormat;

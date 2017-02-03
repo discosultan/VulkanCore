@@ -153,8 +153,10 @@ namespace VulkanCore
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </param>
-        public BufferCreateInfo(long size, BufferUsages usages,
-            BufferCreateFlags flags = BufferCreateFlags.None,
+        public BufferCreateInfo(
+            long size, 
+            BufferUsages usages,
+            BufferCreateFlags flags = 0,
             SharingMode sharingMode = SharingMode.Exclusive,
             int[] queueFamilyIndices = null,
             IntPtr next = default(IntPtr))

@@ -94,7 +94,7 @@ namespace VulkanCore
 
             native.Type = StructureType.DescriptorSetLayoutCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = DescriptorSetLayoutCreateFlags.None;
+            native.Flags = 0;
             native.BindingCount = bindingCount;
             native.Bindings = bindings;
         }

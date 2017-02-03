@@ -45,8 +45,7 @@ namespace VulkanCore
         /// The stride in bytes between results for individual queries within <paramref name="data"/>.
         /// </param>
         /// <param name="flags">A bitmask specifying how and when results are returned.</param>
-        public void GetResults(int firstQuery, int queryCount, int dataSize, IntPtr data, long stride,
-            QueryResults flags = QueryResults.None)
+        public void GetResults(int firstQuery, int queryCount, int dataSize, IntPtr data, long stride, QueryResults flags = 0)
         {
             Result result = GetQueryPoolResults(Parent, this, firstQuery, queryCount, dataSize, data, stride, flags);
             VulkanException.ThrowForInvalidResult(result);
@@ -108,7 +107,7 @@ namespace VulkanCore
         {
             Type = StructureType.QueryPoolCreateInfo;
             Next = IntPtr.Zero;
-            Flags = QueryPoolCreateFlags.None;
+            Flags = 0;
             QueryType = queryType;
             QueryCount = queryCount;
             PipelineStatistics = pipelineStatistics;

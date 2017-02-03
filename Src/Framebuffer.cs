@@ -133,7 +133,7 @@ namespace VulkanCore
         {
             native.Type = StructureType.FramebufferCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = FramebufferCreateFlags.None;
+            native.Flags = 0;
             native.RenderPass = renderPass;
             native.AttachmentCount = Attachments?.Length ?? 0;
             native.Attachments = attachments;

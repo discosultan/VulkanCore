@@ -144,7 +144,7 @@ namespace VulkanCore
 
             native.Type = StructureType.RenderPassCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = RenderPassCreateFlags.None;
+            native.Flags = 0;
             native.AttachmentCount = Attachments?.Length ?? 0;
             native.Attachments = attachments;
             native.SubpassCount = subpassCount;
@@ -238,7 +238,7 @@ namespace VulkanCore
         internal void ToNative(out Native native)
         {
             // Only graphics subpasses are supported.
-            native.Flags = SubpassDescriptions.None;
+            native.Flags = 0;
             native.PipelineBindPoint = PipelineBindPoint.Graphics;
             native.InputAttachmentCount = InputAttachments?.Length ?? 0;
             native.InputAttachments = Interop.AllocStructsToPtr(InputAttachments);

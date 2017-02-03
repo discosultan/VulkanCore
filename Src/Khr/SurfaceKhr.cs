@@ -176,7 +176,7 @@ namespace VulkanCore.Khr
         {
             Type = StructureType.AndroidSurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = AndroidSurfaceCreateFlagsKhr.None;
+            Flags = 0;
             Window = window;
         }
 
@@ -224,7 +224,7 @@ namespace VulkanCore.Khr
             MirSurface = mirSurface;
             Type = StructureType.MirSurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = MirSurfaceCreateFlagsKhr.None;
+            Flags = 0;
         }
 
         internal void Prepare()
@@ -268,7 +268,7 @@ namespace VulkanCore.Khr
             Surface = surface;
             Type = StructureType.WaylandSurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = WaylandSurfaceCreateFlagsKhr.None;
+            Flags = 0;
         }
 
         internal void Prepare()
@@ -312,7 +312,7 @@ namespace VulkanCore.Khr
             Hwnd = hwnd;
             Type = StructureType.Win32SurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = Win32SurfaceCreateFlagsKhr.None;
+            Flags = 0;
         }
 
         internal void Prepare()
@@ -356,7 +356,7 @@ namespace VulkanCore.Khr
         {
             Type = StructureType.XlibSurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = XlibSurfaceCreateFlagsKhr.None;
+            Flags = 0;
             Dpy = display;
             Window = window;
         }
@@ -462,7 +462,7 @@ namespace VulkanCore.Khr
         {
             Type = StructureType.DisplaySurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = DisplaySurfaceCreateFlagsKhr.None;
+            Flags = 0;
             DisplayMode = displayMode;
             PlaneIndex = planeIndex;
             PlaneStackIndex = planeStackIndex;
@@ -541,7 +541,7 @@ namespace VulkanCore.Khr
         {
             Type = StructureType.XcbSurfaceCreateInfoKhr;
             Next = IntPtr.Zero;
-            Flags = XcbSurfaceCreateFlagsKhr.None;
+            Flags = 0;
             Connection = connection;
             Window = window;
         }

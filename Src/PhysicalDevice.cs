@@ -101,7 +101,7 @@ namespace VulkanCore
         /// <returns>Image format capabilities of a physical device</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public ImageFormatProperties GetImageFormatProperties(Format format, ImageType type, 
-            ImageTiling tiling, ImageUsages usages, ImageCreateFlags flags = ImageCreateFlags.None)
+            ImageTiling tiling, ImageUsages usages, ImageCreateFlags flags = 0)
         {
             ImageFormatProperties properties;
             Result result = GetPhysicalDeviceImageFormatProperties(

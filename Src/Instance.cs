@@ -243,7 +243,7 @@ namespace VulkanCore
         {
             val.Type = StructureType.InstanceCreateInfo;
             val.Next = IntPtr.Zero;
-            val.Flags = InstanceCreateFlags.None;
+            val.Flags = 0;
             if (ApplicationInfo.HasValue)
             {
                 var appInfoNative = (ApplicationInfo.Native*)Interop.Alloc<ApplicationInfo.Native>();

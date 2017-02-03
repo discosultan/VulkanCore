@@ -170,7 +170,7 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="FenceCreateInfo"/> structure.
         /// </summary>
         /// <param name="flags">Defines the initial state and behavior of the fence.</param>
-        public FenceCreateInfo(FenceCreateFlags flags = FenceCreateFlags.None)
+        public FenceCreateInfo(FenceCreateFlags flags = 0)
         {
             Type = StructureType.FenceCreateInfo;
             Next = IntPtr.Zero;

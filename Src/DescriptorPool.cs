@@ -165,7 +165,7 @@ namespace VulkanCore
         public DescriptorPoolCreateInfo(
             int maxSets, 
             DescriptorPoolSize[] poolSizes, 
-            DescriptorPoolCreateFlags flags = DescriptorPoolCreateFlags.None)
+            DescriptorPoolCreateFlags flags = 0)
         {
             MaxSets = maxSets;
             PoolSizes = poolSizes;

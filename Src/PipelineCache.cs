@@ -132,7 +132,7 @@ namespace VulkanCore
         {
             native.Type = StructureType.PipelineCacheCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = PipelineCacheCreateFlags.None;
+            native.Flags = 0;
             native.InitialDataSize = InitialData?.Length ?? 0;
             native.InitialData = initialData;
         }

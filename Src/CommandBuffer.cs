@@ -65,7 +65,7 @@ namespace VulkanCore
         /// </para>
         /// </param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void Reset(CommandBufferResetFlags flags = CommandBufferResetFlags.None)
+        public void Reset(CommandBufferResetFlags flags = 0)
         {
             Result result = ResetCommandBuffer(this, flags);
             VulkanException.ThrowForInvalidResult(result);
@@ -930,7 +930,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="flags">A bitmask specifying how and when results are returned.</param>
         public void CmdCopyQueryPoolResults(QueryPool queryPool, int firstQuery, int queryCount, Buffer dstBuffer,
-            long dstOffset, long stride, QueryResults flags = QueryResults.None)
+            long dstOffset, long stride, QueryResults flags = 0)
         {
             CmdCopyQueryPoolResults(this, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
         }
