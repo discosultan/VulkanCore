@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace VulkanCore.NV
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="DeviceMemory"/> class.
+    /// Provides NVIDIA specific extension methods for the <see cref="DeviceMemory"/> class.
     /// </summary>
     public static unsafe class DeviceMemoryExtensions
     {

@@ -5,7 +5,7 @@ using static VulkanCore.Constants;
 namespace VulkanCore.Nvx
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="CommandBuffer"/> class.
+    /// Provides NVIDIA specific extension methods for the <see cref="CommandBuffer"/> class.
     /// </summary>
     public static unsafe class CommandBufferExtensions
     {

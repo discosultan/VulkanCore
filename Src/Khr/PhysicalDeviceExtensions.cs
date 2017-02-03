@@ -6,7 +6,7 @@ using static VulkanCore.Constants;
 namespace VulkanCore.Khr
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="PhysicalDevice"/> class.
+    /// Provides Khronos specific extension methods for the <see cref="PhysicalDevice"/> class.
     /// </summary>
     public static unsafe class PhysicalDeviceExtensions
     {

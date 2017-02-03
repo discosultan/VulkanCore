@@ -5,7 +5,7 @@ using static VulkanCore.Constants;
 namespace VulkanCore.NV
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="PhysicalDevice"/> class.
+    /// Provides NVIDIA specific extension methods for the <see cref="PhysicalDevice"/> class.
     /// </summary>
     public static unsafe class PhysicalDeviceExtensions
     {

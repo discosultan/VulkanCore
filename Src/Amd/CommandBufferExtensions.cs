@@ -5,7 +5,7 @@ using static VulkanCore.Constants;
 namespace VulkanCore.Amd
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="CommandBuffer"/> class.
+    /// Provides AMD specific extension methods for the <see cref="CommandBuffer"/> class.
     /// </summary>
     public static class CommandBufferExtensions
     {

@@ -1,7 +1,7 @@
 ﻿namespace VulkanCore.Khr
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="Device"/> class.
+    /// Provides Khronos specific extension methods for the <see cref="Device"/> class.
     /// </summary>
     public static class DeviceExtensions
     {

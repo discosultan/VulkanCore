@@ -6,7 +6,7 @@ using static VulkanCore.Constants;
 namespace VulkanCore.NN
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="Instance"/> class.
+    /// Provides Nintendo specific extension methods for the <see cref="Instance"/> class.
     /// </summary>
     public static unsafe class InstanceExtensions
     {

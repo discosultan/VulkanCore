@@ -1,7 +1,7 @@
 ﻿namespace VulkanCore.Nvx
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="Device"/> class.
+    /// Provides NVIDIA specific extension methods for the <see cref="Device"/> class.
     /// </summary>
     public static class DeviceExtensions
     {

@@ -1,7 +1,7 @@
 ﻿namespace VulkanCore.Khr
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="Instance"/> class.
+    /// Provides Khronos specific extension methods for the <see cref="Instance"/> class.
     /// </summary>
     public static unsafe class InstanceExtensions
     {

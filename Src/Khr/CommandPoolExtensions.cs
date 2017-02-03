@@ -5,7 +5,7 @@ using static VulkanCore.Constants;
 namespace VulkanCore.Khr
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="CommandPool"/> class.
+    /// Provides Khronos specific extension methods for the <see cref="CommandPool"/> class.
     /// </summary>
     public static class CommandPoolExtensions
     {
