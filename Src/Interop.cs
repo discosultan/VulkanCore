@@ -6,8 +6,47 @@ using System.Text;
 
 namespace VulkanCore
 {
+    // TODO: doc
+
     public static unsafe class Interop
     {
+        public static void Read<T>(IntPtr dstPtr, ref T data)
+        {
+            Unsafe.Copy(ref data, dstPtr.ToPointer());
+        }
+
+        public static void Read<T>(IntPtr dstPtr, T[] data)
+        {
+            if (data == null) return;
+
+            int size = SizeOf<T>();
+            var dstBytesPtr = (byte*)dstPtr;
+            for (int i = 0; i < data.Length; i++)
+            {
+                Unsafe.Copy(ref data[i], dstBytesPtr);
+                dstBytesPtr += size;
+            }
+        }
+
+        public static void Write<T>(IntPtr dstPtr, ref T data)
+        {
+            Unsafe.Copy(dstPtr.ToPointer(), ref data);
+        }
+
+        public static void Write<T>(IntPtr dstPtr, T[] data)
+            where T : struct
+        {
+            if (data == null) return;
+
+            int size = SizeOf<T>();
+            var dstBytesPtr = (byte*)dstPtr;
+            for (int i = 0; i < data.Length; i++)
+            {
+                Unsafe.Copy(dstBytesPtr, ref data[i]);
+                dstBytesPtr += size;
+            }
+        }
+
         public static int GetMaxByteCount(string value)
         {
             return value == null 
@@ -122,7 +161,7 @@ namespace VulkanCore
 
             IntPtr ptr = Marshal.AllocHGlobal(byteCount);
             RaiseAlloc(ptr);
-            return ptr;            
+            return ptr;
         }
 
         public static IntPtr Alloc<T>(int count = 1) => Alloc(SizeOf<T>() * count);
@@ -149,6 +188,10 @@ namespace VulkanCore
                 Free(ptr[i]);
             Free(ptr);
         }
+
+        // Using actual managed thread id is not possible in .NET Standard 1.4
+        // because the API is missing. If the library is upgraded to .NET Standard 2.0,
+        // it should be reworked to use that instead.
 
         [ThreadStatic] private static Guid? _threadId;
         public static Guid ThreadId => (_threadId ?? (_threadId = Guid.NewGuid())).Value;
