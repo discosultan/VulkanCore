@@ -76,7 +76,14 @@ namespace VulkanCore.Samples
 #if DEBUG
                 enabledLayerNames: new[] { Layers.LunarGStandardValidation },
 #endif
-                enabledExtensionNames: new[] { Extensions.KhrSurface, Extensions.KhrWin32Surface, Extensions.ExtDebugReport }
+                enabledExtensionNames: new[] 
+                {
+                    Extensions.KhrSurface,
+                    Extensions.KhrWin32Surface,
+#if DEBUG
+                    Extensions.ExtDebugReport
+#endif
+                }
             ));
 
 #if DEBUG
