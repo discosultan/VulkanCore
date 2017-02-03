@@ -2,10 +2,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>0.1.0-alpha2</Version>
-    <Description>Vulkan 1.0 bindings for .NET Standard</Description>
+    <Version>1.0.0-alpha01</Version>
+    <Description>Vulkan bindings for .NET Standard</Description>
     <Authors>discosultan</Authors>
     <Company>discosultan</Company>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.3.0" />
