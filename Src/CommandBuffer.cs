@@ -886,7 +886,7 @@ namespace VulkanCore
         /// <param name="queryCount">The number of queries to reset.</param>
         public void CmdResetQueryPool(QueryPool queryPool, int firstQuery, int queryCount)
         {
-            CmdResetQueryPool(this, queryCount, firstQuery, queryCount);
+            CmdResetQueryPool(this, queryPool, firstQuery, queryCount);
         }
 
         /// <summary>
