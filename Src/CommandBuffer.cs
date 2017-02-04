@@ -849,7 +849,7 @@ namespace VulkanCore
         /// <param name="flags">
         /// A bitmask indicating constraints on the types of queries that can be performed.
         /// </param>
-        public void CmdBeginQuery(QueryPool queryPool, int query, QueryControlFlags flags)
+        public void CmdBeginQuery(QueryPool queryPool, int query, QueryControlFlags flags = 0)
         {
             CmdBeginQuery(this, queryPool, query, flags);
         }
