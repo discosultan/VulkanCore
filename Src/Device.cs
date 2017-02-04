@@ -561,6 +561,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>The resulting query pool object.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public QueryPool CreateQueryPool(QueryPoolCreateInfo createInfo, AllocationCallbacks? allocator = null)
         {
             return new QueryPool(this, &createInfo, ref allocator);
