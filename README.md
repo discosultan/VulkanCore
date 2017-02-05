@@ -5,7 +5,7 @@ Vulkan 1.0 bindings for .NET Standard 1.4
 - [Introduction](#introduction)
 - [Building](#building)
 - [Samples](#samples)
-- [Testing](#testing)
+- [Tests](#tests)
 - [Related Work](#related-work)
 
 ## Introduction
@@ -17,23 +17,30 @@ VulkanCore is intended to be a thin cross-platform object-oriented wrapper aroun
 Pros:
 - Full control over the API including high quality code documentation.
 - Easier to contribute. No need to understand the generator.
-- Allows more easily to make exceptions and do specialized optimizations.
 
 Cons:
 - Requires manual work after every change to the Vulkan API.
 - Difficult to modify the fundamentals. Impossible to simply regenerate everything.
-- More susceptible to human error.
-
 
 ## Building
 
-TODO
+The latest version of [Visual Studio 2017 RC](https://www.visualstudio.com/vs/visual-studio-2017-rc/) is required to successfully compile the solution. [Rider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/) and [MonoDevelop](http://www.monodevelop.com/) will also work once .NET Standard 2.0 will RTM.
 
 ## Samples
 
-TODO
+Vulkan-capable graphics hardware and drivers are required to run the samples. Currently only Win32 platform is supported but Ubuntu and Android are planned.
 
-## Testing
+## [01-ClearScreen](Samples/01-ClearScreen)
+<img src="./Doc/ClearScreen.jpg" height="96px" align="right">
+Sets up a window and clears it to a solid color.
+<br><br>
+
+## [02-Triangle](Samples/02-Triangle)
+<img src="./Doc/Triangle.jpg" height="96px" align="right">
+Renders a triangle defined in a shader.
+<br><br>
+
+## Tests
 
 In order to provide a certain level of *functional correctness*, the project aims to achieve *full statement coverage* for the *core API*. Note that it's difficult to test some of the vendor specific extensions due to the requirements for specialized hardware/drivers - therefore, covering them at this point is not planned.
 
