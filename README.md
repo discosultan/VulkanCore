@@ -1,4 +1,4 @@
-# VulkanCore [![AppVeyor](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg)]() [![NuGet Pre Release](https://img.shields.io/nuget/vpre/VulkanCore.svg)]()
+# VulkanCore [![AppVeyor](https://img.shields.io/appveyor/ci/discosultan/vulkancore.svg)](https://ci.appveyor.com/project/discosultan/vulkancore) [![NuGet Pre Release](https://img.shields.io/nuget/vpre/VulkanCore.svg)](https://www.nuget.org/packages/VulkanCore/1.0.0-alpha01)
 
 Vulkan 1.0 bindings for .NET Standard 1.4
 
@@ -10,7 +10,7 @@ Vulkan 1.0 bindings for .NET Standard 1.4
 
 ## Introduction
 
-VulkanCore is intended to be a thin cross-platform object-oriented wrapper around the Vulkan C API.
+VulkanCore is a thin cross-platform object-oriented wrapper around the Vulkan C API.
 
 **Why yet another set of bindings?** While most of the alternatives use a generator-based approach, these bindings do not. There are a couple of repercussions from that:
 
