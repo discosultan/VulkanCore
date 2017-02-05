@@ -38,7 +38,7 @@ namespace VulkanCore
         /// Returns a string that represents the current version in the form of MAJOR.MINOR.PATCH.
         /// </summary>
         /// <returns>A string that represents the current version.</returns>
-        public override string ToString() => $"{Major}.{Minor}.{Patch}";        
+        public override string ToString() => $"{Major}.{Minor}.{Patch}";
 
         /// <summary>
         /// Indicates whether the current version is equal to another version.
@@ -62,5 +62,17 @@ namespace VulkanCore
         /// A shorthand for writing <c>new Version(0, 0, 0)</c>.
         /// </summary>
         public static Version Zero => new Version(0, 0, 0);
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Version"/> to <see cref="int"/>.
+        /// </summary>
+        /// <param name="version">The value to convert.</param>
+        public static implicit operator int(Version version) => version._value;
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Version"/> to <see cref="uint"/>.
+        /// </summary>
+        /// <param name="version">The value to convert.</param>
+        public static implicit operator uint(Version version) => (uint)version._value;
     }
 }
