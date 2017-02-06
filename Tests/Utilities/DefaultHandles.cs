@@ -101,7 +101,7 @@ namespace VulkanCore.Tests.Utilities
                 graphicsFamilyIndex,
                 sparseBindingFamilyIndex,
                 transferFamilyIndex
-            }.Distinct().Select(i => new DeviceQueueCreateInfo(i, new[] { 1.0f })).ToArray();
+            }.Distinct().Select(i => new DeviceQueueCreateInfo(i, 1, new[] { 1.0f })).ToArray();
 
             var createInfo = new DeviceCreateInfo(queueInfos
             //, new[] { Extensions.ExtDebugMarker } // TODO: why is the extension not present?

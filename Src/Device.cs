@@ -713,27 +713,37 @@ namespace VulkanCore
         /// This index corresponds to the index of an element of the <see
         /// cref="QueueFamilyProperties"/> array that was returned by <see cref="PhysicalDevice.GetQueueFamilyProperties"/>.
         /// </param>
+        /// <param name="queueCount">
+        /// An unsigned integer specifying the number of queues to create in the queue family
+        /// indicated by <paramref name="queueFamilyIndex"/>.
+        /// </param>
         /// <param name="queuePriorities">
         /// Normalized floating point values, specifying priorities of work that will be submitted to
-        /// each created queue. Determines queue count.
+        /// each created queue.
         /// </param>
-        public DeviceQueueCreateInfo(int queueFamilyIndex, float[] queuePriorities)
+        public DeviceQueueCreateInfo(int queueFamilyIndex, int queueCount, float[] queuePriorities)
         {
             QueueFamilyIndex = queueFamilyIndex;
+            QueueCount = queueCount;
             QueuePriorities = queuePriorities;
         }
 
         /// <summary>
-        /// Gets the unsigned integer indicating the index of the queue family to create on this
-        /// device. This index corresponds to the index of an element of the <see
+        /// An unsigned integer indicating the index of the queue family to create on this device.
+        /// This index corresponds to the index of an element of the <see
         /// cref="QueueFamilyProperties"/> array that was returned by <see cref="PhysicalDevice.GetQueueFamilyProperties"/>.
         /// </summary>
-        public int QueueFamilyIndex { get; }
+        public int QueueFamilyIndex;
         /// <summary>
-        /// Gets the array of normalized floating point values, specifying priorities of work that
-        /// will be submitted to each created queue. Determines queue count.
+        /// An unsigned integer specifying the number of queues to create in the queue family
+        /// indicated by <see cref="QueueFamilyIndex"/>.
         /// </summary>
-        public float[] QueuePriorities { get; }
+        public int QueueCount;
+        /// <summary>
+        /// An array of normalized floating point values, specifying priorities of work that
+        /// will be submitted to each created queue.
+        /// </summary>
+        public float[] QueuePriorities;
 
         internal struct Native
         {
@@ -756,7 +766,7 @@ namespace VulkanCore
             native.Next = IntPtr.Zero;
             native.Flags = 0;
             native.QueueFamilyIndex = QueueFamilyIndex;
-            native.QueueCount = QueuePriorities.Length;
+            native.QueueCount = QueueCount;
             native.QueuePriorities = Interop.AllocStructsToPtr(QueuePriorities);
         }
     }
