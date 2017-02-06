@@ -26,6 +26,8 @@ Cons:
 
 The latest version of [Visual Studio 2017 RC](https://www.visualstudio.com/vs/visual-studio-2017-rc/) is required to successfully compile the solution. [Rider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/) and [MonoDevelop](http://www.monodevelop.com/) will also work once .NET Standard 2.0 will RTM.
 
+> If the solution does not build due to missing BCL types, run `dotnet restore` on command line. Seems to be a bug in the RC tooling.
+
 ## Samples
 
 Vulkan-capable graphics hardware and drivers are required to run the samples. Currently only Win32 platform is supported but Ubuntu and Android are planned.
