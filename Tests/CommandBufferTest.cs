@@ -67,6 +67,19 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
+        public void BeginEndRenderPass_Succeeds()
+        {
+            using (RenderPass renderPass = Device.CreateRenderPass(new RenderPassCreateInfo(new[] { new SubpassDescription() })))
+            using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo()))
+            {
+                CommandBuffer.Begin();
+                CommandBuffer.CmdBeginRenderPass(new RenderPassBeginInfo(framebuffer, default(Rect2D)));
+                CommandBuffer.CmdEndRenderPass();
+                CommandBuffer.End();                
+            }
+        }
+
+        [Fact]
         public void SetScissor_Succeeds()
         {
             CommandBuffer.Begin();
