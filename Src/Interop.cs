@@ -84,7 +84,7 @@ namespace VulkanCore
         {
             if (value == null) return IntPtr.Zero;
             
-            // Get max number of bytes the string may need.            
+            // Get max number of bytes the string may need.
             int maxSize = GetMaxByteCount(value);
             // Allocate unmanaged memory.
             IntPtr managedPtr = Alloc(maxSize);
@@ -105,7 +105,7 @@ namespace VulkanCore
                 return null;
 
             // Allocate unmanaged memory for string pointers.
-            var stringHandlesPtr = (IntPtr*)Alloc<IntPtr>(values.Length);            
+            var stringHandlesPtr = (IntPtr*)Alloc<IntPtr>(values.Length);
 
             for (var i = 0; i < values.Length; i++)
                 // Store the pointer to the string.
@@ -156,6 +156,15 @@ namespace VulkanCore
         public static IntPtr GetFunctionPointerForDelegate<TDelegate>(TDelegate d) => Marshal.GetFunctionPointerForDelegate(d);
 
         public static IntPtr Alloc(int byteCount)
+        {
+            if (byteCount == 0) return IntPtr.Zero;
+
+            IntPtr ptr = Marshal.AllocHGlobal(byteCount);
+            RaiseAlloc(ptr);
+            return ptr;
+        }
+
+        public static IntPtr Alloc(Size byteCount)
         {
             if (byteCount == 0) return IntPtr.Zero;
 
