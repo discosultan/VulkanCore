@@ -13,8 +13,8 @@ namespace VulkanCore.Tests
             Size intSize = intVal;
             Size longSize = longVal;
 
-            Assert.Equal(intVal, intSize);
-            Assert.Equal(longVal, longSize);
+            Assert.Equal(intVal, (int)intSize);
+            Assert.Equal(longVal, (long)longSize);
         }
     }
 }
