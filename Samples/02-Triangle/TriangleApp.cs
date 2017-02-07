@@ -68,6 +68,10 @@ namespace VulkanCore.Samples.Triangle
 
         private void CreateRenderPass()
         {
+            var subpasses = new[]
+            {
+                new SubpassDescription(new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) })
+            };
             var attachments = new[]
             {
                 new AttachmentDescription
@@ -80,13 +84,6 @@ namespace VulkanCore.Samples.Triangle
                     StoreOp = AttachmentStoreOp.Store,
                     StencilLoadOp = AttachmentLoadOp.DontCare,
                     StencilStoreOp = AttachmentStoreOp.DontCare
-                }
-            };
-            var subpasses = new[]
-            {
-                new SubpassDescription
-                {
-                    ColorAttachments = new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) }                    
                 }
             };
 

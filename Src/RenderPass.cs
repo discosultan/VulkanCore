@@ -179,9 +179,9 @@ namespace VulkanCore
         /// during the subpass, and what layout each attachment will be in during the subpass. Each
         /// element of the array corresponds to an input attachment unit number in the shader, i.e.
         /// if the shader declares an input variable `layout(inputAttachmentIndex=X, set=Y,
-        /// binding=Z)` then it uses the attachment provided in pInputAttachments[X]. Input
-        /// attachments must also be bound to the pipeline with a descriptor set, with the input
-        /// attachment descriptor written in the location (set=Y, binding=Z).
+        /// binding=Z)` then it uses the attachment provided in <see cref="InputAttachments"/>[X].
+        /// Input attachments must also be bound to the pipeline with a descriptor set, with the
+        /// input attachment descriptor written in the location (set=Y, binding=Z).
         /// </summary>
         public AttachmentReference[] InputAttachments;
         /// <summary>
@@ -210,6 +210,62 @@ namespace VulkanCore
         /// but whose contents must be preserved throughout the subpass.
         /// </summary>
         public int[] PreserveAttachments;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SubpassDescription"/> structure.
+        /// </summary>
+        /// <param name="colorAttachments">
+        /// Structures that lists which of the render pass’s attachments will be used as color
+        /// attachments in the subpass, and what layout each attachment will be in during the
+        /// subpass. Each element of the array corresponds to a fragment shader output location, i.e.
+        /// if the shader declared an output variable layout(location=X) then it uses the attachment
+        /// provided in <see cref="ColorAttachments"/>[X].
+        /// </param>
+        /// <param name="inputAttachments">
+        /// Structures that lists which of the render pass's attachments can be read in the shader
+        /// during the subpass, and what layout each attachment will be in during the subpass. Each
+        /// element of the array corresponds to an input attachment unit number in the shader, i.e.
+        /// if the shader declares an input variable `layout(inputAttachmentIndex=X, set=Y,
+        /// binding=Z)` then it uses the attachment provided in <see cref="InputAttachments"/>[X].
+        /// Input attachments must also be bound to the pipeline with a descriptor set, with the
+        /// input attachment descriptor written in the location (set=Y, binding=Z).
+        /// </param>
+        /// <param name="resolveAttachments">
+        /// Is <c>null</c> or an array of structures that lists which of the render pass's
+        /// attachments are resolved to at the end of the subpass, and what layout each attachment
+        /// will be in during the multisample resolve operation. If <see cref="ResolveAttachments"/>
+        /// is not <c>null</c>, each of its elements corresponds to a color attachment (the element
+        /// in <see cref="ColorAttachments"/> at the same index), and a multisample resolve operation
+        /// is defined for each attachment. At the end of each subpass, multisample resolve
+        /// operations read the subpass's color attachments, and resolve the samples for each pixel
+        /// to the same pixel location in the corresponding resolve attachments, unless the resolve
+        /// attachment index is <see cref="AttachmentUnused"/>. If the first use of an attachment in
+        /// a render pass is as a resolve attachment, then the <see cref="AttachmentLoadOp"/> is
+        /// effectively ignored as the resolve is guaranteed to overwrite all pixels in the render area.
+        /// </param>
+        /// <param name="depthStencilAttachment">
+        /// Specifies which attachment will be used for depth/stencil data and the layout it will be
+        /// in during the subpass. Setting the attachment index to <see cref="AttachmentUnused"/> or
+        /// leaving this as <c>null</c> indicates that no depth/stencil attachment will be used in
+        /// the subpass.
+        /// </param>
+        /// <param name="preserveAttachments">
+        /// Render pass attachment indices describing the attachments that are not used by a subpass,
+        /// but whose contents must be preserved throughout the subpass.
+        /// </param>
+        public SubpassDescription(
+            AttachmentReference[] colorAttachments = null, 
+            AttachmentReference[] inputAttachments = null,
+            AttachmentReference[] resolveAttachments = null,
+            AttachmentReference? depthStencilAttachment = null,
+            int[] preserveAttachments = null)
+        {
+            ColorAttachments = colorAttachments;
+            InputAttachments = inputAttachments;
+            ResolveAttachments = resolveAttachments;
+            DepthStencilAttachment = depthStencilAttachment;
+            PreserveAttachments = preserveAttachments;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
