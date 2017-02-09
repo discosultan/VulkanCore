@@ -8,6 +8,9 @@ namespace VulkanCore
 {
     // TODO: doc
 
+    /// <summary>
+    /// Utilities for interoping with the Vulkan C API.
+    /// </summary>
     public static unsafe class Interop
     {
         public static void Read<T>(IntPtr dstPtr, ref T data)

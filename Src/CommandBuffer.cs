@@ -1087,7 +1087,7 @@ namespace VulkanCore
                 commandBuffers[i] = new CommandBuffer(parent, commandBuffersPtr[i]);
             return commandBuffers;
         }
-        
+
         internal static void Free(CommandPool parent, CommandBuffer[] commandBuffers)
         {
             int count = commandBuffers?.Length ?? 0;

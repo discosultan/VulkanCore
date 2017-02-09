@@ -15,7 +15,7 @@ namespace VulkanCore
         /// <summary>
         /// Gets the handle to the unmanaged Vulkan resource.
         /// </summary>
-        public THandle Handle { get; protected set; }        
+        public THandle Handle { get; protected set; }
 
         /// <summary>
         /// Returns a value indicating whether this instance is equal to a specified object.
@@ -37,7 +37,7 @@ namespace VulkanCore
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode() => Handle.GetHashCode();        
+        public override int GetHashCode() => Handle.GetHashCode();
 
         /// <summary>
         /// Returns a boolean indicating whether the two given handles are equal.
@@ -60,8 +60,7 @@ namespace VulkanCore
             => !(left == right);
 
         /// <summary>
-        /// Implicitly converts an instance of <see cref="VulkanHandle{THandle}"/> to its handle type
-        /// <typeparam name="THandle"/>.
+        /// Implicitly converts an instance of <see cref="VulkanHandle{THandle}"/> to its handle type.
         /// </summary>
         /// <param name="value">Instance to convert.</param>
         public static implicit operator THandle(VulkanHandle<THandle> value) => value?.Handle ?? default(THandle);
@@ -78,6 +77,9 @@ namespace VulkanCore
         private bool _disposed;
         private AllocationCallbacks? _allocator;
 
+        /// <summary>
+        /// Allows the object to free unmanaged resources before it is reclaimed by garbage collection.
+        /// </summary>
         ~DisposableHandle()
         {
             Dispose(false);
@@ -113,7 +115,7 @@ namespace VulkanCore
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
+ 
         protected virtual void DisposeManaged() { }
 
         protected virtual void DisposeUnmanaged(bool disposing)
@@ -138,7 +140,7 @@ namespace VulkanCore
         }
     }
 
-    public static class VulkanHandleExtensions
+    internal static class VulkanHandleExtensions
     {
         // We need to duplicate these extensions instead of using a generic one
         // due to compiler's inability to implicitly infer generic type params in this case.
