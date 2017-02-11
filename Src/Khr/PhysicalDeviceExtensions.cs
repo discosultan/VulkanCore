@@ -490,7 +490,7 @@ namespace VulkanCore.Khr
         /// the surface, and will be either 0, or greater than or equal to <see
         /// cref="MinImageCount"/>. A value of 0 means that there is no limit on the number of
         /// images, though there may be limits related to the total amount of memory used by
-        /// swapchain images.
+        /// presentable images.
         /// </summary>
         public int MaxImageCount;
         /// <summary>
@@ -516,7 +516,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public Extent2D MaxImageExtent;
         /// <summary>
-        /// The maximum number of layers swapchain images can have for a swapchain created for this
+        /// The maximum number of layers presentable images can have for a swapchain created for this
         /// device and surface, and will be at least one.
         /// </summary>
         public int MaxImageArrayLayers;
@@ -535,8 +535,8 @@ namespace VulkanCore.Khr
         /// A bitmask of <see cref="CompositeAlphasKhr"/>, representing the alpha compositing
         /// modes supported by the presentation engine for the surface on the specified device, and
         /// at least one bit will be set. Opaque composition can be achieved in any alpha compositing
-        /// mode by either using a swapchain image format that has no alpha component, or by ensuring
-        /// that all pixels in the swapchain images have an alpha value of 1.0.
+        /// mode by either using an image format that has no alpha component, or by ensuring
+        /// that all pixels in the presentable images have an alpha value of 1.0.
         /// </summary>
         public CompositeAlphasKhr SupportedCompositeAlpha;
         /// <summary>
@@ -915,7 +915,7 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageFormatProperties2Khr
     {
-        internal StructureType Type;        
+        internal StructureType Type;
 
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.

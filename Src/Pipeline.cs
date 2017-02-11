@@ -832,7 +832,7 @@ namespace VulkanCore
         /// 0xFFFFFFFF when the index type parameter of <see
         /// cref="CommandBuffer.CmdBindIndexBuffer"/> is equal to <see cref="IndexType.UInt32"/>, or
         /// 0xFFFF when index type is equal to <see cref="IndexType.UInt16"/>. Primitive restart is
-        /// not allowed for list topologies.
+        /// not allowed for "list" topologies.
         /// </summary>
         public Bool PrimitiveRestartEnable;
 

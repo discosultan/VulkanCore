@@ -348,9 +348,21 @@ namespace VulkanCore.Ext
         /// Is a <see cref="DebugReportCallbackExt"/>.
         /// </summary>
         DebugReport = 28,
+        /// <summary>
+        /// Is a <see cref="DisplayKhr"/>.
+        /// </summary>
         DisplayKhr = 29,
+        /// <summary>
+        /// Is a <see cref="DisplayModeKhr"/>.
+        /// </summary>
         DisplayModeKhr = 30,
+        /// <summary>
+        /// Is a <see cref="ObjectTableNvx"/>.
+        /// </summary>
         ObjectTableNvx = 31,
+        /// <summary>
+        /// Is a <see cref="IndirectCommandsLayoutNvx"/>.
+        /// </summary>
         IndirectCommandsLayoutNvx = 32
     }
 }

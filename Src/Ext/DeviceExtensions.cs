@@ -136,6 +136,22 @@ namespace VulkanCore.Ext
             return new Fence(device, ref allocator, handle);
         }
 
+        /// <summary>
+        /// Function to set SMPTE2086 metadata.
+        /// </summary>
+        /// <param name="device">The logical device where the swapchain(s) were created.</param>
+        /// <param name="swapchains">The array of <see cref="SwapchainKhr"/> handles.</param>
+        /// <param name="metadata">The array of <see cref="Smpte2086MetadataExt"/> structures.</param>
+        public static void SetSmpte2086MetadataExt(this Device device, SwapchainKhr[] swapchains, Smpte2086MetadataExt[] metadata)
+        {
+            int count = swapchains?.Length ?? 0;
+            var swapchainPtrs = stackalloc long[count];
+            for (int i = 0; i < count; i++)
+                swapchainPtrs[i] = swapchains[i];
+            fixed (Smpte2086MetadataExt* metadataPtr = metadata)
+                SetSmpte2086MetadataExt(device, count, swapchainPtrs, metadataPtr);
+        }
+
         private delegate Result DebugMarkerSetObjectNameExtDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
 
         private delegate Result DebugMarkerSetObjectTagExtDelegate(IntPtr device, DebugMarkerObjectTagInfoExt.Native* tagInfo);
@@ -150,6 +166,10 @@ namespace VulkanCore.Ext
         [DllImport(VulkanDll, EntryPoint = "vkRegisterDisplayEventEXT", CallingConvention = CallConv)]
         private static extern Result RegisterDisplayEventExt(IntPtr device, long display, 
             DisplayEventInfoExt* displayEventInfo, AllocationCallbacks.Native* allocator, long* fence);
+
+        [DllImport(VulkanDll, EntryPoint = "vkSetSMPTE2086MetadataEXT", CallingConvention = CallConv)]
+        private static extern void SetSmpte2086MetadataExt(IntPtr device, 
+            int swapchainCount, long* swapchains, Smpte2086MetadataExt* metadata);
     }
 
     /// <summary>
@@ -405,5 +425,47 @@ namespace VulkanCore.Ext
     public enum DisplayEventTypeExt
     {
         FirstPixelOut = 0
+    }
+
+    /// <summary>
+    /// Structure to specify SMPTE2086 metadata.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Smpte2086MetadataExt
+    {
+        /// <summary>
+        /// The mastering display's red primary in chromaticity coordinates.
+        /// </summary>
+        public XYColorExt DisplayPrimaryRed;
+        /// <summary>
+        /// The mastering display's green primary in chromaticity coordinates.
+        /// </summary>
+        public XYColorExt DisplayPrimaryGreen;
+        /// <summary>
+        /// The mastering display's blue primary in chromaticity coordinates.
+        /// </summary>
+        public XYColorExt DisplayPrimaryBlue;
+        /// <summary>
+        /// The mastering display's white-point in chromaticity coordinates.
+        /// </summary>
+        public XYColorExt WhitePoint;
+        /// <summary>
+        /// The maximum luminance of the mastering display in nits.
+        /// </summary>
+        public float MaxLuminance;
+        /// <summary>
+        /// The minimum luminance of the mastering display in nits.
+        /// </summary>
+        public float MinLuminance;
+    }
+
+    /// <summary>
+    /// Structure to specify X,Y chromaticity coordinates.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct XYColorExt
+    {
+        public float X;
+        public float Y;
     }
 }

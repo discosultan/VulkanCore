@@ -143,8 +143,7 @@ namespace VulkanCore
         /// </summary>
         public PipelineStages[] WaitDstStageMask;
         /// <summary>
-        /// Command buffers to execute in the batch. The command buffers submitted in a batch begin
-        /// execution in the order they appear in pCommandBuffers, but may complete out of order.
+        /// Command buffers to execute in the batch.
         /// </summary>
         public IntPtr[] CommandBuffers;
         /// <summary>
