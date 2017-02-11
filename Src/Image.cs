@@ -15,8 +15,6 @@ namespace VulkanCore
     /// </summary>
     public unsafe class Image : DisposableHandle<long>
     {
-        private readonly bool _vulkanControlled;
-
         internal Image(Device parent, ref ImageCreateInfo createInfo, ref AllocationCallbacks? allocator)
         {
             Parent = parent;
@@ -29,18 +27,15 @@ namespace VulkanCore
                 Result result = CreateImage(parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
-            }            
+            }
         }
 
-        // If an image object is created using this ctor, this object is not the owner of the
-        // resource and thus doesn't care about cleaning up.
         internal Image(Device parent, long handle, AllocationCallbacks? allocator)
         {
-            _vulkanControlled = true;
             Parent = parent;
             Allocator = allocator;
-            Handle = handle;            
-        }        
+            Handle = handle;
+        }
 
         /// <summary>
         /// Gets the parent of the resource.
@@ -127,9 +122,7 @@ namespace VulkanCore
 
         protected override void DisposeManaged()
         {
-            if (!_vulkanControlled)
-                DestroyImage(Parent, this, NativeAllocator);
-
+            DestroyImage(Parent, this, NativeAllocator);
             base.DisposeManaged();
         }
 
@@ -151,7 +144,8 @@ namespace VulkanCore
         private static extern Result BindImageMemory(IntPtr device, long image, long memory, long memoryOffset);
 
         [DllImport(VulkanDll, EntryPoint = "vkGetImageSubresourceLayout", CallingConvention = CallConv)]
-        private static extern void GetImageSubresourceLayout(IntPtr device, long image, ImageSubresource* subresource, SubresourceLayout* layout);
+        private static extern void GetImageSubresourceLayout(IntPtr device,
+            long image, ImageSubresource* subresource, SubresourceLayout* layout);
     }
 
     /// <summary>
