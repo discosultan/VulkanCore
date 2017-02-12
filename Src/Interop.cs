@@ -13,6 +13,11 @@ namespace VulkanCore
     /// </summary>
     public static unsafe class Interop
     {
+        public static T As<T>(object obj) where T : class
+        {
+            return Unsafe.As<T>(obj);
+        }
+
         public static void Read<T>(IntPtr dstPtr, ref T data)
         {
             Unsafe.Copy(ref data, dstPtr.ToPointer());

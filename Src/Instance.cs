@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constants;
 
@@ -13,7 +14,13 @@ namespace VulkanCore
     /// </para>
     /// </summary>
     public unsafe class Instance : DisposableHandle<IntPtr>
-    {        
+    {
+        private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache 
+            = new ConcurrentDictionary<string, IntPtr>(StringComparer.Ordinal);
+
+        private readonly ConcurrentDictionary<string, object> _procCache
+            = new ConcurrentDictionary<string, object>(StringComparer.Ordinal);
+
         /// <summary>
         /// Initializes a new Vulkan instance class.
         /// </summary>
@@ -73,10 +80,15 @@ namespace VulkanCore
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            int byteCount = Interop.GetMaxByteCount(name);
-            var dstPtr = stackalloc byte[byteCount];
-            Interop.StringToPtr(name, dstPtr, byteCount);
-            return GetInstanceProcAddr(Handle, dstPtr);
+            if (!_procAddrCache.TryGetValue(name, out IntPtr addr))
+            {
+                int byteCount = Interop.GetMaxByteCount(name);
+                var dstPtr = stackalloc byte[byteCount];
+                Interop.StringToPtr(name, dstPtr, byteCount);
+                addr = GetInstanceProcAddr(Handle, dstPtr);
+                _procAddrCache.TryAdd(name, addr);
+            }
+            return addr;
         }
 
         /// <summary>
@@ -90,10 +102,15 @@ namespace VulkanCore
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
         public TDelegate GetProc<TDelegate>(string name) where TDelegate : class
         {
+            if (_procCache.TryGetValue(name, out object cachedProc))
+                return Interop.As<TDelegate>(cachedProc);
+
             IntPtr ptr = GetProcAddr(name);
-            return ptr != IntPtr.Zero
+            TDelegate proc = ptr != IntPtr.Zero
                 ? Interop.GetDelegateForFunctionPointer<TDelegate>(ptr)
                 : null;
+            _procCache.TryAdd(name, proc);
+            return proc;
         }
 
         /// <summary>
