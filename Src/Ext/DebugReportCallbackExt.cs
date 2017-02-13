@@ -70,9 +70,6 @@ namespace VulkanCore.Ext
         private delegate Result CreateDebugReportCallbackExt(IntPtr instance,
             DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
 
-        private delegate Result CreateDebugReportCallbackExt2(IntPtr instance,
-            DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
-
         [UnmanagedFunctionPointer(CallConv)]
         private delegate Result DestroyDebugReportCallbackExt(IntPtr instance, long callback, AllocationCallbacks.Native* allocator);
 
