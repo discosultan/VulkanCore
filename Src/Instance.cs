@@ -102,8 +102,11 @@ namespace VulkanCore
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
         public TDelegate GetProc<TDelegate>(string name) where TDelegate : class
         {
+            // It is important that we use Interop.As instead of direct casting!
+            // Since the delegate types are cached, if we have multiple delegates with similar signatures
+            // defined for the same command, casting between those delegates throws at runtime.
             if (_procCache.TryGetValue(name, out object cachedProc))
-                return (TDelegate)cachedProc;
+                return Interop.As<TDelegate>(cachedProc);
 
             IntPtr ptr = GetProcAddr(name);
             TDelegate proc = ptr != IntPtr.Zero

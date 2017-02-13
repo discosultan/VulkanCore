@@ -133,7 +133,7 @@ namespace VulkanCore.Tests
         public void CreateFence_Succeeds()
         {
             using (Device.CreateFence()) { }
-            using (Device.CreateFence(allocator: CustomAllocator)) { }            
+            using (Device.CreateFence(allocator: CustomAllocator)) { }
         }
 
         [Fact]

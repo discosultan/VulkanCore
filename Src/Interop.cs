@@ -139,9 +139,7 @@ namespace VulkanCore
         /// <param name="dstPointer">The location to copy to.</param>
         /// <param name="value">A reference to the value to copy.</param>
         public static void Write<T>(IntPtr dstPointer, ref T value)
-        {
-            Unsafe.Copy(dstPointer.ToPointer(), ref value);
-        }
+            => Unsafe.Copy(dstPointer.ToPointer(), ref value);
 
         /// <summary>
         /// Copies values of type <typeparamref name="T"/> to the given location.
@@ -166,6 +164,14 @@ namespace VulkanCore
         /// <typeparam name="T">The type of object whose size is retrieved.</typeparam>
         /// <returns>The size of an object of type <typeparamref name="T"/>.</returns>
         public static int SizeOf<T>() => Unsafe.SizeOf<T>();
+
+        /// <summary>
+        /// Casts the gived object to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type which the object will be cast to.</typeparam>
+        /// <param name="obj">The object to cast.</param>
+        /// <returns>The original object, casted to the given type.</returns>
+        public static T As<T>(object obj) where T : class => Unsafe.As<T>(obj);
 
         /// <summary>
         /// Utilities for interoping with strings.

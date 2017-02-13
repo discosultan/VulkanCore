@@ -23,10 +23,10 @@ namespace VulkanCore.Ext
                 throw new InvalidOperationException(nameof(DebugReportCallbackExt) + " is not supported.");
 
             Func<DebugReportCallbackInfo, bool> createInfoCallback = createInfo.Callback;
-            IntPtr callbackHandle = IntPtr.Zero;            
+            IntPtr callbackHandle = IntPtr.Zero;
             if (createInfoCallback != null)
-            {                
-                _callback = (flags, objectType, @object, location, messageCode, layerPrefix, message, userData) 
+            {
+                _callback = (flags, objectType, @object, location, messageCode, layerPrefix, message, userData)
                     => createInfoCallback(new DebugReportCallbackInfo
                     {
                         Flags = flags,
@@ -35,9 +35,9 @@ namespace VulkanCore.Ext
                         Location = location,
                         MessageCode = messageCode,
                         LayerPrefix = Interop.String.FromPointer(layerPrefix),
-                        Message = Interop.String.FromPointer(message),                        
+                        Message = Interop.String.FromPointer(message),
                         UserData = userData
-                    });                
+                    });
                 callbackHandle = Interop.GetFunctionPointerForDelegate(_callback);
             }
 
@@ -66,8 +66,11 @@ namespace VulkanCore.Ext
             base.DisposeManaged();
         }
 
-        [UnmanagedFunctionPointer(CallConv)]
+        [UnmanagedFunctionPointer(CallConv)] // TODO: is it needed? ensure default behavior
         private delegate Result CreateDebugReportCallbackExt(IntPtr instance,
+            DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
+
+        private delegate Result CreateDebugReportCallbackExt2(IntPtr instance,
             DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
 
         [UnmanagedFunctionPointer(CallConv)]
@@ -97,7 +100,7 @@ namespace VulkanCore.Ext
     /// A callback may be called from multiple threads simultaneously (if the application is making
     /// Vulkan calls from multiple threads).
     /// </para>
-    /// </summary>    
+    /// </summary>
     public struct DebugReportCallbackCreateInfoExt
     {
         /// <summary>
