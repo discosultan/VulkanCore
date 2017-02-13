@@ -277,6 +277,9 @@ namespace VulkanCore
     [Flags]
     public enum ImageCreateFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Indicates that the image will be backed using sparse memory binding.

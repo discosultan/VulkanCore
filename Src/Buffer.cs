@@ -260,7 +260,7 @@ namespace VulkanCore
     public enum BufferCreateFlags
     {
         /// <summary>
-        /// No flags set.
+        /// No flags.
         /// </summary>
         None = 0,
         /// <summary>

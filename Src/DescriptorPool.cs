@@ -200,6 +200,9 @@ namespace VulkanCore
     [Flags]
     public enum DescriptorPoolCreateFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Descriptor sets may be freed individually.

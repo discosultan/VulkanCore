@@ -401,6 +401,9 @@ namespace VulkanCore
     [Flags]
     public enum Dependencies
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Dependency is per pixel region.

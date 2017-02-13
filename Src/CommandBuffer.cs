@@ -1390,6 +1390,9 @@ namespace VulkanCore
     [Flags]
     public enum CommandBufferUsages
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Indicates that each recording of the command buffer will only be submitted once, and the
@@ -1478,6 +1481,9 @@ namespace VulkanCore
     [Flags]
     public enum QueryControlFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Require precise results to be collected by the query.
@@ -1491,6 +1497,9 @@ namespace VulkanCore
     [Flags]
     public enum QueryPipelineStatistics
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Optional.
@@ -1544,6 +1553,9 @@ namespace VulkanCore
     [Flags]
     public enum CommandBufferResetFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Release resources owned by the buffer.

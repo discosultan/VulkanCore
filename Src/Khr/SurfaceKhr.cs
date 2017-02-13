@@ -491,6 +491,9 @@ namespace VulkanCore.Khr
     [Flags]
     public enum DisplayPlaneAlphasKhr
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// The source image will be treated as opaque.

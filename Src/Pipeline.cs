@@ -433,6 +433,9 @@ namespace VulkanCore
     [Flags]
     public enum PipelineCreateFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Specifies that the created pipeline will not be optimized. Using this flag may reduce the

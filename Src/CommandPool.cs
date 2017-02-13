@@ -138,6 +138,9 @@ namespace VulkanCore
     [Flags]
     public enum CommandPoolCreateFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Command buffers have a short lifetime.
@@ -155,6 +158,9 @@ namespace VulkanCore
     [Flags]
     public enum CommandPoolResetFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Release resources owned by the pool.

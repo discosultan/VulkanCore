@@ -145,6 +145,9 @@ namespace VulkanCore
     [Flags]
     public enum QueryResults
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Results of the queries are written to the destination buffer as 64-bit values.

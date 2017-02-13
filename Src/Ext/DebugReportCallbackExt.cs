@@ -224,6 +224,9 @@ namespace VulkanCore.Ext
         /// Indicates diagnostic information from the loader and layers.
         /// </summary>
         Debug = 1 << 4,
+        /// <summary>
+        /// All flags.
+        /// </summary>
         All = Information | Warning | PerformanceWarning | Error | Debug
     }
 

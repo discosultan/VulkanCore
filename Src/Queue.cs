@@ -450,6 +450,9 @@ namespace VulkanCore
     [Flags]
     public enum SparseMemoryBindFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
         /// <summary>
         /// Operation binds resource metadata to memory.
