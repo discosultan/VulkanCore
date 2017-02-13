@@ -24,8 +24,8 @@ namespace VulkanCore.Tests.Utilities
             Output = output;
 
             // Subscribe to track memory alloc/free ops.
-            Interop.OnAlloc += OnAlloc;
-            Interop.OnFree += OnFree;
+            Interop.OnDebugAlloc += OnAlloc;
+            Interop.OnDebugFree += OnFree;
         }        
 
         protected ITestOutputHelper Output { get; }
@@ -36,8 +36,8 @@ namespace VulkanCore.Tests.Utilities
         public virtual void Dispose()
         {
             // Unsubscribe from tracking memory.
-            Interop.OnAlloc -= OnAlloc;
-            Interop.OnFree -= OnFree;
+            Interop.OnDebugAlloc -= OnAlloc;
+            Interop.OnDebugFree -= OnFree;
 
             // Fail the test if any allocation is not cleared up.
             if (_allocs.Count > 0)

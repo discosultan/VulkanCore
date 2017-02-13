@@ -103,7 +103,7 @@ namespace VulkanCore
         public TDelegate GetProc<TDelegate>(string name) where TDelegate : class
         {
             if (_procCache.TryGetValue(name, out object cachedProc))
-                return Interop.As<TDelegate>(cachedProc);
+                return (TDelegate)cachedProc;
 
             IntPtr ptr = GetProcAddr(name);
             TDelegate proc = ptr != IntPtr.Zero

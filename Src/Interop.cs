@@ -13,11 +13,6 @@ namespace VulkanCore
     /// </summary>
     public static unsafe class Interop
     {
-        public static T As<T>(object obj) where T : class
-        {
-            return Unsafe.As<T>(obj);
-        }
-
         public static void Read<T>(IntPtr dstPtr, ref T data)
         {
             Unsafe.Copy(ref data, dstPtr.ToPointer());
@@ -206,7 +201,7 @@ namespace VulkanCore
             Free(ptr);
         }
 
-        // Using actual managed thread id is not possible in .NET Standard 1.4
+        // Using actual managed thread id is not possible in .NET Standard 1.3
         // because the API is missing. If the library is upgraded to .NET Standard 2.0,
         // it should be reworked to use that instead.
 
@@ -214,11 +209,11 @@ namespace VulkanCore
         public static Guid ThreadId => (_threadId ?? (_threadId = Guid.NewGuid())).Value;
 
         [Conditional("DEBUG")]
-        private static void RaiseAlloc(IntPtr ptr) => OnAlloc?.Invoke(null, (ThreadId, ptr));
+        private static void RaiseAlloc(IntPtr ptr) => OnDebugAlloc?.Invoke(null, (ThreadId, ptr));
         [Conditional("DEBUG")]
-        private static void RaiseFree(IntPtr ptr) => OnFree?.Invoke(null, (ThreadId, ptr));
+        private static void RaiseFree(IntPtr ptr) => OnDebugFree?.Invoke(null, (ThreadId, ptr));
 
-        public static event EventHandler<(Guid, IntPtr)> OnAlloc;
-        public static event EventHandler<(Guid, IntPtr)> OnFree;
+        public static event EventHandler<(Guid, IntPtr)> OnDebugAlloc;
+        public static event EventHandler<(Guid, IntPtr)> OnDebugFree;
     }
 }
