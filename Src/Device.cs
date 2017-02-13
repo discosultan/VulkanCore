@@ -61,9 +61,9 @@ namespace VulkanCore
 
             if (!_procAddrCache.TryGetValue(name, out IntPtr addr))
             {
-                int byteCount = Interop.GetMaxByteCount(name);
+                int byteCount = Interop.String.GetMaxByteCount(name);
                 var dstPtr = stackalloc byte[byteCount];
-                Interop.StringToPtr(name, dstPtr, byteCount);
+                Interop.String.ToPointer(name, dstPtr, byteCount);
                 addr = GetDeviceProcAddr(this, dstPtr);
                 _procAddrCache.TryAdd(name, addr);
             }
@@ -705,8 +705,8 @@ namespace VulkanCore
             val.EnabledLayerCount = 0;
             val.EnabledLayerNames = null;
             val.EnabledExtensionCount = EnabledExtensionNames?.Length ?? 0;
-            val.EnabledExtensionNames = Interop.AllocStringsToPtrs(EnabledExtensionNames);
-            val.EnabledFeatures = Interop.AllocStructToPtr(ref EnabledFeatures);
+            val.EnabledExtensionNames = Interop.String.ToPointers(EnabledExtensionNames);
+            val.EnabledFeatures = Interop.Struct.ToPointer(ref EnabledFeatures);
         }
     }
 
@@ -784,7 +784,7 @@ namespace VulkanCore
             native.Flags = 0;
             native.QueueFamilyIndex = QueueFamilyIndex;
             native.QueueCount = QueueCount;
-            native.QueuePriorities = Interop.AllocStructsToPtr(QueuePriorities);
+            native.QueuePriorities = Interop.Struct.ToPointer(QueuePriorities);
         }
     }
 

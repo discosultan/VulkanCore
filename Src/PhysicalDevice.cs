@@ -122,9 +122,9 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public ExtensionProperties[] EnumerateExtensionProperties(string layerName = null)
         {
-            int dstLayerNameByteCount = Interop.GetMaxByteCount(layerName);
+            int dstLayerNameByteCount = Interop.String.GetMaxByteCount(layerName);
             var dstLayerNamePtr = stackalloc byte[dstLayerNameByteCount];
-            Interop.StringToPtr(layerName, dstLayerNamePtr, dstLayerNameByteCount);
+            Interop.String.ToPointer(layerName, dstLayerNamePtr, dstLayerNameByteCount);
 
             int count;
             Result result = EnumerateDeviceExtensionProperties(this, dstLayerNamePtr, &count, null);
@@ -1365,7 +1365,7 @@ namespace VulkanCore
             fixed (byte* deviceNamePtr = native.DeviceName)
             fixed (byte* pipelineCacheUuidPtr = native.PipelineCacheUuid)
             {
-                string deviceName = Interop.PtrToString(deviceNamePtr);
+                string deviceName = Interop.String.FromPointer(deviceNamePtr);
                 var pipelineCacheUuid = new byte[UuidSize];
                 for (int i = 0; i < pipelineCacheUuid.Length; i++)
                     pipelineCacheUuid[i] = pipelineCacheUuidPtr[i];

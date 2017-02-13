@@ -624,7 +624,7 @@ namespace VulkanCore.Khr
         internal static void FromNative(Native* native, out DisplayPropertiesKhr val)
         {
             val.Display = native->Display;
-            val.DisplayName = Interop.PtrToString(native->DisplayName);
+            val.DisplayName = Interop.String.FromPointer(native->DisplayName);
             val.PhysicalDimensions = native->PhysicalDimensions;
             val.PhysicalResolution = native->PhysicalResolution;
             val.SupportedTransforms = native->SupportedTransforms;

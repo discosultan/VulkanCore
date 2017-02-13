@@ -26,9 +26,9 @@ namespace VulkanCore.Ext
         {            
             var proc = device.GetProc<DebugMarkerSetObjectNameExtDelegate>("vkDebugMarkerSetObjectNameEXT");
 
-            int nameByteCount = Interop.GetMaxByteCount(nameInfo.ObjectName);
+            int nameByteCount = Interop.String.GetMaxByteCount(nameInfo.ObjectName);
             byte* nameBytes = stackalloc byte[nameByteCount];
-            Interop.StringToPtr(nameInfo.ObjectName, nameBytes, nameByteCount);
+            Interop.String.ToPointer(nameInfo.ObjectName, nameBytes, nameByteCount);
             nameInfo.ToNative(out DebugMarkerObjectNameInfoExt.Native nativeNameInfo, nameBytes);
 
             Result result = proc(device, &nativeNameInfo);

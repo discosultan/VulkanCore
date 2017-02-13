@@ -52,13 +52,13 @@ namespace VulkanCore.Ext
             DebugReportObjectTypeExt objectType, long @object, int location, int messageCode, string layerPrefix,
             string message)
         {
-            int byteCount = Interop.GetMaxByteCount(layerPrefix);
+            int byteCount = Interop.String.GetMaxByteCount(layerPrefix);
             var layerPrefixBytes = stackalloc byte[byteCount];
-            Interop.StringToPtr(layerPrefix, layerPrefixBytes, byteCount);
+            Interop.String.ToPointer(layerPrefix, layerPrefixBytes, byteCount);
 
-            byteCount = Interop.GetMaxByteCount(message);
+            byteCount = Interop.String.GetMaxByteCount(message);
             var messageBytes = stackalloc byte[byteCount];
-            Interop.StringToPtr(message, messageBytes, byteCount);
+            Interop.String.ToPointer(message, messageBytes, byteCount);
 
             var debugReportMessageExt = instance.GetProc<DebugReportMessageExtDelegate>("vkDebugReportMessageEXT");
             debugReportMessageExt(instance, 

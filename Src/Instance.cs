@@ -82,9 +82,9 @@ namespace VulkanCore
 
             if (!_procAddrCache.TryGetValue(name, out IntPtr addr))
             {
-                int byteCount = Interop.GetMaxByteCount(name);
+                int byteCount = Interop.String.GetMaxByteCount(name);
                 var dstPtr = stackalloc byte[byteCount];
-                Interop.StringToPtr(name, dstPtr, byteCount);
+                Interop.String.ToPointer(name, dstPtr, byteCount);
                 addr = GetInstanceProcAddr(Handle, dstPtr);
                 _procAddrCache.TryAdd(name, addr);
             }
@@ -125,9 +125,9 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static ExtensionProperties[] EnumerateExtensionProperties(string layerName = null)
         {
-            int dstLayerNameByteCount = Interop.GetMaxByteCount(layerName);
+            int dstLayerNameByteCount = Interop.String.GetMaxByteCount(layerName);
             var dstLayerNamePtr = stackalloc byte[dstLayerNameByteCount];
-            Interop.StringToPtr(layerName, dstLayerNamePtr, dstLayerNameByteCount);
+            Interop.String.ToPointer(layerName, dstLayerNamePtr, dstLayerNameByteCount);
 
             int count;
             Result result = EnumerateInstanceExtensionProperties(dstLayerNamePtr, &count, null);
@@ -272,9 +272,9 @@ namespace VulkanCore
                 val.ApplicationInfo = null;
             }
             val.EnabledLayerCount = EnabledLayerNames?.Length ?? 0;
-            val.EnabledLayerNames = Interop.AllocStringsToPtrs(EnabledLayerNames);
+            val.EnabledLayerNames = Interop.String.ToPointers(EnabledLayerNames);
             val.EnabledExtensionCount = EnabledExtensionNames?.Length ?? 0;
-            val.EnabledExtensionNames = Interop.AllocStringsToPtrs(EnabledExtensionNames);
+            val.EnabledExtensionNames = Interop.String.ToPointers(EnabledExtensionNames);
         }
     }
 
@@ -340,9 +340,9 @@ namespace VulkanCore
         {
             val->Type = StructureType.ApplicationInfo;
             val->Next = IntPtr.Zero;
-            val->ApplicationName = Interop.AllocStringToPtr(ApplicationName);
+            val->ApplicationName = Interop.String.ToPointer(ApplicationName);
             val->ApplicationVersion = ApplicationVersion;
-            val->EngineName = Interop.AllocStringToPtr(EngineName);
+            val->EngineName = Interop.String.ToPointer(EngineName);
             val->EngineVersion = EngineVersion;
             val->ApiVersion = ApiVersion;
         }
@@ -381,7 +381,7 @@ namespace VulkanCore
             {
                 managed = new ExtensionProperties
                 {
-                    ExtensionName = Interop.PtrToString(extensionNamePtr),
+                    ExtensionName = Interop.String.FromPointer(extensionNamePtr),
                     SpecVersion = native.SpecVersion
                 };
             }
@@ -434,10 +434,10 @@ namespace VulkanCore
             {
                 return new LayerProperties
                 {
-                    LayerName = Interop.PtrToString(layerNamePtr),
+                    LayerName = Interop.String.FromPointer(layerNamePtr),
                     SpecVersion = native.SpecVersion,
                     ImplementationVersion = native.ImplementationVersion,
-                    Description = Interop.PtrToString(descriptionPtr)
+                    Description = Interop.String.FromPointer(descriptionPtr)
                 };
             }
         }

@@ -206,12 +206,12 @@ namespace VulkanCore
             native.Type = StructureType.SubmitInfo;
             native.Next = IntPtr.Zero;
             native.WaitSemaphoreCount = WaitSemaphores?.Length ?? 0;
-            native.WaitSemaphores = Interop.AllocStructsToPtr(WaitSemaphores);
-            native.WaitDstStageMask = Interop.AllocStructsToPtr(WaitDstStageMask);
+            native.WaitSemaphores = Interop.Struct.ToPointer(WaitSemaphores);
+            native.WaitDstStageMask = Interop.Struct.ToPointer(WaitDstStageMask);
             native.CommandBufferCount = CommandBuffers?.Length ?? 0;
-            native.CommandBuffers = Interop.AllocStructsToPtr(CommandBuffers);
+            native.CommandBuffers = Interop.Struct.ToPointer(CommandBuffers);
             native.SignalSemaphoreCount = SignalSemaphores?.Length ?? 0;
-            native.SignalSemaphores = Interop.AllocStructsToPtr(SignalSemaphores);
+            native.SignalSemaphores = Interop.Struct.ToPointer(SignalSemaphores);
         }
     }
 
@@ -332,7 +332,7 @@ namespace VulkanCore
             native.Type = StructureType.BindSparseInfo;
             native.Next = IntPtr.Zero;
             native.WaitSemaphoreCount = WaitSemaphores?.Length ?? 0;
-            native.WaitSemaphores = Interop.AllocStructsToPtr(WaitSemaphores);
+            native.WaitSemaphores = Interop.Struct.ToPointer(WaitSemaphores);
             native.BufferBindCount = bufferBindCount;
             native.BufferBinds = bufferBinds;
             native.ImageOpaqueBindCount = imageOpaqueBindCount;
@@ -340,7 +340,7 @@ namespace VulkanCore
             native.ImageBindCount = imageBindCount;
             native.ImageBinds = imageBinds;
             native.SignalSemaphoreCount = SignalSemaphores?.Length ?? 0;
-            native.SignalSemaphores = Interop.AllocStructsToPtr(SignalSemaphores);
+            native.SignalSemaphores = Interop.Struct.ToPointer(SignalSemaphores);
         }
     }
 
@@ -386,7 +386,7 @@ namespace VulkanCore
         {
             native->Buffer = Buffer;
             native->BindCount = Binds?.Length ?? 0;
-            native->Binds = Interop.AllocStructsToPtr(Binds);
+            native->Binds = Interop.Struct.ToPointer(Binds);
         }
     }
 
@@ -500,7 +500,7 @@ namespace VulkanCore
         {
             native->Image = Image;
             native->BindCount = Binds?.Length ?? 0;
-            native->Binds = Interop.AllocStructsToPtr(Binds);
+            native->Binds = Interop.Struct.ToPointer(Binds);
         }
     }
 
@@ -548,7 +548,7 @@ namespace VulkanCore
         {
             native->Image = Image;
             native->BindCount = Binds?.Length ?? 0;
-            native->Binds = Interop.AllocStructsToPtr(Binds);
+            native->Binds = Interop.Struct.ToPointer(Binds);
         }
     }
 

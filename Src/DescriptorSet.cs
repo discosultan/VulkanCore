@@ -239,9 +239,9 @@ namespace VulkanCore
             native->DstBinding = DstBinding;
             native->DescriptorCount = DescriptorCount;
             native->DescriptorType = DescriptorType;
-            native->ImageInfo = Interop.AllocStructsToPtr(ImageInfo);
-            native->BufferInfo = Interop.AllocStructsToPtr(BufferInfo);
-            native->TexelBufferView = Interop.AllocStructsToPtr(TexelBufferView);
+            native->ImageInfo = Interop.Struct.ToPointer(ImageInfo);
+            native->BufferInfo = Interop.Struct.ToPointer(BufferInfo);
+            native->TexelBufferView = Interop.Struct.ToPointer(TexelBufferView);
         }
     }
 

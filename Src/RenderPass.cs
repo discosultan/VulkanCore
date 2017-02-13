@@ -297,13 +297,13 @@ namespace VulkanCore
             native.Flags = 0;
             native.PipelineBindPoint = PipelineBindPoint.Graphics;
             native.InputAttachmentCount = InputAttachments?.Length ?? 0;
-            native.InputAttachments = Interop.AllocStructsToPtr(InputAttachments);
+            native.InputAttachments = Interop.Struct.ToPointer(InputAttachments);
             native.ColorAttachmentCount = ColorAttachments?.Length ?? 0;
-            native.ColorAttachments = Interop.AllocStructsToPtr(ColorAttachments);
-            native.ResolveAttachments = Interop.AllocStructsToPtr(ResolveAttachments);
-            native.DepthStencilAttachment = Interop.AllocStructToPtr(ref DepthStencilAttachment);
+            native.ColorAttachments = Interop.Struct.ToPointer(ColorAttachments);
+            native.ResolveAttachments = Interop.Struct.ToPointer(ResolveAttachments);
+            native.DepthStencilAttachment = Interop.Struct.ToPointer(ref DepthStencilAttachment);
             native.PreserveAttachmentCount = PreserveAttachments?.Length ?? 0;
-            native.PreserveAttachments = Interop.AllocStructsToPtr(PreserveAttachments);
+            native.PreserveAttachments = Interop.Struct.ToPointer(PreserveAttachments);
         }
     }
 

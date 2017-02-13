@@ -28,9 +28,9 @@ namespace VulkanCore.Ext
         {
             var proc = commandBuffer.Parent.Parent.GetProc<CmdDebugMarkerBeginExtDelegate>("vkCmdDebugMarkerBeginEXT");
 
-            int byteCount = Interop.GetMaxByteCount(markerInfo.MarkerName);
+            int byteCount = Interop.String.GetMaxByteCount(markerInfo.MarkerName);
             var markerNamePtr = stackalloc byte[byteCount];
-            Interop.StringToPtr(markerInfo.MarkerName, markerNamePtr, byteCount);
+            Interop.String.ToPointer(markerInfo.MarkerName, markerNamePtr, byteCount);
 
             markerInfo.ToNative(out DebugMarkerMarkerInfoExt.Native nativeMarkerInfo, markerNamePtr);
             proc(commandBuffer, &nativeMarkerInfo);
@@ -67,9 +67,9 @@ namespace VulkanCore.Ext
         {
             var proc = commandBuffer.Parent.Parent.GetProc<CmdDebugMarkerInsertExtDelegate>("vkCmdDebugMarkerInsertEXT");
 
-            int byteCount = Interop.GetMaxByteCount(markerInfo.MarkerName);
+            int byteCount = Interop.String.GetMaxByteCount(markerInfo.MarkerName);
             var markerNamePtr = stackalloc byte[byteCount];
-            Interop.StringToPtr(markerInfo.MarkerName, markerNamePtr, byteCount);
+            Interop.String.ToPointer(markerInfo.MarkerName, markerNamePtr, byteCount);
 
             markerInfo.ToNative(out DebugMarkerMarkerInfoExt.Native nativeMarkerInfo, markerNamePtr);
             proc(commandBuffer, &nativeMarkerInfo);

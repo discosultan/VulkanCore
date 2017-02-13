@@ -34,8 +34,8 @@ namespace VulkanCore.Ext
                         Object = @object,
                         Location = location,
                         MessageCode = messageCode,
-                        LayerPrefix = Interop.PtrToString(layerPrefix),
-                        Message = Interop.PtrToString(message),                        
+                        LayerPrefix = Interop.String.FromPointer(layerPrefix),
+                        Message = Interop.String.FromPointer(message),                        
                         UserData = userData
                     });                
                 callbackHandle = Interop.GetFunctionPointerForDelegate(_callback);
