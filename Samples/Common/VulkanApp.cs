@@ -32,7 +32,7 @@ namespace VulkanCore.Samples
         protected CommandPool CommandPool { get; private set; }
         protected CommandBuffer[] CommandBuffers { get; private set; }
         protected Semaphore ImageAvailableSemaphore { get; private set; }
-        protected Semaphore RenderingFinishedSemaphore { get; private set; }        
+        protected Semaphore RenderingFinishedSemaphore { get; private set; }
 
         public virtual void Initialize()
         {
@@ -41,7 +41,7 @@ namespace VulkanCore.Samples
             CreateInstanceAndSurface();
             CreateDeviceAndGetQueues();
             CreateSwapchain();
-            CreateSemaphoresAndCommandBuffers();            
+            CreateSemaphoresAndCommandBuffers();
         }
 
         public virtual void Run() => Window.Run(Update, Draw);
@@ -58,7 +58,7 @@ namespace VulkanCore.Samples
 
         public virtual void Dispose()
         {
-            Device.WaitIdle();           
+            Device.WaitIdle();
             ImageAvailableSemaphore.Dispose();
             RenderingFinishedSemaphore.Dispose();
             CommandPool.Dispose();
@@ -74,14 +74,14 @@ namespace VulkanCore.Samples
             // Specify standard validation layers.
             Instance = new Instance(new InstanceCreateInfo(
 #if DEBUG
-                enabledLayerNames: new[] { Layers.LunarGStandardValidation },
+                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
 #endif
                 enabledExtensionNames: new[] 
                 {
-                    Extensions.KhrSurface,
-                    Extensions.KhrWin32Surface,
+                    Constant.InstanceExtension.KhrSurface,
+                    Constant.InstanceExtension.KhrWin32Surface,
 #if DEBUG
-                    Extensions.ExtDebugReport
+                    Constant.InstanceExtension.ExtDebugReport
 #endif
                 }
             ));
@@ -142,7 +142,7 @@ namespace VulkanCore.Samples
 
             var deviceCreateInfo = new DeviceCreateInfo(
                 queueCreateInfos,
-                new[] { Extensions.KhrSwapchain });
+                new[] { Constant.DeviceExtension.KhrSwapchain });
             Device = PhysicalDevice.CreateDevice(deviceCreateInfo);
 
             // Get queue.

@@ -17,7 +17,7 @@
         /// <param name="value"></param>
         public Bool(bool value)
         {
-            _value = value ? Constants.True : Constants.False;
+            _value = value ? Constant.True : Constant.False;
         }
 
         /// <summary>
@@ -27,8 +27,8 @@
         public override string ToString() => ((bool)this).ToString();
 
         public static implicit operator Bool(bool value) => new Bool(value);
-        public static implicit operator bool(Bool value) => value._value == Constants.True;
-        public static implicit operator Bool(int value) => new Bool(value != Constants.False);
-        public static implicit operator int(Bool value) => value._value == Constants.True ? 1 : 0;
+        public static implicit operator bool(Bool value) => value._value == Constant.True;
+        public static implicit operator Bool(int value) => new Bool(value != Constant.False);
+        public static implicit operator int(Bool value) => value._value == Constant.True ? 1 : 0;
     }
 }

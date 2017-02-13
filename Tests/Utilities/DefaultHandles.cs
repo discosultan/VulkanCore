@@ -38,8 +38,8 @@ namespace VulkanCore.Tests.Utilities
             // Specify standard validation layers.
             var createInfo = new InstanceCreateInfo
             {
-                EnabledLayerNames = new[] { Layers.LunarGStandardValidation },
-                EnabledExtensionNames = new[] { Extensions.ExtDebugReport }
+                EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation },
+                EnabledExtensionNames = new[] { Constant.InstanceExtension.ExtDebugReport }
             };
             Instance = new Instance(createInfo);
 

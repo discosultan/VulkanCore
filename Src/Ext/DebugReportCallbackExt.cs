@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constants;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {

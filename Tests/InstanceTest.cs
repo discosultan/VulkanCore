@@ -38,8 +38,8 @@ namespace VulkanCore.Tests
         {
             var createInfo = new InstanceCreateInfo
             {
-                EnabledLayerNames = new[] { Layers.LunarGStandardValidation },
-                EnabledExtensionNames = new[] { Extensions.ExtDebugReport }
+                EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation },
+                EnabledExtensionNames = new[] { Constant.InstanceExtension.ExtDebugReport }
             };
             using (new Instance(createInfo)) { }
         }
@@ -57,9 +57,9 @@ namespace VulkanCore.Tests
         {
             var createInfo = new InstanceCreateInfo
             {
-                EnabledLayerNames = new[] { Layers.LunarGStandardValidation },
-                EnabledExtensionNames = new[] { Extensions.ExtDebugReport }
-            };            
+                EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation },
+                EnabledExtensionNames = new[] { Constant.InstanceExtension.ExtDebugReport }
+            };
             using (Instance instance = new Instance(createInfo))
             {
                 var callbackArgs = new List<DebugReportCallbackInfo>();
@@ -149,7 +149,8 @@ namespace VulkanCore.Tests
         [Fact]
         public void EnumerateExtensionProperties_SucceedsForLayerName()
         {
-            ExtensionProperties[] properties = Instance.EnumerateExtensionProperties(Layers.LunarGStandardValidation);
+            ExtensionProperties[] properties = Instance.EnumerateExtensionProperties(
+                Constant.InstanceLayer.LunarGStandardValidation);
             Assert.True(properties.Length > 0);
         }
 
@@ -166,7 +167,7 @@ namespace VulkanCore.Tests
             const string message = "hello õäöü";
 
             using (var instance = new Instance(new InstanceCreateInfo(
-                enabledExtensionNames: new[] { Extensions.ExtDebugReport })))
+                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport })))
             {
                 var createInfo = new DebugReportCallbackCreateInfoExt(
                     DebugReportFlagsExt.Error,
@@ -182,7 +183,7 @@ namespace VulkanCore.Tests
                         DebugReportObjectTypeExt.Unknown,
                         0, 0, 0, null, message);
                 }
-            }                
+            }
         }
 
         public InstanceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }

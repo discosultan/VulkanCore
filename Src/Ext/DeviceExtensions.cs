@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 using static VulkanCore.Ext.DeviceExtensions;
-using static VulkanCore.Constants;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {

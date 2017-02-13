@@ -75,7 +75,7 @@ namespace VulkanCore.Tests
                 CommandBuffer.Begin();
                 CommandBuffer.CmdBeginRenderPass(new RenderPassBeginInfo(framebuffer, default(Rect2D)));
                 CommandBuffer.CmdEndRenderPass();
-                CommandBuffer.End();                
+                CommandBuffer.End();
             }
         }
 

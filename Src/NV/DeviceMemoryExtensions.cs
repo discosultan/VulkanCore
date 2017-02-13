@@ -26,7 +26,7 @@ namespace VulkanCore.NV
             return handle;
         }
         
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkGetMemoryWin32HandleNV", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkGetMemoryWin32HandleNV", CallingConvention = Constant.CallConv)]
         private static extern Result GetMemoryWin32HandleNV(IntPtr device, 
             long memory, ExternalMemoryHandleTypesNV handleType, IntPtr* handle);
     }

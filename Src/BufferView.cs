@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constants;
+using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -89,8 +89,8 @@ namespace VulkanCore
         /// </param>
         /// <param name="range">
         /// A size in bytes of the buffer view. If range is equal to <see
-        /// cref="Constants.WholeSize"/>, the range from offset to the end of the buffer is used. If
-        /// <see cref="Constants.WholeSize"/> is used and the remaining size of the buffer is not a
+        /// cref="Constant.WholeSize"/>, the range from offset to the end of the buffer is used. If
+        /// <see cref="Constant.WholeSize"/> is used and the remaining size of the buffer is not a
         /// multiple of the element size of format, then the nearest smaller multiple is used.
         /// </param>
         public BufferViewCreateInfo(Format format, long offset = 0, long range = WholeSize)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constants;
+using static VulkanCore.Constant;
 
 namespace VulkanCore
 {

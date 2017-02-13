@@ -118,35 +118,35 @@ namespace VulkanCore.Khr
             base.DisposeManaged();
         }
         
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateAndroidSurfaceKhr(IntPtr instance, 
             AndroidSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateMirSurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateMirSurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateMirSurfaceKhr(Instance instance, 
             MirSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateWaylandSurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateWaylandSurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateWaylandSurfaceKhr(Instance instance, 
             WaylandSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateWin32SurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateWin32SurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateWin32SurfaceKhr(IntPtr instance,
             Win32SurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateXlibSurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateXlibSurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateXlibSurfaceKhr(IntPtr instance,
             XlibSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateDisplayPlaneSurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateDisplayPlaneSurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateDisplayPlaneSurfaceKhr(IntPtr instance,
             DisplaySurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkCreateXcbSurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateXcbSurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern Result CreateXcbSurfaceKhr(IntPtr instance,
             XcbSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constants.VulkanDll, EntryPoint = "vkDestroySurfaceKHR", CallingConvention = Constants.CallConv)]
+        [DllImport(Constant.VulkanDll, EntryPoint = "vkDestroySurfaceKHR", CallingConvention = Constant.CallConv)]
         private static extern IntPtr DestroySurfaceKhr(
             IntPtr instance, long surface, AllocationCallbacks.Native* allocator);
     }

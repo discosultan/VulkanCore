@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constants;
+using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -201,27 +201,9 @@ namespace VulkanCore
     public unsafe struct InstanceCreateInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstanceCreateInfo"/> structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
-        /// <param name="appInfo">
-        /// The information that helps implementations recognize behavior inherent to classes of applications.
-        /// </param>
-        /// <param name="enabledLayerNames">
-        /// Unicode strings containing the names of layers to enable for the created instance.
-        /// </param>
-        /// <param name="enabledExtensionNames">
-        /// Unicode strings containing the names of extensions to enable.
-        /// </param>
-        public InstanceCreateInfo(
-            ApplicationInfo? appInfo = null,
-            string[] enabledLayerNames = null,
-            string[] enabledExtensionNames = null)
-        {
-            ApplicationInfo = appInfo;
-            EnabledLayerNames = enabledLayerNames;
-            EnabledExtensionNames = enabledExtensionNames;
-        }
-
+        public IntPtr Next;
         /// <summary>
         /// The information that helps implementations recognize behavior inherent to classes of applications.
         /// </summary>
@@ -234,6 +216,31 @@ namespace VulkanCore
         /// Unicode strings containing the names of extensions to enable.
         /// </summary>
         public string[] EnabledExtensionNames;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InstanceCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="appInfo">
+        /// The information that helps implementations recognize behavior inherent to classes of applications.
+        /// </param>
+        /// <param name="enabledLayerNames">
+        /// Unicode strings containing the names of layers to enable for the created instance.
+        /// </param>
+        /// <param name="enabledExtensionNames">
+        /// Unicode strings containing the names of extensions to enable.
+        /// </param>
+        /// <param name="next">Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.</param>
+        public InstanceCreateInfo(
+            ApplicationInfo? appInfo = null,
+            string[] enabledLayerNames = null,
+            string[] enabledExtensionNames = null,
+            IntPtr next = default(IntPtr))
+        {
+            Next = next;
+            ApplicationInfo = appInfo;
+            EnabledLayerNames = enabledLayerNames;
+            EnabledExtensionNames = enabledExtensionNames;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native

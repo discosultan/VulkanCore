@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Ext;
-using static VulkanCore.Constants;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
