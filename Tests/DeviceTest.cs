@@ -41,11 +41,11 @@ namespace VulkanCore.Tests
             Assert.Null(Device.GetProc<EventHandler>("does not exist"));
         }
 
-        private delegate Result vkDebugMarkerSetObjectNameEXT(IntPtr p1, IntPtr p2);
+        private delegate Result DebugMarkerSetObjectNameExt(IntPtr p1, IntPtr p2);
         [Fact]
         public void GetProc_ReturnsValidDelegate()
         {
-            var commandDelegate = Device.GetProc<vkDebugMarkerSetObjectNameEXT>("vkDebugMarkerSetObjectNameEXT");
+            var commandDelegate = Device.GetProc<DebugMarkerSetObjectNameExt>("vkDebugMarkerSetObjectNameEXT");
             Assert.NotNull(commandDelegate);
         }
 

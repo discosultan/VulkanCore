@@ -131,11 +131,11 @@ namespace VulkanCore.Tests
             Assert.Null(Instance.GetProc<EventHandler>("does not exist"));
         }
 
-        private delegate Result vkCreateDebugReportCallbackEXT(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
+        private delegate Result CreateDebugReportCallbackExt(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
         [Fact]
         public void GetProc_ReturnsValidDelegate()
         {
-            var commandDelegate = Instance.GetProc<vkCreateDebugReportCallbackEXT>("vkCreateDebugReportCallbackEXT");
+            var commandDelegate = Instance.GetProc<CreateDebugReportCallbackExt>("vkCreateDebugReportCallbackEXT");
             Assert.NotNull(commandDelegate);
         }
 
