@@ -708,8 +708,8 @@ namespace VulkanCore
             val.EnabledLayerCount = 0;
             val.EnabledLayerNames = null;
             val.EnabledExtensionCount = EnabledExtensionNames?.Length ?? 0;
-            val.EnabledExtensionNames = Interop.String.ToPointers(EnabledExtensionNames);
-            val.EnabledFeatures = Interop.Struct.ToPointer(ref EnabledFeatures);
+            val.EnabledExtensionNames = Interop.String.AllocToPointers(EnabledExtensionNames);
+            val.EnabledFeatures = Interop.Struct.AllocToPointer(ref EnabledFeatures);
         }
     }
 
@@ -787,7 +787,7 @@ namespace VulkanCore
             native.Flags = 0;
             native.QueueFamilyIndex = QueueFamilyIndex;
             native.QueueCount = QueueCount;
-            native.QueuePriorities = Interop.Struct.ToPointer(QueuePriorities);
+            native.QueuePriorities = Interop.Struct.AllocToPointer(QueuePriorities);
         }
     }
 

@@ -282,9 +282,9 @@ namespace VulkanCore
                 val.ApplicationInfo = null;
             }
             val.EnabledLayerCount = EnabledLayerNames?.Length ?? 0;
-            val.EnabledLayerNames = Interop.String.ToPointers(EnabledLayerNames);
+            val.EnabledLayerNames = Interop.String.AllocToPointers(EnabledLayerNames);
             val.EnabledExtensionCount = EnabledExtensionNames?.Length ?? 0;
-            val.EnabledExtensionNames = Interop.String.ToPointers(EnabledExtensionNames);
+            val.EnabledExtensionNames = Interop.String.AllocToPointers(EnabledExtensionNames);
         }
     }
 
@@ -350,9 +350,9 @@ namespace VulkanCore
         {
             val->Type = StructureType.ApplicationInfo;
             val->Next = IntPtr.Zero;
-            val->ApplicationName = Interop.String.ToPointer(ApplicationName);
+            val->ApplicationName = Interop.String.AllocToPointer(ApplicationName);
             val->ApplicationVersion = ApplicationVersion;
-            val->EngineName = Interop.String.ToPointer(EngineName);
+            val->EngineName = Interop.String.AllocToPointer(EngineName);
             val->EngineVersion = EngineVersion;
             val->ApiVersion = ApiVersion;
         }

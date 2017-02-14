@@ -8,7 +8,7 @@ namespace VulkanCore.Tests
         [Fact]
         public void AllocStringToPtr_ReturnsNullHandleForNull()
         {
-            IntPtr handle = Interop.String.ToPointer(null);
+            IntPtr handle = Interop.String.AllocToPointer(null);
             Assert.Equal(IntPtr.Zero, handle);
         }
 
@@ -19,7 +19,7 @@ namespace VulkanCore.Tests
             IntPtr handle = IntPtr.Zero;
             try
             {
-                handle = Interop.String.ToPointer(value);
+                handle = Interop.String.AllocToPointer(value);
                 var ptr = (byte*)handle;
                     
                 Assert.Equal(0x00, ptr[0]); // '\0' - null-terminator
@@ -37,7 +37,7 @@ namespace VulkanCore.Tests
             IntPtr handle = IntPtr.Zero;
             try
             {
-                handle = Interop.String.ToPointer(value);
+                handle = Interop.String.AllocToPointer(value);
                 var ptr = (byte*)handle;
 
                 Assert.Equal(0x68, ptr[0]); // 'h'
@@ -64,7 +64,7 @@ namespace VulkanCore.Tests
             IntPtr handle = IntPtr.Zero;
             try
             {
-                handle = Interop.String.ToPointer(value);
+                handle = Interop.String.AllocToPointer(value);
                 string unmarshalledValue = Interop.String.FromPointer(handle);
 
                 Assert.Equal(value, unmarshalledValue);
@@ -82,7 +82,7 @@ namespace VulkanCore.Tests
             IntPtr handle = IntPtr.Zero;
             try
             {
-                handle = Interop.String.ToPointer(value);
+                handle = Interop.String.AllocToPointer(value);
                 string unmarshalledValue = Interop.String.FromPointer(handle);
 
                 Assert.Equal(value, unmarshalledValue);
@@ -96,14 +96,14 @@ namespace VulkanCore.Tests
         [Fact]
         public void AllocStringsToPtrs_ReturnsNullForNullStrings()
         {
-            IntPtr* ptr = Interop.String.ToPointers(null);
+            IntPtr* ptr = Interop.String.AllocToPointers(null);
             Assert.Equal(IntPtr.Zero, (IntPtr)ptr);
         }
 
         [Fact]
         public void AllocStringsToPtrs_ReturnsNullForEmptyStringsArray()
         {
-            IntPtr* ptr = Interop.String.ToPointers(new string[0]);
+            IntPtr* ptr = Interop.String.AllocToPointers(new string[0]);
             Assert.Equal(IntPtr.Zero, (IntPtr)ptr);
         }
 
@@ -114,7 +114,7 @@ namespace VulkanCore.Tests
             IntPtr* ptr = null;
             try
             {
-                ptr = Interop.String.ToPointers(values);
+                ptr = Interop.String.AllocToPointers(values);
 
                 IntPtr firstHandle = ptr[0];
                 IntPtr secondHandle = ptr[1];
@@ -131,7 +131,7 @@ namespace VulkanCore.Tests
         public void AllocNullStructToPtr_ReturnsNull()
         {
             int? value = null;
-            IntPtr ptr = Interop.Struct.ToPointer(ref value);
+            IntPtr ptr = Interop.Struct.AllocToPointer(ref value);
             Assert.Equal(IntPtr.Zero, ptr);
         }
 
@@ -142,7 +142,7 @@ namespace VulkanCore.Tests
             try
             {
                 int value = 1;
-                ptr = Interop.Struct.ToPointer(ref value);
+                ptr = Interop.Struct.AllocToPointer(ref value);
                 Assert.Equal(1, *(int*)ptr);
             }
             finally
@@ -158,7 +158,7 @@ namespace VulkanCore.Tests
             try
             {
                 int? value = 1;
-                ptr = Interop.Struct.ToPointer(ref value);
+                ptr = Interop.Struct.AllocToPointer(ref value);
                 Assert.Equal(1, *(int*)ptr);
             }
             finally
@@ -170,14 +170,14 @@ namespace VulkanCore.Tests
         [Fact]
         public void AllocStructsToPtr_ReturnsNullForNullStructs()
         {
-            IntPtr ptr = Interop.Struct.ToPointer<int>(null);
+            IntPtr ptr = Interop.Struct.AllocToPointer<int>(null);
             Assert.Equal(IntPtr.Zero, ptr);
         }
 
         [Fact]
         public void AllocStructsToPtr_ReturnsNullForEmptyStructs()
         {
-            IntPtr ptr = Interop.Struct.ToPointer(new int[0]);
+            IntPtr ptr = Interop.Struct.AllocToPointer(new int[0]);
             Assert.Equal(IntPtr.Zero, ptr);
         }
 
@@ -188,7 +188,7 @@ namespace VulkanCore.Tests
             IntPtr ptr = IntPtr.Zero;
             try
             {
-                ptr = Interop.Struct.ToPointer(structs);
+                ptr = Interop.Struct.AllocToPointer(structs);
                 var intPtr = (int*)ptr;
                 for (int i = 0; i < structs.Length; i++)
                     Assert.Equal(structs[i], intPtr[i]);
@@ -206,7 +206,7 @@ namespace VulkanCore.Tests
             IntPtr ptr = IntPtr.Zero;
             try
             {
-                ptr = Interop.Struct.ToPointer(structs);
+                ptr = Interop.Struct.AllocToPointer(structs);
                 var intPtr = (long*)ptr;
                 for (int i = 0; i < structs.Length; i++)
                     Assert.Equal(structs[i], intPtr[i]);

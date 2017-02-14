@@ -207,32 +207,6 @@ namespace VulkanCore
             public static string FromPointer(IntPtr pointer) => FromPointer((byte*)pointer);
 
             /// <summary>
-            /// Encodes a string as null-terminated UTF-8 bytes and allocates to unmanaged memory.
-            /// </summary>
-            /// <param name="value">The string to encode.</param>
-            /// <returns>
-            /// A pointer to the newly allocated memory. This memory must be released using the <see
-            /// cref="Free"/> method.
-            /// </returns>
-            public static IntPtr ToPointer(string value)
-            {
-                if (value == null) return IntPtr.Zero;
-
-                // Get max number of bytes the string may need.
-                int maxSize = GetMaxByteCount(value);
-                // Allocate unmanaged memory.
-                IntPtr managedPtr = Alloc(maxSize);
-                var ptr = (byte*)managedPtr;
-                // Encode to utf-8, null-terminate and write to unmanaged memory.
-                int actualNumberOfBytesWritten;
-                fixed (char* ch = value)
-                    actualNumberOfBytesWritten = Encoding.UTF8.GetBytes(ch, value.Length, ptr, maxSize);
-                ptr[actualNumberOfBytesWritten] = 0;
-                // Return pointer to the beginning of unmanaged memory.
-                return managedPtr;
-            }
-
-            /// <summary>
             /// Encodes a string as null-terminated UTF-8 bytes and stores into specified pointer.
             /// </summary>
             /// <param name="value">The string to encode.</param>
@@ -251,6 +225,32 @@ namespace VulkanCore
             }
 
             /// <summary>
+            /// Encodes a string as null-terminated UTF-8 bytes and allocates to unmanaged memory.
+            /// </summary>
+            /// <param name="value">The string to encode.</param>
+            /// <returns>
+            /// A pointer to the newly allocated memory. This memory must be released using the <see
+            /// cref="Free"/> method.
+            /// </returns>
+            public static IntPtr AllocToPointer(string value)
+            {
+                if (value == null) return IntPtr.Zero;
+
+                // Get max number of bytes the string may need.
+                int maxSize = GetMaxByteCount(value);
+                // Allocate unmanaged memory.
+                IntPtr managedPtr = Alloc(maxSize);
+                var ptr = (byte*)managedPtr;
+                // Encode to utf-8, null-terminate and write to unmanaged memory.
+                int actualNumberOfBytesWritten;
+                fixed (char* ch = value)
+                    actualNumberOfBytesWritten = Encoding.UTF8.GetBytes(ch, value.Length, ptr, maxSize);
+                ptr[actualNumberOfBytesWritten] = 0;
+                // Return pointer to the beginning of unmanaged memory.
+                return managedPtr;
+            }
+
+            /// <summary>
             /// Encodes strings as null-terminated UTF-8 byte sequences and allocates sequences as
             /// well as pointers to unmanaged memory.
             /// </summary>
@@ -259,7 +259,7 @@ namespace VulkanCore
             /// A pointer to the newly allocated memory. This memory must be released using the <see
             /// cref="Free"/> method.
             /// </returns>
-            public static IntPtr* ToPointers(string[] values)
+            public static IntPtr* AllocToPointers(string[] values)
             {
                 if (values == null || values.Length == 0)
                     return null;
@@ -269,7 +269,7 @@ namespace VulkanCore
 
                 for (var i = 0; i < values.Length; i++)
                     // Store the pointer to the string.
-                    stringHandlesPtr[i] = ToPointer(values[i]);
+                    stringHandlesPtr[i] = AllocToPointer(values[i]);
 
                 return stringHandlesPtr;
             }
@@ -300,7 +300,7 @@ namespace VulkanCore
             /// A pointer to the newly allocated memory. This memory must be released using the <see
             /// cref="Free"/> method.
             /// </returns>
-            public static IntPtr ToPointer<T>(ref T value) where T : struct
+            public static IntPtr AllocToPointer<T>(ref T value) where T : struct
             {
                 IntPtr ptr = Alloc<T>();
                 Unsafe.Copy(ptr.ToPointer(), ref value);
@@ -317,7 +317,7 @@ namespace VulkanCore
             /// A pointer to the newly allocated memory. This memory must be released using the <see
             /// cref="Free"/> method.
             /// </returns>
-            public static IntPtr ToPointer<T>(ref T? value) where T : struct
+            public static IntPtr AllocToPointer<T>(ref T? value) where T : struct
             {
                 if (!value.HasValue) return IntPtr.Zero;
 
@@ -336,7 +336,7 @@ namespace VulkanCore
             /// A pointer to the newly allocated memory. This memory must be released using the <see
             /// cref="Free"/> method.
             /// </returns>
-            public static IntPtr ToPointer<T>(T[] values) where T : struct
+            public static IntPtr AllocToPointer<T>(T[] values) where T : struct
             {
                 if (values == null || values.Length == 0) return IntPtr.Zero;
 

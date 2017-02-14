@@ -376,7 +376,7 @@ namespace VulkanCore
                 Stages[i].ToNative(&stages[i]);
             var vertexInputState = (PipelineVertexInputStateCreateInfo.Native*)Interop.Alloc<PipelineVertexInputStateCreateInfo.Native>();
             VertexInputState.ToNative(vertexInputState);
-            var tessellationState = (PipelineTessellationStateCreateInfo*)Interop.Struct.ToPointer(ref TessellationState);
+            var tessellationState = (PipelineTessellationStateCreateInfo*)Interop.Struct.AllocToPointer(ref TessellationState);
             if (tessellationState != null) tessellationState->Prepare();
             PipelineViewportStateCreateInfo.Native* viewportState = null;
             if (ViewportState.HasValue)
@@ -390,7 +390,7 @@ namespace VulkanCore
                 multisampleState = (PipelineMultisampleStateCreateInfo.Native*)Interop.Alloc<PipelineMultisampleStateCreateInfo.Native>();
                 MultisampleState.Value.ToNative(multisampleState);
             }
-            var depthStencilState = (PipelineDepthStencilStateCreateInfo*)Interop.Struct.ToPointer(ref DepthStencilState);
+            var depthStencilState = (PipelineDepthStencilStateCreateInfo*)Interop.Struct.AllocToPointer(ref DepthStencilState);
             if (depthStencilState != null) depthStencilState->Prepare();
             PipelineColorBlendStateCreateInfo.Native* colorBlendState = null;
             if (ColorBlendState.HasValue)
@@ -411,10 +411,10 @@ namespace VulkanCore
             native->StageCount = Stages?.Length ?? 0;
             native->Stages = stages;
             native->VertexInputState = vertexInputState;
-            native->InputAssemblyState = Interop.Struct.ToPointer(ref InputAssemblyState);
+            native->InputAssemblyState = Interop.Struct.AllocToPointer(ref InputAssemblyState);
             native->TessellationState = tessellationState;
             native->ViewportState = viewportState;
-            native->RasterizationState = Interop.Struct.ToPointer(ref RasterizationState);
+            native->RasterizationState = Interop.Struct.AllocToPointer(ref RasterizationState);
             native->MultisampleState = multisampleState;
             native->DepthStencilState = depthStencilState;
             native->ColorBlendState = colorBlendState;
@@ -611,7 +611,7 @@ namespace VulkanCore
             native->Flags = 0;
             native->Stage = Stage;
             native->Module = Module;
-            native->Name = Interop.String.ToPointer(Name);
+            native->Name = Interop.String.AllocToPointer(Name);
             native->SpecializationInfo = specializationInfo;
         }
     }
@@ -675,7 +675,7 @@ namespace VulkanCore
         internal void ToNative(Native* native)
         {
             native->MapEntryCount = MapEntries?.Length ?? 0;
-            native->MapEntries = Interop.Struct.ToPointer(MapEntries);
+            native->MapEntries = Interop.Struct.AllocToPointer(MapEntries);
             native->DataSize = DataSize;
             native->Data = Data;
         }
@@ -739,9 +739,9 @@ namespace VulkanCore
             native->Next = IntPtr.Zero;
             native->Flags = 0;
             native->VertexBindingDescriptionCount = VertexBindingDescriptions?.Length ?? 0;
-            native->VertexBindingDescriptions = Interop.Struct.ToPointer(VertexBindingDescriptions);
+            native->VertexBindingDescriptions = Interop.Struct.AllocToPointer(VertexBindingDescriptions);
             native->VertexAttributeDescriptionCount = VertexAttributeDescriptions?.Length ?? 0;
-            native->VertexAttributeDescriptions = Interop.Struct.ToPointer(VertexAttributeDescriptions);
+            native->VertexAttributeDescriptions = Interop.Struct.AllocToPointer(VertexAttributeDescriptions);
         }
     }
 
@@ -951,9 +951,9 @@ namespace VulkanCore
             native->Next = IntPtr.Zero;
             native->Flags = 0;
             native->ViewportCount = Viewports?.Length ?? 0;
-            native->Viewports = Interop.Struct.ToPointer(Viewports);
+            native->Viewports = Interop.Struct.AllocToPointer(Viewports);
             native->ScissorCount = Scissors?.Length ?? 0;
-            native->Scissors = Interop.Struct.ToPointer(Scissors);
+            native->Scissors = Interop.Struct.AllocToPointer(Scissors);
         }
     }
 
@@ -1312,7 +1312,7 @@ namespace VulkanCore
             native->LogicOpEnable = LogicOpEnable;
             native->LogicOp = LogicOp;
             native->AttachmentCount = Attachments?.Length ?? 0;
-            native->Attachments = Interop.Struct.ToPointer(Attachments);
+            native->Attachments = Interop.Struct.AllocToPointer(Attachments);
             native->BlendConstants = BlendConstants;
         }
     }
@@ -1605,7 +1605,7 @@ namespace VulkanCore
             native->Next = IntPtr.Zero;
             native->Flags = 0;
             native->DynamicStateCount = DynamicStates?.Length ?? 0;
-            native->DynamicStates = Interop.Struct.ToPointer(DynamicStates);
+            native->DynamicStates = Interop.Struct.AllocToPointer(DynamicStates);
         }
     }
 

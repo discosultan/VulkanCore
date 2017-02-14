@@ -1373,7 +1373,7 @@ namespace VulkanCore
 
         internal void ToNative(out Native native)
         {
-            var inheritanceInfo = (CommandBufferInheritanceInfo*)Interop.Struct.ToPointer(ref InheritanceInfo);
+            var inheritanceInfo = (CommandBufferInheritanceInfo*)Interop.Struct.AllocToPointer(ref InheritanceInfo);
             if (InheritanceInfo.HasValue)
                 inheritanceInfo->Prepare();
 

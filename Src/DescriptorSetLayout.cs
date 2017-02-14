@@ -220,7 +220,7 @@ namespace VulkanCore
             native->DescriptorType = DescriptorType;
             native->DescriptorCount = DescriptorCount;
             native->StageFlags = StageFlags;
-            native->ImmutableSamplers = Interop.Struct.ToPointer(ImmutableSamplers);
+            native->ImmutableSamplers = Interop.Struct.AllocToPointer(ImmutableSamplers);
         }
     }
 }
