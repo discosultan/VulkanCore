@@ -34,7 +34,7 @@ namespace VulkanCore.Nvx
         public Device Parent { get; }
 
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void RegisterObjects(ObjectTableEntryNvx[,] objectTableEntries, int[] objectIndices) // TODO: validate mem layout
+        public void RegisterObjects(ObjectTableEntryNvx[,] objectTableEntries, int[] objectIndices)
         {
             int x = objectTableEntries?.GetLength(0) ?? 0;
             int y = objectTableEntries?.GetLength(1) ?? 0;

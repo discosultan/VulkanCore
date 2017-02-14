@@ -72,14 +72,11 @@ namespace VulkanCore.Ext
             base.Dispose();
         }
 
-        [UnmanagedFunctionPointer(CallConv)] // TODO: is it needed? ensure default behavior
         private delegate Result CreateDebugReportCallbackExt(IntPtr instance,
             DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
 
-        [UnmanagedFunctionPointer(CallConv)]
         private delegate Result DestroyDebugReportCallbackExt(IntPtr instance, long callback, AllocationCallbacks.Native* allocator);
 
-        [UnmanagedFunctionPointer(CallConv)]
         private delegate Bool DebugReportCallback(
             DebugReportFlagsExt flags, DebugReportObjectTypeExt objectType, long @object,
             IntPtr location, int messageCode, byte* layerPrefix, byte* message, IntPtr userData);
@@ -107,6 +104,19 @@ namespace VulkanCore.Ext
     public struct DebugReportCallbackCreateInfoExt
     {
         /// <summary>
+        /// Indicate which event(s) will cause this callback to be called.
+        /// </summary>
+        public DebugReportFlagsExt Flags;
+        /// <summary>
+        /// The callback function. 
+        /// </summary>
+        public Func<DebugReportCallbackInfo, bool> Callback;
+        /// <summary>
+        /// <see cref="IntPtr.Zero"/> or a handle to user data provided to callback function. 
+        /// </summary>
+        public IntPtr UserData;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DebugReportCallbackCreateInfoExt"/> structure.
         /// </summary>
         /// <param name="flags">Indicate which event(s) will cause this callback to be called.</param>
@@ -122,21 +132,8 @@ namespace VulkanCore.Ext
             UserData = userData;
         }
 
-        /// <summary>
-        /// Indicate which event(s) will cause this callback to be called.
-        /// </summary>
-        public DebugReportFlagsExt Flags;
-        /// <summary>
-        /// The callback function. 
-        /// </summary>
-        public Func<DebugReportCallbackInfo, bool> Callback;
-        /// <summary>
-        /// <see cref="IntPtr.Zero"/> or a handle to user data provided to callback function. 
-        /// </summary>
-        public IntPtr UserData;
-
         [StructLayout(LayoutKind.Sequential)]
-        public struct Native
+        internal struct Native
         {
             public StructureType Type;
             public IntPtr Next;
