@@ -170,7 +170,12 @@ namespace VulkanCore
         /// <summary>
         /// Indicates that the clamp to border wrap mode will be used.
         /// </summary>
-        ClampToBorder = 3
+        ClampToBorder = 3,
+        /// <summary>
+        /// Indicates that the mirror clamp to edge wrap mode will be used. This is only valid if the
+        /// "VK_KHR_mirror_clamp_to_edge" extension is enabled.
+        /// </summary>
+        MirrorClampToEdge = 4
     }
 
     /// <summary>
