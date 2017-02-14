@@ -38,6 +38,24 @@ namespace VulkanCore.Tests
                 evt.Reset();
         }
 
+        [Fact]
+        public void GetEventStatus_Succeeds()
+        {
+            using (Event evt = Device.CreateEvent())
+            {
+                Result status = evt.GetStatus();
+                Assert.Equal(Result.EventReset, status);
+
+                evt.Set();
+                status = evt.GetStatus();
+                Assert.Equal(Result.EventSet, status);
+
+                evt.Reset();
+                status = evt.GetStatus();
+                Assert.Equal(Result.EventReset, status);
+            }
+        }
+
         public SynchronizationPrimitivesTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
     }
 }

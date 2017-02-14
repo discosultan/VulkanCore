@@ -41,6 +41,7 @@
     <Compile Include="BufferTest.cs" />
     <Compile Include="CommandBufferTest.cs" />
     <Compile Include="DeviceMemoryTest.cs" />
+    <Compile Include="QueryTest.cs" />
     <Compile Include="Utilities\DefaultHandles.cs" />
     <Compile Include="Utilities\HandleTestBase.cs" />
     <Compile Include="DeviceTest.cs" />

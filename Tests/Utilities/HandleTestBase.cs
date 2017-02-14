@@ -8,30 +8,29 @@ namespace VulkanCore.Tests.Utilities
 {
     public abstract class HandleTestBase : IClassFixture<DefaultHandles>, IDisposable
     {
-        private readonly HashSet<IntPtr> _allocs = new HashSet<IntPtr>();
-
         // Since we are tracking memory allocations and allocations are notified
         // at a global level, we match the notification against the thread id this
         // test class was created on to only record allocations from this thread.
         private readonly Guid _threadId = Interop.ThreadId;
+        private readonly HashSet<IntPtr> _allocs = new HashSet<IntPtr>();
+        private readonly DefaultHandles _defaults;
 
         protected HandleTestBase(DefaultHandles defaults, ITestOutputHelper output)
         {
-            Instance = defaults.Instance;
-            PhysicalDevice = defaults.PhysicalDevice;
-            Device = defaults.Device;
+            _defaults = defaults;
 
             Output = output;
 
             // Subscribe to track memory alloc/free ops.
             Interop.OnDebugAlloc += OnAlloc;
             Interop.OnDebugFree += OnFree;
-        }        
+        }
 
         protected ITestOutputHelper Output { get; }
-        protected Instance Instance { get; }
-        protected PhysicalDevice PhysicalDevice { get; }
-        protected Device Device { get; }
+        protected Instance Instance => _defaults.Instance;
+        protected PhysicalDevice PhysicalDevice => _defaults.PhysicalDevice;
+        protected Device Device => _defaults.Device;
+        protected Queue GraphicsQueue => _defaults.GraphicsQueue;
 
         public virtual void Dispose()
         {

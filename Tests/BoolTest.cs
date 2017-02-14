@@ -10,9 +10,13 @@ namespace VulkanCore.Tests
         {
             Bool boolTrue = true;
             Bool boolFalse = false;
+            Bool intTrue = 1;
+            Bool intFalse = 0;
 
             Assert.True(boolTrue);
             Assert.False(boolFalse);
+            Assert.Equal(1, (int)intTrue);
+            Assert.Equal(0, (int)intFalse);
         }
 
         [Fact]

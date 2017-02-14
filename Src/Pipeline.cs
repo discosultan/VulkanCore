@@ -661,6 +661,22 @@ namespace VulkanCore
         /// </summary>
         public IntPtr Data;
 
+        /// <summary>
+        /// Initializes a new instasnce of the <see cref="SpecializationInfo"/> structure.
+        /// </summary>
+        /// <param name="mapEntries">
+        /// An array of <see cref="SpecializationMapEntry"/> which maps constant ids to offsets in
+        /// <see cref="Data"/>.
+        /// </param>
+        /// <param name="dataSize">The byte size of the <see cref="Data"/> buffer.</param>
+        /// <param name="data">Contains the actual constant values to specialize with.</param>
+        public SpecializationInfo(SpecializationMapEntry[] mapEntries, Size dataSize, IntPtr data)
+        {
+            MapEntries = mapEntries;
+            DataSize = dataSize;
+            Data = data;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {

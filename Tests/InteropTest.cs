@@ -6,6 +6,13 @@ namespace VulkanCore.Tests
     public unsafe class InteropTest
     {
         [Fact]
+        public void AllocZeroBytes_ReturnsNullHandle()
+        {
+            IntPtr handle = Interop.Alloc(0);
+            Assert.Equal(IntPtr.Zero, handle);
+        }
+
+        [Fact]
         public void AllocStringToPtr_ReturnsNullHandleForNull()
         {
             IntPtr handle = Interop.String.AllocToPointer(null);
@@ -286,12 +293,12 @@ namespace VulkanCore.Tests
         [Fact]
         public void ReadArray_Succeeds()
         {
-            var src = new long[2];
-            long[] dst = { 1L, 2L };
-            fixed (long* dstPtr = dst)
-                Interop.Read(new IntPtr(dstPtr), src);
-            Assert.Equal(1L, src[0]);
-            Assert.Equal(2L, src[1]);
+            var dst = new long[2];
+            long[] src = { 1L, 2L };
+            fixed (long* srcPtr = src)
+                Interop.Read(new IntPtr(srcPtr), dst);
+            Assert.Equal(1L, dst[0]);
+            Assert.Equal(2L, dst[1]);
         }
 
         [Fact]
@@ -303,6 +310,24 @@ namespace VulkanCore.Tests
                 Interop.Write(new IntPtr(dstPtr), src);
             Assert.Equal(1L, dst[0]);
             Assert.Equal(2L, dst[1]);
+        }
+
+        [Fact]
+        public void ReadEmptyArray_Succeeds()
+        {
+            var dst = new long[0];
+            var src = new long[0];
+            fixed (long* srcPointer = src)
+                Interop.Read(new IntPtr(srcPointer), dst);
+        }
+
+        [Fact]
+        public void WriteEmptyArray_Succeeds()
+        {
+            var src = new long[0];
+            var dst = new long[0];
+            fixed (long* dstPtr = dst)
+                Interop.Write(new IntPtr(dstPtr), src);            
         }
     }
 }

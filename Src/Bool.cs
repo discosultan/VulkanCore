@@ -26,9 +26,28 @@
         /// <returns>The string representation.</returns>
         public override string ToString() => ((bool)this).ToString();
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="bool"/> to <see cref="Bool"/>.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
         public static implicit operator Bool(bool value) => new Bool(value);
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Bool"/> to <see cref="bool"/>.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
         public static implicit operator bool(Bool value) => value._value == Constant.True;
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="int"/> to <see cref="Bool"/>.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
         public static implicit operator Bool(int value) => new Bool(value != Constant.False);
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Bool"/> to <see cref="int"/>.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
         public static implicit operator int(Bool value) => value._value == Constant.True ? 1 : 0;
     }
 }

@@ -97,6 +97,10 @@ namespace VulkanCore.Tests
             PhysicalDevice[] physicalDevices1 = Instance.EnumeratePhysicalDevices();
             PhysicalDevice[] physicalDevices2 = Instance.EnumeratePhysicalDevices();
             Assert.Equal(physicalDevices1[0], physicalDevices2[0]);
+            Assert.Equal(physicalDevices1[0].GetHashCode(), physicalDevices2[0].GetHashCode());
+            Assert.True(physicalDevices1[0].Equals(physicalDevices2[0]));
+            Assert.True(physicalDevices1[0] == physicalDevices2[0]);
+            Assert.False(physicalDevices1[0] != physicalDevices2[0]);
         }
 
         [Fact]
@@ -152,6 +156,9 @@ namespace VulkanCore.Tests
             ExtensionProperties[] properties = Instance.EnumerateExtensionProperties(
                 Constant.InstanceLayer.LunarGStandardValidation);
             Assert.True(properties.Length > 0);
+
+            ExtensionProperties firstProperty = properties[0];
+            Assert.StartsWith(firstProperty.ExtensionName, properties[0].ToString());
         }
 
         [Fact]
@@ -159,6 +166,9 @@ namespace VulkanCore.Tests
         {
             LayerProperties[] properties = Instance.EnumerateLayerProperties();
             Assert.True(properties.Length > 0);
+
+            LayerProperties firstProperty = properties[0];
+            Assert.StartsWith(firstProperty.LayerName, properties[0].ToString());
         }
 
         [Fact]

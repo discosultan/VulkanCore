@@ -45,6 +45,7 @@ namespace VulkanCore
         {
             submit.ToNative(out SubmitInfo.Native nativeSubmit);
             Result result = QueueSubmit(this, 1, &nativeSubmit, fence);
+            nativeSubmit.Free();
             VulkanException.ThrowForInvalidResult(result);
         }
 

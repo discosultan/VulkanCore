@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using VulkanCore.Ext;
 using VulkanCore.Tests.Utilities;
 using Xunit;
@@ -9,6 +10,8 @@ namespace VulkanCore.Tests
 {
     public class DeviceTest : HandleTestBase
     {
+        private delegate Result DebugMarkerSetObjectNameExt(IntPtr p1, IntPtr p2);
+
         [Fact]
         public void GetProcAddr_ThrowsArgumentNullExForNullName()
         {
@@ -40,13 +43,21 @@ namespace VulkanCore.Tests
         {
             Assert.Null(Device.GetProc<EventHandler>("does not exist"));
         }
-
-        private delegate Result DebugMarkerSetObjectNameExt(IntPtr p1, IntPtr p2);
+        
         [Fact]
         public void GetProc_ReturnsValidDelegate()
         {
             var commandDelegate = Device.GetProc<DebugMarkerSetObjectNameExt>("vkDebugMarkerSetObjectNameEXT");
             Assert.NotNull(commandDelegate);
+        }
+
+        [Fact]
+        public void GetProcTwice_DelegatesEqual()
+        {
+            const string commandName = "vkDebugMarkerSetObjectNameEXT";
+            var commandDelegate1 = Device.GetProc<DebugMarkerSetObjectNameExt>(commandName);
+            var commandDelegate2 = Device.GetProc<DebugMarkerSetObjectNameExt>(commandName);
+            Assert.Equal(commandDelegate1, commandDelegate2);
         }
 
         [Fact]
@@ -153,13 +164,13 @@ namespace VulkanCore.Tests
             using (Device.CreateRenderPass(createInfo, CustomAllocator)) { }
         }
 
-        [Fact]
+        [Fact(Skip = "Resolve the availability of necessary extension.")]
         public void DebugMarkerSetObjectNameExt_Succeeds()
         {
             Device.DebugMarkerSetObjectNameExt(new DebugMarkerObjectNameInfoExt(Device, "my device"));
         }
 
-        [Fact]
+        [Fact(Skip = "Resolve the availability of necessary extension.")]
         public void DebugMarkerSetObjectTagExt_Succeeds()
         {
             Device.DebugMarkerSetObjectTagExt(new DebugMarkerObjectTagInfoExt(Device, 1, 0xFF));
@@ -289,9 +300,11 @@ namespace VulkanCore.Tests
                     using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo })[0]) { }
                     using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, cache)[0]) { }
                     using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, allocator: CustomAllocator)[0]) { }
+                    using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, cache, CustomAllocator)[0]) { }
                     using (Device.CreateGraphicsPipeline(pipelineCreateInfo)) { }
-                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache)) { }
                     using (Device.CreateGraphicsPipeline(pipelineCreateInfo, allocator: CustomAllocator)) { }
+                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache)) { }
+                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache, CustomAllocator)) { }
                 }
             }
         }
@@ -309,14 +322,52 @@ namespace VulkanCore.Tests
             using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.comp.spv"))))
             using (PipelineCache cache = Device.CreatePipelineCache())
             {
-                var computePipelineCreateInfo = new ComputePipelineCreateInfo(
+                var pipelineCreateInfo = new ComputePipelineCreateInfo(
                     new PipelineShaderStageCreateInfo(ShaderStages.Compute, shader, "main"),
                     pipelineLayout);
 
-                using (Device.CreateComputePipeline(computePipelineCreateInfo)) { }
-                using (Device.CreateComputePipeline(computePipelineCreateInfo, allocator: CustomAllocator)) { }
-                using (Device.CreateComputePipeline(computePipelineCreateInfo, cache)) { }
-                using (Device.CreateComputePipeline(computePipelineCreateInfo, cache, CustomAllocator)) { }
+                using (Device.CreateComputePipelines(new[] { pipelineCreateInfo })[0]) { }
+                using (Device.CreateComputePipelines(new[] { pipelineCreateInfo }, cache)[0]) { }
+                using (Device.CreateComputePipelines(new[] { pipelineCreateInfo }, allocator: CustomAllocator)[0]) { }
+                using (Device.CreateComputePipelines(new[] { pipelineCreateInfo }, cache, CustomAllocator)[0]) { }
+                using (Device.CreateComputePipeline(pipelineCreateInfo)) { }
+                using (Device.CreateComputePipeline(pipelineCreateInfo, allocator: CustomAllocator)) { }
+                using (Device.CreateComputePipeline(pipelineCreateInfo, cache)) { }
+                using (Device.CreateComputePipeline(pipelineCreateInfo, cache, CustomAllocator)) { }
+            }
+        }
+
+        [Fact]
+        public void FlushMappedMemoryRange_Succeeds()
+        {
+            PhysicalDeviceMemoryProperties memoryProperties = PhysicalDevice.GetMemoryProperties();
+            int memoryTypeIndex = memoryProperties.MemoryTypes.Select((mem, i) => (mem, i))
+                .First(x => x.Item1.PropertyFlags.HasFlag(MemoryProperties.HostVisible)).Item2;
+
+            const int size = 1024;
+            using (var memory = Device.AllocateMemory(new MemoryAllocateInfo(size, memoryTypeIndex)))
+            {
+                memory.Map(0, size);
+                Device.FlushMappedMemoryRange(new MappedMemoryRange(memory, 0, size));
+                Device.FlushMappedMemoryRanges(new[] { new MappedMemoryRange(memory, 0, size) });
+                memory.Unmap();
+            }
+        }
+
+        [Fact]
+        public void InvalidateMappedMemoryRange_Succeeds()
+        {
+            PhysicalDeviceMemoryProperties memoryProperties = PhysicalDevice.GetMemoryProperties();
+            int memoryTypeIndex = memoryProperties.MemoryTypes.Select((mem, i) => (mem, i))
+                .First(x => x.Item1.PropertyFlags.HasFlag(MemoryProperties.HostVisible)).Item2;
+
+            const int size = 1024;
+            using (var memory = Device.AllocateMemory(new MemoryAllocateInfo(size, memoryTypeIndex)))
+            {
+                memory.Map(0, size);
+                Device.InvalidateMappedMemoryRange(new MappedMemoryRange(memory, 0, size));
+                Device.InvalidateMappedMemoryRanges(new[] { new MappedMemoryRange(memory, 0, size) });
+                memory.Unmap();
             }
         }
 

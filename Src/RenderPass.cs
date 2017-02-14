@@ -167,7 +167,7 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying a subpass description.
     /// </summary>
-    public unsafe struct SubpassDescription
+    public struct SubpassDescription
     {
         /// <summary>
         /// Structures that lists which of the render pass’s attachments will be used as color

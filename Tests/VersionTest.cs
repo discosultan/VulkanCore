@@ -62,5 +62,14 @@ namespace VulkanCore.Tests
 
             Assert.Equal(1, version1.CompareTo(version2));
         }
+
+        [Fact]
+        public void Zero_ReturnsZeroVersion()
+        {
+            var version = Version.Zero;
+            Assert.Equal(0, version.Major);
+            Assert.Equal(0, version.Minor);
+            Assert.Equal(0, version.Patch);
+        }
     }
 }

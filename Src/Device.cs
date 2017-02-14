@@ -846,7 +846,7 @@ namespace VulkanCore
         /// Is either the size of range, or <see cref="WholeSize"/> to affect the range from offset
         /// to the end of the current mapping of the allocation.
         /// </param>
-        public MappedMemoryRange(DeviceMemory memory, long offset, long size)
+        public MappedMemoryRange(DeviceMemory memory, long offset = 0, long size = WholeSize)
         {
             Type = StructureType.MappedMemoryRange;
             Next = IntPtr.Zero;

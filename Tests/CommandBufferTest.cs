@@ -69,7 +69,7 @@ namespace VulkanCore.Tests
         [Fact]
         public void BeginEndRenderPass_Succeeds()
         {
-            using (RenderPass renderPass = Device.CreateRenderPass(new RenderPassCreateInfo(new[] { new SubpassDescription() })))
+            using (RenderPass renderPass = Device.CreateRenderPass(new RenderPassCreateInfo(new[] { new SubpassDescription(null) })))
             using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo()))
             {
                 CommandBuffer.Begin();
