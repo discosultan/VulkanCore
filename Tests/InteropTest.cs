@@ -51,6 +51,38 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
+        public void StringToPtr_DoesNothingForNullString()
+        {
+            const string str = null;
+            int count = Interop.String.GetMaxByteCount(str);
+            var bytes = stackalloc byte[count];
+            Interop.String.ToPointer(str, bytes, count);
+            Assert.Equal(0, count);            
+        }
+
+        [Fact]
+        public void StringToPtr_WritesNullTerminatorForEmptyString()
+        {
+            const string str = "";
+            int count = Interop.String.GetMaxByteCount(str);
+            var bytes = stackalloc byte[count];
+            Interop.String.ToPointer(str, bytes, count);
+            Assert.Equal(0, bytes[0]);
+        }
+
+        [Fact]
+        public void StringToPtr_WritesString()
+        {
+            const string str = "hi"; // 0x68 + 0x69
+            int count = Interop.String.GetMaxByteCount(str);
+            var bytes = stackalloc byte[count];
+            Interop.String.ToPointer(str, bytes, count);
+            Assert.Equal(0x68, bytes[0]);
+            Assert.Equal(0x69, bytes[1]);
+            Assert.Equal(0, bytes[2]);
+        }
+
+        [Fact]
         public void PtrToString_ReturnsNullForNullHandle()
         {
             string value = Interop.String.FromPointer(null);
