@@ -40,7 +40,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyShaderModule(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyShaderModule(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

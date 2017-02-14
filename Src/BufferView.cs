@@ -37,7 +37,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyBufferView(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyBufferView(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

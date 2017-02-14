@@ -40,7 +40,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroySemaphore(Parent, this, NativeAllocator);
+            if (!Disposed) DestroySemaphore(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

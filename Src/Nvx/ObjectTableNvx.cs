@@ -67,7 +67,7 @@ namespace VulkanCore.Nvx
         /// </summary>
         public override void Dispose()
         {
-            DestroyObjectTableNvx(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyObjectTableNvx(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

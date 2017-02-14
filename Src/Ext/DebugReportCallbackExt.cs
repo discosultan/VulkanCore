@@ -63,9 +63,12 @@ namespace VulkanCore.Ext
         /// </summary>
         public override void Dispose()
         {
-            var destroyDelegate = Parent.GetProc<DestroyDebugReportCallbackExt>("vkDestroyDebugReportCallbackEXT");
-            destroyDelegate?.Invoke(Parent, this, NativeAllocator);
-            _callback = null;
+            if (!Disposed)
+            {
+                var destroyDelegate = Parent.GetProc<DestroyDebugReportCallbackExt>("vkDestroyDebugReportCallbackEXT");
+                destroyDelegate?.Invoke(Parent, this, NativeAllocator);
+                _callback = null;
+            }
             base.Dispose();
         }
 

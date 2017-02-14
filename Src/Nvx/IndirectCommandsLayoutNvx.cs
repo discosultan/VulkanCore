@@ -38,7 +38,7 @@ namespace VulkanCore.Nvx
         /// </summary>
         public override void Dispose()
         {
-            DestroyIndirectCommandsLayoutNvx(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyIndirectCommandsLayoutNvx(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

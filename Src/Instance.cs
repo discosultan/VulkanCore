@@ -22,7 +22,7 @@ namespace VulkanCore
             = new ConcurrentDictionary<string, object>(StringComparer.Ordinal);
 
         /// <summary>
-        /// Initializes a new Vulkan instance class.
+        /// Create a new Vulkan instance.
         /// </summary>
         /// <param name="createInfo">
         /// An instance of <see cref="InstanceCreateInfo"/> controlling creation of the instance.
@@ -167,9 +167,12 @@ namespace VulkanCore
             return properties;
         }
 
+        /// <summary>
+        /// Destroy an instance of Vulkan.
+        /// </summary>
         public override void Dispose()
         {
-            DestroyInstance(this, NativeAllocator);
+            if (!Disposed) DestroyInstance(this, NativeAllocator);
             base.Dispose();
         }
 

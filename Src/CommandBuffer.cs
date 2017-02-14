@@ -1071,8 +1071,11 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            IntPtr handle = this;
-            FreeCommandBuffers(Parent.Parent, Parent, 1, &handle);
+            if (!Disposed)
+            {
+                IntPtr handle = this;
+                FreeCommandBuffers(Parent.Parent, Parent, 1, &handle);
+            }
             base.Dispose();
         }
 

@@ -50,7 +50,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyPipelineLayout(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyPipelineLayout(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

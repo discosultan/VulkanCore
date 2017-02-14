@@ -107,7 +107,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyFence(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyFence(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

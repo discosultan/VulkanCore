@@ -38,7 +38,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyImageView(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyImageView(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

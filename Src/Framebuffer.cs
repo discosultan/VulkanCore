@@ -45,7 +45,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyFramebuffer(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyFramebuffer(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

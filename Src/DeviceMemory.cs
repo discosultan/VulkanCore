@@ -121,7 +121,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            FreeMemory(Parent, this, NativeAllocator);
+            if (!Disposed) FreeMemory(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

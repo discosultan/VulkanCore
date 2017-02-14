@@ -26,8 +26,11 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            long handle = this;
-            FreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
+            if (!Disposed)
+            {
+                long handle = this;
+                FreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
+            }
             base.Dispose();
         }
 

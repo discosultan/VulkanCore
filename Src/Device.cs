@@ -592,7 +592,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyDevice(this, NativeAllocator);
+            if (!Disposed) DestroyDevice(this, NativeAllocator);
             base.Dispose();
         }
         

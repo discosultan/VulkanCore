@@ -56,7 +56,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyQueryPool(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyQueryPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

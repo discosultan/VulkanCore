@@ -117,7 +117,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public override void Dispose()
         {
-            DestroySurfaceKhr(Parent, this, NativeAllocator);
+            if (!Disposed) DestroySurfaceKhr(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

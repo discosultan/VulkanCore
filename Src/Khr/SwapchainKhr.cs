@@ -140,7 +140,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public override void Dispose()
         {
-            DestroySwapchainKhr(Parent, this, NativeAllocator);
+            if (!Disposed) DestroySwapchainKhr(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

@@ -66,7 +66,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyRenderPass(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyRenderPass(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

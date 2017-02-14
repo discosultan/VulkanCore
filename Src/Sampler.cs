@@ -32,7 +32,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroySampler(Parent, this, NativeAllocator);
+            if (!Disposed) DestroySampler(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

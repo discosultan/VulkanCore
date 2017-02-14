@@ -116,7 +116,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyDescriptorPool(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyDescriptorPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

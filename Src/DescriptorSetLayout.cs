@@ -40,7 +40,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyDescriptorSetLayout(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyDescriptorSetLayout(Parent, this, NativeAllocator);
             base.Dispose();
         }
 

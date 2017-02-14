@@ -82,7 +82,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            DestroyCommandPool(Parent, this, NativeAllocator);
+            if (!Disposed) DestroyCommandPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
         

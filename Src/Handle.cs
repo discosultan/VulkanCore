@@ -106,12 +106,21 @@ namespace VulkanCore
         internal AllocationCallbacks.Native* NativeAllocator { get; private set; }
 
         /// <summary>
+        /// Gets if the instance is disposed.
+        /// </summary>
+        protected bool Disposed { get; private set; }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting resources.
         /// </summary>
         public virtual void Dispose()
         {
-            DisposeUnmanaged();
-            GC.SuppressFinalize(this);
+            if (!Disposed)
+            {
+                DisposeUnmanaged();
+                GC.SuppressFinalize(this);
+                Disposed = true;
+            }
         }
 
         private void DisposeUnmanaged()
