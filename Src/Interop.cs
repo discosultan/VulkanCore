@@ -17,7 +17,7 @@ namespace VulkanCore
         /// <param name="byteCount">The required number of bytes in memory.</param>
         /// <returns>
         /// A pointer to the newly allocated memory. This memory must be released using the <see
-        /// cref="Free"/> method.
+        /// cref="Free(IntPtr)"/> method.
         /// </returns>
         public static IntPtr Alloc(Size byteCount)
         {
@@ -37,7 +37,7 @@ namespace VulkanCore
         /// </param>
         /// <returns>
         /// A pointer to the newly allocated memory. This memory must be released using the <see
-        /// cref="Free"/> method.
+        /// cref="Free(IntPtr)"/> method.
         /// </returns>
         public static IntPtr Alloc<T>(int count = 1) => Alloc(SizeOf<T>() * count);
 
@@ -47,7 +47,7 @@ namespace VulkanCore
         /// <param name="original">A pointer to memory allocated with <see cref="Alloc"/>.</param>
         /// <param name="size">The new size of the allocated block.</param>
         /// <returns>
-        /// A pointer to the reallocated memory. This memory must be released using <see cref="Free"/>.
+        /// A pointer to the reallocated memory. This memory must be released using <see cref="Free(IntPtr)"/>.
         /// </returns>
         public static IntPtr ReAlloc(IntPtr original, Size size) =>
             Marshal.ReAllocHGlobal(original, size);
@@ -230,7 +230,7 @@ namespace VulkanCore
             /// <param name="value">The string to encode.</param>
             /// <returns>
             /// A pointer to the newly allocated memory. This memory must be released using the <see
-            /// cref="Free"/> method.
+            /// cref="Free(IntPtr)"/> method.
             /// </returns>
             public static IntPtr AllocToPointer(string value)
             {
@@ -257,7 +257,7 @@ namespace VulkanCore
             /// <param name="values">Strings to encode.</param>
             /// <returns>
             /// A pointer to the newly allocated memory. This memory must be released using the <see
-            /// cref="Free"/> method.
+            /// cref="Free(IntPtr*, int)"/> method.
             /// </returns>
             public static IntPtr* AllocToPointers(string[] values)
             {
@@ -298,7 +298,7 @@ namespace VulkanCore
             /// <param name="value">The value to copy.</param>
             /// <returns>
             /// A pointer to the newly allocated memory. This memory must be released using the <see
-            /// cref="Free"/> method.
+            /// cref="Free(IntPtr)"/> method.
             /// </returns>
             public static IntPtr AllocToPointer<T>(ref T value) where T : struct
             {
@@ -315,7 +315,7 @@ namespace VulkanCore
             /// <param name="value">The value to copy.</param>
             /// <returns>
             /// A pointer to the newly allocated memory. This memory must be released using the <see
-            /// cref="Free"/> method.
+            /// cref="Free(IntPtr)"/> method.
             /// </returns>
             public static IntPtr AllocToPointer<T>(ref T? value) where T : struct
             {
@@ -334,7 +334,7 @@ namespace VulkanCore
             /// <param name="values">The values to copy.</param>
             /// <returns>
             /// A pointer to the newly allocated memory. This memory must be released using the <see
-            /// cref="Free"/> method.
+            /// cref="Free(IntPtr)"/> method.
             /// </returns>
             public static IntPtr AllocToPointer<T>(T[] values) where T : struct
             {
