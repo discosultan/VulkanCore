@@ -35,10 +35,13 @@ namespace VulkanCore
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a descriptor set layout object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyDescriptorSetLayout(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateDescriptorSetLayout", CallingConvention = CallConv)]

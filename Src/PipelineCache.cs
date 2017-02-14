@@ -73,10 +73,13 @@ namespace VulkanCore
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a pipeline cache object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyPipelineCache(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreatePipelineCache", CallingConvention = CallConv)]

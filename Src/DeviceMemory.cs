@@ -105,10 +105,24 @@ namespace VulkanCore
             return commitment;
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Free GPU memory.
+        /// <para>
+        /// Before freeing a memory object, an application must ensure the memory object is no longer
+        /// in use by the device—​for example by command buffers queued for execution. The memory can
+        /// remain bound to images or buffers at the time the memory object is freed, but any further
+        /// use of them (on host or device) for anything other than destroying those objects will
+        /// result in undefined behavior. If there are still any bound images or buffers, the memory
+        /// may not be immediately released by the implementation, but must be released by the time
+        /// all bound images and buffers have been destroyed. Once memory is released, it is returned
+        /// to the heap from which it was allocated.
+        /// </para>
+        /// <para>If a memory object is mapped at the time it is freed, it is implicitly unmapped.</para>
+        /// </summary>
+        public override void Dispose()
         {
             FreeMemory(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkAllocateMemory", CallingConvention = CallConv)]

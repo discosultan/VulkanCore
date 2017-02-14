@@ -35,10 +35,13 @@ namespace VulkanCore
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a semaphore object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroySemaphore(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateSemaphore", CallingConvention = CallConv)]

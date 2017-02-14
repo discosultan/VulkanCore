@@ -102,10 +102,13 @@ namespace VulkanCore
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a fence object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyFence(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         internal static void Reset(Device parent, Fence[] fences)
@@ -133,7 +136,8 @@ namespace VulkanCore
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateFence", CallingConvention = CallConv)]
-        private static extern Result CreateFence(IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private static extern Result CreateFence(
+            IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);
 
         [DllImport(VulkanDll, EntryPoint = "vkDestroyFence", CallingConvention = CallConv)]
         private static extern void DestroyFence(IntPtr device, long fence, AllocationCallbacks.Native* allocator);

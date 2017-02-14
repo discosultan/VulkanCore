@@ -21,11 +21,14 @@ namespace VulkanCore
         /// </summary>
         public DescriptorPool Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Free descriptor set.
+        /// </summary>
+        public override void Dispose()
         {
             long handle = this;
             FreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         internal static void Free(DescriptorPool parent, DescriptorSet[] descriptorSets)

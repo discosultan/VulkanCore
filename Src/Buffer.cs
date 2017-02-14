@@ -86,10 +86,13 @@ namespace VulkanCore
             return requirements;
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a buffer object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyBuffer(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateBuffer", CallingConvention = CallConv)]

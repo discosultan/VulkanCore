@@ -33,10 +33,13 @@ namespace VulkanCore.Nvx
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy an indirect commands layout object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyIndirectCommandsLayoutNvx(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateIndirectCommandsLayoutNVX", CallingConvention = CallConv)]

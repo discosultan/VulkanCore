@@ -61,10 +61,13 @@ namespace VulkanCore
             return new Framebuffer(Parent, this, ref createInfo, ref allocator);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a render pass object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyRenderPass(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateRenderPass", CallingConvention = CallConv)]

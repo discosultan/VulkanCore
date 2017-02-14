@@ -135,11 +135,14 @@ namespace VulkanCore.Khr
             return swapchains;
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a swapchain object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroySwapchainKhr(Parent, this, NativeAllocator);
-            base.DisposeManaged();
-        }        
+            base.Dispose();
+        }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = CallConv)]
         private static extern Result CreateSwapchainKhr(IntPtr device, 

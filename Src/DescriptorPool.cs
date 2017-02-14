@@ -106,10 +106,18 @@ namespace VulkanCore
             DescriptorSet.Free(this, descriptorSets);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a descriptor pool object.
+        /// <para>
+        /// When a pool is destroyed, all descriptor sets allocated from the pool are implicitly
+        /// freed and become invalid. Descriptor sets allocated from a given pool do not need to be
+        /// freed before destroying that descriptor pool.
+        /// </para>
+        /// </summary>
+        public override void Dispose()
         {
             DestroyDescriptorPool(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreateDescriptorPool", CallingConvention = CallConv)]

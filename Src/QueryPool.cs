@@ -51,10 +51,13 @@ namespace VulkanCore
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a query pool object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyQueryPool(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateQueryPool", CallingConvention = CallConv)]

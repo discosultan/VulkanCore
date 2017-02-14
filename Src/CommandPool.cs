@@ -72,10 +72,18 @@ namespace VulkanCore
             CommandBuffer.Free(this, commandBuffers);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a command pool object.
+        /// <para>
+        /// When a pool is destroyed, all command buffers allocated from the pool are implicitly
+        /// freed and become invalid. Command buffers allocated from a given pool do not need to be
+        /// freed before destroying that command pool.
+        /// </para>
+        /// </summary>
+        public override void Dispose()
         {
             DestroyCommandPool(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreateCommandPool", CallingConvention = CallConv)]

@@ -9,8 +9,7 @@ namespace VulkanCore
     /// Handle to an unmanaged Vulkan resource.
     /// </summary>
     /// <typeparam name="THandle">Handle type.</typeparam>
-    public abstract class VulkanHandle<THandle>
-        where THandle : struct
+    public abstract class VulkanHandle<THandle> where THandle : struct
     {
         /// <summary>
         /// Gets the handle to the unmanaged Vulkan resource.
@@ -82,7 +81,7 @@ namespace VulkanCore
         /// </summary>
         ~DisposableHandle()
         {
-            Dispose(false);
+            DisposeUnmanaged();
         }
 
         /// <summary>
@@ -107,36 +106,17 @@ namespace VulkanCore
         internal AllocationCallbacks.Native* NativeAllocator { get; private set; }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting
-        /// unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting resources.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
-            Dispose(true);
+            DisposeUnmanaged();
             GC.SuppressFinalize(this);
         }
- 
-        protected virtual void DisposeManaged() { }
 
-        protected virtual void DisposeUnmanaged(bool disposing)
+        private void DisposeUnmanaged()
         {
             Interop.Free(NativeAllocator);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-
-            if (disposing)
-            {
-                // Free managed objects that implement IDisposable.
-                DisposeManaged();
-            }
-
-            // Release unmanaged objects.
-            DisposeUnmanaged(disposing);
-
-            _disposed = true;
         }
     }
 

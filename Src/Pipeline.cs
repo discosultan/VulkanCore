@@ -59,10 +59,13 @@ namespace VulkanCore
         /// </summary>
         public PipelineCache Cache { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a pipeline object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyPipeline(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         internal static Pipeline[] CreateGraphicsPipelines(Device parent, PipelineCache cache, 

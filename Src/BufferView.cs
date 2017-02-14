@@ -32,10 +32,13 @@ namespace VulkanCore
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a buffer view object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyBufferView(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreateBufferView", CallingConvention = CallConv)]

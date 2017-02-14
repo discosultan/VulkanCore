@@ -35,10 +35,13 @@ namespace VulkanCore
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a shader module.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyShaderModule(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateShaderModule", CallingConvention = CallConv)]

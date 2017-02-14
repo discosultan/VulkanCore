@@ -167,10 +167,10 @@ namespace VulkanCore
             return properties;
         }
 
-        protected override void DisposeManaged()
+        public override void Dispose()
         {
             DestroyInstance(this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateInstance", CallingConvention = CallConv)]

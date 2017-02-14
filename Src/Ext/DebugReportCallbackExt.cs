@@ -58,12 +58,15 @@ namespace VulkanCore.Ext
         /// </summary>
         public Instance Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a debug report callback object.
+        /// </summary>
+        public override void Dispose()
         {
             var destroyDelegate = Parent.GetProc<DestroyDebugReportCallbackExt>("vkDestroyDebugReportCallbackEXT");
             destroyDelegate?.Invoke(Parent, this, NativeAllocator);
             _callback = null;
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [UnmanagedFunctionPointer(CallConv)] // TODO: is it needed? ensure default behavior

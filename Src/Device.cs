@@ -587,10 +587,13 @@ namespace VulkanCore
             return new QueryPool(this, &createInfo, ref allocator);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a logical device.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyDevice(this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreateDevice", CallingConvention = CallConv)]

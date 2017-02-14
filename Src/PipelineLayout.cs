@@ -45,10 +45,13 @@ namespace VulkanCore
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a pipeline layout object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyPipelineLayout(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreatePipelineLayout", CallingConvention = CallConv)]

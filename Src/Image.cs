@@ -120,10 +120,13 @@ namespace VulkanCore
             return requirements;
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy an image object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyImage(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateImage", CallingConvention = CallConv)]

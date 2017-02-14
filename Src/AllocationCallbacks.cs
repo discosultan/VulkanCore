@@ -92,7 +92,7 @@ namespace VulkanCore
         }
 
         internal void ToNative(Native* native)
-        {            
+        {
             native->UserData = UserData;
             native->Allocation = Interop.GetFunctionPointerForDelegate(Allocation);
             native->Reallocation = Interop.GetFunctionPointerForDelegate(Reallocation);

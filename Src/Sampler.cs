@@ -27,10 +27,13 @@ namespace VulkanCore
         /// </summary>
         public Device Parent { get; }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy a sampler object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroySampler(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(VulkanDll, EntryPoint = "vkCreateSampler", CallingConvention = CallConv)]

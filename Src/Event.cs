@@ -71,10 +71,13 @@ namespace VulkanCore
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy an event object.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyEvent(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateEvent", CallingConvention = CallConv)]

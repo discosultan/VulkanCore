@@ -1066,12 +1066,15 @@ namespace VulkanCore
             CmdExecuteCommands(this, count, commandBuffersPtr);
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Free command buffer.
+        /// </summary>
+        public override void Dispose()
         {
             IntPtr handle = this;
             FreeCommandBuffers(Parent.Parent, Parent, 1, &handle);
-            base.DisposeManaged();
-        }        
+            base.Dispose();
+        }
 
         internal static CommandBuffer[] Allocate(CommandPool parent, CommandBufferAllocateInfo* allocateInfo)
         {

@@ -62,10 +62,13 @@ namespace VulkanCore.Nvx
             }
         }
 
-        protected override void DisposeManaged()
+        /// <summary>
+        /// Destroy an object table.
+        /// </summary>
+        public override void Dispose()
         {
             DestroyObjectTableNvx(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateObjectTableNVX", CallingConvention = CallConv)]

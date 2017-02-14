@@ -112,10 +112,13 @@ namespace VulkanCore.Khr
         /// </summary>
         public Instance Parent { get; }
 
-        protected override void DisposeManaged()
-        {            
+        /// <summary>
+        /// Destroy a surface object.
+        /// </summary>
+        public override void Dispose()
+        {
             DestroySurfaceKhr(Parent, this, NativeAllocator);
-            base.DisposeManaged();
+            base.Dispose();
         }
         
         [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = Constant.CallConv)]
