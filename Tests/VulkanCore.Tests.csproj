@@ -37,6 +37,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DescriptorSetTest.cs" />
     <Compile Include="RenderPassTest.cs" />
     <Compile Include="BufferTest.cs" />
     <Compile Include="CommandBufferTest.cs" />

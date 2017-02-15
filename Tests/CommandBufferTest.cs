@@ -114,7 +114,7 @@ namespace VulkanCore.Tests
 
         public CommandBufferTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output)
         {
-            CommandPool = defaults.Device.CreateCommandPool(
+            CommandPool = Device.CreateCommandPool(
                 new CommandPoolCreateInfo(defaults.GraphicsQueue.FamilyIndex, CommandPoolCreateFlags.ResetCommandBuffer));
             CommandBuffer = CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
         }

@@ -67,7 +67,7 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="DescriptorSetLayoutCreateInfo"/> structure.
         /// <para name="bindings">An array of <see cref="DescriptorSetLayoutBinding"/> structures.</para>
         /// </summary>
-        public DescriptorSetLayoutCreateInfo(DescriptorSetLayoutBinding[] bindings)
+        public DescriptorSetLayoutCreateInfo(params DescriptorSetLayoutBinding[] bindings)
         {
             Bindings = bindings;
         }
