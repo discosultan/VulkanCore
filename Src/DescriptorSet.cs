@@ -96,8 +96,12 @@ namespace VulkanCore
     public unsafe struct DescriptorSetAllocateInfo
     {
         /// <summary>
-        /// An array of descriptor set layouts, with each member specifying how the corresponding
-        /// descriptor set is allocated.
+        /// Determines the number of descriptor sets to be allocated from the pool.
+        /// </summary>
+        public int DescriptorSetCount;
+        /// <summary>
+        /// An array of <see cref="DescriptorSetLayout"/>, with each member specifying how the
+        /// corresponding descriptor set is allocated.
         /// <para>Array length must be greater than 0.</para>
         /// </summary>
         public long[] SetLayouts;
@@ -105,12 +109,16 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="DescriptorSetAllocateInfo"/> structure.
         /// </summary>
+        /// <param name="descriptorSetCount">
+        /// Determines the number of descriptor sets to be allocated from the pool.
+        /// </param>
         /// <param name="setLayouts">
         /// An array of descriptor set layouts, with each member specifying how the corresponding
         /// descriptor set is allocated.
         /// </param>
-        public DescriptorSetAllocateInfo(params DescriptorSetLayout[] setLayouts)
+        public DescriptorSetAllocateInfo(int descriptorSetCount, params DescriptorSetLayout[] setLayouts)
         {
+            DescriptorSetCount = descriptorSetCount;
             SetLayouts = setLayouts?.ToHandleArray();
         }
 
@@ -129,7 +137,7 @@ namespace VulkanCore
             native.Type = StructureType.DescriptorSetAllocateInfo;
             native.Next = IntPtr.Zero;
             native.DescriptorPool = pool;
-            native.DescriptorSetCount = SetLayouts?.Length ?? 0;
+            native.DescriptorSetCount = DescriptorSetCount;
             native.SetLayouts = setLayouts;
         }
     }
