@@ -24,12 +24,14 @@ namespace VulkanCore
         /// <summary>
         /// Free descriptor set.
         /// </summary>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public override void Dispose()
         {
             if (!Disposed)
             {
                 long handle = this;
-                FreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
+                Result result = FreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
+                VulkanException.ThrowForInvalidResult(result);
             }
             base.Dispose();
         }
@@ -73,8 +75,17 @@ namespace VulkanCore
                 descriptorWrites[i].ToNative(&nativeDescriptorWritesPtr[i]);
 
             fixed (CopyDescriptorSet* descriptorCopiesPtr = descriptorCopies)
-                UpdateDescriptorSets(parent.Parent, descriptorWriteCount, nativeDescriptorWritesPtr,
-                    descriptorCopies?.Length ?? 0, descriptorCopiesPtr);
+            {
+                UpdateDescriptorSets(
+                    parent.Parent,
+                    descriptorWriteCount,
+                    nativeDescriptorWritesPtr,
+                    descriptorCopies?.Length ?? 0,
+                    descriptorCopiesPtr);
+            }
+
+            for (int i = 0; i < descriptorWriteCount; i++)
+                nativeDescriptorWritesPtr[i].Free();
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkAllocateDescriptorSets", CallingConvention = CallConv)]
@@ -116,7 +127,7 @@ namespace VulkanCore
         /// An array of descriptor set layouts, with each member specifying how the corresponding
         /// descriptor set is allocated.
         /// </param>
-        public DescriptorSetAllocateInfo(int descriptorSetCount, params DescriptorSetLayout[] setLayouts)
+        public DescriptorSetAllocateInfo(int descriptorSetCount, DescriptorSetLayout[] setLayouts)
         {
             DescriptorSetCount = descriptorSetCount;
             SetLayouts = setLayouts?.ToHandleArray();
