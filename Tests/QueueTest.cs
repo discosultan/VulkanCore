@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 namespace VulkanCore.Tests
 {
-    public unsafe class QueueTest : HandleTestBase
+    public class QueueTest : HandleTestBase
     {
         [Fact]
         public void PropertiesSet()

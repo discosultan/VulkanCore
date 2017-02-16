@@ -98,6 +98,41 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
+        public void SetLineWidth_Succeeds()
+        {
+            CommandBuffer.Begin();
+            CommandBuffer.CmdSetLineWidth(1.0f);
+            CommandBuffer.End();
+        }
+
+        [Fact]
+        public void SetDepthParameters_Succeeds()
+        {
+            CommandBuffer.Begin();
+            CommandBuffer.CmdSetDepthBias(1.0f, 1.0f, 1.0f);
+            CommandBuffer.CmdSetDepthBounds(0.0f, 1.0f);
+            CommandBuffer.End();
+        }
+
+        [Fact]
+        public void SetBlendConstants_Succeeds()
+        {
+            CommandBuffer.Begin();
+            CommandBuffer.CmdSetBlendConstants(new ColorF4(1.0f, 1.0f, 1.0f, 1.0f));
+            CommandBuffer.End();
+        }
+
+        [Fact]
+        public void SetStencilParameters_Succeeds()
+        {
+            CommandBuffer.Begin();
+            CommandBuffer.CmdSetStencilCompareMask(StencilFaces.Front, ~0);
+            CommandBuffer.CmdSetStencilReference(StencilFaces.Front, 1);
+            CommandBuffer.CmdSetStencilWriteMask(StencilFaces.Front, ~0);
+            CommandBuffer.End();
+        }
+
+        [Fact]
         public void Reset_Succeeds()
         {
             CommandPool.Reset();
