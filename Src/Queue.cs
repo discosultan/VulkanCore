@@ -89,6 +89,23 @@ namespace VulkanCore
         /// <summary>
         /// Bind device memory to a sparse resource object.
         /// </summary>
+        /// <param name="bindInfo">Specifying a sparse binding submission batch.</param>
+        /// <param name="fence">
+        /// An optional handle to a fence to be signaled. If fence is not <c>null</c>, it defines a
+        /// fence signal operation.
+        /// </param>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public void BindSparse(BindSparseInfo bindInfo, Fence fence = null)
+        {
+            bindInfo.ToNative(out BindSparseInfo.Native nativeBindInfo);
+            Result result = QueueBindSparse(this, 1, &nativeBindInfo, fence);
+            nativeBindInfo.Free();
+            VulkanException.ThrowForInvalidResult(result);
+        }
+
+        /// <summary>
+        /// Bind device memory to a sparse resource object.
+        /// </summary>
         /// <param name="bindInfo">
         /// An array of <see cref="BindSparseInfo"/> structures, each specifying a sparse binding
         /// submission batch.
@@ -105,7 +122,7 @@ namespace VulkanCore
             var nativeBindInfo = stackalloc BindSparseInfo.Native[count];
             for (int i = 0; i < count; i++)
                 bindInfo[i].ToNative(out nativeBindInfo[i]); 
-                       
+
             Result result = QueueBindSparse(this, count, nativeBindInfo, fence);
 
             for (int i = 0; i < count; i++)
@@ -121,11 +138,8 @@ namespace VulkanCore
         [DllImport(VulkanDll, EntryPoint = "vkQueueWaitIdle", CallingConvention = CallConv)]
         private static extern Result QueueWaitIdle(IntPtr queue);
 
-        /// <summary>
-        /// Bind device memory to a sparse resource object.
-        /// </summary>
         [DllImport(VulkanDll, EntryPoint = "vkQueueBindSparse", CallingConvention = CallConv)]
-        private static extern Result QueueBindSparse(Queue queue, 
+        private static extern Result QueueBindSparse(IntPtr queue, 
             int bindInfoCount, BindSparseInfo.Native* bindInfo, long fence);
     }
 

@@ -98,9 +98,12 @@ namespace VulkanCore.Tests
             PhysicalDevice[] physicalDevices2 = Instance.EnumeratePhysicalDevices();
             Assert.Equal(physicalDevices1[0], physicalDevices2[0]);
             Assert.Equal(physicalDevices1[0].GetHashCode(), physicalDevices2[0].GetHashCode());
-            Assert.True(physicalDevices1[0].Equals(physicalDevices2[0]));
             Assert.True(physicalDevices1[0] == physicalDevices2[0]);
             Assert.False(physicalDevices1[0] != physicalDevices2[0]);
+            Assert.True(physicalDevices1[0].Equals(physicalDevices2[0]));
+            Assert.True(physicalDevices1[0].Equals(physicalDevices1[0]));
+            Assert.False(physicalDevices1[0].Equals(null));
+            Assert.False(physicalDevices1[0].Equals(""));
         }
 
         [Fact]
