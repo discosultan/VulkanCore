@@ -63,7 +63,7 @@ namespace VulkanCore.Tests
 
             var createInfo = new DeviceCreateInfo(new[]
             {
-                new DeviceQueueCreateInfo(0, 1, new[] { 1.0f })
+                new DeviceQueueCreateInfo(0, 1, 1.0f)
             });
             using (PhysicalDevice.CreateDevice(createInfo)) { }
             using (PhysicalDevice.CreateDevice(createInfo, CustomAllocator)) { }

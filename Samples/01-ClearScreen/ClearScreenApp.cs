@@ -65,8 +65,8 @@ namespace VulkanCore.Samples.ClearScreen
                 cmdBuffer.CmdClearColorImage(
                     SwapchainImages[i], 
                     ImageLayout.TransferDstOptimal,
-                    new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)), 
-                    new[] { imageSubresourceRange });
+                    new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
+                    imageSubresourceRange);
                 cmdBuffer.CmdPipelineBarrier(
                     PipelineStages.Transfer, PipelineStages.BottomOfPipe,
                     imageMemoryBarriers: new[] { barrierFromClearToPresent });

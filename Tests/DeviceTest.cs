@@ -173,7 +173,8 @@ namespace VulkanCore.Tests
         [Fact(Skip = "Resolve the availability of necessary extension.")]
         public void DebugMarkerSetObjectTagExt_Succeeds()
         {
-            Device.DebugMarkerSetObjectTagExt(new DebugMarkerObjectTagInfoExt(Device, 1, 0xFF));
+            Device.DebugMarkerSetObjectTagExt(new DebugMarkerObjectTagInfoExt(Device, 1, new byte[] { 0xFF }));
+            Device.DebugMarkerSetObjectTagExt(new DebugMarkerObjectTagInfoExt(GraphicsQueue, 2, new byte[] { 0xFF }));
         }
 
         [Fact]
@@ -312,11 +313,9 @@ namespace VulkanCore.Tests
         [Fact]
         public void CreateComputePipeline_Succeeds()
         {
-            var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo(new[]
-            {
+            var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.Compute),
-                new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute)
-            });
+                new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
             using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
             using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.comp.spv"))))
@@ -349,7 +348,7 @@ namespace VulkanCore.Tests
             {
                 memory.Map(0, size);
                 Device.FlushMappedMemoryRange(new MappedMemoryRange(memory, 0, size));
-                Device.FlushMappedMemoryRanges(new[] { new MappedMemoryRange(memory, 0, size) });
+                Device.FlushMappedMemoryRanges(new MappedMemoryRange(memory, 0, size));
                 memory.Unmap();
             }
         }
@@ -366,7 +365,7 @@ namespace VulkanCore.Tests
             {
                 memory.Map(0, size);
                 Device.InvalidateMappedMemoryRange(new MappedMemoryRange(memory, 0, size));
-                Device.InvalidateMappedMemoryRanges(new[] { new MappedMemoryRange(memory, 0, size) });
+                Device.InvalidateMappedMemoryRanges(new MappedMemoryRange(memory, 0, size));
                 memory.Unmap();
             }
         }

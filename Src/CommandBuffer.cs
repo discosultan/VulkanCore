@@ -120,7 +120,7 @@ namespace VulkanCore
         /// The index of the first viewport whose parameters are updated by the command.
         /// </param>
         /// <param name="viewports">Structures specifying viewport parameters.</param>
-        public void CmdSetViewports(int firstViewport, int viewportCount, Viewport[] viewports)
+        public void CmdSetViewports(int firstViewport, int viewportCount, params Viewport[] viewports)
         {
             fixed (Viewport* viewportsPtr = viewports)
                 CmdSetViewport(this, firstViewport, viewportCount, viewportsPtr);
@@ -161,7 +161,7 @@ namespace VulkanCore
         /// The number of scissors whose rectangles are updated by the command.
         /// </param>
         /// <param name="scissors">Structures defining scissor rectangles.</param>
-        public void CmdSetScissors(int firstScissor, int scissorCount, Rect2D[] scissors)
+        public void CmdSetScissors(int firstScissor, int scissorCount, params Rect2D[] scissors)
         {
             fixed (Rect2D* scissorsPtr = scissors)
                 CmdSetScissor(this, firstScissor, scissorCount, scissorsPtr);
@@ -351,7 +351,7 @@ namespace VulkanCore
         /// The starting offset in bytes within buffer used in index buffer address calculations.
         /// </param>
         /// <param name="indexType">Selects whether indices are treated as 16 bits or 32 bits.</param>
-        public void CmdBindIndexBuffer(Buffer buffer, long offset, IndexType indexType)
+        public void CmdBindIndexBuffer(Buffer buffer, long offset = 0, IndexType indexType = IndexType.UInt32)
         {
             CmdBindIndexBuffer(this, buffer, offset, indexType);
         }
@@ -361,7 +361,7 @@ namespace VulkanCore
         /// </summary>
         /// <param name="buffer">The <see cref="Buffer"/> handle.</param>
         /// <param name="offset">The <see cref="Buffer"/> offsets.</param>
-        public void CmdBindVertexBuffer(Buffer buffer, long offset)
+        public void CmdBindVertexBuffer(Buffer buffer, long offset = 0)
         {
             long handle = buffer.Handle;
             CmdBindVertexBuffers(this, 0, 1, &handle, &offset);
@@ -511,7 +511,7 @@ namespace VulkanCore
         /// <param name="srcBuffer">The source buffer.</param>
         /// <param name="dstBuffer">The destination buffer.</param>
         /// <param name="regions">Structures specifying the regions to copy.</param>
-        public void CmdCopyBuffer(Buffer srcBuffer, Buffer dstBuffer, BufferCopy[] regions)
+        public void CmdCopyBuffer(Buffer srcBuffer, Buffer dstBuffer, params BufferCopy[] regions)
         {
             fixed (BufferCopy* regionsPtr = regions)
                 CmdCopyBuffer(this, srcBuffer, dstBuffer, regions?.Length ?? 0, regionsPtr);
@@ -526,7 +526,7 @@ namespace VulkanCore
         /// <param name="dstImageLayout">The current layout of the destination image subresource.</param>
         /// <param name="regions">Structures specifying the regions to copy.</param>
         public void CmdCopyImage(Image srcImage, ImageLayout srcImageLayout, Image dstImage, ImageLayout dstImageLayout,
-            ImageCopy[] regions)
+            params ImageCopy[] regions)
         {
             fixed (ImageCopy* regionsPtr = regions)
                 CmdCopyImage(this, srcImage, srcImageLayout, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr);
@@ -570,7 +570,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="regions">Structures specifying the regions to copy.</param>
         public void CmdCopyBufferToImage(Buffer srcBuffer, Image dstImage, ImageLayout dstImageLayout,
-            BufferImageCopy[] regions)
+            params BufferImageCopy[] regions)
         {
             fixed (BufferImageCopy* regionsPtr = regions)
                 CmdCopyBufferToImage(this, srcBuffer, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr);
@@ -588,7 +588,7 @@ namespace VulkanCore
         /// <param name="dstBuffer">The destination buffer.</param>
         /// <param name="regions">Structures specifying the regions to copy.</param>
         public void CmdCopyImageToBuffer(Image srcImage, ImageLayout srcImageLayout, Buffer dstBuffer,
-            BufferImageCopy[] regions)
+            params BufferImageCopy[] regions)
         {
             fixed (BufferImageCopy* regionsPtr = regions)
                 CmdCopyImageToBuffer(this, srcImage, srcImageLayout, dstBuffer, regions?.Length ?? 0, regionsPtr);
@@ -668,7 +668,7 @@ namespace VulkanCore
         /// cleared. The aspect mask of all image subresource ranges must only include <see cref="ImageAspects.Color"/>.
         /// </param>
         public void CmdClearColorImage(Image image, ImageLayout imageLayout, 
-            ClearColorValue color, ImageSubresourceRange[] ranges)
+            ClearColorValue color, params ImageSubresourceRange[] ranges)
         {
             fixed (ImageSubresourceRange* rangesPtr = ranges)
                 CmdClearColorImage(this, image, imageLayout, &color, ranges?.Length ?? 0, rangesPtr);
@@ -693,7 +693,7 @@ namespace VulkanCore
         /// and <see cref="ImageAspects.Stencil"/> if the image format has a stencil component.
         /// </param>
         public void CmdClearDepthStencilImage(Image image, ImageLayout imageLayout,
-            ClearDepthStencilValue depthStencil, ImageSubresourceRange[] ranges)
+            ClearDepthStencilValue depthStencil, params ImageSubresourceRange[] ranges)
         {
             fixed (ImageSubresourceRange* rangesPtr = ranges)
                 CmdClearDepthStencilImage(this, image, imageLayout, &depthStencil, ranges?.Length ?? 0, rangesPtr);
@@ -719,7 +719,8 @@ namespace VulkanCore
             fixed (ClearAttachment* attachmentsPtr = attachments)
             fixed (ClearRect* rectsPtr = rects)
             {
-                CmdClearAttachments(this, 
+                CmdClearAttachments(
+                    this,
                     attachments?.Length ?? 0, attachmentsPtr,
                     rects?.Length ?? 0, rectsPtr);
             }
@@ -743,11 +744,16 @@ namespace VulkanCore
         /// </param>
         /// <param name="regions">Structures specifying the regions to resolve.</param>
         public void CmdResolveImage(Image srcImage, ImageLayout srcImageLayout, Image dstImage,
-            ImageLayout dstImageLayout, ImageResolve[] regions)
+            ImageLayout dstImageLayout, params ImageResolve[] regions)
         {
             fixed (ImageResolve* regionsPtr = regions)
-                CmdResolveImage(this, srcImage, srcImageLayout, dstImage, dstImageLayout, regions?.Length ?? 0,
-                    regionsPtr);
+            {
+                CmdResolveImage(
+                    this,
+                    srcImage, srcImageLayout,
+                    dstImage, dstImageLayout,
+                    regions?.Length ?? 0, regionsPtr);
+            }
         }
 
         /// <summary>
@@ -798,7 +804,8 @@ namespace VulkanCore
         /// <param name="bufferMemoryBarriers">An array of <see cref="BufferMemoryBarrier"/> structures.</param>
         /// <param name="imageMemoryBarriers">An array of <see cref="ImageMemoryBarrier"/> structures.</param>
         public void CmdWaitEvents(long[] events, PipelineStages srcStageMask, PipelineStages dstStageMask,
-            MemoryBarrier[] memoryBarriers, BufferMemoryBarrier[] bufferMemoryBarriers,
+            MemoryBarrier[] memoryBarriers, 
+            BufferMemoryBarrier[] bufferMemoryBarriers,
             ImageMemoryBarrier[] imageMemoryBarriers)
         {
             PrepareBarriers(memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
@@ -826,8 +833,9 @@ namespace VulkanCore
         /// <param name="memoryBarriers">An array of <see cref="MemoryBarrier"/> structures.</param>
         /// <param name="bufferMemoryBarriers">An array of <see cref="BufferMemoryBarrier"/> structures.</param>
         /// <param name="imageMemoryBarriers">An array of <see cref="ImageMemoryBarrier"/> structures.</param>
-        public void CmdPipelineBarrier(PipelineStages srcStageMask, PipelineStages dstStageMask,
-            Dependencies dependencyFlags = 0, MemoryBarrier[] memoryBarriers = null, BufferMemoryBarrier[] bufferMemoryBarriers = null,
+        public void CmdPipelineBarrier(PipelineStages srcStageMask, PipelineStages dstStageMask, Dependencies dependencyFlags = 0,
+            MemoryBarrier[] memoryBarriers = null,
+            BufferMemoryBarrier[] bufferMemoryBarriers = null,
             ImageMemoryBarrier[] imageMemoryBarriers = null)
         {
             PrepareBarriers(memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
@@ -1056,7 +1064,7 @@ namespace VulkanCore
         /// Secondary command buffer handles, which are recorded to execute in the primary command
         /// buffer in the order they are listed in the array.
         /// </param>
-        public void CmdExecuteCommands(CommandBuffer[] commandBuffers)
+        public void CmdExecuteCommands(params CommandBuffer[] commandBuffers)
         {
             int count = commandBuffers?.Length ?? 0;
             var commandBuffersPtr = stackalloc IntPtr[count];

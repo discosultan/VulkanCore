@@ -14,7 +14,7 @@ namespace VulkanCore.Tests
             (QueueFamilyProperties prop, int index) = props.Select((x, i) => (x, i)).Last();
             var deviceCreateInfo = new DeviceCreateInfo(new[]
             {
-                new DeviceQueueCreateInfo(index, 1, new[] { 1.0f })
+                new DeviceQueueCreateInfo(index, 1, 1.0f)
             });
             using (Device device = PhysicalDevice.CreateDevice(deviceCreateInfo))
             {

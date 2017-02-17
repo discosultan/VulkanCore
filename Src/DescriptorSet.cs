@@ -131,7 +131,7 @@ namespace VulkanCore
         /// An array of descriptor set layouts, with each member specifying how the corresponding
         /// descriptor set is allocated.
         /// </param>
-        public DescriptorSetAllocateInfo(int descriptorSetCount, DescriptorSetLayout[] setLayouts)
+        public DescriptorSetAllocateInfo(int descriptorSetCount, params DescriptorSetLayout[] setLayouts)
         {
             DescriptorSetCount = descriptorSetCount;
             SetLayouts = setLayouts?.ToHandleArray();

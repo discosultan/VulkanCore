@@ -60,8 +60,19 @@ namespace VulkanCore
         /// <summary>
         /// Combine the data stores of pipeline caches.
         /// </summary>
+        /// <param name="sourceCache">Pipeline cache to merge into this.</param>
+        public void MergeCache(PipelineCache sourceCache)
+        {
+            long handle = sourceCache;
+            Result result = MergePipelineCaches(Parent, this, 1, &handle);
+            VulkanException.ThrowForInvalidResult(result);
+        }
+
+        /// <summary>
+        /// Combine the data stores of pipeline caches.
+        /// </summary>
         /// <param name="sourceCaches">Pipeline caches to merge into this.</param>
-        public void MergeCaches(PipelineCache[] sourceCaches)
+        public void MergeCaches(params PipelineCache[] sourceCaches)
         {
             int count = sourceCaches?.Length ?? 0;
 
@@ -127,7 +138,7 @@ namespace VulkanCore
             public StructureType Type;
             public IntPtr Next;
             public PipelineCacheCreateFlags Flags;
-            public int InitialDataSize;            
+            public int InitialDataSize;
             public byte* InitialData;
         }
 

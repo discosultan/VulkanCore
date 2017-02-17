@@ -136,9 +136,9 @@ namespace VulkanCore.Samples
             // Create device.
             bool sameGraphicsAndPresent = graphicsQueueFamilyIndex == presentQueueFamilyIndex;
             var queueCreateInfos = new DeviceQueueCreateInfo[sameGraphicsAndPresent ? 1 : 2];
-            queueCreateInfos[0] = new DeviceQueueCreateInfo(graphicsQueueFamilyIndex, 1, new[] { 1.0f });
+            queueCreateInfos[0] = new DeviceQueueCreateInfo(graphicsQueueFamilyIndex, 1, 1.0f);
             if (!sameGraphicsAndPresent)
-                queueCreateInfos[1] = new DeviceQueueCreateInfo(presentQueueFamilyIndex, 1, new[] { 1.0f });
+                queueCreateInfos[1] = new DeviceQueueCreateInfo(presentQueueFamilyIndex, 1, 1.0f);
 
             var deviceCreateInfo = new DeviceCreateInfo(
                 queueCreateInfos,

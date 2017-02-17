@@ -262,7 +262,7 @@ namespace VulkanCore.Ext
         /// <param name="obj">Vulkan object to be tagged.</param>
         /// <param name="tagName">A numerical identifier of the tag.</param>
         /// <param name="tag">Bytes containing the data to be associated with the object.</param>
-        public DebugMarkerObjectTagInfoExt(VulkanHandle<IntPtr> obj, long tagName, params byte[] tag)
+        public DebugMarkerObjectTagInfoExt(VulkanHandle<IntPtr> obj, long tagName, byte[] tag)
         {
             ObjectType = GetTypeForObject(obj);
             Object = obj.Handle.ToInt64();
@@ -276,7 +276,7 @@ namespace VulkanCore.Ext
         /// <param name="obj">Vulkan object to be tagged.</param>
         /// <param name="tagName">A numerical identifier of the tag.</param>
         /// <param name="tag">Bytes containing the data to be associated with the object.</param>
-        public DebugMarkerObjectTagInfoExt(VulkanHandle<long> obj, long tagName, params byte[] tag)
+        public DebugMarkerObjectTagInfoExt(VulkanHandle<long> obj, long tagName, byte[] tag)
         {
             ObjectType = GetTypeForObject(obj);
             Object = obj.Handle;

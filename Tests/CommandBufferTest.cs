@@ -155,7 +155,7 @@ namespace VulkanCore.Tests
                 buffer.BindMemory(memory);
 
                 DescriptorSet descriptorSet =
-                    descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, new[] { descriptorSetLayout }))[0];
+                    descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, descriptorSetLayout))[0];
 
                 var writeDescriptorSet = new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.StorageBuffer,
                     bufferInfo: new[] { new DescriptorBufferInfo(buffer) });

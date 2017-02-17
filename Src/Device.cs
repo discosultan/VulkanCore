@@ -209,7 +209,7 @@ namespace VulkanCore
         /// </summary>
         /// <param name="memoryRanges">Structures describing the memory ranges to flush.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void FlushMappedMemoryRanges(MappedMemoryRange[] memoryRanges)
+        public void FlushMappedMemoryRanges(params MappedMemoryRange[] memoryRanges)
         {
             int count = memoryRanges?.Length ?? 0;
 
@@ -264,7 +264,7 @@ namespace VulkanCore
         /// </summary>
         /// <param name="memoryRanges">Structures describing the memory ranges to invalidate.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void InvalidateMappedMemoryRanges(MappedMemoryRange[] memoryRanges)
+        public void InvalidateMappedMemoryRanges(params MappedMemoryRange[] memoryRanges)
         {
             int count = memoryRanges?.Length ?? 0;
 
@@ -524,7 +524,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void ResetFences(params Fence[] fences)
         {
-            Fence.Reset(this, fences);            
+            Fence.Reset(this, fences);
         }
 
         /// <summary>
@@ -744,7 +744,7 @@ namespace VulkanCore
         /// Normalized floating point values, specifying priorities of work that will be submitted to
         /// each created queue.
         /// </param>
-        public DeviceQueueCreateInfo(int queueFamilyIndex, int queueCount, float[] queuePriorities)
+        public DeviceQueueCreateInfo(int queueFamilyIndex, int queueCount, params float[] queuePriorities)
         {
             QueueFamilyIndex = queueFamilyIndex;
             QueueCount = queueCount;

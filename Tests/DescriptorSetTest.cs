@@ -18,8 +18,8 @@ namespace VulkanCore.Tests
             using (DescriptorSetLayout layout = Device.CreateDescriptorSetLayout(layoutCreateInfo))
             using (DescriptorPool pool = Device.CreateDescriptorPool(poolCreateInfo))
             {
-                using (pool.AllocateSets(new DescriptorSetAllocateInfo(1, new[] { layout }))[0]) { }
-                DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, new[] { layout }))[0];
+                using (pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout))[0]) { }
+                DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout))[0];
                 pool.FreeSets(set);
             }
         }
@@ -39,7 +39,7 @@ namespace VulkanCore.Tests
             using (DeviceMemory memory = Device.AllocateMemory(new MemoryAllocateInfo(bufferSize, 0)))
             using (DescriptorSetLayout layout = Device.CreateDescriptorSetLayout(layoutCreateInfo))
             using (DescriptorPool pool = Device.CreateDescriptorPool(poolCreateInfo))
-            using (DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, new[] { layout }))[0])
+            using (DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout))[0])
             {
                 // Required to satisfy the validation layer.
                 buffer.GetMemoryRequirements();
@@ -65,7 +65,7 @@ namespace VulkanCore.Tests
             using (DescriptorSetLayout layout = Device.CreateDescriptorSetLayout(layoutCreateInfo))
             using (DescriptorPool pool = Device.CreateDescriptorPool(poolCreateInfo))
             {
-                pool.AllocateSets(new DescriptorSetAllocateInfo(1, new[] { layout }));
+                pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout));
                 pool.Reset();
             }
         }
