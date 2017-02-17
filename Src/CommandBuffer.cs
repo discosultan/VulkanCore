@@ -675,7 +675,7 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Fill regions of a combined depth-stencil image.
+        /// Fill regions of a combined depth/stencil image.
         /// </summary>
         /// <param name="image">The image to be cleared.</param>
         /// <param name="imageLayout">

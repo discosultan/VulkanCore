@@ -87,8 +87,8 @@ namespace VulkanCore.Nvx
         public int MaxSequencesCount;
         /// <summary>
         /// Can be the secondary <see cref="CommandBuffer"/> in which the commands should be
-        /// recorded. If <c>null</c> an implicit reservation as well as execution takes place on the
-        /// processing <see cref="CommandBuffer"/>.
+        /// recorded. If <see cref="TargetCommandBuffer"/> is <see cref="IntPtr.Zero"/> an implicit
+        /// reservation as well as execution takes place on the processing <see cref="CommandBuffer"/>.
         /// </summary>
         public IntPtr TargetCommandBuffer;
         /// <summary>

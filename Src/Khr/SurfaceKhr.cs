@@ -251,6 +251,7 @@ namespace VulkanCore.Khr
         internal StructureType Type;
         internal IntPtr Next;
         internal WaylandSurfaceCreateFlagsKhr Flags;
+
         /// <summary>
         /// Wayland wl_display to associate the surface with.
         /// </summary>
