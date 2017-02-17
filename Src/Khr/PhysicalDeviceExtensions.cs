@@ -363,9 +363,9 @@ namespace VulkanCore.Khr
         /// <returns>The structure in which the properties are returned.</returns>
         public static PhysicalDeviceMemoryProperties2Khr GetMemoryProperties2Khr(this PhysicalDevice physicalDevice)
         {
-            PhysicalDeviceMemoryProperties2Khr.Native nativeProperties;
-            GetPhysicalDeviceMemoryProperties2Khr(physicalDevice, &nativeProperties);
-            PhysicalDeviceMemoryProperties2Khr.FromNative(&nativeProperties, out var properties);
+            var nativeProperties = new PhysicalDeviceMemoryProperties2Khr.Native();
+            GetPhysicalDeviceMemoryProperties2Khr(physicalDevice, ref nativeProperties);
+            PhysicalDeviceMemoryProperties2Khr.FromNative(ref nativeProperties, out var properties);
             return properties;
         }
 
@@ -466,8 +466,8 @@ namespace VulkanCore.Khr
             int* queueFamilyPropertyCount, QueueFamilyProperties2Khr* queueFamilyProperties);
 
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceMemoryProperties2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceMemoryProperties2Khr(IntPtr physicalDevice, 
-            PhysicalDeviceMemoryProperties2Khr.Native* memoryProperties);
+        private static extern void GetPhysicalDeviceMemoryProperties2Khr(
+            IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties2Khr.Native memoryProperties);
 
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSparseImageFormatProperties2KHR", CallingConvention = CallConv)]
         private static extern void GetPhysicalDeviceSparseImageFormatProperties2Khr(IntPtr physicalDevice,
@@ -899,13 +899,10 @@ namespace VulkanCore.Khr
             public PhysicalDeviceMemoryProperties.Native MemoryProperties;
         }
 
-        internal static void FromNative(Native* native, out PhysicalDeviceMemoryProperties2Khr managed)
+        internal static void FromNative(ref Native native, out PhysicalDeviceMemoryProperties2Khr managed)
         {
-            managed = new PhysicalDeviceMemoryProperties2Khr
-            {
-                Next = native->Next
-            };
-            PhysicalDeviceMemoryProperties.FromNative(&native->MemoryProperties, out managed.MemoryProperties);
+            managed.Next = native.Next;
+            PhysicalDeviceMemoryProperties.FromNative(ref native.MemoryProperties, out managed.MemoryProperties);
         }
     }
 

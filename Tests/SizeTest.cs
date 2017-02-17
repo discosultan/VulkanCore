@@ -20,5 +20,13 @@ namespace VulkanCore.Tests
             Assert.Equal(longVal, (long)longSize);
             Assert.Equal(intPtrVal, (IntPtr)intPtrSize);
         }
+
+        [Fact]
+        public void ToString_EqualToIntPtrToString()
+        {
+            IntPtr intPtrVal = new IntPtr(1);
+            Size sizeVal = intPtrVal;
+            Assert.Equal(intPtrVal.ToString(), sizeVal.ToString());
+        }
     }
 }

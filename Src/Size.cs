@@ -14,6 +14,13 @@ namespace VulkanCore
         private IntPtr _value;
 
         /// <summary>
+        /// Converts the numeric value of the current <see cref="Size"/> object to its equivalent
+        /// string representation.
+        /// </summary>
+        /// <returns>The string representation of the value of this instance.</returns>
+        public override string ToString() => _value.ToString();
+
+        /// <summary>
         /// Implicitly converts an <see cref="int"/> to a <see cref="Size"/>.
         /// </summary>
         /// <param name="value">Instance to convert.</param>

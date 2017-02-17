@@ -59,9 +59,9 @@ namespace VulkanCore
         /// <returns>Structure in which the properties are returned.</returns>
         public PhysicalDeviceMemoryProperties GetMemoryProperties()
         {
-            PhysicalDeviceMemoryProperties.Native nativeProperties;
-            GetPhysicalDeviceMemoryProperties(this, &nativeProperties);
-            PhysicalDeviceMemoryProperties.FromNative(&nativeProperties, out var properties);
+            var nativeProperties = new PhysicalDeviceMemoryProperties.Native();
+            GetPhysicalDeviceMemoryProperties(this, ref nativeProperties);
+            PhysicalDeviceMemoryProperties.FromNative(ref nativeProperties, out var properties);
             return properties;
         }
 
@@ -91,12 +91,12 @@ namespace VulkanCore
         /// <summary>
         /// Lists physical device's image format capabilities.
         /// </summary>
-        /// <param name="format">Is the image format, corresponding to <see cref="ImageCreateInfo.Format"/>.</param>
-        /// <param name="type">Is the image type, corresponding to <see cref="ImageCreateInfo.ImageType"/>.</param>
-        /// <param name="tiling">Is the image tiling, corresponding to <see cref="ImageCreateInfo.Tiling"/>.</param>
-        /// <param name="usages">Is the intended usage of the image, corresponding to <see cref="ImageCreateInfo.Usage"/>.</param>
+        /// <param name="format">The image format, corresponding to <see cref="ImageCreateInfo.Format"/>.</param>
+        /// <param name="type">The image type, corresponding to <see cref="ImageCreateInfo.ImageType"/>.</param>
+        /// <param name="tiling">The image tiling, corresponding to <see cref="ImageCreateInfo.Tiling"/>.</param>
+        /// <param name="usages">The intended usage of the image, corresponding to <see cref="ImageCreateInfo.Usage"/>.</param>
         /// <param name="flags">
-        /// Is a bitmask describing additional parameters of the image, corresponding to <see cref="ImageCreateInfo.Flags"/>.
+        /// A bitmask describing additional parameters of the image, corresponding to <see cref="ImageCreateInfo.Flags"/>.
         /// </param>
         /// <returns>Image format capabilities of a physical device</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
@@ -199,27 +199,27 @@ namespace VulkanCore
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceProperties", CallingConvention = CallConv)]
         private static extern void GetPhysicalDeviceProperties(
             IntPtr physicalDevice, PhysicalDeviceProperties.Native* properties);
-        
+
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceQueueFamilyProperties", CallingConvention = CallConv)]
         private static extern void GetPhysicalDeviceQueueFamilyProperties(
             IntPtr physicalDevice, int* queueFamilyPropertyCount, QueueFamilyProperties* queueFamilyProperties);
-        
+
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceMemoryProperties", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceMemoryProperties(IntPtr physicalDevice, 
-            PhysicalDeviceMemoryProperties.Native* memoryProperties);
-        
+        private static extern void GetPhysicalDeviceMemoryProperties(
+            IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties.Native memoryProperties);
+
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceFeatures", CallingConvention = CallConv)]
         private static extern void GetPhysicalDeviceFeatures(IntPtr physicalDevice, PhysicalDeviceFeatures* features);
 
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceFormatProperties", CallingConvention = CallConv)]
         private static extern void GetPhysicalDeviceFormatProperties(
             IntPtr physicalDevice, Format format, FormatProperties* formatProperties);
-        
+
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceImageFormatProperties", CallingConvention = CallConv)]
         private static extern Result GetPhysicalDeviceImageFormatProperties(IntPtr physicalDevice, 
             Format format, ImageType type, ImageTiling tiling, ImageUsages usages, ImageCreateFlags flags, 
             ImageFormatProperties* imageFormatProperties);
-        
+
         [DllImport(VulkanDll, EntryPoint = "vkEnumerateDeviceLayerProperties", CallingConvention = CallConv)]
         private static extern Result EnumerateDeviceLayerProperties(
             IntPtr physicalDevice, int* propertyCount, LayerProperties.Native* properties);
@@ -227,7 +227,7 @@ namespace VulkanCore
         [DllImport(VulkanDll, EntryPoint = "vkEnumerateDeviceExtensionProperties", CallingConvention = CallConv)]
         private static extern Result EnumerateDeviceExtensionProperties(
             IntPtr physicalDevice, byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
-        
+
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSparseImageFormatProperties", CallingConvention = CallConv)]
         private static extern void GetPhysicalDeviceSparseImageFormatProperties(IntPtr physicalDevice, 
             Format format, ImageType type, SampleCounts samples, ImageUsages usage, ImageTiling tiling, 
@@ -1198,28 +1198,24 @@ namespace VulkanCore
         internal struct Native
         {
             public int MemoryTypeCount;
-            public fixed byte MemoryTypes[MemoryType.Stride * MaxMemoryTypes];
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxMemoryTypes)]
+            public MemoryType[] MemoryTypes;
             public int MemoryHeapCount;
-            public fixed byte MemoryHeaps[MemoryHeap.Stride * MaxMemoryHeaps];
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxMemoryHeaps)]
+            public MemoryHeap[] MemoryHeaps;
         }
 
-        internal static void FromNative(Native* native, out PhysicalDeviceMemoryProperties managed)
+        internal static void FromNative(ref Native native, out PhysicalDeviceMemoryProperties managed)
         {
-            var memoryTypes = new MemoryType[native->MemoryTypeCount];
-            var nativeMemoryTypes = (MemoryType*)native->MemoryTypes;
-            for (int i = 0; i < native->MemoryTypeCount; i++)
-                memoryTypes[i] = nativeMemoryTypes[i];
+            int memoryTypeCount = native.MemoryTypeCount;
+            managed.MemoryTypes = new MemoryType[memoryTypeCount];
+            for (int i = 0; i < memoryTypeCount; i++)
+                managed.MemoryTypes[i] = native.MemoryTypes[i];
 
-            var memoryHeaps = new MemoryHeap[native->MemoryHeapCount];
-            var nativeMemoryHeaps = (MemoryHeap*)native->MemoryHeaps;
-            for (int i = 0; i < native->MemoryHeapCount; i++)
-                memoryHeaps[i] = nativeMemoryHeaps[i];
-
-            managed = new PhysicalDeviceMemoryProperties
-            {
-                MemoryTypes = memoryTypes,
-                MemoryHeaps = memoryHeaps
-            };
+            int memoryHeapCount = native.MemoryHeapCount;
+            managed.MemoryHeaps = new MemoryHeap[memoryHeapCount];
+            for (int i = 0; i < memoryHeapCount; i++)
+                managed.MemoryHeaps[i] = native.MemoryHeaps[i];
         }
     }
 
@@ -1229,8 +1225,6 @@ namespace VulkanCore
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryType
     {
-        internal const int Stride = sizeof(MemoryProperties) + sizeof(int);
-
         /// <summary>
         /// A bitmask of properties for this memory type.
         /// </summary>
@@ -1240,6 +1234,8 @@ namespace VulkanCore
         /// length of <see cref="PhysicalDeviceMemoryProperties.MemoryHeaps"/>.
         /// </summary>
         public int HeapIndex;
+
+        internal static readonly int Stride = Interop.SizeOf<MemoryType>();
     }
 
     /// <summary>
@@ -1248,18 +1244,16 @@ namespace VulkanCore
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryHeap
     {
-        internal const int Stride = sizeof(long) + sizeof(MemoryHeaps) + sizeof(int);
-
         /// <summary>
         /// The total memory size in bytes in the heap.
         /// </summary>
-        public long Size;
+        public Size Size;
         /// <summary>
         /// A bitmask of attribute flags for the heap.
         /// </summary>
         public MemoryHeaps Flags;
 
-        private readonly int Padding;
+        internal static readonly int Stride = Interop.SizeOf<MemoryHeap>();
     }
 
     /// <summary>
