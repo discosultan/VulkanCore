@@ -45,7 +45,12 @@ namespace VulkanCore.Tests
                 buffer.GetMemoryRequirements();
 
                 buffer.BindMemory(memory);
-                pool.UpdateSets(new[] { new WriteDescriptorSet(set, 0, 0, 1, DescriptorType.StorageBuffer, bufferInfo: new[] { new DescriptorBufferInfo(buffer) }) });
+
+                var writeDescriptorSet = new WriteDescriptorSet(set, 0, 0, 1, DescriptorType.StorageBuffer,
+                    bufferInfo: new[] { new DescriptorBufferInfo(buffer) });
+                // It is valid to copy from self to self (without overlapping memory boundaries).
+                //var copyDescriptorSet = new CopyDescriptorSet(set, 0, 0, set, 0, 0, 1);
+                pool.UpdateSets(new[] { writeDescriptorSet }/*, new[] { copyDescriptorSet }*/);
             }
         }
 

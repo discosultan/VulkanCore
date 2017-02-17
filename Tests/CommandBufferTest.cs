@@ -133,6 +133,45 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
+        public void BindDescriptorSet_Succeeds()
+        {
+            const int bufferSize = 256;
+
+            var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.All));
+            var descriptorPoolCreateInfo = new DescriptorPoolCreateInfo(
+                1,
+                new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 1) });
+
+            using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(layoutCreateInfo))
+            using (DescriptorPool descriptorPool = Device.CreateDescriptorPool(descriptorPoolCreateInfo))
+            using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
+            using (Buffer buffer = Device.CreateBuffer(new BufferCreateInfo(bufferSize, BufferUsages.StorageBuffer)))
+            using (DeviceMemory memory = Device.AllocateMemory(new MemoryAllocateInfo(bufferSize, 0)))
+            {
+                // Required to satisfy the validation layer.
+                buffer.GetMemoryRequirements();
+
+                buffer.BindMemory(memory);
+
+                DescriptorSet descriptorSet =
+                    descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, new[] { descriptorSetLayout }))[0];
+
+                var writeDescriptorSet = new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.StorageBuffer,
+                    bufferInfo: new[] { new DescriptorBufferInfo(buffer) });
+
+                descriptorPool.UpdateSets(new[] { writeDescriptorSet });
+
+                CommandBuffer.Begin();
+                CommandBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, pipelineLayout, descriptorSet);
+                CommandBuffer.CmdBindDescriptorSets(PipelineBindPoint.Graphics, pipelineLayout, 0, new[] { descriptorSet });
+                CommandBuffer.End();
+
+                descriptorPool.Reset();
+            }
+        }
+
+        [Fact]
         public void Reset_Succeeds()
         {
             CommandPool.Reset();

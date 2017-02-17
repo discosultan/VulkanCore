@@ -69,10 +69,14 @@ namespace VulkanCore
         internal static void Update(DescriptorPool parent, 
             WriteDescriptorSet[] descriptorWrites, CopyDescriptorSet[] descriptorCopies)
         {
-            int descriptorWriteCount = descriptorWrites.Length;
-            WriteDescriptorSet.Native* nativeDescriptorWritesPtr = stackalloc WriteDescriptorSet.Native[descriptorWriteCount];
+            int descriptorWriteCount = descriptorWrites?.Length ?? 0;
+            var nativeDescriptorWritesPtr = stackalloc WriteDescriptorSet.Native[descriptorWriteCount];
             for (int i = 0; i < descriptorWriteCount; i++)
                 descriptorWrites[i].ToNative(&nativeDescriptorWritesPtr[i]);
+
+            int descriptorCopyCount = descriptorCopies?.Length ?? 0;
+            for (int i = 0; i < descriptorCopyCount; i++)
+                descriptorCopies[i].Prepare();
 
             fixed (CopyDescriptorSet* descriptorCopiesPtr = descriptorCopies)
             {
@@ -80,7 +84,7 @@ namespace VulkanCore
                     parent.Parent,
                     descriptorWriteCount,
                     nativeDescriptorWritesPtr,
-                    descriptorCopies?.Length ?? 0,
+                    descriptorCopyCount,
                     descriptorCopiesPtr);
             }
 
@@ -89,15 +93,15 @@ namespace VulkanCore
         }
 
         [DllImport(VulkanDll, EntryPoint = "vkAllocateDescriptorSets", CallingConvention = CallConv)]
-        private static extern Result AllocateDescriptorSets(IntPtr device, 
+        private static extern Result AllocateDescriptorSets(IntPtr device,
             DescriptorSetAllocateInfo.Native* allocateInfo, long* descriptorSets);
         
         [DllImport(VulkanDll, EntryPoint = "vkFreeDescriptorSets", CallingConvention = CallConv)]
-        private static extern Result FreeDescriptorSets(IntPtr device, 
+        private static extern Result FreeDescriptorSets(IntPtr device,
             long descriptorPool, int descriptorSetCount, long* descriptorSets);
 
         [DllImport(VulkanDll, EntryPoint = "vkUpdateDescriptorSets", CallingConvention = CallConv)]
-        private static extern void UpdateDescriptorSets(IntPtr device, int descriptorWriteCount, 
+        private static extern void UpdateDescriptorSets(IntPtr device, int descriptorWriteCount,
             WriteDescriptorSet.Native* descriptorWrites, int descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
     }
 
@@ -301,7 +305,7 @@ namespace VulkanCore
         /// </summary>
         public long Sampler;
         /// <summary>
-        /// An image view handle, and is used in descriptor updates for types <see
+        /// An <see cref="ImageView"/> handle, and is used in descriptor updates for types <see
         /// cref="DescriptorType.SampledImage"/>, <see cref="DescriptorType.StorageImage"/>, <see
         /// cref="DescriptorType.CombinedImageSampler"/>, and <see cref="DescriptorType.InputAttachment"/>.
         /// </summary>
@@ -348,7 +352,7 @@ namespace VulkanCore
     public struct DescriptorBufferInfo
     {
         /// <summary>
-        /// The buffer resource.
+        /// The <see cref="Buffer"/> resource.
         /// </summary>
         public long Buffer;
         /// <summary>
@@ -403,10 +407,14 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying a copy descriptor set operation.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public struct CopyDescriptorSet
     {
+        internal StructureType Type;
+        internal IntPtr Next;
+
         /// <summary>
-        /// Source descriptor set.
+        /// Source <see cref="DescriptorSet"/>.
         /// </summary>
         public long SrcSet;
         /// <summary>
@@ -424,7 +432,7 @@ namespace VulkanCore
         /// </summary>
         public int SrcArrayElement;
         /// <summary>
-        /// Destination descriptor set.
+        /// Destination <see cref="DescriptorSet"/>.
         /// </summary>
         public long DstSet;
         /// <summary>
@@ -472,6 +480,8 @@ namespace VulkanCore
             DescriptorSet dstSet, int dstBinding, int dstArrayElement,
             int descriptorCount)
         {
+            Type = StructureType.CopyDescriptorSet;
+            Next = IntPtr.Zero;
             SrcSet = srcSet;
             SrcBinding = srcBinding;
             SrcArrayElement = srcArrayElement;
@@ -479,6 +489,11 @@ namespace VulkanCore
             DstBinding = dstBinding;
             DstArrayElement = dstArrayElement;
             DescriptorCount = descriptorCount;
+        }
+
+        internal void Prepare()
+        {
+            Type = StructureType.CopyDescriptorSet;
         }
     }
 }

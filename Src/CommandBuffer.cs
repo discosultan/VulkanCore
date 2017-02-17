@@ -311,7 +311,7 @@ namespace VulkanCore
             int dynamicOffsetValue = dynamicOffset ?? 0;
             CmdBindDescriptorSets(this, pipelineBindPoint, layout, 0, 1,
                 &descriptorSetHandle, dynamicOffset.HasValue ? 1 : 0,
-                dynamicOffset.HasValue ? &dynamicOffsetValue : (int*)0);
+                dynamicOffset.HasValue ? &dynamicOffsetValue : null);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace VulkanCore
             DescriptorSet[] descriptorSets, int[] dynamicOffsets = null)
         {
             int count = descriptorSets?.Length ?? 0;
-            long* descriptorSetsPtr = stackalloc long[count];
+            var descriptorSetsPtr = stackalloc long[count];
             for (int i = 0; i < count; i++)
                 descriptorSetsPtr[i] = descriptorSets[i];
 

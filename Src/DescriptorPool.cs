@@ -76,24 +76,24 @@ namespace VulkanCore
         /// <summary>
         /// Update the contents of a descriptor set object.
         /// <para>
-        /// The operations described by <paramref name="writeDescriptors"/> are performed first,
-        /// followed by the operations described by <paramref name="copyDescriptors"/>. Within each
+        /// The operations described by <paramref name="descriptorWrites"/> are performed first,
+        /// followed by the operations described by <paramref name="descriptorCopies"/>. Within each
         /// array, the operations are performed in the order they appear in the array.
         /// </para>
         /// <para>
-        /// Each element in the <paramref name="writeDescriptors"/> array describes an operation
+        /// Each element in the <paramref name="descriptorWrites"/> array describes an operation
         /// updating the descriptor set using descriptors for resources specified in the structure.
         /// </para>
         /// <para>
-        /// Each element in the <paramref name="copyDescriptors"/> array is a structure describing an
+        /// Each element in the <paramref name="descriptorCopies"/> array is a structure describing an
         /// operation copying descriptors between sets.
         /// </para>
         /// </summary>
-        /// <param name="writeDescriptors">The structures describing the descriptor sets to write to.</param>
-        /// <param name="copyDescriptors">The structures describing the descriptor sets to copy between.</param>
-        public void UpdateSets(WriteDescriptorSet[] writeDescriptors = null, CopyDescriptorSet[] copyDescriptors = null)
+        /// <param name="descriptorWrites">The structures describing the descriptor sets to write to.</param>
+        /// <param name="descriptorCopies">The structures describing the descriptor sets to copy between.</param>
+        public void UpdateSets(WriteDescriptorSet[] descriptorWrites = null, CopyDescriptorSet[] descriptorCopies = null)
         {
-            DescriptorSet.Update(this, writeDescriptors, copyDescriptors);
+            DescriptorSet.Update(this, descriptorWrites, descriptorCopies);
         }
 
         /// <summary>
