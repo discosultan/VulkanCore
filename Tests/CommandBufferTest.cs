@@ -114,7 +114,7 @@ namespace VulkanCore.Tests
             CommandBuffer.End();
         }
 
-        [Fact]
+        [Fact(Skip = "Resolve blend constants param")]
         public void SetBlendConstants_Succeeds()
         {
             CommandBuffer.Begin();
@@ -138,7 +138,7 @@ namespace VulkanCore.Tests
             const int bufferSize = 256;
 
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
-                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.All));
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1));
             var descriptorPoolCreateInfo = new DescriptorPoolCreateInfo(
                 1,
                 new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 1) });
@@ -157,10 +157,10 @@ namespace VulkanCore.Tests
                 DescriptorSet descriptorSet =
                     descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, descriptorSetLayout))[0];
 
-                var writeDescriptorSet = new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.StorageBuffer,
+                var descriptorWrite = new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.StorageBuffer,
                     bufferInfo: new[] { new DescriptorBufferInfo(buffer) });
 
-                descriptorPool.UpdateSets(new[] { writeDescriptorSet });
+                descriptorPool.UpdateSets(new[] { descriptorWrite });
 
                 CommandBuffer.Begin();
                 CommandBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, pipelineLayout, descriptorSet);

@@ -10,7 +10,7 @@ namespace VulkanCore.Tests
         public void AllocateSetsAndFreeSets_Succeeds()
         {
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
-                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.All));
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1));
             var poolCreateInfo = new DescriptorPoolCreateInfo(
                 1, 
                 new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 1) }, 
@@ -25,12 +25,12 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void UpdateSets_Succeeds()
+        public void UpdateSetsDescriptorWrite_Succeeds()
         {
             const int bufferSize = 256;
 
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
-                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.All));
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1));
             var poolCreateInfo = new DescriptorPoolCreateInfo(
                 1,
                 new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 1) },
@@ -46,11 +46,28 @@ namespace VulkanCore.Tests
 
                 buffer.BindMemory(memory);
 
-                var writeDescriptorSet = new WriteDescriptorSet(set, 0, 0, 1, DescriptorType.StorageBuffer,
+                var descriptorWrite = new WriteDescriptorSet(set, 0, 0, 1, DescriptorType.StorageBuffer,
                     bufferInfo: new[] { new DescriptorBufferInfo(buffer) });
+                pool.UpdateSets(new[] { descriptorWrite });
+            }
+        }
+
+        [Fact(Skip = "Resolve valid usage")]
+        public void UpdateSetsDescriptorCopy_Succeeds()
+        {
+            var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 2));
+            var poolCreateInfo = new DescriptorPoolCreateInfo(
+                1,
+                new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 2) },
+                DescriptorPoolCreateFlags.FreeDescriptorSet);
+            using (DescriptorSetLayout layout = Device.CreateDescriptorSetLayout(layoutCreateInfo))
+            using (DescriptorPool pool = Device.CreateDescriptorPool(poolCreateInfo))
+            using (DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout))[0])
+            {
                 // It is valid to copy from self to self (without overlapping memory boundaries).
-                //var copyDescriptorSet = new CopyDescriptorSet(set, 0, 0, set, 0, 0, 1);
-                pool.UpdateSets(new[] { writeDescriptorSet }/*, new[] { copyDescriptorSet }*/);
+                var descriptorCopy = new CopyDescriptorSet(set, 0, 0, set, 0, 1, 1);
+                pool.UpdateSets(descriptorCopies: new[] { descriptorCopy });
             }
         }
 
@@ -58,7 +75,7 @@ namespace VulkanCore.Tests
         public void ResetPool_Succeeds()
         {
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
-                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.All));
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1));
             var poolCreateInfo = new DescriptorPoolCreateInfo(
                 1,
                 new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 1) });

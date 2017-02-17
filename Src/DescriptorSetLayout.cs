@@ -193,8 +193,8 @@ namespace VulkanCore
         /// cref="DescriptorType"/> is not one of these descriptor types, then <see
         /// cref="ImmutableSamplers"/> is ignored.
         /// </param>
-        public DescriptorSetLayoutBinding(int binding, DescriptorType descriptorType, int descriptorCount, 
-            ShaderStages stageFlags, Sampler[] immutableSamplers = null)
+        public DescriptorSetLayoutBinding(int binding, DescriptorType descriptorType, int descriptorCount,
+            ShaderStages stageFlags = ShaderStages.All, Sampler[] immutableSamplers = null)
         {
             Binding = binding;
             DescriptorType = descriptorType;
