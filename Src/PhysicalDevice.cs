@@ -1247,7 +1247,7 @@ namespace VulkanCore
         /// <summary>
         /// The total memory size in bytes in the heap.
         /// </summary>
-        public Size Size;
+        public long Size;
         /// <summary>
         /// A bitmask of attribute flags for the heap.
         /// </summary>

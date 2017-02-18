@@ -1,4 +1,5 @@
-﻿using VulkanCore.Tests.Utilities;
+﻿using System.Linq;
+using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,7 +26,11 @@ namespace VulkanCore.Tests
         {
             PhysicalDeviceMemoryProperties properties = PhysicalDevice.GetMemoryProperties();
             Assert.True(properties.MemoryHeaps.Length > 0);
+            Assert.True(properties.MemoryHeaps.All(x => x.Size > 0));
             Assert.True(properties.MemoryTypes.Length > 0);
+            Assert.True(properties.MemoryTypes.All(x => 
+                x.HeapIndex >= 0 && 
+                x.HeapIndex < properties.MemoryHeaps.Length));
         }
 
         [Fact]
