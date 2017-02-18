@@ -1,4 +1,4 @@
-# VulkanCore [![AppVeyor](https://img.shields.io/appveyor/ci/discosultan/vulkancore.svg)](https://ci.appveyor.com/project/discosultan/vulkancore) [![NuGet Pre Release](https://img.shields.io/nuget/vpre/VulkanCore.svg)](https://www.nuget.org/packages/VulkanCore/1.0.0-alpha01)
+# VulkanCore [![AppVeyor](https://img.shields.io/appveyor/ci/discosultan/vulkancore.svg)](https://ci.appveyor.com/project/discosultan/vulkancore) [![NuGet Pre Release](https://img.shields.io/nuget/vpre/VulkanCore.svg)](https://www.nuget.org/packages/VulkanCore)
 
 Vulkan 1.0 bindings for .NET Standard 1.3
 
