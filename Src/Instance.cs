@@ -331,6 +331,40 @@ namespace VulkanCore
         /// </summary>
         public Version ApiVersion;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApplicationInfo"/> structure.
+        /// </summary>
+        /// <param name="applicationName">The unicode string containing the name of the application.</param>
+        /// <param name="applicationVersion">
+        /// The unsigned integer variable containing the developer-supplied version number of the application.
+        /// </param>
+        /// <param name="engineName">
+        /// The unicode string containing the name of the engine (if any) used to create the application.
+        /// </param>
+        /// <param name="engineVersion">
+        /// The unsigned integer variable containing the developer-supplied version number of the
+        /// engine used to create the application.
+        /// </param>
+        /// <param name="apiVersion">
+        /// The version of the Vulkan API against which the application expects to run. If <see
+        /// cref="ApiVersion"/> is <see cref="Version.Zero"/> the implementation must ignore it,
+        /// otherwise if the implementation does not support the requested <see cref="ApiVersion"/>
+        /// it must return <see cref="Result.ErrorIncompatibleDriver"/>. The patch version number
+        /// specified in <see cref="ApiVersion"/> is ignored when creating an instance object. Only
+        /// the major and minor versions of the instance must match those requested in <see cref="ApiVersion"/>.
+        /// </param>
+        public ApplicationInfo(
+            string applicationName = null, int applicationVersion = 0,
+            string engineName = null, int engineVersion = 0,
+            Version apiVersion = default(Version))
+        {
+            ApplicationName = applicationName;
+            ApplicationVersion = applicationVersion;
+            EngineName = engineName;
+            EngineVersion = engineVersion;
+            ApiVersion = apiVersion;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {

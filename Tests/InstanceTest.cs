@@ -13,7 +13,7 @@ namespace VulkanCore.Tests
         public void Constructor_Succeeds()
         {
             using (new Instance()) { }
-            using (var instance = new Instance(default(InstanceCreateInfo), CustomAllocator))
+            using (var instance = new Instance(allocator: CustomAllocator))
             {
                 Assert.Equal(CustomAllocator, instance.Allocator);
             }
@@ -22,25 +22,19 @@ namespace VulkanCore.Tests
         [Fact]
         public void Constructor_ApplicationInfo_Succeeds()
         {
-            var createInfo = new InstanceCreateInfo
-            {
-                ApplicationInfo = new ApplicationInfo
-                {
-                    ApplicationName = "app name",
-                    EngineName = "engine name"
-                }
-            };
-            using (new Instance(createInfo)) { }
+            var createInfo1 = new InstanceCreateInfo(new ApplicationInfo());
+            var createInfo2 = new InstanceCreateInfo(new ApplicationInfo("app name", 1, "engine name", 2));
+            using (new Instance(createInfo1)) { }
+            using (new Instance(createInfo2)) { }
         }
 
         [Fact]
         public void Constructor_EnabledLayerAndExtension_Succeeds()
         {
-            var createInfo = new InstanceCreateInfo
-            {
-                EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation },
-                EnabledExtensionNames = new[] { Constant.InstanceExtension.ExtDebugReport }
-            };
+            var createInfo = new InstanceCreateInfo(
+                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
+                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
+
             using (new Instance(createInfo)) { }
         }
 
@@ -55,12 +49,11 @@ namespace VulkanCore.Tests
         [Fact]
         public void CreateDebugReportCallbackExt_Succeeds()
         {
-            var createInfo = new InstanceCreateInfo
-            {
-                EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation },
-                EnabledExtensionNames = new[] { Constant.InstanceExtension.ExtDebugReport }
-            };
-            using (Instance instance = new Instance(createInfo))
+            var createInfo = new InstanceCreateInfo(
+                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
+                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
+
+            using (var instance = new Instance(createInfo))
             {
                 var callbackArgs = new List<DebugReportCallbackInfo>();
                 int userData = 1;
@@ -179,17 +172,18 @@ namespace VulkanCore.Tests
         {
             const string message = "hello õäöü";
 
-            using (var instance = new Instance(new InstanceCreateInfo(
-                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport })))
+            var instanceCreateInfo = new InstanceCreateInfo(
+                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
+            using (var instance = new Instance(instanceCreateInfo))
             {
-                var createInfo = new DebugReportCallbackCreateInfoExt(
+                var debugReportCallbackCreateInfo = new DebugReportCallbackCreateInfoExt(
                     DebugReportFlagsExt.Error,
                     args =>
                     {
                         Assert.Equal(message, args.Message);
                         return false;
                     });
-                using (instance.CreateDebugReportCallbackExt(createInfo))
+                using (instance.CreateDebugReportCallbackExt(debugReportCallbackCreateInfo))
                 {
                     instance.DebugReportMessageExt(
                         DebugReportFlagsExt.Error,

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>1.0.0-alpha06</Version>
+    <Version>1.0.0-alpha07</Version>
     <Description>Vulkan bindings for .NET Standard</Description>
     <Authors>discosultan</Authors>
     <Company>discosultan</Company>
