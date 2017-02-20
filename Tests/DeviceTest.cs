@@ -10,8 +10,6 @@ namespace VulkanCore.Tests
 {
     public class DeviceTest : HandleTestBase
     {
-        private delegate Result DebugMarkerSetObjectNameExt(IntPtr p1, IntPtr p2);
-
         [Fact]
         public void GetProcAddr_ThrowsArgumentNullExForNullName()
         {
@@ -371,5 +369,7 @@ namespace VulkanCore.Tests
         }
 
         public DeviceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
+
+        private delegate Result DebugMarkerSetObjectNameExt(IntPtr p1, IntPtr p2);
     }
 }

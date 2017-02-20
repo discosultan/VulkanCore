@@ -48,9 +48,9 @@ namespace VulkanCore.Ext
         /// <param name="layerPrefix">Abbreviation of the component making the callback.</param>
         /// <param name="message">Unicode string detailing the trigger conditions.</param>
         /// <exception cref="InvalidOperationException">Vulkan command not found.</exception>
-        public static void DebugReportMessageExt(this Instance instance, DebugReportFlagsExt flags,
-            DebugReportObjectTypeExt objectType, long @object, int location, int messageCode, string layerPrefix,
-            string message)
+        public static void DebugReportMessageExt(this Instance instance, DebugReportFlagsExt flags, 
+            string message, DebugReportObjectTypeExt objectType = DebugReportObjectTypeExt.Unknown, 
+            long @object = 0, IntPtr location = default(IntPtr), int messageCode = 0, string layerPrefix = null)
         {
             int byteCount = Interop.String.GetMaxByteCount(layerPrefix);
             var layerPrefixBytes = stackalloc byte[byteCount];
@@ -66,6 +66,6 @@ namespace VulkanCore.Ext
         }
 
         private delegate void DebugReportMessageExtDelegate(IntPtr instance, DebugReportFlagsExt flags, 
-            DebugReportObjectTypeExt objectType, long @object, int location, int messageCode, byte* layerPrefix, byte* message);
+            DebugReportObjectTypeExt objectType, long @object, IntPtr location, int messageCode, byte* layerPrefix, byte* message);
     }
 }

@@ -152,7 +152,7 @@ namespace VulkanCore.Ext
     }
 
     /// <summary>
-    /// The arguments for the callback function.
+    /// Structure specifying arguments for a debug report callback function.
     /// </summary>
     public struct DebugReportCallbackInfo
     {

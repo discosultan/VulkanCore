@@ -131,7 +131,6 @@ namespace VulkanCore.Tests
             Assert.Null(Instance.GetProc<EventHandler>("does not exist"));
         }
 
-        private delegate Result CreateDebugReportCallbackExt(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
         [Fact]
         public void GetProc_ReturnsValidDelegate()
         {
@@ -170,7 +169,14 @@ namespace VulkanCore.Tests
         [Fact]
         public void DebugReportMessageExt_Succeeds()
         {
-            const string message = "hello õäöü";
+            const string message = "message õäöü";
+            const DebugReportObjectTypeExt objectType = DebugReportObjectTypeExt.DebugReport;
+            const long @object = long.MaxValue;
+            var location = new IntPtr(int.MaxValue);
+            const int messageCode = 1;
+            const string layerPrefix = "prefix õäöü";
+
+            bool visitedCallback = false;
 
             var instanceCreateInfo = new InstanceCreateInfo(
                 enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
@@ -180,19 +186,27 @@ namespace VulkanCore.Tests
                     DebugReportFlagsExt.Error,
                     args =>
                     {
+                        Assert.Equal(objectType, args.ObjectType);
+                        Assert.Equal(@object, args.Object);
+                        Assert.Equal(location, args.Location);
+                        Assert.Equal(messageCode, args.MessageCode);
+                        Assert.Equal(layerPrefix, args.LayerPrefix);
                         Assert.Equal(message, args.Message);
+                        visitedCallback = true;
                         return false;
                     });
                 using (instance.CreateDebugReportCallbackExt(debugReportCallbackCreateInfo))
                 {
-                    instance.DebugReportMessageExt(
-                        DebugReportFlagsExt.Error,
-                        DebugReportObjectTypeExt.Unknown,
-                        0, 0, 0, null, message);
+                    instance.DebugReportMessageExt(DebugReportFlagsExt.Error, message, objectType,
+                        @object, location, messageCode, layerPrefix);
                 }
             }
+
+            Assert.True(visitedCallback);
         }
 
         public InstanceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
+
+        private delegate Result CreateDebugReportCallbackExt(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
     }
 }
