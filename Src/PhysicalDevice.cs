@@ -1234,8 +1234,6 @@ namespace VulkanCore
         /// length of <see cref="PhysicalDeviceMemoryProperties.MemoryHeaps"/>.
         /// </summary>
         public int HeapIndex;
-
-        internal static readonly int Stride = Interop.SizeOf<MemoryType>();
     }
 
     /// <summary>
@@ -1252,8 +1250,6 @@ namespace VulkanCore
         /// A bitmask of attribute flags for the heap.
         /// </summary>
         public MemoryHeaps Flags;
-
-        internal static readonly int Stride = Interop.SizeOf<MemoryHeap>();
     }
 
     /// <summary>
