@@ -93,8 +93,9 @@ namespace VulkanCore
         /// query may be out of date.
         /// </para>
         /// <para>
-        /// The implementation guarantees to allocate any committed memory from the heapIndex
-        /// indicated by the memory type that the memory object was created with.
+        /// The implementation guarantees to allocate any committed memory from the <see
+        /// cref="MemoryType.HeapIndex"/> indicated by the memory type that the memory object was
+        /// created with.
         /// </para>
         /// </summary>
         /// <returns>The number of bytes currently committed.</returns>
