@@ -1194,6 +1194,31 @@ namespace VulkanCore
         /// </summary>
         public MemoryHeap[] MemoryHeaps;
 
+        /// <summary>
+        /// Gets the index of the <see cref="MemoryType"/> that has all the requested <paramref
+        /// name="properties"/> set.
+        /// </summary>
+        /// <param name="memoryTypeBits">
+        /// A bitmask of <see cref="MemoryRequirements.MemoryTypeBits"/> that contains one bit set
+        /// for every memory type supported by the resource.
+        /// </param>
+        /// <param name="properties">A bitmask of properties to request.</param>
+        /// <returns>Index of the requested <see cref="MemoryType"/>.</returns>
+        /// <exception cref="InvalidOperationException">Requested memory type not found.</exception>
+        public int GetMemoryTypeIndex(int memoryTypeBits, MemoryProperties properties)
+        {
+            for (int i = 0; i < MemoryTypes.Length; i++)
+            {
+                if ((memoryTypeBits & 1) == 1 &&
+                    (MemoryTypes[i].PropertyFlags & properties) == properties)
+                {
+                    return i;
+                }
+                memoryTypeBits >>= 1;
+            }
+            throw new InvalidOperationException("No suitable memory type found!");
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
@@ -1259,6 +1284,10 @@ namespace VulkanCore
     public enum MemoryProperties
     {
         /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
+        /// <summary>
         /// If otherwise stated, then allocate memory on device.
         /// </summary>
         DeviceLocal = 1 << 0,
@@ -1288,6 +1317,10 @@ namespace VulkanCore
     [Flags]
     public enum MemoryHeaps
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
         /// <summary>
         /// If set, heap represents device memory.
         /// </summary>

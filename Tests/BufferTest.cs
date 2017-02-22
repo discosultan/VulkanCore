@@ -19,12 +19,14 @@ namespace VulkanCore.Tests
 
         [Fact]
         public void BindMemoryAndCreateBufferView_Succeeds()
-        {            
+        {
             using (Buffer buffer = CreateBuffer())
             {
-                MemoryRequirements requirements = buffer.GetMemoryRequirements();
-                var memoryAllocateInfo = new MemoryAllocateInfo(requirements.Size,
-                    requirements.MemoryTypeBits.IndexOfFirstFlag());
+                PhysicalDeviceMemoryProperties deviceMemProps = PhysicalDevice.GetMemoryProperties();
+                MemoryRequirements memReq = buffer.GetMemoryRequirements();
+                var memoryAllocateInfo = new MemoryAllocateInfo(
+                    memReq.Size,
+                    deviceMemProps.GetMemoryTypeIndex(memReq.MemoryTypeBits, 0));
 
                 using (DeviceMemory memory = Device.AllocateMemory(memoryAllocateInfo))
                 {

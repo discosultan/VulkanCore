@@ -48,7 +48,6 @@
     <Compile Include="Utilities\HandleTestBase.cs" />
     <Compile Include="DeviceTest.cs" />
     <Compile Include="ImageTest.cs" />
-    <Compile Include="Utilities\Int32Extensions.cs" />
     <Compile Include="InteropTest.cs" />
     <Compile Include="PhysicalDeviceTest.cs" />
     <Compile Include="InstanceTest.cs" />

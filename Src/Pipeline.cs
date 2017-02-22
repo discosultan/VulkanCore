@@ -1158,12 +1158,12 @@ namespace VulkanCore
         /// <summary>
         /// The minimum fraction of sample shading.
         /// </summary>
-        public float MinSampleShading;        
+        public float MinSampleShading;
         /// <summary>
         /// Bitmasks of static coverage information that is ANDed with the coverage information
         /// generated during rasterization.
         /// <para>
-        /// If not <c>null</c>, must be a an array of ` <see cref="RasterizationSamples"/> / 32`
+        /// If not <c>null</c>, must be a an array of `<see cref="RasterizationSamples"/> / 32`
         /// sample mask values.
         /// </para>
         /// </summary>

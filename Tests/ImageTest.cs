@@ -26,10 +26,12 @@ namespace VulkanCore.Tests
         {
             using (Image image = CreateImage())
             {
-                MemoryRequirements requirements = image.GetMemoryRequirements();
+                PhysicalDeviceMemoryProperties deviceMemProps = PhysicalDevice.GetMemoryProperties();
+                MemoryRequirements memReq = image.GetMemoryRequirements();
 
-                using (DeviceMemory memory = Device.AllocateMemory(
-                    new MemoryAllocateInfo(requirements.Size, requirements.MemoryTypeBits.IndexOfFirstFlag())))
+                using (DeviceMemory memory = Device.AllocateMemory(new MemoryAllocateInfo(
+                    memReq.Size, 
+                    deviceMemProps.GetMemoryTypeIndex(memReq.MemoryTypeBits, 0))))
                 {
                     image.BindMemory(memory);
                     Assert.Equal(memory, image.BackedMemory);
