@@ -18,7 +18,6 @@ namespace VulkanCore.Tests.Utilities
 
         public Instance Instance { get; private set; }
         public PhysicalDevice PhysicalDevice { get; private set; }
-        public PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties { get; private set; }
         public Device Device { get; private set; }
 
         public Queue ComputeQueue { get; private set; }

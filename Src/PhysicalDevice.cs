@@ -1216,7 +1216,7 @@ namespace VulkanCore
                 }
                 memoryTypeBits >>= 1;
             }
-            throw new InvalidOperationException("No suitable memory type found!");
+            throw new InvalidOperationException("No suitable memory type found.");
         }
 
         [StructLayout(LayoutKind.Sequential)]
