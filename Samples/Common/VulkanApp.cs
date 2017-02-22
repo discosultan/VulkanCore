@@ -10,6 +10,8 @@ namespace VulkanCore.Samples
     {
         private readonly IntPtr _hInstance;
 
+        private DebugReportCallbackExt _debugCallback;
+
         protected VulkanApp(IntPtr hInstance, IWindow window)
         {
             _hInstance = hInstance;
@@ -18,10 +20,10 @@ namespace VulkanCore.Samples
 
         protected IWindow Window { get; }
 
-        protected Instance Instance { get; private set; }
-        protected DebugReportCallbackExt DebugCallback { get; private set; }
-        protected PhysicalDevice PhysicalDevice { get; private set; }
-        protected Device Device { get; private set; }
+        public Instance Instance { get; private set; }
+        public PhysicalDevice PhysicalDevice { get; private set; }
+        public PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties { get; private set; }
+        public Device Device { get; private set; }
 
         protected SurfaceKhr Surface { get; private set; }
         protected SwapchainKhr Swapchain { get; private set; }
@@ -65,7 +67,7 @@ namespace VulkanCore.Samples
             Swapchain.Dispose();
             Device.Dispose();
             Surface.Dispose();
-            DebugCallback?.Dispose();
+            _debugCallback?.Dispose();
             Instance.Dispose();
         }
 
@@ -96,7 +98,7 @@ namespace VulkanCore.Samples
                     return args.Flags.HasFlag(DebugReportFlagsExt.Error);
                 }
             );
-            DebugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
+            _debugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
 #endif
 
             // Create surface.
@@ -132,6 +134,9 @@ namespace VulkanCore.Samples
 
             if (PhysicalDevice == null)
                 throw new ApplicationException("No suitable physical device found.");
+
+            // Store memory properties of the physical device.
+            PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
 
             // Create device.
             bool sameGraphicsAndPresent = graphicsQueueFamilyIndex == presentQueueFamilyIndex;
