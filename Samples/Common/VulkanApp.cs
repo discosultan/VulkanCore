@@ -29,9 +29,9 @@ namespace VulkanCore.Samples
         protected SwapchainKhr Swapchain { get; private set; }
         protected Image[] SwapchainImages { get; private set; }
 
-        protected Queue GraphicsQueue { get; private set; }
-        protected Queue PresentQueue { get; private set; }
-        protected CommandPool CommandPool { get; private set; }
+        public Queue GraphicsQueue { get; private set; }
+        public Queue PresentQueue { get; private set; }
+        public CommandPool CommandPool { get; private set; }
         protected CommandBuffer[] CommandBuffers { get; private set; }
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }

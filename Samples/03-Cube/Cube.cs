@@ -6,6 +6,7 @@ namespace VulkanCore.Samples.Cube
     public class Cube : IDisposable
     {
         private readonly Device _device;
+        private readonly CommandPool _cmdPool;
         private readonly PhysicalDeviceMemoryProperties _memoryProperties;
 
         private Buffer _vertexBuffer;
@@ -14,6 +15,7 @@ namespace VulkanCore.Samples.Cube
         public Cube(VulkanApp app)
         {
             _device = app.Device;
+            _cmdPool = app.CommandPool;
             _memoryProperties = app.PhysicalDeviceMemoryProperties;
         }
 
@@ -86,30 +88,53 @@ namespace VulkanCore.Samples.Cube
             int indexBufferSize = indices.Length * sizeof(int);
 
             // Vertex buffer.
-            using (Buffer vertexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.TransferSrc)))
-            {
-                MemoryRequirements memReq = vertexStagingBuffer.GetMemoryRequirements();
-                int memoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
-                    memReq.MemoryTypeBits,
-                    MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
-                using (DeviceMemory stagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, memoryTypeIndex)))
-                {
-                    IntPtr ptr = stagingMemory.Map(0, memReq.Size);
-                    Interop.Write(ptr, vertices);
-                    stagingMemory.Unmap();
-                    vertexStagingBuffer.BindMemory(stagingMemory);
+            Buffer vertexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.TransferSrc));
+            MemoryRequirements vertexStagingReq = vertexStagingBuffer.GetMemoryRequirements();
+            int vertexStagingMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+                vertexStagingReq.MemoryTypeBits,
+                MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
+            DeviceMemory vertexStagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(vertexStagingReq.Size, vertexStagingMemoryTypeIndex));
+            IntPtr vertexPtr = vertexStagingMemory.Map(0, vertexStagingReq.Size);
+            Interop.Write(vertexPtr, vertices);
+            vertexStagingMemory.Unmap();
+            vertexStagingBuffer.BindMemory(vertexStagingMemory);
 
-                    // Create a device local buffer where the vertex data will be copied and which will be used for rendering.
-                    _vertexBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.VertexBuffer | BufferUsages.TransferDst));
-                    memReq = _vertexBuffer.GetMemoryRequirements();
-                    memoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
-                        memReq.MemoryTypeBits,
-                        MemoryProperties.DeviceLocal);
-                    _vertexBuffer.BindMemory(_device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, memoryTypeIndex)));
-                }
-            }
+            // Create a device local buffer where the vertex data will be copied and which will be used for rendering.
+            _vertexBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.VertexBuffer | BufferUsages.TransferDst));
+            MemoryRequirements vertexReq = _vertexBuffer.GetMemoryRequirements();
+            int vertexMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+                vertexReq.MemoryTypeBits,
+                MemoryProperties.DeviceLocal);
+            _vertexBuffer.BindMemory(_device.AllocateMemory(new MemoryAllocateInfo(vertexReq.Size, vertexMemoryTypeIndex)));
 
             // Index buffer.
+            Buffer indexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(indexBufferSize, BufferUsages.TransferSrc));
+            MemoryRequirements indexStagingReq = indexStagingBuffer.GetMemoryRequirements();
+            int indexStagingMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+                indexStagingReq.MemoryTypeBits,
+                MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
+            DeviceMemory indexStagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(indexStagingReq.Size, indexStagingMemoryTypeIndex));
+            IntPtr indexPtr = indexStagingMemory.Map(0, indexStagingReq.Size);
+            Interop.Write(indexPtr, indices);
+            indexStagingMemory.Unmap();
+            indexStagingBuffer.BindMemory(indexStagingMemory);
+
+            // Create a device local buffer.
+            _indexBuffer = _device.CreateBuffer(new BufferCreateInfo(indexBufferSize, BufferUsages.IndexBuffer | BufferUsages.TransferDst));
+            MemoryRequirements indexReq = _indexBuffer.GetMemoryRequirements();
+            int indexMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+                indexReq.MemoryTypeBits,
+                MemoryProperties.DeviceLocal);
+            _indexBuffer.BindMemory(_device.AllocateMemory(new MemoryAllocateInfo(indexReq.Size, indexMemoryTypeIndex)));
+
+            // Copy the data from staging buffers to device local buffers.
+            CommandBuffer cmdBuffer = _cmdPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
+            cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.OneTimeSubmit));
+            cmdBuffer.CmdCopyBuffer(vertexStagingBuffer, _vertexBuffer, new BufferCopy(vertexBufferSize));
+            cmdBuffer.CmdCopyBuffer(indexStagingBuffer, _indexBuffer, new BufferCopy(indexBufferSize));
+            cmdBuffer.End();
+
+            // TODO: submit, flush and destroy staging resources.
         }
     }
 }

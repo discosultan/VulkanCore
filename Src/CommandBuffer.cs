@@ -1624,6 +1624,19 @@ namespace VulkanCore
         /// The number of bytes to copy.
         /// </summary>
         public long Size;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BufferCopy"/> structure.
+        /// </summary>
+        /// <param name="srcOffset">The starting offset in bytes from the start of source buffer.</param>
+        /// <param name="dstOffset">The starting offset in bytes from the start of destination buffer.</param>
+        /// <param name="size">The number of bytes to copy.</param>
+        public BufferCopy(long size, long srcOffset = 0, long dstOffset = 0)
+        {
+            SrcOffset = srcOffset;
+            DstOffset = dstOffset;
+            Size = size;
+        }
     }
 
     /// <summary>
