@@ -233,10 +233,8 @@ namespace VulkanCore.Samples.Cube
                     AlphaBlendOp = BlendOp.Add,
                     ColorWriteMask = ColorComponents.All
                 };
-                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo
-                {
-                    Attachments = new[] { colorBlendAttachmentState }
-                };
+                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
+                    new[] { colorBlendAttachmentState });
 
                 var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
                     _pipelineLayout, _renderPass, 0,

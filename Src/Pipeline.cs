@@ -1305,6 +1305,28 @@ namespace VulkanCore
         /// </summary>
         public ColorF4 BlendConstants;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineColorBlendStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="attachments">Per target attachment states.</param>
+        /// <param name="logicOpEnable">Controls whether to apply logical operations.</param>
+        /// <param name="logicOp">Selects which logical operation to apply.</param>
+        /// <param name="blendConstants">
+        /// R, G, B, and A components of the blend constant that are used in blending, depending on
+        /// the blend factor.
+        /// </param>
+        public PipelineColorBlendStateCreateInfo(
+            PipelineColorBlendAttachmentState[] attachments, 
+            bool logicOpEnable = false,
+            LogicOp logicOp = LogicOp.NoOp,
+            ColorF4 blendConstants = default(ColorF4))
+        {
+            Attachments = attachments;
+            LogicOpEnable = logicOpEnable;
+            LogicOp = logicOp;
+            BlendConstants = blendConstants;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {

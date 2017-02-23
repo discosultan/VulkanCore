@@ -202,28 +202,19 @@ namespace VulkanCore.Tests
         [Fact]
         public void CreateGraphicsPipeline_Succeeds()
         {
-            var attachments = new[]
+            var attachment = new AttachmentDescription
             {
-                new AttachmentDescription
-                {
-                    Samples = SampleCounts.Count1,
-                    Format = Format.B8G8R8A8UNorm,
-                    InitialLayout = ImageLayout.Undefined,
-                    FinalLayout = ImageLayout.PresentSrcKhr,
-                    LoadOp = AttachmentLoadOp.Clear,
-                    StoreOp = AttachmentStoreOp.Store,
-                    StencilLoadOp = AttachmentLoadOp.DontCare,
-                    StencilStoreOp = AttachmentStoreOp.DontCare
-                }
+                Samples = SampleCounts.Count1,
+                Format = Format.B8G8R8A8UNorm,
+                InitialLayout = ImageLayout.Undefined,
+                FinalLayout = ImageLayout.PresentSrcKhr,
+                LoadOp = AttachmentLoadOp.Clear,
+                StoreOp = AttachmentStoreOp.Store,
+                StencilLoadOp = AttachmentLoadOp.DontCare,
+                StencilStoreOp = AttachmentStoreOp.DontCare
             };
-            var subpasses = new[]
-            {
-                new SubpassDescription
-                {
-                    ColorAttachments = new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) }
-                }
-            };
-            var createInfo = new RenderPassCreateInfo(subpasses, attachments);
+            var subpass = new SubpassDescription(new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) });
+            var createInfo = new RenderPassCreateInfo(new[] { subpass }, new[] { attachment });
 
             using (PipelineCache cache = Device.CreatePipelineCache())
             using (RenderPass renderPass = Device.CreateRenderPass(createInfo))
@@ -273,13 +264,9 @@ namespace VulkanCore.Tests
                     AlphaBlendOp = BlendOp.Add,
                     ColorWriteMask = ColorComponents.All
                 };
-                var depthStencilStateCreateInfo = new PipelineDepthStencilStateCreateInfo
-                {
-                };
-                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo
-                {
-                    Attachments = new[] { colorBlendAttachmentState }
-                };
+                var depthStencilStateCreateInfo = new PipelineDepthStencilStateCreateInfo();                
+                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
+                    new[] { colorBlendAttachmentState });
                 var dynamicStateCreateInfo = new PipelineDynamicStateCreateInfo(DynamicState.LineWidth);
 
                 using (PipelineLayout layout = Device.CreatePipelineLayout())

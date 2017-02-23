@@ -158,10 +158,8 @@ namespace VulkanCore.Samples.Triangle
                     AlphaBlendOp = BlendOp.Add,
                     ColorWriteMask = ColorComponents.All
                 };
-                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo
-                {
-                    Attachments = new[] { colorBlendAttachmentState }
-                };
+                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
+                    new[] { colorBlendAttachmentState });
 
                 var layoutCreateInfo = new PipelineLayoutCreateInfo();
                 _pipelineLayout = Device.CreatePipelineLayout(layoutCreateInfo);
