@@ -24,9 +24,9 @@ namespace VulkanCore.Samples.Cube
 
         public void Dispose()
         {
-            _indexBuffer.BackedMemory.Dispose();
+            _indexBuffer.BackingMemory.Dispose();
             _indexBuffer.Dispose();
-            _vertexBuffer.BackedMemory.Dispose();
+            _vertexBuffer.BackingMemory.Dispose();
             _vertexBuffer.Dispose();
         }
 

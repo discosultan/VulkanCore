@@ -129,7 +129,7 @@ namespace VulkanCore.Samples.Cube
 
         public override void Dispose()
         {
-            _uniformBuffer.BackedMemory.Dispose();
+            _uniformBuffer.BackingMemory.Dispose();
             _uniformBuffer.Dispose();
             _descriptorPool.Dispose();
             _descriptorSetLayout.Dispose();

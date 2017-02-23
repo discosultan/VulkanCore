@@ -31,7 +31,7 @@ namespace VulkanCore.Tests
                 using (DeviceMemory memory = Device.AllocateMemory(memoryAllocateInfo))
                 {
                     buffer.BindMemory(memory);
-                    Assert.Equal(memory, buffer.BackedMemory);
+                    Assert.Equal(memory, buffer.BackingMemory);
 
                     var bufferViewCreateInfo = new BufferViewCreateInfo(Format.R32UInt);
                     using (buffer.CreateView(bufferViewCreateInfo)) { }

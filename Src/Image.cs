@@ -45,7 +45,7 @@ namespace VulkanCore
         /// <summary>
         /// Gets the backing memory object bound by <see cref="BindMemory"/>.
         /// </summary>
-        public DeviceMemory BackedMemory { get; private set; }
+        public DeviceMemory BackingMemory { get; private set; }
 
         /// <summary>
         /// Bind device memory to an image object.
@@ -63,7 +63,7 @@ namespace VulkanCore
         {
             Result result = BindImageMemory(Parent, this, memory, memoryOffset);
             VulkanException.ThrowForInvalidResult(result);
-            BackedMemory = memory;
+            BackingMemory = memory;
         }
 
         /// <summary>
