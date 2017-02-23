@@ -85,18 +85,24 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void EnumeratePhysicalDevicesTwice_PhysicalDevicesEqual()
+        public void CompareHandleEquality()
         {
-            PhysicalDevice[] physicalDevices1 = Instance.EnumeratePhysicalDevices();
-            PhysicalDevice[] physicalDevices2 = Instance.EnumeratePhysicalDevices();
-            Assert.Equal(physicalDevices1[0], physicalDevices2[0]);
-            Assert.Equal(physicalDevices1[0].GetHashCode(), physicalDevices2[0].GetHashCode());
-            Assert.True(physicalDevices1[0] == physicalDevices2[0]);
-            Assert.False(physicalDevices1[0] != physicalDevices2[0]);
-            Assert.True(physicalDevices1[0].Equals(physicalDevices2[0]));
-            Assert.True(physicalDevices1[0].Equals(physicalDevices1[0]));
-            Assert.False(physicalDevices1[0].Equals(null));
-            Assert.False(physicalDevices1[0].Equals(""));
+            PhysicalDevice physicalDevice1 = Instance.EnumeratePhysicalDevices()[0];
+            PhysicalDevice physicalDevice2 = Instance.EnumeratePhysicalDevices()[0];
+
+            Assert.Equal(physicalDevice1.GetHashCode(), physicalDevice2.GetHashCode());
+
+            Assert.Equal(physicalDevice1, physicalDevice2);
+            Assert.True(physicalDevice1.Equals(physicalDevice2));
+            Assert.True(physicalDevice1.Equals(physicalDevice1));
+            Assert.False(physicalDevice1.Equals(null));
+            Assert.False(physicalDevice1.Equals(""));
+
+            Assert.True(physicalDevice1 == physicalDevice2);
+            Assert.False(physicalDevice1 != physicalDevice2);
+            Assert.False(null == physicalDevice2);
+            Assert.False(physicalDevice1 == null);
+            Assert.False((VulkanHandle<IntPtr>)null == null);
         }
 
         [Fact]
