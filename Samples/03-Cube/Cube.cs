@@ -10,7 +10,9 @@ namespace VulkanCore.Samples.Cube
         private readonly PhysicalDeviceMemoryProperties _memoryProperties;
 
         private Buffer _vertexBuffer;
+        private DeviceMemory _vertexBufferMemory;
         private Buffer _indexBuffer;
+        private DeviceMemory _indexBufferMemory;
 
         public Cube(VulkanApp app)
         {
@@ -26,9 +28,9 @@ namespace VulkanCore.Samples.Cube
 
         public void Dispose()
         {
-            _indexBuffer.BackingMemory.Dispose();
+            _indexBufferMemory.Dispose();
             _indexBuffer.Dispose();
-            _vertexBuffer.BackingMemory.Dispose();
+            _vertexBufferMemory.Dispose();
             _vertexBuffer.Dispose();
         }
 
@@ -105,7 +107,8 @@ namespace VulkanCore.Samples.Cube
             int vertexMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
                 vertexReq.MemoryTypeBits,
                 MemoryProperties.DeviceLocal);
-            _vertexBuffer.BindMemory(_device.AllocateMemory(new MemoryAllocateInfo(vertexReq.Size, vertexMemoryTypeIndex)));
+            _vertexBufferMemory = _device.AllocateMemory(new MemoryAllocateInfo(vertexReq.Size, vertexMemoryTypeIndex));
+            _vertexBuffer.BindMemory(_vertexBufferMemory);
 
             // Index buffer.
             Buffer indexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(indexBufferSize, BufferUsages.TransferSrc));
@@ -125,7 +128,8 @@ namespace VulkanCore.Samples.Cube
             int indexMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
                 indexReq.MemoryTypeBits,
                 MemoryProperties.DeviceLocal);
-            _indexBuffer.BindMemory(_device.AllocateMemory(new MemoryAllocateInfo(indexReq.Size, indexMemoryTypeIndex)));
+            _indexBufferMemory = _device.AllocateMemory(new MemoryAllocateInfo(indexReq.Size, indexMemoryTypeIndex));
+            _indexBuffer.BindMemory(_indexBufferMemory);
 
             // Copy the data from staging buffers to device local buffers.
             CommandBuffer cmdBuffer = _cmdPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];

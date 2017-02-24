@@ -32,6 +32,7 @@ namespace VulkanCore.Samples.Cube
         private DescriptorSet _descriptorSet;
 
         private Buffer _uniformBuffer;
+        private DeviceMemory _uniformBufferMemory;
         private WVP _wvp;
 
         public CubeApp(IntPtr hInstance, IWindow window) : base(hInstance, window)
@@ -52,7 +53,7 @@ namespace VulkanCore.Samples.Cube
             _wvp.View = Matrix4x4.CreateLookAt(Vector3.UnitZ, Vector3.Zero, Vector3.UnitY);
             _wvp.Projection = Matrix4x4.CreatePerspectiveFieldOfView(
                 (float)Math.PI / 4, 
-                Window.Width / Window.Height, 
+                (float)Window.Width / Window.Height, 
                 1.0f, 1000.0f);
         }
 
@@ -70,8 +71,8 @@ namespace VulkanCore.Samples.Cube
             int memoryTypeIndex = PhysicalDeviceMemoryProperties.GetMemoryTypeIndex(
                 memoryRequirements.MemoryTypeBits, 
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
-            DeviceMemory memory = Device.AllocateMemory(new MemoryAllocateInfo(memoryRequirements.Size, memoryTypeIndex));
-            _uniformBuffer.BindMemory(memory);
+            _uniformBufferMemory = Device.AllocateMemory(new MemoryAllocateInfo(memoryRequirements.Size, memoryTypeIndex));
+            _uniformBuffer.BindMemory(_uniformBufferMemory);
         }
 
         private void CreateDescriptorSet()
@@ -129,7 +130,7 @@ namespace VulkanCore.Samples.Cube
 
         public override void Dispose()
         {
-            _uniformBuffer.BackingMemory.Dispose();
+            _uniformBufferMemory.Dispose();
             _uniformBuffer.Dispose();
             _descriptorPool.Dispose();
             _descriptorSetLayout.Dispose();

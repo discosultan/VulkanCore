@@ -34,7 +34,6 @@ namespace VulkanCore.Tests
                     deviceMemProps.GetMemoryTypeIndex(memReq.MemoryTypeBits, 0))))
                 {
                     image.BindMemory(memory);
-                    Assert.Equal(memory, image.BackingMemory);
 
                     var createInfo = new ImageViewCreateInfo
                     {
