@@ -85,27 +85,6 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CompareHandleEquality()
-        {
-            PhysicalDevice physicalDevice1 = Instance.EnumeratePhysicalDevices()[0];
-            PhysicalDevice physicalDevice2 = Instance.EnumeratePhysicalDevices()[0];
-
-            Assert.Equal(physicalDevice1.GetHashCode(), physicalDevice2.GetHashCode());
-
-            Assert.Equal(physicalDevice1, physicalDevice2);
-            Assert.True(physicalDevice1.Equals(physicalDevice2));
-            Assert.True(physicalDevice1.Equals(physicalDevice1));
-            Assert.False(physicalDevice1.Equals(null));
-            Assert.False(physicalDevice1.Equals(""));
-
-            Assert.True(physicalDevice1 == physicalDevice2);
-            Assert.False(physicalDevice1 != physicalDevice2);
-            Assert.False(null == physicalDevice2);
-            Assert.False(physicalDevice1 == null);
-            Assert.False((VulkanHandle<IntPtr>)null == null);
-        }
-
-        [Fact]
         public void GetProcAddr_ReturnsValidHandleForExistingCommand()
         {
             IntPtr address = Instance.GetProcAddr("vkCreateDebugReportCallbackEXT");

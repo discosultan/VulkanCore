@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace VulkanCore
 {
@@ -15,48 +14,6 @@ namespace VulkanCore
         /// Gets the handle to the unmanaged Vulkan resource.
         /// </summary>
         public THandle Handle { get; protected set; }
-
-        /// <summary>
-        /// Returns a value indicating whether this instance is equal to a specified object.
-        /// </summary>
-        /// <param name="obj">An object to compare with this instance or a null reference.</param>
-        /// <returns>
-        /// <c>true</c> if obj is an instance of <see cref="VulkanHandle{THandle}"/> and its handle
-        /// equals the handle of this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Handle.Equals(((VulkanHandle<THandle>)obj).Handle);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode() => Handle.GetHashCode();
-
-        /// <summary>
-        /// Returns a boolean indicating whether the two given handles are equal.
-        /// </summary>
-        /// <param name="left">The first handle to compare.</param>
-        /// <param name="right">The second handle to compare.</param>
-        /// <returns><c>true</c> if the handles are equal; otherwise <c>false</c>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator ==(VulkanHandle<THandle> left, VulkanHandle<THandle> right)
-            => left?.Equals(right) ?? false;
-
-        /// <summary>
-        /// Returns a boolean indicating whether the two given handles are not equal.
-        /// </summary>
-        /// <param name="left">The first handle to compare.</param>
-        /// <param name="right">The second handle to compare.</param>
-        /// <returns><c>true</c> if the handles are not equal; otherwise <c>false</c>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator !=(VulkanHandle<THandle> left, VulkanHandle<THandle> right)
-            => !(left == right);
 
         /// <summary>
         /// Implicitly converts an instance of <see cref="VulkanHandle{THandle}"/> to its handle type.
@@ -73,7 +30,6 @@ namespace VulkanCore
     public abstract unsafe class DisposableHandle<THandle> : VulkanHandle<THandle>, IDisposable
         where THandle : struct
     {
-        private bool _disposed;
         private AllocationCallbacks? _allocator;
 
         /// <summary>
