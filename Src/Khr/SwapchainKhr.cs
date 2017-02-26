@@ -27,14 +27,12 @@ namespace VulkanCore.Khr
             Allocator = allocator;
             Format = createInfo.ImageFormat;
 
-            fixed (int* queueFamilyIndicesPtr = createInfo.QueueFamilyIndices)
-            {
-                long handle;
-                createInfo.ToNative(out SwapchainCreateInfoKhr.Native nativeCreateInfo, queueFamilyIndicesPtr);
-                Result result = CreateSwapchainKhr(Parent, &nativeCreateInfo, NativeAllocator, &handle);
-                VulkanException.ThrowForInvalidResult(result);
-                Handle = handle;
-            }
+            long handle;
+            createInfo.ToNative(out SwapchainCreateInfoKhr.Native nativeCreateInfo);
+            Result result = CreateSwapchainKhr(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+            nativeCreateInfo.Free();
+            VulkanException.ThrowForInvalidResult(result);
+            Handle = handle;
         }
 
         internal SwapchainKhr(Device parent, long handle, ref AllocationCallbacks? allocator)
@@ -61,7 +59,7 @@ namespace VulkanCore.Khr
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public Image[] GetImages()
         {
-            int swapchainImageCount;            
+            int swapchainImageCount;
             Result result = GetSwapchainImagesKhr(Parent, this, &swapchainImageCount, null);
             VulkanException.ThrowForInvalidResult(result);
 
@@ -112,12 +110,9 @@ namespace VulkanCore.Khr
         {
             int count = createInfos?.Length ?? 0;
             var nativeCreateInfos = stackalloc SwapchainCreateInfoKhr.Native[count];
-            var gcHandles = stackalloc GCHandle[count];
             for (int i = 0; i < count; i++)
-            {
-                gcHandles[i] = GCHandle.Alloc(createInfos[i].QueueFamilyIndices, GCHandleType.Pinned);
-                createInfos[i].ToNative(out nativeCreateInfos[i], (int*)gcHandles[i].AddrOfPinnedObject());
-            }
+                createInfos[i].ToNative(out nativeCreateInfos[i]);
+
             AllocationCallbacks.Native nativeAllocator;
             allocator?.ToNative(&nativeAllocator);
 
@@ -125,7 +120,7 @@ namespace VulkanCore.Khr
             Result result = CreateSharedSwapchainsKhr(parent, count, nativeCreateInfos,
                 allocator.HasValue ? &nativeAllocator : null, handles);
             for (int i = 0; i < count; i++)
-                gcHandles[i].Free();
+                nativeCreateInfos[i].Free();
 
             VulkanException.ThrowForInvalidResult(result);
 
@@ -159,7 +154,7 @@ namespace VulkanCore.Khr
             long timeout, long semaphore, long fence, int* imageIndex);
 
         [DllImport(VulkanDll, EntryPoint = "vkCreateSharedSwapchainsKHR", CallingConvention = CallConv)]
-        private static extern Result CreateSharedSwapchainsKhr(Device device,
+        private static extern Result CreateSharedSwapchainsKhr(IntPtr device,
             int swapchainCount, SwapchainCreateInfoKhr.Native* createInfos, AllocationCallbacks.Native* allocator, long* swapchains);
     }
 
@@ -382,15 +377,20 @@ namespace VulkanCore.Khr
             public ImageUsages ImageUsage;
             public SharingMode ImageSharingMode;
             public int QueueFamilyIndexCount;
-            public int* QueueFamilyIndices;
+            public IntPtr QueueFamilyIndices;
             public SurfaceTransformsKhr PreTransform;
             public CompositeAlphasKhr CompositeAlpha;
             public PresentModeKhr PresentMode;
             public Bool Clipped;
             public long OldSwapchain;
+
+            public void Free()
+            {
+                Interop.Free(QueueFamilyIndices);
+            }
         }
 
-        internal void ToNative(out Native native, int* queueFamilyIndices)
+        internal void ToNative(out Native native)
         {
             native.Type = StructureType.SwapchainCreateInfoKhr;
             native.Next = IntPtr.Zero;
@@ -404,7 +404,7 @@ namespace VulkanCore.Khr
             native.ImageUsage = ImageUsage;
             native.ImageSharingMode = ImageSharingMode;
             native.QueueFamilyIndexCount = QueueFamilyIndices?.Length ?? 0;
-            native.QueueFamilyIndices = queueFamilyIndices;
+            native.QueueFamilyIndices = Interop.Struct.AllocToPointer(QueueFamilyIndices);
             native.PreTransform = PreTransform;
             native.CompositeAlpha = CompositeAlpha;
             native.PresentMode = PresentMode;
