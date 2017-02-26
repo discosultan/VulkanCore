@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02-Triangle", "Samples\02-T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Samples\Common\Common.csproj", "{64C3B246-F0F9-46B0-B382-E0E27D1AEFFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03-Cube (WIP)", "Samples\03-Cube\03-Cube (WIP).csproj", "{5208E2BC-B3FB-479A-BEEB-9BFB02AD123B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03-Cube", "Samples\03-Cube\03-Cube.csproj", "{5208E2BC-B3FB-479A-BEEB-9BFB02AD123B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

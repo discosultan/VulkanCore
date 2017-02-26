@@ -37,7 +37,12 @@ Sets up a window and clears it to a solid color.
 
 ## [02-Triangle](Samples/02-Triangle)
 <img src="./Doc/Triangle.jpg" height="96px" align="right">
-Renders a triangle defined in a shader.
+Renders a colored triangle defined in a shader.
+<br><br>
+
+## [03-Cube](Samples/03-Cube)
+<img src="./Doc/Cube.jpg" height="96px" align="right">
+Renders a textured cube.
 <br><br>
 
 ## Tests

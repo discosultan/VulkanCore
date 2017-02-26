@@ -997,13 +997,13 @@
         /// encoding applied to the RGB components.
         /// </summary>
         Astc12X12SRgbBlock = 184,
-        Pvrtc12bppUNormBlockImg = 1000054000,
-        Pvrtc14bppUNormBlockImg = 1000054001,
-        Pvrtc22bppUNormBlockImg = 1000054002,
-        Pvrtc24bppUNormBlockImg = 1000054003,
-        Pvrtc12bppSrgbBlockImg = 1000054004,
-        Pvrtc14bppSrgbBlockImg = 1000054005,
-        Pvrtc22bppSrgbBlockImg = 1000054006,
-        Pvrtc24bppSrgbBlockImg = 1000054007
+        Pvrtc12BppUNormBlockImg = 1000054000,
+        Pvrtc14BppUNormBlockImg = 1000054001,
+        Pvrtc22BppUNormBlockImg = 1000054002,
+        Pvrtc24BppUNormBlockImg = 1000054003,
+        Pvrtc12BppSrgbBlockImg = 1000054004,
+        Pvrtc14BppSrgbBlockImg = 1000054005,
+        Pvrtc22BppSrgbBlockImg = 1000054006,
+        Pvrtc24BppSrgbBlockImg = 1000054007
     }
 }

@@ -1,7 +1,13 @@
 #version 450
 
-layout(location = 0) out vec4 out_Color;
+layout (binding = 1) uniform sampler2D sampler_Color;
+
+layout (location = 0) in vec2 in_TexCoord;
+
+layout (location = 0) out vec4 out_Color;
 
 void main() {
-    out_Color = vec4(1.0, 0.0, 0.0, 1.0);
+    vec4 color = texture(sampler_Color, in_TexCoord);
+
+    out_Color = vec4(color.rgb, 1.0);
 }

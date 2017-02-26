@@ -21,6 +21,7 @@ namespace VulkanCore.Samples.Triangle
             base.Initialize();
             CreateRenderPass();
             CreateFramebuffers();
+            CreatePipelineLayout();
             CreateGraphicsPipeline();
             RecordCommandBuffers();
         }
@@ -29,7 +30,6 @@ namespace VulkanCore.Samples.Triangle
         {
             base.OnResized();
             _pipeline.Dispose();
-            _pipelineLayout.Dispose();
             Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
             Array.ForEach(_imageViews, imageView => imageView.Dispose());
             CreateFramebuffers();
@@ -108,6 +108,12 @@ namespace VulkanCore.Samples.Triangle
             }
         }
 
+        private void CreatePipelineLayout()
+        {
+            var layoutCreateInfo = new PipelineLayoutCreateInfo();
+            _pipelineLayout = Device.CreatePipelineLayout(layoutCreateInfo);
+        }
+
         private void CreateGraphicsPipeline()
         {
             // Create shader modules. Shader modules are one of the objects required to create the
@@ -160,9 +166,6 @@ namespace VulkanCore.Samples.Triangle
                 };
                 var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
                     new[] { colorBlendAttachmentState });
-
-                var layoutCreateInfo = new PipelineLayoutCreateInfo();
-                _pipelineLayout = Device.CreatePipelineLayout(layoutCreateInfo);
 
                 var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
                     _pipelineLayout, _renderPass, 0,

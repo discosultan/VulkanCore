@@ -1696,9 +1696,27 @@ namespace VulkanCore
         /// </summary>
         public int BaseArrayLayer;
         /// <summary>
-        /// The number of layers to copy
+        /// The number of layers to copy.
         /// </summary>
         public int LayerCount;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageSubresourceLayers"/> structure.
+        /// </summary>
+        /// <param name="aspectMask">
+        /// A combination of <see cref="ImageAspects"/> selecting the color, depth and/or stencil
+        /// aspects to be copied.
+        /// </param>
+        /// <param name="mipLevel">The mipmap level to copy from.</param>
+        /// <param name="baseArrayLayer">The starting layer.</param>
+        /// <param name="layerCount">The number of layers to copy.</param>
+        public ImageSubresourceLayers(ImageAspects aspectMask, int mipLevel, int baseArrayLayer, int layerCount)
+        {
+            AspectMask = aspectMask;
+            MipLevel = mipLevel;
+            BaseArrayLayer = baseArrayLayer;
+            LayerCount = layerCount;
+        }
     }
 
     /// <summary>

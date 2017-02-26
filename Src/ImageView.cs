@@ -131,7 +131,7 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Image view types. 
+    /// Image view types.
     /// </summary>
     public enum ImageViewType
     {
@@ -145,40 +145,63 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Structure specifying a color component mapping. 
+    /// Structure specifying a color component mapping.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ComponentMapping
     {
         /// <summary>
-        /// Determines the component value placed in the R component of the output vector. 
+        /// Determines the component value placed in the R component of the output vector.
         /// </summary>
         public ComponentSwizzle R;
         /// <summary>
-        /// Determines the component value placed in the G component of the output vector. 
+        /// Determines the component value placed in the G component of the output vector.
         /// </summary>
         public ComponentSwizzle G;
         /// <summary>
-        /// Determines the component value placed in the B component of the output vector. 
+        /// Determines the component value placed in the B component of the output vector.
         /// </summary>
         public ComponentSwizzle B;
         /// <summary>
-        /// Determines the component value placed in the A component of the output vector. 
+        /// Determines the component value placed in the A component of the output vector.
         /// </summary>
         public ComponentSwizzle A;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComponentMapping"/> structure.
+        /// </summary>
+        /// <param name="r">
+        /// Determines the component value placed in the R component of the output vector.
+        /// </param>
+        /// <param name="g">
+        /// Determines the component value placed in the G component of the output vector.
+        /// </param>
+        /// <param name="b">
+        /// Determines the component value placed in the B component of the output vector.
+        /// </param>
+        /// <param name="a">
+        /// Determines the component value placed in the A component of the output vector.
+        /// </param>
+        public ComponentMapping(ComponentSwizzle r, ComponentSwizzle g, ComponentSwizzle b, ComponentSwizzle a)
+        {
+            R = r;
+            G = g;
+            B = b;
+            A = a;
+        }
     }
 
     /// <summary>
-    /// Specify how a component is swizzled. 
+    /// Specify how a component is swizzled.
     /// </summary>
     public enum ComponentSwizzle
     {
         /// <summary>
-        /// The component is set to the identity swizzle. 
+        /// The component is set to the identity swizzle.
         /// </summary>
         Identity = 0,
         /// <summary>
-        /// The component is set to zero. 
+        /// The component is set to zero.
         /// </summary>
         Zero = 1,
         /// <summary>
@@ -187,19 +210,19 @@ namespace VulkanCore
         /// </summary>
         One = 2,
         /// <summary>
-        /// The component is set to the value of the R component of the image. 
+        /// The component is set to the value of the R component of the image.
         /// </summary>
         R = 3,
         /// <summary>
-        /// The component is set to the value of the G component of the image. 
+        /// The component is set to the value of the G component of the image.
         /// </summary>
         G = 4,
         /// <summary>
-        /// The component is set to the value of the B component of the image. 
+        /// The component is set to the value of the B component of the image.
         /// </summary>
         B = 5,
         /// <summary>
-        /// The component is set to the value of the A component of the image. 
+        /// The component is set to the value of the A component of the image.
         /// </summary>
         A = 6
     }
@@ -257,7 +280,7 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Bitmask specifying which aspects of an image are included in a view. 
+    /// Bitmask specifying which aspects of an image are included in a view.
     /// </summary>
     [Flags]
     public enum ImageAspects

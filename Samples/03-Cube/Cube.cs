@@ -7,6 +7,7 @@ namespace VulkanCore.Samples.Cube
     {
         private readonly Device _device;
         private readonly CommandPool _cmdPool;
+        private readonly Queue _queue;
         private readonly PhysicalDeviceMemoryProperties _memoryProperties;
 
         private Buffer _vertexBuffer;
@@ -18,8 +19,14 @@ namespace VulkanCore.Samples.Cube
         {
             _device = app.Device;
             _cmdPool = app.CommandPool;
+            _queue = app.GraphicsQueue;
             _memoryProperties = app.PhysicalDeviceMemoryProperties;
         }
+
+        public Buffer VertexBuffer => _vertexBuffer;
+        public Buffer IndexBuffer => _indexBuffer;
+        public int IndexCount { get; private set; }
+        public int VertexCount { get; private set; }
 
         public void Initialize()
         {
@@ -36,58 +43,12 @@ namespace VulkanCore.Samples.Cube
 
         private void CreateVertexAndIndexBuffers()
         {
-            Vertex[] vertices =
-            {
-                new Vertex { Position = new Vector3(-1.0f, -1.0f, -1.0f) },
-                new Vertex { Position = new Vector3(-1.0f, +1.0f, -1.0f) },
-                new Vertex { Position = new Vector3(+1.0f, +1.0f, -1.0f) },
-                new Vertex { Position = new Vector3(+1.0f, -1.0f, -1.0f) },
-                new Vertex { Position = new Vector3(-1.0f, -1.0f, +1.0f) },
-                new Vertex { Position = new Vector3(-1.0f, +1.0f, +1.0f) },
-                new Vertex { Position = new Vector3(+1.0f, +1.0f, +1.0f) },
-                new Vertex { Position = new Vector3(+1.0f, -1.0f, +1.0f) }
-            };
+            var cube = GeometricPrimitive.Box(1.0f, 1.0f, 1.0f);
 
-            int[] indices =
-            {
-                // Front face.
-                0, 1, 2,
-                0, 2, 3,
+            IndexCount = cube.Indices.Length;
 
-                // Back face.
-                4, 6, 5,
-                4, 7, 6,
-
-                // Left face.
-                4, 5, 1,
-                4, 1, 0,
-
-                // Right face.
-                3, 2, 6,
-                3, 6, 7,
-
-                // Top face.
-                1, 5, 6,
-                1, 6, 2,
-
-                // Bottom face.
-                4, 0, 3,
-                4, 3, 7
-            };
-
-            // Static data like vertex and index buffer should be stored in a device local memory 
-            // for optimal (and fastest) access by the GPU.
-            //
-            // To achieve this, we use so-called "staging buffers":
-            // - Create a buffer that's visible to the host (and can be mapped)
-            // - Copy the data to this buffer
-            // - Create another buffer that's local on the device (VRAM) with the same size
-            // - Copy the data from the host to the device using a command buffer
-            // - Delete the host visible (staging) buffer
-            // - Use the device local buffers for rendering
-
-            int vertexBufferSize = vertices.Length * Interop.SizeOf<Vertex>();
-            int indexBufferSize = indices.Length * sizeof(int);
+            int vertexBufferSize = cube.Vertices.Length * Interop.SizeOf<Vertex>();
+            int indexBufferSize = cube.Indices.Length * sizeof(int);
 
             // Vertex buffer.
             Buffer vertexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.TransferSrc));
@@ -97,7 +58,7 @@ namespace VulkanCore.Samples.Cube
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
             DeviceMemory vertexStagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(vertexStagingReq.Size, vertexStagingMemoryTypeIndex));
             IntPtr vertexPtr = vertexStagingMemory.Map(0, vertexStagingReq.Size);
-            Interop.Write(vertexPtr, vertices);
+            Interop.Write(vertexPtr, cube.Vertices);
             vertexStagingMemory.Unmap();
             vertexStagingBuffer.BindMemory(vertexStagingMemory);
 
@@ -118,7 +79,7 @@ namespace VulkanCore.Samples.Cube
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
             DeviceMemory indexStagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(indexStagingReq.Size, indexStagingMemoryTypeIndex));
             IntPtr indexPtr = indexStagingMemory.Map(0, indexStagingReq.Size);
-            Interop.Write(indexPtr, indices);
+            Interop.Write(indexPtr, cube.Indices);
             indexStagingMemory.Unmap();
             indexStagingBuffer.BindMemory(indexStagingMemory);
 
@@ -138,7 +99,18 @@ namespace VulkanCore.Samples.Cube
             cmdBuffer.CmdCopyBuffer(indexStagingBuffer, _indexBuffer, new BufferCopy(indexBufferSize));
             cmdBuffer.End();
 
-            // TODO: submit, flush and destroy staging resources.
+            // Submit.
+            Fence fence = _device.CreateFence();
+            _queue.Submit(new SubmitInfo(commandBuffers: new[] { cmdBuffer }), fence);
+            fence.Wait();
+
+            // Cleanup.
+            fence.Dispose();
+            cmdBuffer.Dispose();
+            indexStagingBuffer.Dispose();
+            indexStagingMemory.Dispose();
+            vertexStagingBuffer.Dispose();
+            vertexStagingMemory.Dispose();
         }
     }
 }

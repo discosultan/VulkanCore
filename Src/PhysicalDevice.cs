@@ -1207,7 +1207,8 @@ namespace VulkanCore
         /// <exception cref="InvalidOperationException">Requested memory type not found.</exception>
         public int GetMemoryTypeIndex(int memoryTypeBits, MemoryProperties properties)
         {
-            for (int i = 0; i < MemoryTypes.Length; i++)
+            int count = MemoryTypes?.Length ?? 0;
+            for (int i = 0; i < count; i++)
             {
                 if ((memoryTypeBits & 1) == 1 &&
                     (MemoryTypes[i].PropertyFlags & properties) == properties)

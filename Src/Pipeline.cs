@@ -789,6 +789,24 @@ namespace VulkanCore
         /// instance index.
         /// </summary>
         public VertexInputRate InputRate;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VertexInputBindingDescription"/> structure.
+        /// </summary>
+        /// <param name="binding">The binding number that this structure describes.</param>
+        /// <param name="stride">
+        /// The distance in bytes between two consecutive elements within the buffer.
+        /// </param>
+        /// <param name="inputRate">
+        /// Specifies whether vertex attribute addressing is a function of the vertex index or of the
+        /// instance index.
+        /// </param>
+        public VertexInputBindingDescription(int binding, int stride, VertexInputRate inputRate)
+        {
+            Binding = binding;
+            Stride = stride;
+            InputRate = inputRate;
+        }
     }
 
     /// <summary>
@@ -830,6 +848,23 @@ namespace VulkanCore
         /// <para>Must be less than or equal to <see cref="PhysicalDeviceLimits.MaxVertexInputAttributeOffset"/>.</para>
         /// </summary>
         public int Offset;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VertexInputAttributeDescription"/> attribute.
+        /// </summary>
+        /// <param name="location">The shader binding location number for this attribute.</param>
+        /// <param name="binding">The binding number which this attribute takes its data from.</param>
+        /// <param name="format">The size and type of the vertex attribute data.</param>
+        /// <param name="offset">
+        /// A byte offset of this attribute relative to the start of an element in the vertex input binding.
+        /// </param>
+        public VertexInputAttributeDescription(int location, int binding, Format format, int offset)
+        {
+            Location = location;
+            Binding = binding;
+            Format = format;
+            Offset = offset;
+        }
     }
 
     /// <summary>

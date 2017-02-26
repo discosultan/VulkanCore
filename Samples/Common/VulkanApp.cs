@@ -152,7 +152,9 @@ namespace VulkanCore.Samples
 
             // Get queue.
             GraphicsQueue = Device.GetQueue(graphicsQueueFamilyIndex);
-            PresentQueue = Device.GetQueue(presentQueueFamilyIndex);
+            PresentQueue = presentQueueFamilyIndex == graphicsQueueFamilyIndex 
+                ? GraphicsQueue 
+                : Device.GetQueue(presentQueueFamilyIndex);
         }
 
         private void CreateSwapchain()
