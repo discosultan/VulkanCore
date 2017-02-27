@@ -477,12 +477,12 @@ namespace VulkanCore
         /// is assembled.
         /// </para>
         /// </summary>
-        /// <param name="x">The number of local workgroups to dispatch in the X dimension.</param>
-        /// <param name="y">The number of local workgroups to dispatch in the Y dimension.</param>
-        /// <param name="z">The number of local workgroups to dispatch in the Z dimension.</param>
-        public void CmdDispatch(int x, int y, int z)
+        /// <param name="groupCountX">The number of local workgroups to dispatch in the X dimension.</param>
+        /// <param name="groupCountY">The number of local workgroups to dispatch in the Y dimension.</param>
+        /// <param name="groupCountZ">The number of local workgroups to dispatch in the Z dimension.</param>
+        public void CmdDispatch(int groupCountX, int groupCountY, int groupCountZ)
         {
-            CmdDispatch(this, x, y, z);
+            CmdDispatch(this, groupCountX, groupCountY, groupCountZ);
         }
 
         /// <summary>

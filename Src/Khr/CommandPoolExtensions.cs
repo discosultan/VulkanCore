@@ -17,7 +17,7 @@ namespace VulkanCore.Khr
         /// <para>Command buffers allocated from the pool are not affected by the command.</para>
         /// </summary>
         /// <param name="commandPool">The command pool to trim.</param>
-        public static void TrimCommandPoolKhr(this CommandPool commandPool)
+        public static void TrimKhr(this CommandPool commandPool)
         {
             TrimCommandPoolKhr(commandPool.Parent, commandPool, CommandPoolTrimFlags.None);
         }

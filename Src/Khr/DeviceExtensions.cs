@@ -47,10 +47,26 @@
         /// more specific allocator available.
         /// </param>
         /// <returns>The created swapchain objects.</returns>
-        public static SwapchainKhr[] CreateSharedSwapchainsKhr(this Device device, SwapchainCreateInfoKhr[] createInfos,
-            AllocationCallbacks? allocator = null)
+        public static SwapchainKhr[] CreateSharedSwapchainsKhr(this Device device,
+            SwapchainCreateInfoKhr[] createInfos, AllocationCallbacks? allocator = null)
         {
             return SwapchainKhr.CreateSharedKhr(device, createInfos, ref allocator);
+        }
+
+        // TODO: doc
+        /// <summary>
+        /// Create a new descriptor update template.
+        /// </summary>
+        /// <param name="device">The logical device that creates the descriptor update template.</param>
+        /// <param name="createInfo">
+        /// Specifies the set of descriptors to update with a single call to flink:vkUpdateDescriptorSetWithTemplateKHR
+        /// </param>
+        /// <param name="allocator">Controls host memory allocation.</param>
+        /// <returns>The resulting descriptor update template object.</returns>
+        public static DescriptorUpdateTemplateKhr CreateDescriptorUpdateTemplateKhr(this Device device,
+            DescriptorUpdateTemplateCreateInfoKhr createInfo, AllocationCallbacks? allocator = null)
+        {
+            return new DescriptorUpdateTemplateKhr(device, ref createInfo, ref allocator);
         }
     }
 }
