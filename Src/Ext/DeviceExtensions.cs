@@ -23,7 +23,7 @@ namespace VulkanCore.Ext
         /// <param name="nameInfo">Specifies the parameters of the name to set on the object.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void DebugMarkerSetObjectNameExt(this Device device, DebugMarkerObjectNameInfoExt nameInfo)
-        {            
+        {
             var proc = device.GetProc<DebugMarkerSetObjectNameExtDelegate>("vkDebugMarkerSetObjectNameEXT");
 
             int nameByteCount = Interop.String.GetMaxByteCount(nameInfo.ObjectName);
@@ -55,7 +55,7 @@ namespace VulkanCore.Ext
                 tagInfo.ToNative(out DebugMarkerObjectTagInfoExt.Native nativeTagInfo, tagPtr);
                 proc(device, &nativeTagInfo);
             }
-        }                
+        }
 
         internal static DebugReportObjectTypeExt GetTypeForObject<T>(T obj)
         {

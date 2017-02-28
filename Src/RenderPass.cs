@@ -170,6 +170,10 @@ namespace VulkanCore
     public struct SubpassDescription
     {
         /// <summary>
+        /// A bitmask indicating usage of the subpass.
+        /// </summary>
+        public SubpassDescriptionFlags Flags;
+        /// <summary>
         /// Structures that lists which of the render pass’s attachments will be used as color
         /// attachments in the subpass, and what layout each attachment will be in during the
         /// subpass. Each element of the array corresponds to a fragment shader output location, i.e.
@@ -217,6 +221,7 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="SubpassDescription"/> structure.
         /// </summary>
+        /// <param name="flags">A bitmask indicating usage of the subpass.</param>
         /// <param name="colorAttachments">
         /// Structures that lists which of the render pass’s attachments will be used as color
         /// attachments in the subpass, and what layout each attachment will be in during the
@@ -257,12 +262,14 @@ namespace VulkanCore
         /// but whose contents must be preserved throughout the subpass.
         /// </param>
         public SubpassDescription(
-            AttachmentReference[] colorAttachments = null, 
+            SubpassDescriptionFlags flags = 0,
+            AttachmentReference[] colorAttachments = null,
             AttachmentReference[] inputAttachments = null,
             AttachmentReference[] resolveAttachments = null,
             AttachmentReference? depthStencilAttachment = null,
             int[] preserveAttachments = null)
         {
+            Flags = flags;
             ColorAttachments = colorAttachments;
             InputAttachments = inputAttachments;
             ResolveAttachments = resolveAttachments;
@@ -270,10 +277,38 @@ namespace VulkanCore
             PreserveAttachments = preserveAttachments;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SubpassDescription"/> structure.
+        /// </summary>
+        /// <param name="colorAttachments">
+        /// Structures that lists which of the render pass’s attachments will be used as color
+        /// attachments in the subpass, and what layout each attachment will be in during the
+        /// subpass. Each element of the array corresponds to a fragment shader output location, i.e.
+        /// if the shader declared an output variable layout(location=X) then it uses the attachment
+        /// provided in <see cref="ColorAttachments"/>[X].
+        /// </param>
+        /// <param name="depthStencilAttachment">
+        /// Specifies which attachment will be used for depth/stencil data and the layout it will be
+        /// in during the subpass. Setting the attachment index to <see cref="AttachmentUnused"/> or
+        /// leaving this as <c>null</c> indicates that no depth/stencil attachment will be used in
+        /// the subpass.
+        /// </param>
+        public SubpassDescription(
+            AttachmentReference[] colorAttachments,
+            AttachmentReference? depthStencilAttachment = null)
+        {
+            Flags = 0;
+            ColorAttachments = colorAttachments;
+            InputAttachments = null;
+            ResolveAttachments = null;
+            DepthStencilAttachment = depthStencilAttachment;
+            PreserveAttachments = null;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
-            public SubpassDescriptions Flags;
+            public SubpassDescriptionFlags Flags;
             public PipelineBindPoint PipelineBindPoint;
             public int InputAttachmentCount;
             public IntPtr InputAttachments;
@@ -297,7 +332,7 @@ namespace VulkanCore
         internal void ToNative(out Native native)
         {
             // Only graphics subpasses are supported.
-            native.Flags = 0;
+            native.Flags = Flags;
             native.PipelineBindPoint = PipelineBindPoint.Graphics;
             native.InputAttachmentCount = InputAttachments?.Length ?? 0;
             native.InputAttachments = Interop.Struct.AllocToPointer(InputAttachments);
@@ -310,11 +345,18 @@ namespace VulkanCore
         }
     }
 
-    // Is reserved for future use.
+    /// <summary>
+    /// Bitmask specifying usage of a subpass.
+    /// </summary>
     [Flags]
-    internal enum SubpassDescriptions
+    public enum SubpassDescriptionFlags
     {
-        None = 0
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
+        PerViewAttributesNvx = 1 << 0,
+        PerViewPositionXOnlyNvx = 1 << 1
     }
 
     /// <summary>
@@ -411,6 +453,8 @@ namespace VulkanCore
         /// <summary>
         /// Dependency is per pixel region.
         /// </summary>
-        ByRegion = 1 << 0
+        ByRegion = 1 << 0,
+        ViewLocalKhx = 1 << 1,
+        DeviceGroupKhx = 1 << 2
     }
 }

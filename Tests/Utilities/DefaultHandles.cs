@@ -18,12 +18,15 @@ namespace VulkanCore.Tests.Utilities
 
         public Instance Instance { get; private set; }
         public PhysicalDevice PhysicalDevice { get; private set; }
+        public PhysicalDeviceFeatures PhysicalDeviceFeatures { get; private set; }
         public Device Device { get; private set; }
 
         public Queue ComputeQueue { get; private set; }
         public Queue GraphicsQueue { get; private set; }
         public Queue SparseBindingQueue { get; private set; }
         public Queue TransferQueue { get; private set; }
+
+        public string[] AvailableDeviceExtensions { get; private set; }
 
         public virtual void Dispose()
         {
@@ -67,6 +70,7 @@ namespace VulkanCore.Tests.Utilities
             // Currently simply picks the first physical device. We might want a
             // smarter choice here.
             PhysicalDevice = Instance.EnumeratePhysicalDevices()[0];
+            PhysicalDeviceFeatures = PhysicalDevice.GetFeatures();
         }
 
         private void CreateDevice()
@@ -103,9 +107,14 @@ namespace VulkanCore.Tests.Utilities
                 transferFamilyIndex
             }.Distinct().Select(i => new DeviceQueueCreateInfo(i, 1, 1.0f)).ToArray();
 
-            var createInfo = new DeviceCreateInfo(queueInfos
-            //, new[] { Extensions.ExtDebugMarker } // TODO: why is the extension not present?
-            );
+            AvailableDeviceExtensions = PhysicalDevice.EnumerateExtensionProperties()
+                .Select(x => x.ExtensionName)
+                .ToArray();
+            string[] selectExtensions = AvailableDeviceExtensions
+                .Where(x => x == Constant.DeviceExtension.ExtDebugMarker)
+                .ToArray();
+
+            var createInfo = new DeviceCreateInfo(queueInfos, selectExtensions, PhysicalDeviceFeatures);
             Device = PhysicalDevice.CreateDevice(createInfo);
 
             ComputeQueue = Device.GetQueue(computeFamilyIndex);

@@ -453,7 +453,17 @@ namespace VulkanCore
         /// <summary>
         /// Specifies that the pipeline to be created will be a child of a previously created parent pipeline.
         /// </summary>
-        Derivative = 1 << 2
+        Derivative = 1 << 2,
+        /// <summary>
+        /// Specifies that any shader input variables decorated as device index will be
+        /// assigned values as if they were decorated as view index.
+        /// </summary>
+        ViewIndexFromDeviceIndexKhx = 1 << 3,
+        /// <summary>
+        /// Specifies that a compute pipeline can be used with <see
+        /// cref="Khx.CommandBufferExtensions.CmdDispatchBaseKhx"/> with a non-zero base workgroup.
+        /// </summary>
+        DispatchBaseKhx = 1 << 4
     }
 
     /// <summary>
@@ -883,7 +893,7 @@ namespace VulkanCore
         public PrimitiveTopology Topology;
         /// <summary>
         /// Controls whether a special vertex index value is treated as restarting the assembly of
-        /// primitives. This enable only applies to indexed draws ( <see
+        /// primitives. This enable only applies to indexed draws (<see
         /// cref="CommandBuffer.CmdDrawIndexed"/> and <see
         /// cref="CommandBuffer.CmdDrawIndexedIndirect"/>), and the special index value is either
         /// 0xFFFFFFFF when the index type parameter of <see
@@ -1769,6 +1779,8 @@ namespace VulkanCore
         /// performed with a pipeline state with <see
         /// cref="PipelineDepthStencilStateCreateInfo.StencilTestEnable"/> member set to <c>true</c>.
         /// </summary>
-        StencilReference = 8
+        StencilReference = 8,
+        ViewportWScalingNV = 1000087000,
+        DiscardRectangleExt = 1000099000
     }
 }

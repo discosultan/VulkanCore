@@ -162,15 +162,19 @@ namespace VulkanCore.Tests
             using (Device.CreateRenderPass(createInfo, CustomAllocator)) { }
         }
 
-        [Fact(Skip = "Resolve the availability of necessary extension.")]
+        [Fact]
         public void DebugMarkerSetObjectNameExt_Succeeds()
         {
+            if (!AvailableDeviceExtensions.Contains(Constant.DeviceExtension.ExtDebugMarker)) return;
+
             Device.DebugMarkerSetObjectNameExt(new DebugMarkerObjectNameInfoExt(Device, "my device"));
         }
 
-        [Fact(Skip = "Resolve the availability of necessary extension.")]
+        [Fact]
         public void DebugMarkerSetObjectTagExt_Succeeds()
         {
+            if (!AvailableDeviceExtensions.Contains(Constant.DeviceExtension.ExtDebugMarker)) return;
+
             Device.DebugMarkerSetObjectTagExt(new DebugMarkerObjectTagInfoExt(Device, 1, new byte[] { 0xFF }));
             Device.DebugMarkerSetObjectTagExt(new DebugMarkerObjectTagInfoExt(GraphicsQueue, 2, new byte[] { 0xFF }));
         }

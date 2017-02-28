@@ -173,10 +173,10 @@ namespace VulkanCore.Samples
 
             Swapchain = Device.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
                 Surface,
+                format,
                 capabilities.CurrentExtent,
                 capabilities.CurrentTransform,
-                presentMode,
-                imageFormat: format));
+                presentMode));
             SwapchainImages = Swapchain.GetImages();
         }
 

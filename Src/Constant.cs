@@ -154,6 +154,45 @@ namespace VulkanCore
             /// <see cref="Khr.SurfaceKhr"/> object.
             /// </summary>
             public const string ExtDisplaySurfaceCounter = "VK_EXT_display_surface_counter";
+            /// <summary>
+            /// This extension provides instance-level commands to enumerate groups of physical
+            /// devices, and to create a logical device from a subset of one of those groups. Such a
+            /// logical device can then be used with new features in the "VK_KHX_device_group" extension.
+            /// </summary>
+            public const string KhxDeviceGroupCreation = "VK_KHX_device_group_creation";
+            /// <summary>
+            /// An application may wish to reference device memory in multiple Vulkan logical devices
+            /// or instances, in multiple processes, and/or in multiple APIs. This extension provides
+            /// a set of capability queries and handle definitions that allow an application to
+            /// determine what types of "external" memory handles an implementation supports for a
+            /// given set of use cases.
+            /// </summary>
+            public const string KhxExternalMemoryCapabilities = "VK_KHX_external_memory_capabilities";
+            /// <summary>
+            /// An application may wish to reference device semaphores in multiple Vulkan logical
+            /// devices or instances, in multiple processes, and/or in multiple APIs. This extension
+            /// provides a set of capability queries and handle definitions that allow an application
+            /// to determine what types of “external” semaphore handles an implementation supports
+            /// for a given set of use cases.
+            /// </summary>
+            public const string KhxExternalSemaphoreCapabilities = "VK_KHX_external_semaphore_capabilities";
+            /// <summary>
+            /// The "VK_MVK_ios_surface" extension is an instance extension. It provides a mechanism
+            /// to create a <see cref="Khr.SurfaceKhr"/> object (defined by the "VK_KHR_surface"
+            /// extension) that refers to a <c>UIView</c>, the native surface type of iOS, which is
+            /// underpinned by a <c>CAMetalLayer</c>, to support rendering to the surface using
+            /// Apple’s Metal framework.
+            /// </summary>
+            public const string MvkIOSSurface = "VK_MVK_ios_surface";
+            /// <summary>
+            /// The "VK_MVK_macos_surface" extension is an instance extension. It provides a
+            /// mechanism to create a <see cref="Khr.SurfaceKhr"/> object (defined by the
+            /// "VK_KHR_surface" extension) that refers to an <c>NSView</c>, the native surface type
+            /// of macOS, which is underpinned by a <c>CAMetalLayer</c>, to support rendering to the
+            /// surface using Apple’s Metal framework.
+            /// </summary>
+            public const string MvkMacOSSurface = "VK_MVK_macos_surface";
+            public const string MvkMoltenVK = "VK_MVK_moltenvk";
         }
 
         /// <summary>
@@ -323,6 +362,134 @@ namespace VulkanCore
             /// original mastering display.
             /// </summary>
             public const string ExtSmpte2086Metadata = "VK_EXT_SMPTE2086_metadata";
+            /// <summary>
+            /// This extension has the same goal as the OpenGL ES "GL_OVR_multiview" extension - it
+            /// enables rendering to multiple "views" by recording a single set of commands to be
+            /// executed with slightly different behavior for each view. It includes a concise way to
+            /// declare a render pass with multiple views, and gives implementations freedom to
+            /// render the views in the most efficient way possible.
+            /// </summary>
+            public const string KhxMultiview = "VK_KHX_multiview";
+            /// <summary>
+            /// This extension provides functionality to use a logical device that consists of
+            /// multiple physical devices, as created with the "VK_KHX_device_group_creation"
+            /// extension. A device group can allocate memory across the subdevices, bind memory from
+            /// one subdevice to a resource on another subdevice, record command buffers where some
+            /// work executes on an arbitrary subset of the subdevices, and potentially present a
+            /// swapchain image from one or more subdevices.
+            /// </summary>
+            public const string KhxDeviceGroup = "VK_KHX_device_group";
+            /// <summary>
+            /// An application may wish to reference device memory in multiple Vulkan logical devices
+            /// or instances, in multiple processes, and/or in multiple APIs. This extension enables
+            /// an application to export non-Vulkan handles from Vulkan memory objects such that the
+            /// underlying resources can be referenced outside the scope of the Vulkan logical device
+            /// that created them.
+            /// </summary>
+            public const string KhxExternalMemory = "VK_KHX_external_memory";
+            /// <summary>
+            /// An application may wish to reference device memory in multiple Vulkan logical devices
+            /// or instances, in multiple processes, and/or in multiple APIs. This extension enables
+            /// an application to export Windows handles from Vulkan memory objects and to import
+            /// Vulkan memory objects from Windows handles exported from other Vulkan memory objects
+            /// or from similar resources in other APIs.
+            /// </summary>
+            public const string KhxExternalMemoryWin32 = "VK_KHX_external_memory_win32";
+            /// <summary>
+            /// An application may wish to reference device memory in multiple Vulkan logical devices
+            /// or instances, in multiple processes, and/or in multiple APIs. This extension enables
+            /// an application to export POSIX file descriptor handles from Vulkan memory objects and
+            /// to import Vulkan memory objects from POSIX file descriptor handles exported from
+            /// other Vulkan memory objects or from similar resources in other APIs.
+            /// </summary>
+            public const string KhxExternalMemoryFd = "VK_KHX_external_memory_fd";
+            /// <summary>
+            /// Applications that wish to import Direct3D 11 memory objects into the Vulkan API may
+            /// wish to use the native keyed mutex mechanism to synchronize access to the memory
+            /// between Vulkan and Direct3D. This extension provides a way for an application to
+            /// access the keyed mutex associated with an imported Vulkan memory object when
+            /// submitting command buffers to a queue.
+            /// </summary>
+            public const string KhxWin32KeyedMutex = "VK_KHX_win32_keyed_mutex";
+            /// <summary>
+            /// An application using external memory may wish to synchronize access to that memory
+            /// using semaphores. This extension enables an application to create semaphores from
+            /// which non-Vulkan handles that reference the underlying synchronization primitive can
+            /// be exported.
+            /// </summary>
+            public const string KhxExternalSemaphore = "VK_KHX_external_semaphore";
+            /// <summary>
+            /// An application using external memory may wish to synchronize access to that memory
+            /// using semaphores. This extension enables an application to export semaphore state to
+            /// and import semaphore state from Windows handles.
+            /// </summary>
+            public const string KhxExternalSemaphoreWin32 = "VK_KHX_external_semaphore_win32";
+            /// <summary>
+            /// An application using external memory may wish to synchronize access to that memory
+            /// using semaphores. This extension enables an application to export semaphore state to
+            /// and import semaphore state from POSIX file descriptors.
+            /// </summary>
+            public const string KhxExternalSemaphoreFd = "VK_KHX_external_semaphore_fd";
+            /// <summary>
+            /// This extension allows descriptors to be written into the command buffer, with the
+            /// implementation being responsible for managing their memory. Push descriptors may
+            /// enable easier porting from older APIs and in some cases can be more efficient than
+            /// writing descriptors into descriptor sets.
+            /// </summary>
+            public const string KhrPushDescriptor = "VK_KHR_push_descriptor";
+            /// <summary>
+            /// Applications may wish to update a fixed set of descriptors in a large number of
+            /// descriptors sets very frequently, i.e. during initializaton phase or if it’s required
+            /// to rebuild descriptor sets for each frame. For those cases it’s also not unlikely
+            /// that all information required to update a single descriptor set is stored in a single
+            /// struct. This extension provides a way to update a fixed set of descriptors in a
+            /// single <see cref="DescriptorSet"/> with a pointer to a user defined data structure
+            /// which describes the new descriptors.
+            /// </summary>
+            public const string KhrDescriptorUpdateTemplate = "VK_KHR_descriptor_update_template";
+            /// <summary>
+            /// This extension provides a mechanism to render VR scenes at a non-uniform resolution,
+            /// in particular a resolution that falls linearly from the center towards the edges.
+            /// This is achieved by scaling the "w" coordinate of the vertices in the clip space
+            /// before perspective divide.
+            /// </summary>
+            public const string NVClipSpaceWScaling = "VK_NV_clip_space_w_scaling";
+            /// <summary>
+            /// This extension adds support for the following SPIR-V extension in Vulkan: "SPV_NV_sample_mask_override_coverage".
+            /// </summary>
+            public const string NVSampleMaskOverrideCoverage = "VK_NV_sample_mask_override_coverage";
+            /// <summary>
+            /// This extension adds support for the following SPIR-V extension in Vulkan: "SPV_NV_geometry_shader_passthrough".
+            /// </summary>
+            public const string NVGeometryShaderPassthrough = "VK_NV_geometry_shader_passthrough";
+            /// <summary>
+            /// This extension adds support for the following SPIR-V extension in Vulkan: "SPV_NV_viewport_array2".
+            /// </summary>
+            public const string NVViewportArray2 = "VK_NV_viewport_array2";
+            /// <summary>
+            /// This extension adds a new way to write shaders to be used with multiview subpasses,
+            /// where the attributes for all views are written out by a single invocation of the
+            /// vertex processing stages. Related SPIR-V and GLSL extensions
+            /// "SPV_NVX_multiview_per_view_attributes" and "GL_NVX_multiview_per_view_attributes"
+            /// introduce per-view position and viewport mask attributes arrays, and this extension
+            /// defines how those per-view attribute arrays are interpreted by Vulkan. Pipelines
+            /// using per-view attributes may only execute the vertex processing stages once for all
+            /// views rather than once per-view, which reduces redundant shading work.
+            /// </summary>
+            public const string NvxMultiviewPerViewAttributes = "VK_NVX_multiview_per_view_attributes";
+            /// <summary>
+            /// This extension provides a new per-viewport swizzle that can modify the position of
+            /// primitives sent to each viewport. New viewport swizzle state is added for each
+            /// viewport, and a new position vector is computed for each vertex by selecting from and
+            /// optionally negating any of the four components of the original position vector.
+            /// </summary>
+            public const string NVViewportSwizzle = "VK_NV_viewport_swizzle";
+            /// <summary>
+            /// This extension provides additional orthogonally aligned "discard rectangles"
+            /// specified in framebuffer-space coordinates that restrict rasterization of all points,
+            /// lines and triangles.
+            /// </summary>
+            public const string ExtDiscardRectangles = "VK_EXT_discard_rectangles";
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace VulkanCore.Tests
         [Fact]
         public void GetSubresourceLayout_Succeeds()
         {
-            using (Image image = CreateImage())
+            using (Image image = CreateImage(tiling: ImageTiling.Linear))
             {
                 SubresourceLayout layout =
                     image.GetSubresourceLayout(new ImageSubresource(ImageAspects.Color, 0, 0));
@@ -37,7 +37,7 @@ namespace VulkanCore.Tests
 
                     var createInfo = new ImageViewCreateInfo
                     {
-                        Format = Format.R32UInt,
+                        Format = Format.B8G8R8A8UNorm,
                         ViewType = ImageViewType.Image2D,
                         SubresourceRange = new ImageSubresourceRange
                         {
@@ -55,6 +55,8 @@ namespace VulkanCore.Tests
         [Fact]
         public void GetSparseMemoryRequirements_Succeeds()
         {
+            if (!PhysicalDeviceFeatures.SparseBinding || !PhysicalDeviceFeatures.SparseResidencyImage2D) return;
+
             using (Image image = CreateImage(ImageCreateFlags.SparseBinding | ImageCreateFlags.SparseResidency))
             {
                 SparseImageMemoryRequirements[] requirements = image.GetSparseMemoryRequirements();
@@ -65,18 +67,19 @@ namespace VulkanCore.Tests
 
         public ImageTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
 
-        private Image CreateImage(ImageCreateFlags flags = 0)
+        private Image CreateImage(ImageCreateFlags flags = 0, ImageTiling tiling = ImageTiling.Optimal)
         {
             var createInfo = new ImageCreateInfo
             {
                 ArrayLayers = 1,
                 Extent = new Extent3D(DefaultWidth, DefaultHeight, 1),
-                Format = Format.R32UInt,
+                Format = Format.B8G8R8A8UNorm,
                 ImageType = ImageType.Image2D,
                 Usage = ImageUsages.TransferSrc | ImageUsages.Sampled,
                 MipLevels = 1,
                 Samples = SampleCounts.Count1,
-                Flags = flags
+                Flags = flags,
+                Tiling = tiling
             };
             return Device.CreateImage(createInfo);
         }

@@ -107,7 +107,18 @@
         /// </summary>
         ErrorIncompatibleDisplayKhr = -1000003001,
         ErrorValidationFailedExt = -1000011001,
+        /// <summary>
+        /// One or more shaders failed to compile or link. More details are reported back to the
+        /// application via <see cref="Ext.DebugReportCallbackExt"/> if enabled.
+        /// </summary>
         ErrorInvalidShaderNV = -1000012000,
-        ErrorOutOfPoolMemoryKhr = -1000069000
+        /// <summary>
+        /// There is no more memory in the descriptor set pool.
+        /// </summary>
+        ErrorOutOfPoolMemoryKhr = -1000069000,
+        /// <summary>
+        /// An external handle is not a valid handle of the specified type.
+        /// </summary>
+        ErrorInvalidExternalHandleKhx = 1000072003
     }
 }

@@ -2275,7 +2275,7 @@ namespace VulkanCore
     public unsafe struct RenderPassBeginInfo
     {
         /// <summary>
-        /// The <see cref="VulkanCore.RenderPass"/> to begin an instance of.        
+        /// The <see cref="VulkanCore.RenderPass"/> to begin an instance of. 
         /// </summary>
         public long RenderPass;
         /// <summary>

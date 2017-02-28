@@ -30,6 +30,12 @@ namespace VulkanCore
             Handle = handle;
         }
 
+        internal Semaphore(long handle, Device parent)
+        {
+            Handle = handle;
+            Parent = parent;
+        }
+
         /// <summary>
         /// Gets the parent of this resource.
         /// </summary>

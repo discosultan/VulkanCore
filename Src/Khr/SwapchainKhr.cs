@@ -121,7 +121,6 @@ namespace VulkanCore.Khr
                 allocator.HasValue ? &nativeAllocator : null, handles);
             for (int i = 0; i < count; i++)
                 nativeCreateInfos[i].Free();
-
             VulkanException.ThrowForInvalidResult(result);
 
             var swapchains = new SwapchainKhr[count];
@@ -161,7 +160,7 @@ namespace VulkanCore.Khr
     /// <summary>
     /// Structure specifying parameters of a newly created swapchain object.
     /// </summary>
-    public unsafe struct SwapchainCreateInfoKhr
+    public struct SwapchainCreateInfoKhr
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SwapchainCreateInfoKhr"/> structure.
@@ -184,6 +183,7 @@ namespace VulkanCore.Khr
         /// <param name="imageUsage">
         /// A bitmask indicating how the application will use the swapchain’s presentable images.
         /// </param>
+        /// <param name="flags">A bitmask indicating parameters of swapchain creation.</param>
         /// <param name="minImageCount">
         /// The minimum number of presentable images that the application needs. The platform will
         /// either create the swapchain with at least that many images, or will fail to create the swapchain.
@@ -206,18 +206,21 @@ namespace VulkanCore.Khr
         /// that affect regions of the surface which are not visible.
         /// </param>
         /// <param name="oldSwapchain">Existing swapchain to replace, if any.</param>
-        public SwapchainCreateInfoKhr(SurfaceKhr surface, 
+        public SwapchainCreateInfoKhr(
+            SurfaceKhr surface, 
+            Format imageFormat,
             Extent2D imageExtent, 
             SurfaceTransformsKhr preTransform,
             PresentModeKhr presentMode,
-            ImageUsages imageUsage = ImageUsages.ColorAttachment | ImageUsages.TransferDst, 
+            SwapchainCreateFlagsKhr flags = 0,
             int minImageCount = 2,
-            Format imageFormat = Format.B8G8R8A8UNorm,
+            ImageUsages imageUsage = ImageUsages.ColorAttachment | ImageUsages.TransferDst, 
             CompositeAlphasKhr compositeAlpha = CompositeAlphasKhr.Opaque, 
             int imageArrayLayers = 1,
             bool clipped = true,
             SwapchainKhr oldSwapchain = null)
         {
+            Flags = flags;
             Surface = surface;
             ImageUsage = imageUsage;
             MinImageCount = minImageCount;
@@ -234,6 +237,10 @@ namespace VulkanCore.Khr
             OldSwapchain = oldSwapchain;
         }
 
+        /// <summary>
+        /// A bitmask indicating parameters of swapchain creation.
+        /// </summary>
+        public SwapchainCreateFlagsKhr Flags;
         /// <summary>
         /// The <see cref="SurfaceKhr"/> that the swapchain will present images to.
         /// <para>Must be a surface that is supported by the device as determined using <see cref="PhysicalDeviceExtensions.GetSurfaceSupportKhr"/>.</para>
@@ -394,7 +401,7 @@ namespace VulkanCore.Khr
         {
             native.Type = StructureType.SwapchainCreateInfoKhr;
             native.Next = IntPtr.Zero;
-            native.Flags = 0;
+            native.Flags = Flags;
             native.Surface = Surface;
             native.MinImageCount = MinImageCount;
             native.ImageFormat = ImageFormat;
@@ -413,10 +420,17 @@ namespace VulkanCore.Khr
         }
     }
 
-    // Reserved for future use.
-    internal enum SwapchainCreateFlagsKhr
+    /// <summary>
+    /// Bitmask controlling swapchain creation.
+    /// </summary>
+    [Flags]
+    public enum SwapchainCreateFlagsKhr
     {
-        None = 0
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
+        BindSfrKhx = 1 << 0
     }
 
     /// <summary>

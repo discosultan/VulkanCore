@@ -185,7 +185,7 @@ namespace VulkanCore.Nvx
 
         internal void ToNative(out Native native, IndirectCommandsTokenNvx* indirectCommandsTokens)
         {
-            native.Type = StructureType.CommandProcessCommandsInfoNvx;
+            native.Type = StructureType.CmdProcessCommandsInfoNvx;
             native.Next = IntPtr.Zero;
             native.ObjectTable = ObjectTable;
             native.IndirectCommandsLayout = IndirectCommandsLayout;
@@ -280,7 +280,7 @@ namespace VulkanCore.Nvx
         public CmdReserveSpaceForCommandsInfoNvx(ObjectTableNvx objectTable,
             IndirectCommandsLayoutNvx indirectCommandsLayout, int maxSequencesCount)
         {
-            Type = StructureType.CommandReserveSpaceForCommandsInfoNvx;
+            Type = StructureType.CmdReserveSpaceForCommandsInfoNvx;
             Next = IntPtr.Zero;
             ObjectTable = objectTable;
             IndirectCommandsLayout = indirectCommandsLayout;
@@ -289,7 +289,7 @@ namespace VulkanCore.Nvx
 
         internal void Prepare()
         {
-            Type = StructureType.CommandReserveSpaceForCommandsInfoNvx;
+            Type = StructureType.CmdReserveSpaceForCommandsInfoNvx;
         }
     }
 }

@@ -47,6 +47,7 @@
         /// more specific allocator available.
         /// </param>
         /// <returns>The created swapchain objects.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static SwapchainKhr[] CreateSharedSwapchainsKhr(this Device device,
             SwapchainCreateInfoKhr[] createInfos, AllocationCallbacks? allocator = null)
         {
@@ -63,6 +64,7 @@
         /// </param>
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>The resulting descriptor update template object.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static DescriptorUpdateTemplateKhr CreateDescriptorUpdateTemplateKhr(this Device device,
             DescriptorUpdateTemplateCreateInfoKhr createInfo, AllocationCallbacks? allocator = null)
         {

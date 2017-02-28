@@ -59,16 +59,32 @@ namespace VulkanCore
     public unsafe struct DescriptorSetLayoutCreateInfo
     {
         /// <summary>
+        /// Provides options for descriptor set layout creation.
+        /// </summary>
+        public DescriptorSetLayoutCreateFlags Flags;
+        /// <summary>
         /// An array of <see cref="DescriptorSetLayoutBinding"/> structures.
         /// </summary>
         public DescriptorSetLayoutBinding[] Bindings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DescriptorSetLayoutCreateInfo"/> structure.
-        /// <para name="bindings">An array of <see cref="DescriptorSetLayoutBinding"/> structures.</para>
         /// </summary>
+        /// <param name="bindings">An array of <see cref="DescriptorSetLayoutBinding"/> structures.</param>
         public DescriptorSetLayoutCreateInfo(params DescriptorSetLayoutBinding[] bindings)
         {
+            Flags = 0;
+            Bindings = bindings;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DescriptorSetLayoutCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="bindings">An array of <see cref="DescriptorSetLayoutBinding"/> structures.</param>
+        /// <param name="flags">Provides options for descriptor set layout creation.</param>
+        public DescriptorSetLayoutCreateInfo(DescriptorSetLayoutBinding[] bindings, DescriptorSetLayoutCreateFlags flags = 0)
+        {
+            Flags = flags;
             Bindings = bindings;
         }
 
@@ -97,17 +113,23 @@ namespace VulkanCore
 
             native.Type = StructureType.DescriptorSetLayoutCreateInfo;
             native.Next = IntPtr.Zero;
-            native.Flags = 0;
+            native.Flags = Flags;
             native.BindingCount = bindingCount;
             native.Bindings = bindings;
         }
     }
 
-    // Is reserved for future use.
+    /// <summary>
+    /// Bitmask specifying descriptor set layout properties.
+    /// </summary>
     [Flags]
-    internal enum DescriptorSetLayoutCreateFlags
+    public enum DescriptorSetLayoutCreateFlags
     {
-        None = 0
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
+        PushDescriptorKhr = 1 << 0
     }
 
     /// <summary>

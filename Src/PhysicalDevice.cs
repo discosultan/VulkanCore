@@ -421,7 +421,7 @@ namespace VulkanCore
         /// </summary>
         public Bool ShaderResourceMinLod;
         /// <summary>
-        /// Sparse resources support: Resource memory can be managed at opaque page level rather than
+        /// Sparse resources support: resource memory can be managed at opaque page level rather than
         /// object level.
         /// </summary>
         public Bool SparseBinding;
@@ -1325,7 +1325,8 @@ namespace VulkanCore
         /// <summary>
         /// If set, heap represents device memory.
         /// </summary>
-        DeviceLocal = 1 << 0
+        DeviceLocal = 1 << 0,
+        MultiInstanceKhx = 1 << 1
     }
 
     /// <summary>

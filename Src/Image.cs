@@ -307,7 +307,14 @@ namespace VulkanCore
         /// <summary>
         /// The 3D image can be viewed as a 2D or 2D array image.
         /// </summary>
-        Image2DArrayCompatibleKhr = 1 << 5
+        Image2DArrayCompatibleKhr = 1 << 5,
+        /// <summary>
+        /// Indicates that the image can be used with a non-zero length of the <see
+        /// cref="Khx.BindImageMemoryInfoKhx.SFRRects"/> member passed into <see
+        /// cref="Khx.DeviceExtensions.BindImageMemory2Khx"/>. This flag also has the effect of
+        /// making the image use the standard sparse image block dimensions.
+        /// </summary>
+        BindSfrKhx = 1 << 6
     }
 
     /// <summary>

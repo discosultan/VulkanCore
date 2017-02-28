@@ -129,7 +129,7 @@ namespace VulkanCore.Khr
 
             var properties = new DisplayPlanePropertiesKhr[count];
             fixed (DisplayPlanePropertiesKhr* propertiesPtr = properties)
-                result = GetPhysicalDeviceDisplayPlanePropertiesKhr(physicalDevice, &count, propertiesPtr);                
+                result = GetPhysicalDeviceDisplayPlanePropertiesKhr(physicalDevice, &count, propertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
@@ -411,7 +411,7 @@ namespace VulkanCore.Khr
 
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = CallConv)]
         private static extern Result GetPhysicalDeviceSurfacePresentModesKhr(IntPtr physicalDevice,
-            long surface, int* presentModeCount, PresentModeKhr* presentModes);        
+            long surface, int* presentModeCount, PresentModeKhr* presentModes);
 
         [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceDisplayPropertiesKHR", CallingConvention = CallConv)]
         private static extern Result GetPhysicalDeviceDisplayPropertiesKhr(IntPtr physicalDevice, 
@@ -423,7 +423,7 @@ namespace VulkanCore.Khr
 
         [DllImport(VulkanDll, EntryPoint = "vkGetDisplayPlaneSupportedDisplaysKHR", CallingConvention = CallConv)]
         private static extern Result GetDisplayPlaneSupportedDisplaysKhr(
-            IntPtr physicalDevice, int planeIndex, int* displayCount, long* displays);        
+            IntPtr physicalDevice, int planeIndex, int* displayCount, long* displays);
 
         [DllImport(VulkanDll, EntryPoint = "vkGetDisplayPlaneCapabilitiesKHR", CallingConvention = CallConv)]
         private static extern Result GetDisplayPlaneCapabilitiesKhr(
