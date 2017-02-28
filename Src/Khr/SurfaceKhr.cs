@@ -8,7 +8,7 @@ namespace VulkanCore.Khr
     /// A <see cref="SurfaceKhr"/> object abstracts a native platform surface or window object for
     /// use with Vulkan.
     /// <para>
-    /// The <see cref="Constant.InstanceExtension.KhrSurface"/> extension declares the <see
+    /// The <see cref="InstanceExtension.KhrSurface"/> extension declares the <see
     /// cref="SurfaceKhr"/> object, and provides a function for destroying <see cref="SurfaceKhr"/>
     /// objects. Separate platform-specific extensions each provide a function for creating a <see
     /// cref="SurfaceKhr"/> object for the respective platform. From the application’s perspective
@@ -397,7 +397,7 @@ namespace VulkanCore.Khr
         /// The plane on which this surface appears.
         /// <para>
         /// Must be less than the number of display planes supported by the device as determined by
-        /// calling <see cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPlanePropertiesKHR"/>.
+        /// calling <see cref="PhysicalDeviceExtensions.GetDisplayPlanePropertiesKhr"/>.
         /// </para>
         /// </summary>
         public int PlaneIndex;
@@ -405,14 +405,14 @@ namespace VulkanCore.Khr
         /// The z-order of the plane.
         /// <para>
         /// If the <see cref="DisplayPropertiesKhr.PlaneReorderPossible"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPropertiesKHR"/> for the display
+        /// cref="PhysicalDeviceExtensions.GetDisplayPropertiesKhr"/> for the display
         /// corresponding to <see cref="DisplayMode"/> is <c>true</c> then <see
         /// cref="PlaneStackIndex"/> must be less than the number of display planes supported by the
         /// device as determined by calling <see
-        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPlanePropertiesKHR"/>; otherwise
+        /// cref="PhysicalDeviceExtensions.GetDisplayPlanePropertiesKhr"/>; otherwise
         /// <see cref="PlaneStackIndex"/> must equal to the <see
         /// cref="DisplayPlanePropertiesKhr.CurrentStackIndex"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPlanePropertiesKHR"/> for the
+        /// cref="PhysicalDeviceExtensions.GetDisplayPlanePropertiesKhr"/> for the
         /// display plane corresponding to <see cref="DisplayMode"/>.
         /// </para>
         /// </summary>
