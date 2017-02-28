@@ -45,7 +45,7 @@ namespace VulkanCore.NN
             }
 
             long handle;
-            Result result = CreateViSurfaceNN(instance, &createInfo, nativeAllocator, &handle);
+            Result result = vkCreateViSurfaceNN(instance, &createInfo, nativeAllocator, &handle);
 
             Interop.Free(nativeAllocator);
 
@@ -53,8 +53,8 @@ namespace VulkanCore.NN
             return new SurfaceKhr(instance, ref allocator, handle);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateViSurfaceNN", CallingConvention = CallConv)]
-        private static extern Result CreateViSurfaceNN(Instance instance, VISurfaceCreateInfoNN* createInfo, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateViSurfaceNN(Instance instance, VISurfaceCreateInfoNN* createInfo, 
             AllocationCallbacks.Native* allocator, long* surface);
     }
 

@@ -21,7 +21,7 @@ namespace VulkanCore
             createInfo->Prepare();
 
             long handle;
-            Result result = CreateQueryPool(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateQueryPool(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -47,7 +47,7 @@ namespace VulkanCore
         /// <param name="flags">A bitmask specifying how and when results are returned.</param>
         public void GetResults(int firstQuery, int queryCount, int dataSize, IntPtr data, long stride, QueryResults flags = 0)
         {
-            Result result = GetQueryPoolResults(Parent, this, firstQuery, queryCount, dataSize, data, stride, flags);
+            Result result = vkGetQueryPoolResults(Parent, this, firstQuery, queryCount, dataSize, data, stride, flags);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -56,19 +56,19 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyQueryPool(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyQueryPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateQueryPool", CallingConvention = CallConv)]
-        private static extern Result CreateQueryPool(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateQueryPool(IntPtr device, 
             QueryPoolCreateInfo* CreateInfo, AllocationCallbacks.Native* allocator, long* queryPool);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyQueryPool", CallingConvention = CallConv)]
-        private static extern IntPtr DestroyQueryPool(IntPtr device, long queryPool, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern IntPtr vkDestroyQueryPool(IntPtr device, long queryPool, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetQueryPoolResults", CallingConvention = CallConv)]
-        private static extern Result GetQueryPoolResults(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetQueryPoolResults(IntPtr device, 
             long queryPool, int firstQuery, int queryCount, int dataSize, IntPtr data, long stride, QueryResults flags);
     }
 

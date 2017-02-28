@@ -24,7 +24,7 @@ namespace VulkanCore.Nvx
             fixed (IndirectCommandsTokenNvx* tokensPtr = processCommandsInfo.IndirectCommandsTokens)
             {
                 processCommandsInfo.ToNative(out CmdProcessCommandsInfoNvx.Native nativeProcessCommandsInfo, tokensPtr);
-                CmdProcessCommandsNvx(commandBuffer, &nativeProcessCommandsInfo);
+                vkCmdProcessCommandsNVX(commandBuffer, &nativeProcessCommandsInfo);
             }
         }
 
@@ -50,14 +50,14 @@ namespace VulkanCore.Nvx
             CmdReserveSpaceForCommandsInfoNvx reserveSpaceInfo)
         {
             reserveSpaceInfo.Prepare();
-            CmdReserveSpaceForCommandsNvx(commandBuffer, &reserveSpaceInfo);
+            vkCmdReserveSpaceForCommandsNVX(commandBuffer, &reserveSpaceInfo);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdProcessCommandsNVX", CallingConvention = CallConv)]
-        private static extern void CmdProcessCommandsNvx(IntPtr commandBuffer, CmdProcessCommandsInfoNvx.Native* processCommandsInfo);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdProcessCommandsNVX(IntPtr commandBuffer, CmdProcessCommandsInfoNvx.Native* processCommandsInfo);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdReserveSpaceForCommandsNVX", CallingConvention = CallConv)]
-        private static extern void CmdReserveSpaceForCommandsNvx(IntPtr commandBuffer, CmdReserveSpaceForCommandsInfoNvx* reserveSpaceInfo);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdReserveSpaceForCommandsNVX(IntPtr commandBuffer, CmdReserveSpaceForCommandsInfoNvx* reserveSpaceInfo);
     }
 
     /// <summary>

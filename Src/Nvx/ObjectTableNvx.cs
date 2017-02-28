@@ -22,7 +22,7 @@ namespace VulkanCore.Nvx
                 createInfo.ToNative(out ObjectTableCreateInfoNvx.Native nativeCreateInfo, objEntryTypesPtr,
                     objEntryCountsPtr, objEntryUsagesPtr);
                 long handle;
-                Result result = CreateObjectTableNvx(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateObjectTableNVX(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -45,7 +45,7 @@ namespace VulkanCore.Nvx
                 var ptrs = stackalloc ObjectTableEntryNvx*[x];
                 for (int i = 0; i < x; i++)
                     ptrs[i] = &objTableEntriesPtrsPtr[i * y];
-                Result result = RegisterObjectsNvx(Parent, this, objectIndices?.Length ?? 0, ptrs, objIndicesPtr);
+                Result result = vkRegisterObjectsNVX(Parent, this, objectIndices?.Length ?? 0, ptrs, objIndicesPtr);
                 VulkanException.ThrowForInvalidResult(result);
             }
         }
@@ -56,7 +56,7 @@ namespace VulkanCore.Nvx
             fixed (ObjectEntryTypeNvx* objEntryTypesPtr = objectEntryTypes)
             fixed (int* objIndicesPtr = objectIndices)
             {
-                Result result = UnregisterObjectsNvx(Parent, this, objectEntryTypes?.Length ?? 0, objEntryTypesPtr,
+                Result result = vkUnregisterObjectsNVX(Parent, this, objectEntryTypes?.Length ?? 0, objEntryTypesPtr,
                     objIndicesPtr);
                 VulkanException.ThrowForInvalidResult(result);
             }
@@ -67,23 +67,23 @@ namespace VulkanCore.Nvx
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyObjectTableNvx(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyObjectTableNVX(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateObjectTableNVX", CallingConvention = CallConv)]
-        private static extern Result CreateObjectTableNvx(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateObjectTableNVX(IntPtr device, 
             ObjectTableCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* objectTable);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyObjectTableNVX", CallingConvention = CallConv)]
-        private static extern void DestroyObjectTableNvx(IntPtr device, long objectTable, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyObjectTableNVX(IntPtr device, long objectTable, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkRegisterObjectsNVX", CallingConvention = CallConv)]
-        private static extern Result RegisterObjectsNvx(IntPtr device, long objectTable, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkRegisterObjectsNVX(IntPtr device, long objectTable, 
             int objectCount, ObjectTableEntryNvx** objectTableEntries, int* objectIndices);
 
-        [DllImport(VulkanDll, EntryPoint = "vkUnregisterObjectsNVX", CallingConvention = CallConv)]
-        private static extern Result UnregisterObjectsNvx(IntPtr device, long objectTable, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkUnregisterObjectsNVX(IntPtr device, long objectTable, 
             int objectCount, ObjectEntryTypeNvx* objectEntryTypes, int* objectIndices);
     }
 

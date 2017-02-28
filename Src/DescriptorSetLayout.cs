@@ -24,7 +24,7 @@ namespace VulkanCore
 
             createInfo.ToNative(out DescriptorSetLayoutCreateInfo.Native nativeCreateInfo);
             long handle;
-            Result result = CreateDescriptorSetLayout(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+            Result result = vkCreateDescriptorSetLayout(Parent, &nativeCreateInfo, NativeAllocator, &handle);
             nativeCreateInfo.Free();
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
@@ -40,16 +40,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyDescriptorSetLayout(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyDescriptorSetLayout(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateDescriptorSetLayout", CallingConvention = CallConv)]
-        private static extern Result CreateDescriptorSetLayout(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateDescriptorSetLayout(IntPtr device, 
             DescriptorSetLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* setLayout);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyDescriptorSetLayout", CallingConvention = CallConv)]
-        private static extern void DestroyDescriptorSetLayout(IntPtr device, long descriptorSetLayout, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyDescriptorSetLayout(IntPtr device, long descriptorSetLayout, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

@@ -34,7 +34,7 @@ namespace VulkanCore
                     pushConstantRangesPtr);
 
                 long handle;
-                Result result = CreatePipelineLayout(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreatePipelineLayout(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -50,16 +50,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyPipelineLayout(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyPipelineLayout(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreatePipelineLayout", CallingConvention = CallConv)]
-        private static extern Result CreatePipelineLayout(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreatePipelineLayout(IntPtr device, 
             PipelineLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineLayout);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyPipelineLayout", CallingConvention = CallConv)]
-        private static extern void DestroyPipelineLayout(IntPtr device, long pipelineLayout, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyPipelineLayout(IntPtr device, long pipelineLayout, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

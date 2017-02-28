@@ -35,7 +35,7 @@ namespace VulkanCore.Khr
             for (int i = 0; i < count; i++)
                 descriptorWrites[i].ToNative(&nativeDescriptorWrites[i]);
 
-            CmdPushDescriptorSetKhr(commandBuffer, pipelineBindPoint, layout, set, count, nativeDescriptorWrites);
+            vkCmdPushDescriptorSetKHR(commandBuffer, pipelineBindPoint, layout, set, count, nativeDescriptorWrites);
 
             for (int i = 0; i < count; i++)
                 nativeDescriptorWrites[i].Free();
@@ -71,15 +71,15 @@ namespace VulkanCore.Khr
         public static void CmdPushDescriptorSetWithTemplateKhr(this CommandBuffer commandBuffer,
             DescriptorUpdateTemplateKhr descriptorUpdateTemplate, PipelineLayout layout, int set, IntPtr data)
         {
-            CmdPushDescriptorSetWithTemplateKhr(commandBuffer.Handle, descriptorUpdateTemplate, layout, set, data);
+            vkCmdPushDescriptorSetWithTemplateKHR(commandBuffer.Handle, descriptorUpdateTemplate, layout, set, data);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdPushDescriptorSetKHR", CallingConvention = CallConv)]
-        private static extern void CmdPushDescriptorSetKhr(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdPushDescriptorSetKHR(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, 
             long layout, int set, int descriptorWriteCount, WriteDescriptorSet.Native* descriptorWrites);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdPushDescriptorSetWithTemplateKHR", CallingConvention = CallConv)]
-        private static extern void CmdPushDescriptorSetWithTemplateKhr(IntPtr commandBuffer, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdPushDescriptorSetWithTemplateKHR(IntPtr commandBuffer, 
             long descriptorUpdateTemplate, long layout, int set, IntPtr data);
     }
 }

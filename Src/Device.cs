@@ -27,7 +27,7 @@ namespace VulkanCore
 
             createInfo.ToNative(out DeviceCreateInfo.Native nativeCreateInfo);
             IntPtr handle;
-            Result result = CreateDevice(Parent.Handle, &nativeCreateInfo, NativeAllocator, &handle);
+            Result result = vkCreateDevice(Parent.Handle, &nativeCreateInfo, NativeAllocator, &handle);
             nativeCreateInfo.Free();
 
             VulkanException.ThrowForInvalidResult(result);
@@ -64,7 +64,7 @@ namespace VulkanCore
                 int byteCount = Interop.String.GetMaxByteCount(name);
                 var dstPtr = stackalloc byte[byteCount];
                 Interop.String.ToPointer(name, dstPtr, byteCount);
-                addr = GetDeviceProcAddr(this, dstPtr);
+                addr = vkGetDeviceProcAddr(this, dstPtr);
                 _procAddrCache.TryAdd(name, addr);
             }
             return addr;
@@ -116,7 +116,7 @@ namespace VulkanCore
         public Queue GetQueue(int queueFamilyIndex, int queueIndex = 0)
         {
             IntPtr handle;
-            GetDeviceQueue(Handle, queueFamilyIndex, queueIndex, &handle);
+            vkGetDeviceQueue(Handle, queueFamilyIndex, queueIndex, &handle);
             return new Queue(handle, this, queueFamilyIndex, queueIndex);
         }
 
@@ -127,7 +127,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void WaitIdle()
         {
-            Result result = DeviceWaitIdle(this);
+            Result result = vkDeviceWaitIdle(this);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -190,7 +190,7 @@ namespace VulkanCore
         public void FlushMappedMemoryRange(MappedMemoryRange memoryRange)
         {
             memoryRange.Prepare();
-            Result result = FlushMappedMemoryRanges(this, 1, &memoryRange);
+            Result result = vkFlushMappedMemoryRanges(this, 1, &memoryRange);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -218,7 +218,7 @@ namespace VulkanCore
 
             fixed (MappedMemoryRange* memoryRangesPtr = memoryRanges)
             {
-                Result result = FlushMappedMemoryRanges(this, count, memoryRangesPtr);
+                Result result = vkFlushMappedMemoryRanges(this, count, memoryRangesPtr);
                 VulkanException.ThrowForInvalidResult(result);
             }
         }
@@ -243,7 +243,7 @@ namespace VulkanCore
         public void InvalidateMappedMemoryRange(MappedMemoryRange memoryRange)
         {
             memoryRange.Prepare();
-            Result result = InvalidateMappedMemoryRanges(this, 1, &memoryRange);
+            Result result = vkInvalidateMappedMemoryRanges(this, 1, &memoryRange);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -273,7 +273,7 @@ namespace VulkanCore
 
             fixed (MappedMemoryRange* memoryRangesPtr = memoryRanges)
             {
-                Result result = InvalidateMappedMemoryRanges(this, count, memoryRangesPtr);
+                Result result = vkInvalidateMappedMemoryRanges(this, count, memoryRangesPtr);
                 VulkanException.ThrowForInvalidResult(result);
             }
         }
@@ -592,31 +592,31 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyDevice(this, NativeAllocator);
+            if (!Disposed) vkDestroyDevice(this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateDevice", CallingConvention = CallConv)]
-        private static extern Result CreateDevice(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateDevice(IntPtr physicalDevice, 
             DeviceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* device);
         
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyDevice", CallingConvention = CallConv)]
-        private static extern void DestroyDevice(IntPtr device, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyDevice(IntPtr device, AllocationCallbacks.Native* allocator);
         
-        [DllImport(VulkanDll, EntryPoint = "vkGetDeviceProcAddr", CallingConvention = CallConv)]
-        private static extern IntPtr GetDeviceProcAddr(IntPtr device, byte* name);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern IntPtr vkGetDeviceProcAddr(IntPtr device, byte* name);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetDeviceQueue", CallingConvention = CallConv)]
-        private static extern void GetDeviceQueue(IntPtr device, int queueFamilyIndex, int queueIndex, IntPtr* queue);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetDeviceQueue(IntPtr device, int queueFamilyIndex, int queueIndex, IntPtr* queue);
         
-        [DllImport(VulkanDll, EntryPoint = "vkDeviceWaitIdle", CallingConvention = CallConv)]
-        private static extern Result DeviceWaitIdle(IntPtr device);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkDeviceWaitIdle(IntPtr device);
         
-        [DllImport(VulkanDll, EntryPoint = "vkFlushMappedMemoryRanges", CallingConvention = CallConv)]
-        private static extern Result FlushMappedMemoryRanges(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkFlushMappedMemoryRanges(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
         
-        [DllImport(VulkanDll, EntryPoint = "vkInvalidateMappedMemoryRanges", CallingConvention = CallConv)]
-        private static extern Result InvalidateMappedMemoryRanges(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkInvalidateMappedMemoryRanges(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
     }
 
     /// <summary>

@@ -24,7 +24,7 @@ namespace VulkanCore.Khr
             {
                 createInfo.ToNative(out var nativeCreateInfo, nativeDescriptorUpdateEntries);
                 long handle;
-                Result result = CreateDescriptorUpdateTemplateKhr(parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateDescriptorUpdateTemplateKHR(parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -40,17 +40,17 @@ namespace VulkanCore.Khr
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyDescriptorUpdateTemplateKhr(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyDescriptorUpdateTemplateKHR(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateDescriptorUpdateTemplateKHR", CallingConvention = CallConv)]
-        private static extern Result CreateDescriptorUpdateTemplateKhr(IntPtr device,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateDescriptorUpdateTemplateKHR(IntPtr device,
             DescriptorUpdateTemplateCreateInfoKhr.Native* createInfo, AllocationCallbacks.Native* allocator,
             long* descriptorUpdateTemplate);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyDescriptorUpdateTemplateKHR", CallingConvention = CallConv)]
-        private static extern void DestroyDescriptorUpdateTemplateKhr(IntPtr device,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyDescriptorUpdateTemplateKHR(IntPtr device,
             long descriptorUpdateTemplate, AllocationCallbacks.Native* allocator);
     }
 

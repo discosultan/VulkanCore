@@ -36,7 +36,7 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void AcquireXlibDisplayExt(this DisplayKhr display, IntPtr dpy)
         {
-            Result result = AcquireXlibDisplayExt(display.Parent, dpy, display);
+            Result result = vkAcquireXlibDisplayEXT(display.Parent, dpy, display);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -47,14 +47,14 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void ReleaseDisplayExt(this DisplayKhr display)
         {
-            Result result = ReleaseDisplayExt(display.Parent, display);
+            Result result = vkReleaseDisplayEXT(display.Parent, display);
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkAcquireXlibDisplayEXT", CallingConvention = CallConv)]
-        private static extern Result AcquireXlibDisplayExt(IntPtr physicalDevice, IntPtr dpy, long display);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkAcquireXlibDisplayEXT(IntPtr physicalDevice, IntPtr dpy, long display);
 
-        [DllImport(VulkanDll, EntryPoint = "vkReleaseDisplayEXT", CallingConvention = CallConv)]
-        private static extern Result ReleaseDisplayExt(IntPtr physicalDevice, long display);        
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkReleaseDisplayEXT(IntPtr physicalDevice, long display);        
     }
 }

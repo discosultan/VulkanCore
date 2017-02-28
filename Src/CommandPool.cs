@@ -24,7 +24,7 @@ namespace VulkanCore
 
             createInfo->Prepare();
             long handle;
-            Result result = CreateCommandPool(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateCommandPool(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -45,7 +45,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void Reset(CommandPoolResetFlags flags = 0)
         {
-            Result result = ResetCommandPool(Parent, this, flags);
+            Result result = vkResetCommandPool(Parent, this, flags);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -82,19 +82,19 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyCommandPool(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyCommandPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateCommandPool", CallingConvention = CallConv)]
-        private static extern Result CreateCommandPool(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateCommandPool(IntPtr device, 
             CommandPoolCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* commandPool);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyCommandPool", CallingConvention = CallConv)]
-        private static extern void DestroyCommandPool(IntPtr device, long commandPool, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyCommandPool(IntPtr device, long commandPool, AllocationCallbacks.Native* allocator);
         
-        [DllImport(VulkanDll, EntryPoint = "vkResetCommandPool", CallingConvention = CallConv)]
-        private static extern Result ResetCommandPool(IntPtr device, long commandPool, CommandPoolResetFlags flags);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkResetCommandPool(IntPtr device, long commandPool, CommandPoolResetFlags flags);
     }
 
     /// <summary>

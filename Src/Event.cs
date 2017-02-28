@@ -25,7 +25,7 @@ namespace VulkanCore
             var createInfo = new EventCreateInfo();
             createInfo.Prepare();
             long handle;
-            Result result = CreateEvent(Parent, &createInfo, NativeAllocator, &handle);
+            Result result = vkCreateEvent(Parent, &createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -45,7 +45,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public Result GetStatus()
         {
-            Result result = GetEventStatus(Parent, this);
+            Result result = vkGetEventStatus(Parent, this);
             if (result != Result.EventSet && result != Result.EventReset)
                 VulkanException.ThrowForInvalidResult(result);
             return result;
@@ -57,7 +57,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void Set()
         {
-            Result result = SetEvent(Parent, this);
+            Result result = vkSetEvent(Parent, this);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -67,7 +67,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void Reset()
         {
-            Result result = ResetEvent(Parent, this);
+            Result result = vkResetEvent(Parent, this);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -76,25 +76,25 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyEvent(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyEvent(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateEvent", CallingConvention = CallConv)]
-        private static extern Result CreateEvent(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateEvent(IntPtr device, 
             EventCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* @event);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyEvent", CallingConvention = CallConv)]
-        private static extern void DestroyEvent(IntPtr device, long @event, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyEvent(IntPtr device, long @event, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetEventStatus", CallingConvention = CallConv)]
-        private static extern Result GetEventStatus(IntPtr device, long @event);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetEventStatus(IntPtr device, long @event);
         
-        [DllImport(VulkanDll, EntryPoint = "vkSetEvent", CallingConvention = CallConv)]
-        private static extern Result SetEvent(IntPtr device, long @event);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkSetEvent(IntPtr device, long @event);
         
-        [DllImport(VulkanDll, EntryPoint = "vkResetEvent", CallingConvention = CallConv)]
-        private static extern Result ResetEvent(IntPtr device, long @event);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkResetEvent(IntPtr device, long @event);
     }
 
     /// <summary>

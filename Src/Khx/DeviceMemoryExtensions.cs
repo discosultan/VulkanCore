@@ -17,7 +17,7 @@ namespace VulkanCore.Khx
         public static IntPtr GetWin32HandleKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
         {
             IntPtr handle;
-            Result result = GetMemoryWin32HandleKhx(memory.Parent, memory, handleType, &handle);
+            Result result = vkGetMemoryWin32HandleKHX(memory.Parent, memory, handleType, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
@@ -32,15 +32,15 @@ namespace VulkanCore.Khx
         public static int GetFdKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
         {
             int fd;
-            Result result = GetMemoryFdKhx(memory.Parent, memory, handleType, &fd);
+            Result result = vkGetMemoryFdKHX(memory.Parent, memory, handleType, &fd);
             VulkanException.ThrowForInvalidResult(result);
             return fd;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetMemoryWin32HandleKHX", CallingConvention = CallConv)]
-        private static extern Result GetMemoryWin32HandleKhx(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetMemoryWin32HandleKHX(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetMemoryFdKHX", CallingConvention = CallConv)]
-        private static extern Result GetMemoryFdKhx(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetMemoryFdKHX(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
     }
 }

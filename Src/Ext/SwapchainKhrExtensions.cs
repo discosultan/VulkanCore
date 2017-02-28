@@ -24,12 +24,12 @@ namespace VulkanCore.Ext
         public static long GetCounterExt(this SwapchainKhr swapchain, SurfaceCountersExt counter)
         {
             long counterValue;
-            Result result = GetSwapchainCounterExt(swapchain.Parent, swapchain, counter, &counterValue);
+            Result result = vkGetSwapchainCounterEXT(swapchain.Parent, swapchain, counter, &counterValue);
             VulkanException.ThrowForInvalidResult(result);
             return counterValue;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetSwapchainCounterEXT", CallingConvention = CallConv)]
-        private static extern Result GetSwapchainCounterExt(IntPtr device, long swapchain, SurfaceCountersExt counter, long* counterValue);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetSwapchainCounterEXT(IntPtr device, long swapchain, SurfaceCountersExt counter, long* counterValue);
     }
 }

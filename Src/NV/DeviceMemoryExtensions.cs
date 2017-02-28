@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.NV
 {
@@ -15,19 +16,19 @@ namespace VulkanCore.NV
         /// <param name="handleType">
         /// A bitmask containing a single bit specifying the type of handle requested.
         /// </param>
-        /// <returns>A Windows `HANDLE`.</returns>
+        /// <returns>A Windows HANDLE.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static IntPtr GetMemoryWin32HandleNV(this DeviceMemory deviceMemory, 
+        public static IntPtr GetWin32HandleNV(this DeviceMemory deviceMemory, 
             ExternalMemoryHandleTypesNV handleType)
         {
             IntPtr handle;
-            Result result = GetMemoryWin32HandleNV(deviceMemory.Parent, deviceMemory, handleType, &handle);
+            Result result = vkGetMemoryWin32HandleNV(deviceMemory.Parent, deviceMemory, handleType, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
         
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkGetMemoryWin32HandleNV", CallingConvention = Constant.CallConv)]
-        private static extern Result GetMemoryWin32HandleNV(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetMemoryWin32HandleNV(IntPtr device, 
             long memory, ExternalMemoryHandleTypesNV handleType, IntPtr* handle);
     }
 

@@ -40,7 +40,7 @@ namespace VulkanCore.Amd
         public static void CmdDrawIndirectCountAmd(this CommandBuffer commandBuffer, Buffer buffer, long offset,
             Buffer countBuffer, long countBufferOffset, int maxDrawCount, int stride)
         {
-            CmdDrawIndirectCountAmd(commandBuffer.Handle, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+            vkCmdDrawIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
         }
 
         /// <summary>
@@ -74,15 +74,15 @@ namespace VulkanCore.Amd
         public static void CmdDrawIndexedIndirectCountAmd(this CommandBuffer commandBuffer,
             Buffer buffer, long offset, Buffer countBuffer, long countBufferOffset, int maxDrawCount, int stride)
         {
-            CmdDrawIndexedIndirectCountAmd(commandBuffer.Handle, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+            vkCmdDrawIndexedIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDrawIndirectCountAMD", CallingConvention = CallConv)]
-        private static extern void CmdDrawIndirectCountAmd(IntPtr commandBuffer, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDrawIndirectCountAMD(IntPtr commandBuffer, 
             long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDrawIndexedIndirectCountAMD", CallingConvention = CallConv)]
-        private static extern void CmdDrawIndexedIndirectCountAmd(IntPtr commandBuffer, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDrawIndexedIndirectCountAMD(IntPtr commandBuffer, 
             long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
     }
 }

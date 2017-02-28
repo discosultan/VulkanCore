@@ -28,7 +28,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out PipelineCacheCreateInfo.Native nativeCreateInfo, initialDataPtr);
                 long handle;
-                Result result = CreatePipelineCache(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreatePipelineCache(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -47,12 +47,12 @@ namespace VulkanCore
         public byte[] GetData()
         {
             int size;
-            Result result = GetPipelineCacheData(Parent, this, &size, null);
+            Result result = vkGetPipelineCacheData(Parent, this, &size, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var data = new byte[size];
             fixed (byte* dataPtr = data)
-                result = GetPipelineCacheData(Parent, this, &size, dataPtr);
+                result = vkGetPipelineCacheData(Parent, this, &size, dataPtr);
             VulkanException.ThrowForInvalidResult(result);
             return data;
         }
@@ -64,7 +64,7 @@ namespace VulkanCore
         public void MergeCache(PipelineCache sourceCache)
         {
             long handle = sourceCache;
-            Result result = MergePipelineCaches(Parent, this, 1, &handle);
+            Result result = vkMergePipelineCaches(Parent, this, 1, &handle);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -80,7 +80,7 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 sourceCachesPtr[i] = sourceCaches[i].Handle;
 
-            Result result = MergePipelineCaches(Parent, this, count, sourceCachesPtr);
+            Result result = vkMergePipelineCaches(Parent, this, count, sourceCachesPtr);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -89,22 +89,22 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyPipelineCache(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyPipelineCache(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreatePipelineCache", CallingConvention = CallConv)]
-        private static extern Result CreatePipelineCache(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreatePipelineCache(IntPtr device, 
             PipelineCacheCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineCache);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyPipelineCache", CallingConvention = CallConv)]
-        private static extern void DestroyPipelineCache(IntPtr device, long pipelineCache, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyPipelineCache(IntPtr device, long pipelineCache, AllocationCallbacks.Native* allocator);
         
-        [DllImport(VulkanDll, EntryPoint = "vkGetPipelineCacheData", CallingConvention = CallConv)]
-        private static extern Result GetPipelineCacheData(IntPtr device, long pipelineCache, int* dataSize, byte* data);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPipelineCacheData(IntPtr device, long pipelineCache, int* dataSize, byte* data);
         
-        [DllImport(VulkanDll, EntryPoint = "vkMergePipelineCaches", CallingConvention = CallConv)]
-        private static extern Result MergePipelineCaches(IntPtr device, long dstCache, int srcCacheCount, long* srcCaches);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkMergePipelineCaches(IntPtr device, long dstCache, int srcCacheCount, long* srcCaches);
     }
 
     /// <summary>

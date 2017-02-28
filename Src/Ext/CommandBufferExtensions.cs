@@ -81,7 +81,7 @@ namespace VulkanCore.Ext
             int firstDiscardRectangle, Rect2D[] discardRectangles)
         {
             fixed (Rect2D* discardRectanglesPtr = discardRectangles)
-                CmdSetDiscardRectangleExt(commandBuffer, firstDiscardRectangle, discardRectangles?.Length ?? 0, discardRectanglesPtr);
+                vkCmdSetDiscardRectangleEXT(commandBuffer, firstDiscardRectangle, discardRectangles?.Length ?? 0, discardRectanglesPtr);
         }
 
         private delegate void CmdDebugMarkerBeginExtDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
@@ -90,8 +90,8 @@ namespace VulkanCore.Ext
 
         private delegate void CmdDebugMarkerInsertExtDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetDiscardRectangleEXT", CallingConvention = CallConv)]
-        private static extern void CmdSetDiscardRectangleExt(IntPtr commandBuffer,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetDiscardRectangleEXT(IntPtr commandBuffer,
             int firstDiscardRectangle, int discardRectangleCount, Rect2D* discardRectangles);
     }
 

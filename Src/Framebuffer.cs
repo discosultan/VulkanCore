@@ -24,7 +24,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out FramebufferCreateInfo.Native nativeCreateInfo, attachmentsPtr, renderPass);
                 long handle;
-                Result result = CreateFramebuffer(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateFramebuffer(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -45,16 +45,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyFramebuffer(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyFramebuffer(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateFramebuffer", CallingConvention = CallConv)]
-        private static extern Result CreateFramebuffer(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateFramebuffer(IntPtr device, 
             FramebufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* framebuffer);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyFramebuffer", CallingConvention = CallConv)]
-        private static extern void DestroyFramebuffer(IntPtr device, long framebuffer, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyFramebuffer(IntPtr device, long framebuffer, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

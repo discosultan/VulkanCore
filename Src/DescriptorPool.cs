@@ -18,7 +18,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out DescriptorPoolCreateInfo.Native nativeCreateInfo, poolSizesPtr);
                 long handle;
-                Result result = CreateDescriptorPool(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateDescriptorPool(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -40,7 +40,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void Reset()
         {
-            Result result = ResetDescriptorPool(Parent, this, VkDescriptorPoolResetFlags.None);
+            Result result = vkResetDescriptorPool(Parent, this, VkDescriptorPoolResetFlags.None);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -116,19 +116,19 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyDescriptorPool(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyDescriptorPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateDescriptorPool", CallingConvention = CallConv)]
-        private static extern Result CreateDescriptorPool(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateDescriptorPool(IntPtr device, 
             DescriptorPoolCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* descriptorPool);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyDescriptorPool", CallingConvention = CallConv)]
-        private static extern void DestroyDescriptorPool(IntPtr device, long descriptorPool, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyDescriptorPool(IntPtr device, long descriptorPool, AllocationCallbacks.Native* allocator);
         
-        [DllImport(VulkanDll, EntryPoint = "vkResetDescriptorPool", CallingConvention = CallConv)]
-        private static extern Result ResetDescriptorPool(IntPtr device, long descriptorPool, VkDescriptorPoolResetFlags flags);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkResetDescriptorPool(IntPtr device, long descriptorPool, VkDescriptorPoolResetFlags flags);
     }
 
     // Is reserved for future use.

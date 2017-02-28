@@ -17,7 +17,7 @@ namespace VulkanCore.Khx
         public static IntPtr GetWin32HandleKhx(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhx handleType)
         {
             IntPtr handle;
-            Result result = GetSemaphoreWin32HandleKhx(semaphore.Parent, semaphore, handleType, &handle);
+            Result result = vkGetSemaphoreWin32HandleKHX(semaphore.Parent, semaphore, handleType, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
@@ -32,17 +32,17 @@ namespace VulkanCore.Khx
         public static int GetFdKhx(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhx handleType)
         {
             int fd;
-            Result result = GetSemaphoreFdKhx(semaphore.Parent, semaphore, handleType, &fd);
+            Result result = vkGetSemaphoreFdKHX(semaphore.Parent, semaphore, handleType, &fd);
             VulkanException.ThrowForInvalidResult(result);
             return fd;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetSemaphoreWin32HandleKHX", CallingConvention = CallConv)]
-        private static extern Result GetSemaphoreWin32HandleKhx(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetSemaphoreWin32HandleKHX(IntPtr device, 
             long semaphore, ExternalSemaphoreHandleTypesKhx handleType, IntPtr* handle);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetSemaphoreFdKHX", CallingConvention = CallConv)]
-        private static extern Result GetSemaphoreFdKhx(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetSemaphoreFdKHX(IntPtr device, 
             long semaphore, ExternalSemaphoreHandleTypesKhx handleType, int* fd);
     }
 }

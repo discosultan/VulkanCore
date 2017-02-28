@@ -22,7 +22,7 @@ namespace VulkanCore.Nvx
             {
                 createInfo.ToNative(out IndirectCommandsLayoutCreateInfoNvx.Native nativeCreateInfo, tokensPtr);
                 long handle;
-                Result result = CreateIndirectCommandsLayoutNvx(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateIndirectCommandsLayoutNVX(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -38,16 +38,16 @@ namespace VulkanCore.Nvx
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyIndirectCommandsLayoutNvx(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyIndirectCommandsLayoutNVX(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateIndirectCommandsLayoutNVX", CallingConvention = CallConv)]
-        private static extern Result CreateIndirectCommandsLayoutNvx(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateIndirectCommandsLayoutNVX(IntPtr device, 
             IndirectCommandsLayoutCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* indirectCommandsLayout);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyIndirectCommandsLayoutNVX", CallingConvention = CallConv)]
-        private static extern void DestroyIndirectCommandsLayoutNvx(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyIndirectCommandsLayoutNVX(
             IntPtr device, long indirectCommandsLayout, AllocationCallbacks.Native* allocator);
     }
 

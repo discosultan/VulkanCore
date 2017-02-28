@@ -10,8 +10,8 @@ namespace VulkanCore
     /// Fences are a synchronization primitive that can be used to insert a dependency from a queue
     /// to the host. Fences have two states - signaled and unsignaled. A fence can be signaled as
     /// part of the execution of a queue submission command. Fences can be unsignaled on the host
-    /// with <see cref="Reset"/>. Fences can be waited on by the host with the <see cref="Wait"/>
-    /// command, and the current state can be queried with <see cref="GetStatus"/>.
+    /// with <see cref="Device.ResetFences"/>. Fences can be waited on by the host with the <see
+    /// cref="Device.WaitFences"/> command, and the current state can be queried with <see cref="GetStatus"/>.
     /// </para>
     /// </summary>
     public unsafe class Fence : DisposableHandle<long>
@@ -23,7 +23,7 @@ namespace VulkanCore
 
             createInfo->Prepare();
             long handle;
-            Result result = CreateFence(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateFence(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -50,7 +50,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public Result GetStatus()
         {
-            Result result = GetFenceStatus(Parent, this);
+            Result result = vkGetFenceStatus(Parent, this);
             if (result != Result.Success && result != Result.NotReady)
                 VulkanException.ThrowForInvalidResult(result);
             return result;
@@ -67,7 +67,7 @@ namespace VulkanCore
         public void Reset()
         {
             long handle = this;
-            Result result = ResetFences(Parent, 1, &handle);
+            Result result = vkResetFences(Parent, 1, &handle);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -98,7 +98,7 @@ namespace VulkanCore
         public void Wait(long timeout = ~0)
         {
             long handle = this;
-            Result result = WaitForFences(Parent, 1, &handle, false, timeout);
+            Result result = vkWaitForFences(Parent, 1, &handle, false, timeout);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -107,7 +107,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyFence(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyFence(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
@@ -118,7 +118,7 @@ namespace VulkanCore
                 long* fenceHandles = stackalloc long[fences.Length];
                 for (int i = 0; i < fences.Length; i++)
                     fenceHandles[i] = fences[i];
-                Result result = ResetFences(parent, fences.Length, fenceHandles);
+                Result result = vkResetFences(parent, fences.Length, fenceHandles);
                 VulkanException.ThrowForInvalidResult(result);
             }
         }
@@ -130,26 +130,26 @@ namespace VulkanCore
                 long* fenceHandles = stackalloc long[fences.Length];
                 for (int i = 0; i < fences.Length; i++)
                     fenceHandles[i] = fences[i];
-                Result result = WaitForFences(parent, fences.Length, fenceHandles, waitAll, timeout);
+                Result result = vkWaitForFences(parent, fences.Length, fenceHandles, waitAll, timeout);
                 VulkanException.ThrowForInvalidResult(result);
             }
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateFence", CallingConvention = CallConv)]
-        private static extern Result CreateFence(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateFence(
             IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyFence", CallingConvention = CallConv)]
-        private static extern void DestroyFence(IntPtr device, long fence, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyFence(IntPtr device, long fence, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkResetFences", CallingConvention = CallConv)]
-        private static extern Result ResetFences(IntPtr device, int fenceCount, long* fences);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkResetFences(IntPtr device, int fenceCount, long* fences);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetFenceStatus", CallingConvention = CallConv)]
-        private static extern Result GetFenceStatus(IntPtr device, long fence);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetFenceStatus(IntPtr device, long fence);
 
-        [DllImport(VulkanDll, EntryPoint = "vkWaitForFences", CallingConvention = CallConv)]
-        private static extern Result WaitForFences(IntPtr device, int fenceCount, long* fences, Bool waitAll, long timeout);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkWaitForFences(IntPtr device, int fenceCount, long* fences, Bool waitAll, long timeout);
     }
 
     /// <summary>

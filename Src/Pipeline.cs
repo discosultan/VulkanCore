@@ -19,7 +19,7 @@ namespace VulkanCore
             GraphicsPipelineCreateInfo.Native nativeCreateInfo;
             createInfo.ToNative(&nativeCreateInfo);
             long handle;
-            Result result = CreateGraphicsPipelines(Parent, Cache, 1, &nativeCreateInfo, NativeAllocator, &handle);
+            Result result = vkCreateGraphicsPipelines(Parent, Cache, 1, &nativeCreateInfo, NativeAllocator, &handle);
             nativeCreateInfo.Free();
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
@@ -35,7 +35,7 @@ namespace VulkanCore
             ComputePipelineCreateInfo.Native nativeCreateInfo;
             createInfo.ToNative(&nativeCreateInfo);
             long handle;
-            Result result = CreateComputePipelines(Parent, Cache, 1, &nativeCreateInfo, NativeAllocator, &handle);
+            Result result = vkCreateComputePipelines(Parent, Cache, 1, &nativeCreateInfo, NativeAllocator, &handle);
             nativeCreateInfo.Free();
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
@@ -64,7 +64,7 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyPipeline(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyPipeline(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
@@ -80,7 +80,7 @@ namespace VulkanCore
             allocator?.ToNative(&nativeAllocator);
 
             var pipelineHandles = stackalloc long[pipelineCount];
-            Result result = CreateGraphicsPipelines(
+            Result result = vkCreateGraphicsPipelines(
                 parent,
                 cache,
                 pipelineCount,
@@ -110,7 +110,7 @@ namespace VulkanCore
             allocator?.ToNative(&nativeAllocator);
 
             var pipelineHandles = stackalloc long[pipelineCount];
-            Result result = CreateComputePipelines(
+            Result result = vkCreateComputePipelines(
                 parent, 
                 cache,
                 pipelineCount, 
@@ -128,16 +128,16 @@ namespace VulkanCore
             return pipelines;
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateGraphicsPipelines", CallingConvention = CallConv)]
-        private static extern Result CreateGraphicsPipelines(IntPtr device, long pipelineCache,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateGraphicsPipelines(IntPtr device, long pipelineCache,
             int createInfoCount, GraphicsPipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateComputePipelines", CallingConvention = CallConv)]
-        private static extern Result CreateComputePipelines(IntPtr device, long pipelineCache,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateComputePipelines(IntPtr device, long pipelineCache,
             int createInfoCount, ComputePipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
         
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyPipeline", CallingConvention = CallConv)]
-        private static extern void DestroyPipeline(IntPtr device, long pipeline, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyPipeline(IntPtr device, long pipeline, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

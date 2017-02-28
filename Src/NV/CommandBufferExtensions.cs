@@ -20,11 +20,11 @@ namespace VulkanCore.NV
             int firstViewport, ViewportWScalingNV[] viewportWScalings)
         {
             fixed (ViewportWScalingNV* viewportWScalingsPtr = viewportWScalings)
-                CmdSetViewportWScalingNV(commandBuffer, firstViewport, viewportWScalings?.Length ?? 0, viewportWScalingsPtr);
+                vkCmdSetViewportWScalingNV(commandBuffer, firstViewport, viewportWScalings?.Length ?? 0, viewportWScalingsPtr);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetViewportWScalingNV", CallingConvention = CallConv)]
-        private static extern void CmdSetViewportWScalingNV(IntPtr commandBuffer,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetViewportWScalingNV(IntPtr commandBuffer,
             int firstViewport, int viewportCount, ViewportWScalingNV* viewportWScalings);
     }
 

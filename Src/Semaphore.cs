@@ -25,7 +25,7 @@ namespace VulkanCore
             createInfo.Prepare();
 
             long handle;
-            Result result = CreateSemaphore(Parent, &createInfo, NativeAllocator, &handle);
+            Result result = vkCreateSemaphore(Parent, &createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -46,15 +46,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroySemaphore(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroySemaphore(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateSemaphore", CallingConvention = CallConv)]
-        private static extern Result CreateSemaphore(IntPtr device, SemaphoreCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* semaphore);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateSemaphore(IntPtr device,
+            SemaphoreCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* semaphore);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroySemaphore", CallingConvention = CallConv)]
-        private static extern void DestroySemaphore(IntPtr device, long semaphore, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroySemaphore(IntPtr device, long semaphore, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

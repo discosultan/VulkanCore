@@ -21,7 +21,7 @@ namespace VulkanCore.Khr
         public static Bool GetSurfaceSupportKhr(this PhysicalDevice physicalDevice, int queueFamilyIndex, SurfaceKhr surface)
         {
             Bool isSupported;
-            Result result = GetPhysicalDeviceSurfaceSupportKhr(physicalDevice, queueFamilyIndex, surface, &isSupported);
+            Result result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, &isSupported);
             VulkanException.ThrowForInvalidResult(result);
             return isSupported;
         }
@@ -38,7 +38,7 @@ namespace VulkanCore.Khr
         public static SurfaceCapabilitiesKhr GetSurfaceCapabilitiesKhr(this PhysicalDevice physicalDevice, SurfaceKhr surface)
         {
             SurfaceCapabilitiesKhr capabilities;
-            Result result = GetPhysicalDeviceSurfaceCapabilitiesKhr(physicalDevice, surface, &capabilities);
+            Result result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities);
             VulkanException.ThrowForInvalidResult(result);
             return capabilities;
         }
@@ -53,12 +53,12 @@ namespace VulkanCore.Khr
         public static SurfaceFormatKhr[] GetSurfaceFormatsKhr(this PhysicalDevice device, SurfaceKhr surface)
         {
             int count;
-            Result result = GetPhysicalDeviceSurfaceFormatsKhr(device, surface, &count, null);
+            Result result = vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var formats = new SurfaceFormatKhr[count];
             fixed (SurfaceFormatKhr* formatsPtr = formats)
-                result = GetPhysicalDeviceSurfaceFormatsKhr(device, surface, &count, formatsPtr);
+                result = vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formatsPtr);
             VulkanException.ThrowForInvalidResult(result);
             return formats;
         }
@@ -75,12 +75,12 @@ namespace VulkanCore.Khr
         public static PresentModeKhr[] GetSurfacePresentModesKhr(this PhysicalDevice physicalDevice, SurfaceKhr surface)
         {
             int count;
-            Result result = GetPhysicalDeviceSurfacePresentModesKhr(physicalDevice, surface, &count, null);
+            Result result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var presentModes = new PresentModeKhr[count];
             fixed (PresentModeKhr* presentModesPtr = presentModes)
-                result = GetPhysicalDeviceSurfacePresentModesKhr(physicalDevice, surface, &count, presentModesPtr);
+                result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &count, presentModesPtr);
             VulkanException.ThrowForInvalidResult(result);
             return presentModes;
         }
@@ -94,11 +94,11 @@ namespace VulkanCore.Khr
         public static DisplayPropertiesKhr[] GetDisplayPropertiesKhr(this PhysicalDevice device)
         {
             int count;
-            Result result = GetPhysicalDeviceDisplayPropertiesKhr(device, &count, null);
+            Result result = vkGetPhysicalDeviceDisplayPropertiesKHR(device, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var nativeDisplayProperties = stackalloc DisplayPropertiesKhr.Native[count];
-            result = GetPhysicalDeviceDisplayPropertiesKhr(device, &count, nativeDisplayProperties);
+            result = vkGetPhysicalDeviceDisplayPropertiesKHR(device, &count, nativeDisplayProperties);
             VulkanException.ThrowForInvalidResult(result);
 
             DisplayPropertiesKhr.Native* walk = nativeDisplayProperties;
@@ -124,12 +124,12 @@ namespace VulkanCore.Khr
         public static DisplayPlanePropertiesKhr[] GetDisplayPlanePropertiesKhr(this PhysicalDevice physicalDevice)
         {
             int count;
-            Result result = GetPhysicalDeviceDisplayPlanePropertiesKhr(physicalDevice, &count, null);
+            Result result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var properties = new DisplayPlanePropertiesKhr[count];
             fixed (DisplayPlanePropertiesKhr* propertiesPtr = properties)
-                result = GetPhysicalDeviceDisplayPlanePropertiesKhr(physicalDevice, &count, propertiesPtr);
+                result = vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice, &count, propertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
@@ -144,11 +144,11 @@ namespace VulkanCore.Khr
         public static DisplayKhr[] GetDisplayPlaneSupportedDisplaysKhr(this PhysicalDevice device, int planeIndex)
         {
             int count;
-            Result result = GetDisplayPlaneSupportedDisplaysKhr(device, planeIndex, &count, null);
+            Result result = vkGetDisplayPlaneSupportedDisplaysKHR(device, planeIndex, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var displaysPtr = stackalloc long[count];
-            result = GetDisplayPlaneSupportedDisplaysKhr(device, planeIndex, &count, displaysPtr);
+            result = vkGetDisplayPlaneSupportedDisplaysKHR(device, planeIndex, &count, displaysPtr);
             VulkanException.ThrowForInvalidResult(result);
 
             var displays = new DisplayKhr[count];
@@ -171,7 +171,7 @@ namespace VulkanCore.Khr
             this PhysicalDevice physicalDevice, DisplayModeKhr mode, int planeIndex)
         {
             var capabilities = new DisplayPlaneCapabilitiesKhr();
-            Result result = GetDisplayPlaneCapabilitiesKhr(physicalDevice, mode, planeIndex, &capabilities);
+            Result result = vkGetDisplayPlaneCapabilitiesKHR(physicalDevice, mode, planeIndex, &capabilities);
             VulkanException.ThrowForInvalidResult(result);
             return capabilities;
         }
@@ -189,7 +189,7 @@ namespace VulkanCore.Khr
         public static bool GetMirPresentationSupportKhr(this PhysicalDevice device, 
             int queueFamilyIndex, IntPtr connection)
         {
-            return GetPhysicalDeviceMirPresentationSupportKhr(device, queueFamilyIndex, &connection);
+            return vkGetPhysicalDeviceMirPresentationSupportKHR(device, queueFamilyIndex, &connection);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace VulkanCore.Khr
         public static bool GetWaylandPresentationSupportKhr(this PhysicalDevice physicalDevice, 
             int queueFamilyIndex, IntPtr display)
         {
-            return GetPhysicalDeviceWaylandPresentationSupportKhr(physicalDevice, queueFamilyIndex, &display);
+            return vkGetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex, &display);
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace VulkanCore.Khr
         public static bool GetXcbPresentationSupportKhr(
             this PhysicalDevice device, int queueFamilyIndex, IntPtr connection, IntPtr visualId)
         {
-            return GetPhysicalDeviceXcbPresentationSupportKhr(device, queueFamilyIndex, &connection, visualId);
+            return vkGetPhysicalDeviceXcbPresentationSupportKHR(device, queueFamilyIndex, &connection, visualId);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace VulkanCore.Khr
         /// </returns>
         public static bool GetWin32PresentationSupportKhr(this PhysicalDevice physicalDevice, int queueFamilyIndex)
         {
-            return GetPhysicalDeviceWin32PresentationSupportKhr(physicalDevice, queueFamilyIndex);
+            return vkGetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice, queueFamilyIndex);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace VulkanCore.Khr
         public static bool GetXlibPresentationSupportKhr(
             this PhysicalDevice device, int queueFamilyIndex, IntPtr connection, IntPtr visualId)
         {
-            return GetPhysicalDeviceXlibPresentationSupportKhr(device, queueFamilyIndex, &connection, visualId);
+            return vkGetPhysicalDeviceXlibPresentationSupportKHR(device, queueFamilyIndex, &connection, visualId);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace VulkanCore.Khr
         public static PhysicalDeviceFeatures2Khr GetFeatures2Khr(this PhysicalDevice device)
         {
             PhysicalDeviceFeatures2Khr features;
-            GetPhysicalDeviceFeatures2Khr(device, &features);
+            vkGetPhysicalDeviceFeatures2KHR(device, &features);
             return features;
         }
 
@@ -286,7 +286,7 @@ namespace VulkanCore.Khr
         public static PhysicalDeviceProperties2Khr GetProperties2Khr(this PhysicalDevice physicalDevice)
         {
             PhysicalDeviceProperties2Khr.Native nativeProperties;
-            GetPhysicalDeviceProperties2Khr(physicalDevice, &nativeProperties);
+            vkGetPhysicalDeviceProperties2KHR(physicalDevice, &nativeProperties);
             PhysicalDeviceProperties2Khr.FromNative(
                 ref nativeProperties, 
                 out PhysicalDeviceProperties2Khr properties);
@@ -304,7 +304,7 @@ namespace VulkanCore.Khr
         public static FormatProperties2Khr GetFormatProperties2Khr(this PhysicalDevice physicalDevice, Format format)
         {
             FormatProperties2Khr properties;
-            GetPhysicalDeviceFormatProperties2Khr(physicalDevice, format, &properties);
+            vkGetPhysicalDeviceFormatProperties2KHR(physicalDevice, format, &properties);
             return properties;
         }
 
@@ -330,7 +330,7 @@ namespace VulkanCore.Khr
             PhysicalDeviceImageFormatInfo2Khr imageFormatInfo)
         {
             ImageFormatProperties2Khr properties;
-            Result result = GetPhysicalDeviceImageFormatProperties2Khr(physicalDevice, &imageFormatInfo, &properties);
+            Result result = vkGetPhysicalDeviceImageFormatProperties2KHR(physicalDevice, &imageFormatInfo, &properties);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
@@ -343,11 +343,11 @@ namespace VulkanCore.Khr
         public static QueueFamilyProperties2Khr[] GetQueueFamilyProperties2Khr(this PhysicalDevice device)
         {
             int count;
-            GetPhysicalDeviceQueueFamilyProperties2Khr(device, &count, null);
+            vkGetPhysicalDeviceQueueFamilyProperties2KHR(device, &count, null);
 
             var properties = new QueueFamilyProperties2Khr[count];
             fixed (QueueFamilyProperties2Khr* propertiesPtr = properties)
-                GetPhysicalDeviceQueueFamilyProperties2Khr(device, &count, propertiesPtr);
+                vkGetPhysicalDeviceQueueFamilyProperties2KHR(device, &count, propertiesPtr);
 
             return properties;
         }
@@ -364,7 +364,7 @@ namespace VulkanCore.Khr
         public static PhysicalDeviceMemoryProperties2Khr GetMemoryProperties2Khr(this PhysicalDevice physicalDevice)
         {
             var nativeProperties = new PhysicalDeviceMemoryProperties2Khr.Native();
-            GetPhysicalDeviceMemoryProperties2Khr(physicalDevice, ref nativeProperties);
+            vkGetPhysicalDeviceMemoryProperties2KHR(physicalDevice, ref nativeProperties);
             PhysicalDeviceMemoryProperties2Khr.FromNative(ref nativeProperties, out var properties);
             return properties;
         }
@@ -389,88 +389,88 @@ namespace VulkanCore.Khr
             PhysicalDeviceSparseImageFormatInfo2Khr formatInfo)
         {
             int count;
-            GetPhysicalDeviceSparseImageFormatProperties2Khr(physicalDevice, &formatInfo, &count, null);
+            vkGetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice, &formatInfo, &count, null);
 
             var properties = new SparseImageFormatProperties2Khr[count];
             fixed (SparseImageFormatProperties2Khr* propertiesPtr = properties)
-                GetPhysicalDeviceSparseImageFormatProperties2Khr(physicalDevice, &formatInfo, &count, propertiesPtr);
+                vkGetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice, &formatInfo, &count, propertiesPtr);
             return properties;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSurfaceSupportKHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceSurfaceSupportKhr(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceSurfaceSupportKHR(IntPtr physicalDevice, 
             int queueFamilyIndex, long surface, Bool* supported);
         
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSurfaceCapabilitiesKHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceSurfaceCapabilitiesKhr(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceSurfaceCapabilitiesKHR(IntPtr physicalDevice, 
             long surface, SurfaceCapabilitiesKhr* surfaceCapabilities);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSurfaceFormatsKHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceSurfaceFormatsKhr(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceSurfaceFormatsKHR(IntPtr physicalDevice, 
             long surface, int* surfaceFormatCount, SurfaceFormatKhr* surfaceFormats);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSurfacePresentModesKHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceSurfacePresentModesKhr(IntPtr physicalDevice,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice,
             long surface, int* presentModeCount, PresentModeKhr* presentModes);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceDisplayPropertiesKHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceDisplayPropertiesKhr(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceDisplayPropertiesKHR(IntPtr physicalDevice, 
             int* propertyCount, DisplayPropertiesKhr.Native* properties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceDisplayPlanePropertiesKHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceDisplayPlanePropertiesKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR(
             IntPtr physicalDevice, int* propertyCount, DisplayPlanePropertiesKhr* properties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetDisplayPlaneSupportedDisplaysKHR", CallingConvention = CallConv)]
-        private static extern Result GetDisplayPlaneSupportedDisplaysKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetDisplayPlaneSupportedDisplaysKHR(
             IntPtr physicalDevice, int planeIndex, int* displayCount, long* displays);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetDisplayPlaneCapabilitiesKHR", CallingConvention = CallConv)]
-        private static extern Result GetDisplayPlaneCapabilitiesKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetDisplayPlaneCapabilitiesKHR(
             IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceMirPresentationSupportKHR", CallingConvention = CallConv)]
-        private static extern Bool GetPhysicalDeviceMirPresentationSupportKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Bool vkGetPhysicalDeviceMirPresentationSupportKHR(
             IntPtr physicalDevice, int queueFamilyIndex, IntPtr* connection);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceWaylandPresentationSupportKHR", CallingConvention = CallConv)]
-        private static extern Bool GetPhysicalDeviceWaylandPresentationSupportKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Bool vkGetPhysicalDeviceWaylandPresentationSupportKHR(
             IntPtr physicalDevice, int queueFamilyIndex, IntPtr* display);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceXcbPresentationSupportKHR", CallingConvention = CallConv)]
-        private static extern Bool GetPhysicalDeviceXcbPresentationSupportKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Bool vkGetPhysicalDeviceXcbPresentationSupportKHR(
             IntPtr physicalDevice, int queueFamilyIndex, IntPtr* connection, IntPtr visualId);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceWin32PresentationSupportKHR", CallingConvention = CallConv)]
-        private static extern Bool GetPhysicalDeviceWin32PresentationSupportKhr(IntPtr physicalDevice, int queueFamilyIndex);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Bool vkGetPhysicalDeviceWin32PresentationSupportKHR(IntPtr physicalDevice, int queueFamilyIndex);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceXlibPresentationSupportKHR", CallingConvention = CallConv)]
-        private static extern Bool GetPhysicalDeviceXlibPresentationSupportKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Bool vkGetPhysicalDeviceXlibPresentationSupportKHR(
             IntPtr physicalDevice, int queueFamilyIndex, IntPtr* dpy, IntPtr visualId);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceFeatures2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceFeatures2Khr(IntPtr physicalDevice, PhysicalDeviceFeatures2Khr* features);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceFeatures2KHR(IntPtr physicalDevice, PhysicalDeviceFeatures2Khr* features);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceProperties2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceProperties2Khr(IntPtr physicalDevice, PhysicalDeviceProperties2Khr.Native* properties);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceProperties2KHR(IntPtr physicalDevice, PhysicalDeviceProperties2Khr.Native* properties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceFormatProperties2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceFormatProperties2Khr(IntPtr physicalDevice, Format format, FormatProperties2Khr* formatProperties);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceFormatProperties2KHR(IntPtr physicalDevice, Format format, FormatProperties2Khr* formatProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceImageFormatProperties2KHR", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceImageFormatProperties2Khr(IntPtr physicalDevice,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceImageFormatProperties2KHR(IntPtr physicalDevice,
             PhysicalDeviceImageFormatInfo2Khr* imageFormatInfo, ImageFormatProperties2Khr* imageFormatProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceQueueFamilyProperties2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceQueueFamilyProperties2Khr(IntPtr physicalDevice,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceQueueFamilyProperties2KHR(IntPtr physicalDevice,
             int* queueFamilyPropertyCount, QueueFamilyProperties2Khr* queueFamilyProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceMemoryProperties2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceMemoryProperties2Khr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceMemoryProperties2KHR(
             IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties2Khr.Native memoryProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceSparseImageFormatProperties2KHR", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceSparseImageFormatProperties2Khr(IntPtr physicalDevice,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceSparseImageFormatProperties2KHR(IntPtr physicalDevice,
             PhysicalDeviceSparseImageFormatInfo2Khr* formatInfo, int* propertyCount, SparseImageFormatProperties2Khr* properties);
     }
 

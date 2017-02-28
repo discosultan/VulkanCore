@@ -16,7 +16,7 @@ namespace VulkanCore.Khr
             Allocator = allocator;
 
             long handle;
-            Result result = CreateDisplayModeKhr(Parent.Parent, Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateDisplayModeKHR(Parent.Parent, Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -42,17 +42,17 @@ namespace VulkanCore.Khr
         public DisplayPlaneCapabilitiesKhr GetDisplayPlaneCapabilities(int planeIndex)
         {
             DisplayPlaneCapabilitiesKhr capabilities;
-            Result result = GetDisplayPlaneCapabilitiesKhr(Parent.Parent, this, planeIndex, &capabilities);
+            Result result = vkGetDisplayPlaneCapabilitiesKHR(Parent.Parent, this, planeIndex, &capabilities);
             VulkanException.ThrowForInvalidResult(result);
             return capabilities;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateDisplayModeKHR", CallingConvention = CallConv)]
-        private static extern Result CreateDisplayModeKhr(IntPtr physicalDevice, long display, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateDisplayModeKHR(IntPtr physicalDevice, long display, 
             DisplayModeCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* mode);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetDisplayPlaneCapabilitiesKHR", CallingConvention = CallConv)]
-        private static extern Result GetDisplayPlaneCapabilitiesKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetDisplayPlaneCapabilitiesKHR(
             IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
     }
 

@@ -23,7 +23,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out BufferCreateInfo.Native nativeCreateInfo, queueFamilies);
                 long handle;
-                Result result = CreateBuffer(
+                Result result = vkCreateBuffer(
                     parent, 
                     &nativeCreateInfo,
                     NativeAllocator, 
@@ -52,7 +52,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void BindMemory(DeviceMemory memory, long memoryOffset = 0)
         {
-            Result result = BindBufferMemory(Parent, this, memory, memoryOffset);
+            Result result = vkBindBufferMemory(Parent, this, memory, memoryOffset);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -76,7 +76,7 @@ namespace VulkanCore
         public MemoryRequirements GetMemoryRequirements()
         {
             MemoryRequirements requirements;
-            GetBufferMemoryRequirements(Parent, this, &requirements);
+            vkGetBufferMemoryRequirements(Parent, this, &requirements);
             return requirements;
         }
 
@@ -85,22 +85,22 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyBuffer(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyBuffer(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateBuffer", CallingConvention = CallConv)]
-        private static extern Result CreateBuffer(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateBuffer(IntPtr device, 
             BufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* buffer);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyBuffer", CallingConvention = CallConv)]
-        private static extern void DestroyBuffer(IntPtr device, long buffer, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyBuffer(IntPtr device, long buffer, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkBindBufferMemory", CallingConvention = CallConv)]
-        private static extern Result BindBufferMemory(IntPtr device, long buffer, long memory, long memoryOffset);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkBindBufferMemory(IntPtr device, long buffer, long memory, long memoryOffset);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetBufferMemoryRequirements", CallingConvention = CallConv)]
-        private static extern void GetBufferMemoryRequirements(IntPtr device, long buffer, MemoryRequirements* memoryRequirements);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetBufferMemoryRequirements(IntPtr device, long buffer, MemoryRequirements* memoryRequirements);
     }
 
     /// <summary>

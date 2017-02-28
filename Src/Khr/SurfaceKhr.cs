@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -7,11 +8,11 @@ namespace VulkanCore.Khr
     /// A <see cref="SurfaceKhr"/> object abstracts a native platform surface or window object for
     /// use with Vulkan.
     /// <para>
-    /// The <see cref="Extensions.KhrSurface"/> extension declares the <see cref="SurfaceKhr"/>
-    /// object, and provides a function for destroying <see cref="SurfaceKhr"/> objects. Separate
-    /// platform-specific extensions each provide a function for creating a <see cref="SurfaceKhr"/>
-    /// object for the respective platform. From the application’s perspective this is an opaque
-    /// handle, just like the handles of other Vulkan objects.
+    /// The <see cref="Constant.InstanceExtension.KhrSurface"/> extension declares the <see
+    /// cref="SurfaceKhr"/> object, and provides a function for destroying <see cref="SurfaceKhr"/>
+    /// objects. Separate platform-specific extensions each provide a function for creating a <see
+    /// cref="SurfaceKhr"/> object for the respective platform. From the application’s perspective
+    /// this is an opaque handle, just like the handles of other Vulkan objects.
     /// </para>
     /// </summary>
     public unsafe class SurfaceKhr : DisposableHandle<long>
@@ -23,7 +24,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateAndroidSurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateAndroidSurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -35,7 +36,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateMirSurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateMirSurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -47,7 +48,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateWaylandSurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateWaylandSurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -59,7 +60,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateWin32SurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateWin32SurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -71,7 +72,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateXlibSurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateXlibSurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -83,7 +84,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateDisplayPlaneSurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateDisplayPlaneSurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -95,7 +96,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo->Prepare();
-            Result result = CreateXcbSurfaceKhr(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateXcbSurfaceKHR(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -117,40 +118,40 @@ namespace VulkanCore.Khr
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroySurfaceKhr(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroySurfaceKHR(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateAndroidSurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateAndroidSurfaceKhr(IntPtr instance, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateAndroidSurfaceKHR(IntPtr instance, 
             AndroidSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateMirSurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateMirSurfaceKhr(Instance instance, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateMirSurfaceKHR(Instance instance, 
             MirSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateWaylandSurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateWaylandSurfaceKhr(Instance instance, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateWaylandSurfaceKHR(Instance instance, 
             WaylandSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateWin32SurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateWin32SurfaceKhr(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateWin32SurfaceKHR(IntPtr instance,
             Win32SurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateXlibSurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateXlibSurfaceKhr(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateXlibSurfaceKHR(IntPtr instance,
             XlibSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateDisplayPlaneSurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateDisplayPlaneSurfaceKhr(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateDisplayPlaneSurfaceKHR(IntPtr instance,
             DisplaySurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkCreateXcbSurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern Result CreateXcbSurfaceKhr(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateXcbSurfaceKHR(IntPtr instance,
             XcbSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(Constant.VulkanDll, EntryPoint = "vkDestroySurfaceKHR", CallingConvention = Constant.CallConv)]
-        private static extern IntPtr DestroySurfaceKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern IntPtr vkDestroySurfaceKHR(
             IntPtr instance, long surface, AllocationCallbacks.Native* allocator);
     }
 
@@ -396,7 +397,7 @@ namespace VulkanCore.Khr
         /// The plane on which this surface appears.
         /// <para>
         /// Must be less than the number of display planes supported by the device as determined by
-        /// calling <see cref="PhysicalDeviceExtensions.GetPhysicalDeviceDisplayPlanePropertiesKhr"/>.
+        /// calling <see cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPlanePropertiesKHR"/>.
         /// </para>
         /// </summary>
         public int PlaneIndex;
@@ -404,14 +405,14 @@ namespace VulkanCore.Khr
         /// The z-order of the plane.
         /// <para>
         /// If the <see cref="DisplayPropertiesKhr.PlaneReorderPossible"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.GetPhysicalDeviceDisplayPropertiesKhr"/> for the display
+        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPropertiesKHR"/> for the display
         /// corresponding to <see cref="DisplayMode"/> is <c>true</c> then <see
         /// cref="PlaneStackIndex"/> must be less than the number of display planes supported by the
         /// device as determined by calling <see
-        /// cref="PhysicalDeviceExtensions.GetPhysicalDeviceDisplayPlanePropertiesKhr"/>; otherwise
+        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPlanePropertiesKHR"/>; otherwise
         /// <see cref="PlaneStackIndex"/> must equal to the <see
         /// cref="DisplayPlanePropertiesKhr.CurrentStackIndex"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.GetPhysicalDeviceDisplayPlanePropertiesKhr"/> for the
+        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceDisplayPlanePropertiesKHR"/> for the
         /// display plane corresponding to <see cref="DisplayMode"/>.
         /// </para>
         /// </summary>

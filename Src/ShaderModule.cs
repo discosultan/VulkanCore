@@ -24,7 +24,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out ShaderModuleCreateInfo.Native nativeCreateInfo, codePtr);
                 long handle;
-                Result result = CreateShaderModule(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateShaderModule(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -40,16 +40,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyShaderModule(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyShaderModule(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateShaderModule", CallingConvention = CallConv)]
-        private static extern Result CreateShaderModule(IntPtr device, ShaderModuleCreateInfo.Native* createInfo, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateShaderModule(IntPtr device, ShaderModuleCreateInfo.Native* createInfo, 
             AllocationCallbacks.Native* allocator, long* shaderModule);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyShaderModule", CallingConvention = CallConv)]
-        private static extern void DestroyShaderModule(IntPtr device, long shaderModule, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyShaderModule(IntPtr device, long shaderModule, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

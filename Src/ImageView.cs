@@ -23,7 +23,7 @@ namespace VulkanCore
             createInfo.Prepare(image);
 
             long handle;
-            Result result = CreateImageView(Parent, &createInfo, NativeAllocator, &handle);
+            Result result = vkCreateImageView(Parent, &createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -38,16 +38,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyImageView(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyImageView(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateImageView", CallingConvention = CallConv)]
-        private static extern Result CreateImageView(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateImageView(IntPtr device, 
             ImageViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyImageView", CallingConvention = CallConv)]
-        private static extern void DestroyImageView(IntPtr device, long imageView, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyImageView(IntPtr device, long imageView, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

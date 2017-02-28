@@ -29,18 +29,18 @@ namespace VulkanCore.Khr
         public DisplayModePropertiesKhr[] GetDisplayModeProperties()
         {
             int count;
-            Result result = GetDisplayModePropertiesKhr(Parent, this, &count, null);
+            Result result = vkGetDisplayModePropertiesKHR(Parent, this, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var properties = new DisplayModePropertiesKhr[count];
             fixed (DisplayModePropertiesKhr* propertiesPtr = properties)
-                result = GetDisplayModePropertiesKhr(Parent, this, &count, propertiesPtr);
+                result = vkGetDisplayModePropertiesKHR(Parent, this, &count, propertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetDisplayModePropertiesKHR", CallingConvention = CallConv)]
-        private static extern Result GetDisplayModePropertiesKhr(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetDisplayModePropertiesKHR(
             IntPtr physicalDevice, long display, int* propertyCount, DisplayModePropertiesKhr* properties);
     }
 }

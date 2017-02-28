@@ -30,7 +30,7 @@ namespace VulkanCore.Mvk
             }
 
             long handle;
-            Result result = CreateIOSSurfaceMvk(instance, &createInfo, nativeAllocator, &handle);
+            Result result = vkCreateIOSSurfaceMVK(instance, &createInfo, nativeAllocator, &handle);
 
             Interop.Free(nativeAllocator);
 
@@ -57,7 +57,7 @@ namespace VulkanCore.Mvk
             }
 
             long handle;
-            Result result = CreateMacOSSurfaceMvk(instance, &createInfo, nativeAllocator, &handle);
+            Result result = vkCreateMacOSSurfaceMVK(instance, &createInfo, nativeAllocator, &handle);
 
             Interop.Free(nativeAllocator);
 
@@ -65,12 +65,12 @@ namespace VulkanCore.Mvk
             return new SurfaceKhr(instance, ref allocator, handle);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateIOSSurfaceMVK", CallingConvention = CallConv)]
-        private static extern Result CreateIOSSurfaceMvk(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateIOSSurfaceMVK(IntPtr instance,
             IOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateMacOSSurfaceMVK", CallingConvention = CallConv)]
-        private static extern Result CreateMacOSSurfaceMvk(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateMacOSSurfaceMVK(IntPtr instance,
             MacOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
     }
 

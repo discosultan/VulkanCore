@@ -24,7 +24,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out ImageCreateInfo.Native nativeCreateInfo, queueFamilyIndicesPtr);
                 long handle;
-                Result result = CreateImage(parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateImage(parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -56,7 +56,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void BindMemory(DeviceMemory memory, long memoryOffset = 0) 
         {
-            Result result = BindImageMemory(Parent, this, memory, memoryOffset);
+            Result result = vkBindImageMemory(Parent, this, memory, memoryOffset);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -67,7 +67,7 @@ namespace VulkanCore
         public MemoryRequirements GetMemoryRequirements()
         {
             MemoryRequirements requirements;
-            GetImageMemoryRequirements(Parent, this, &requirements);
+            vkGetImageMemoryRequirements(Parent, this, &requirements);
             return requirements;
         }
 
@@ -78,7 +78,7 @@ namespace VulkanCore
         public SubresourceLayout GetSubresourceLayout(ImageSubresource subresource)
         {
             SubresourceLayout layout;
-            GetImageSubresourceLayout(Parent, this, &subresource, &layout);
+            vkGetImageSubresourceLayout(Parent, this, &subresource, &layout);
             return layout;
         }
 
@@ -106,11 +106,11 @@ namespace VulkanCore
         public SparseImageMemoryRequirements[] GetSparseMemoryRequirements()
         {
             int count;
-            GetImageSparseMemoryRequirements(Parent, this, &count, null);
+            vkGetImageSparseMemoryRequirements(Parent, this, &count, null);
 
             var requirements = new SparseImageMemoryRequirements[count];
             fixed (SparseImageMemoryRequirements* requirementsPtr = requirements)
-                GetImageSparseMemoryRequirements(Parent, this, &count, requirementsPtr);
+                vkGetImageSparseMemoryRequirements(Parent, this, &count, requirementsPtr);
             return requirements;
         }
 
@@ -119,29 +119,29 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyImage(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyImage(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateImage", CallingConvention = CallConv)]
-        private static extern Result CreateImage(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateImage(IntPtr device, 
             ImageCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* image);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyImage", CallingConvention = CallConv)]
-        private static extern void DestroyImage(IntPtr device, long image, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyImage(IntPtr device, long image, AllocationCallbacks.Native* allocator);
         
-        [DllImport(VulkanDll, EntryPoint = "vkGetImageMemoryRequirements", CallingConvention = CallConv)]
-        private static extern void GetImageMemoryRequirements(IntPtr device, long image, MemoryRequirements* memoryRequirements);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetImageMemoryRequirements(IntPtr device, long image, MemoryRequirements* memoryRequirements);
         
-        [DllImport(VulkanDll, EntryPoint = "vkGetImageSparseMemoryRequirements", CallingConvention = CallConv)]
-        private static extern void GetImageSparseMemoryRequirements(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetImageSparseMemoryRequirements(IntPtr device, 
             long image, int* sparseMemoryRequirementCount, SparseImageMemoryRequirements* sparseMemoryRequirements);
 
-        [DllImport(VulkanDll, EntryPoint = "vkBindImageMemory", CallingConvention = CallConv)]
-        private static extern Result BindImageMemory(IntPtr device, long image, long memory, long memoryOffset);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkBindImageMemory(IntPtr device, long image, long memory, long memoryOffset);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetImageSubresourceLayout", CallingConvention = CallConv)]
-        private static extern void GetImageSubresourceLayout(IntPtr device,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetImageSubresourceLayout(IntPtr device,
             long image, ImageSubresource* subresource, SubresourceLayout* layout);
     }
 
@@ -453,7 +453,7 @@ namespace VulkanCore
         /// <summary>
         /// Must only be used for presenting a swapchain image for display. A swapchain’s image must
         /// be transitioned to this layout before calling <see cref="QueueExtensions.PresentKhr"/>,
-        /// and must be transitioned away from this layout after calling <see cref="SwapchainKhr.AcquireNextImageKhr"/>.
+        /// and must be transitioned away from this layout after calling <see cref="SwapchainKhr.vkAcquireNextImageKHR"/>.
         /// </summary>
         PresentSrcKhr = 1000001002
     }

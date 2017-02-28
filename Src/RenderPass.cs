@@ -24,7 +24,7 @@ namespace VulkanCore
             {
                 createInfo.ToNative(out RenderPassCreateInfo.Native nativeCreateInfo, attachmentsPtr, dependenciesPtr);
                 long handle;
-                Result result = CreateRenderPass(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateRenderPass(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 nativeCreateInfo.Free();
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
@@ -43,7 +43,7 @@ namespace VulkanCore
         public Extent2D GetRenderAreaGranularity()
         {
             Extent2D granularity;
-            GetRenderAreaGranularity(Parent, this, &granularity);
+            vkGetRenderAreaGranularity(Parent, this, &granularity);
             return granularity;
         }
 
@@ -66,19 +66,19 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyRenderPass(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyRenderPass(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateRenderPass", CallingConvention = CallConv)]
-        private static extern Result CreateRenderPass(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateRenderPass(IntPtr device, 
             RenderPassCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* renderPass);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyRenderPass", CallingConvention = CallConv)]
-        private static extern void DestroyRenderPass(IntPtr device, long renderPass, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyRenderPass(IntPtr device, long renderPass, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetRenderAreaGranularity", CallingConvention = CallConv)]
-        private static extern void GetRenderAreaGranularity(IntPtr device, long renderPass, Extent2D* granularity);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetRenderAreaGranularity(IntPtr device, long renderPass, Extent2D* granularity);
     }
 
     /// <summary>

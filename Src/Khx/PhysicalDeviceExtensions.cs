@@ -11,7 +11,7 @@ namespace VulkanCore.Khx
         public static PhysicalDeviceProperties2Khx GetProperties2Khx(this PhysicalDevice physicalDevice)
         {
             PhysicalDeviceProperties2Khx.Native nativeProperties;
-            GetPhysicalDeviceProperties2Khx(physicalDevice, &nativeProperties);
+            vkGetPhysicalDeviceProperties2KHX(physicalDevice, &nativeProperties);
             PhysicalDeviceProperties2Khx.FromNative(ref nativeProperties, out var properties);
             return properties;
         }
@@ -20,7 +20,7 @@ namespace VulkanCore.Khx
             PhysicalDeviceImageFormatInfo2Khx info)
         {
             ImageFormatProperties2Khx properties;
-            GetPhysicalDeviceImageFormatProperties2Khx(physicalDevice, &info, &properties);
+            vkGetPhysicalDeviceImageFormatProperties2KHX(physicalDevice, &info, &properties);
             return properties;
         }
 
@@ -28,7 +28,7 @@ namespace VulkanCore.Khx
             PhysicalDeviceExternalBufferInfoKhx info)
         {
             ExternalBufferPropertiesKhx properties;
-            GetPhysicalDeviceExternalBufferPropertiesKhx(physicalDevice, &info, &properties);
+            vkGetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice, &info, &properties);
             return properties;
         }
 
@@ -42,7 +42,7 @@ namespace VulkanCore.Khx
             PhysicalDeviceExternalSemaphoreInfoKhx info)
         {
             ExternalSemaphorePropertiesKhx properties;
-            GetPhysicalDeviceExternalSemaphorePropertiesKhx(physicalDevice, &info, &properties);
+            vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice, &info, &properties);
             return properties;
         }
 
@@ -56,36 +56,36 @@ namespace VulkanCore.Khx
         public static Rect2D[] GetPresentRectanglesKhx(this PhysicalDevice physicalDevice, SurfaceKhr surface)
         {
             int count;
-            Result result = GetPhysicalDevicePresentRectanglesKhx(physicalDevice, surface, &count, null);
+            Result result = vkGetPhysicalDevicePresentRectanglesKHX(physicalDevice, surface, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var rectangles = new Rect2D[count];
             fixed (Rect2D* rectanglesPtr = rectangles)
             {
-                result = GetPhysicalDevicePresentRectanglesKhx(physicalDevice, surface, &count, rectanglesPtr);
+                result = vkGetPhysicalDevicePresentRectanglesKHX(physicalDevice, surface, &count, rectanglesPtr);
                 VulkanException.ThrowForInvalidResult(result);
                 return rectangles;
             }
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceProperties2KHX", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceProperties2Khx(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceProperties2KHX(IntPtr physicalDevice, 
             PhysicalDeviceProperties2Khx.Native* properties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceImageFormatProperties2KHX", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceImageFormatProperties2Khx(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceImageFormatProperties2KHX(IntPtr physicalDevice, 
             PhysicalDeviceImageFormatInfo2Khx* imageFormatInfo, ImageFormatProperties2Khx* imageFormatProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceExternalBufferPropertiesKHX", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceExternalBufferPropertiesKhx(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceExternalBufferPropertiesKHX(IntPtr physicalDevice, 
             PhysicalDeviceExternalBufferInfoKhx* externalBufferInfo, ExternalBufferPropertiesKhx* externalBufferProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceExternalSemaphorePropertiesKHX", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceExternalSemaphorePropertiesKhx(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(IntPtr physicalDevice, 
             PhysicalDeviceExternalSemaphoreInfoKhx* externalSemaphoreInfo, ExternalSemaphorePropertiesKhx* externalSemaphoreProperties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDevicePresentRectanglesKHX", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDevicePresentRectanglesKhx(IntPtr physicalDevice, long surface, int* rectCount, Rect2D* rects);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDevicePresentRectanglesKHX(IntPtr physicalDevice, long surface, int* rectCount, Rect2D* rects);
     }
 
     public struct PhysicalDeviceProperties2Khx

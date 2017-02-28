@@ -44,7 +44,7 @@ namespace VulkanCore
         public void Submit(SubmitInfo submit, Fence fence = null)
         {
             submit.ToNative(out SubmitInfo.Native nativeSubmit);
-            Result result = QueueSubmit(this, 1, &nativeSubmit, fence);
+            Result result = vkQueueSubmit(this, 1, &nativeSubmit, fence);
             nativeSubmit.Free();
             VulkanException.ThrowForInvalidResult(result);
         }
@@ -65,7 +65,7 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 submits[i].ToNative(out nativeSubmits[i]);
 
-            Result result = QueueSubmit(this, count, nativeSubmits, fence);
+            Result result = vkQueueSubmit(this, count, nativeSubmits, fence);
             for (int i = 0; i < count; i++)
                 nativeSubmits[i].Free();
 
@@ -82,7 +82,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void WaitIdle()
         {
-            Result result = QueueWaitIdle(this);
+            Result result = vkQueueWaitIdle(this);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -98,7 +98,7 @@ namespace VulkanCore
         public void BindSparse(BindSparseInfo bindInfo, Fence fence = null)
         {
             bindInfo.ToNative(out BindSparseInfo.Native nativeBindInfo);
-            Result result = QueueBindSparse(this, 1, &nativeBindInfo, fence);
+            Result result = vkQueueBindSparse(this, 1, &nativeBindInfo, fence);
             nativeBindInfo.Free();
             VulkanException.ThrowForInvalidResult(result);
         }
@@ -123,7 +123,7 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 bindInfo[i].ToNative(out nativeBindInfo[i]); 
 
-            Result result = QueueBindSparse(this, count, nativeBindInfo, fence);
+            Result result = vkQueueBindSparse(this, count, nativeBindInfo, fence);
 
             for (int i = 0; i < count; i++)
                 nativeBindInfo[i].Free();
@@ -131,15 +131,15 @@ namespace VulkanCore
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkQueueSubmit", CallingConvention = CallConv)]
-        private static extern Result QueueSubmit(IntPtr queue, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkQueueSubmit(IntPtr queue, 
             int submitCount, SubmitInfo.Native* submits, long fence);
 
-        [DllImport(VulkanDll, EntryPoint = "vkQueueWaitIdle", CallingConvention = CallConv)]
-        private static extern Result QueueWaitIdle(IntPtr queue);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkQueueWaitIdle(IntPtr queue);
 
-        [DllImport(VulkanDll, EntryPoint = "vkQueueBindSparse", CallingConvention = CallConv)]
-        private static extern Result QueueBindSparse(IntPtr queue, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkQueueBindSparse(IntPtr queue, 
             int bindInfoCount, BindSparseInfo.Native* bindInfo, long fence);
     }
 

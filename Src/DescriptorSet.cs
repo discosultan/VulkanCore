@@ -30,7 +30,7 @@ namespace VulkanCore
             if (!Disposed)
             {
                 long handle = this;
-                Result result = FreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
+                Result result = vkFreeDescriptorSets(Parent.Parent, Parent, 1, &handle);
                 VulkanException.ThrowForInvalidResult(result);
             }
             base.Dispose();
@@ -43,7 +43,7 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 descriptorSetsPtr[i] = descriptorSets[i];
 
-            Result result = FreeDescriptorSets(parent.Parent, parent, count, descriptorSetsPtr);
+            Result result = vkFreeDescriptorSets(parent.Parent, parent, count, descriptorSetsPtr);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -56,7 +56,7 @@ namespace VulkanCore
                 int count = createInfo.SetLayouts?.Length ?? 0;
 
                 var descriptorSetsPtr = stackalloc long[count];
-                Result result = AllocateDescriptorSets(parent.Parent, &nativeCreateInfo, descriptorSetsPtr);
+                Result result = vkAllocateDescriptorSets(parent.Parent, &nativeCreateInfo, descriptorSetsPtr);
                 VulkanException.ThrowForInvalidResult(result);
 
                 var descriptorSets = new DescriptorSet[count];
@@ -80,7 +80,7 @@ namespace VulkanCore
 
             fixed (CopyDescriptorSet* descriptorCopiesPtr = descriptorCopies)
             {
-                UpdateDescriptorSets(
+                vkUpdateDescriptorSets(
                     parent.Parent,
                     descriptorWriteCount,
                     nativeDescriptorWritesPtr,
@@ -92,16 +92,16 @@ namespace VulkanCore
                 nativeDescriptorWritesPtr[i].Free();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkAllocateDescriptorSets", CallingConvention = CallConv)]
-        private static extern Result AllocateDescriptorSets(IntPtr device,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkAllocateDescriptorSets(IntPtr device,
             DescriptorSetAllocateInfo.Native* allocateInfo, long* descriptorSets);
         
-        [DllImport(VulkanDll, EntryPoint = "vkFreeDescriptorSets", CallingConvention = CallConv)]
-        private static extern Result FreeDescriptorSets(IntPtr device,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkFreeDescriptorSets(IntPtr device,
             long descriptorPool, int descriptorSetCount, long* descriptorSets);
 
-        [DllImport(VulkanDll, EntryPoint = "vkUpdateDescriptorSets", CallingConvention = CallConv)]
-        private static extern void UpdateDescriptorSets(IntPtr device, int descriptorWriteCount,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkUpdateDescriptorSets(IntPtr device, int descriptorWriteCount,
             WriteDescriptorSet.Native* descriptorWrites, int descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
     }
 

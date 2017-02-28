@@ -30,13 +30,13 @@ namespace VulkanCore.Khr
                     swapchainsPtr,
                     imageIndicesPtr,
                     resultsPtr);
-                Result result = QueuePresentKhr(queue, &nativePresentInfo);
+                Result result = vkQueuePresentKHR(queue, &nativePresentInfo);
                 VulkanException.ThrowForInvalidResult(result);
-            }            
+            }
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkQueuePresentKHR", CallingConvention = CallConv)]
-        private static extern Result QueuePresentKhr(IntPtr queue, PresentInfoKhr.Native* presentInfo);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkQueuePresentKHR(IntPtr queue, PresentInfoKhr.Native* presentInfo);
     }
 
     /// <summary>

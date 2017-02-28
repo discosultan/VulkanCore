@@ -17,7 +17,7 @@ namespace VulkanCore
             createInfo->Prepare();
 
             long handle;
-            Result result = CreateSampler(Parent, createInfo, NativeAllocator, &handle);
+            Result result = vkCreateSampler(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -32,16 +32,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroySampler(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroySampler(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateSampler", CallingConvention = CallConv)]
-        private static extern Result CreateSampler(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateSampler(IntPtr device, 
             SamplerCreateInfo* CreateInfo, AllocationCallbacks.Native* allocator, long* sampler);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroySampler", CallingConvention = CallConv)]
-        private static extern IntPtr DestroySampler(IntPtr device, long sampler, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern IntPtr vkDestroySampler(IntPtr device, long sampler, AllocationCallbacks.Native* allocator);
     }
 
     /// <summary>

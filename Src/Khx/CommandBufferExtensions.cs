@@ -15,7 +15,7 @@ namespace VulkanCore.Khx
         /// <returns></returns>
         public static void CmdSetDeviceMaskKhx(this CommandBuffer commandBuffer, int deviceMask)
         {
-            CmdSetDeviceMaskKhx(commandBuffer.Handle, deviceMask);
+            vkCmdSetDeviceMaskKHX(commandBuffer.Handle, deviceMask);
         }
 
         /// <summary>
@@ -32,16 +32,16 @@ namespace VulkanCore.Khx
             int baseGroupX, int baseGroupY, int baseGroupZ,
             int groupCountX, int groupCountY, int groupCountZ)
         {
-            CmdDispatchBaseKhx(commandBuffer.Handle,
+            vkCmdDispatchBaseKHX(commandBuffer.Handle,
                 baseGroupX, baseGroupY, baseGroupZ,
                 groupCountX, groupCountY, groupCountZ);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetDeviceMaskKHX", CallingConvention = CallConv)]
-        private static extern void CmdSetDeviceMaskKhx(IntPtr commandBuffer, int deviceMask);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetDeviceMaskKHX(IntPtr commandBuffer, int deviceMask);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDispatchBaseKHX", CallingConvention = CallConv)]
-        private static extern void CmdDispatchBaseKhx(IntPtr commandBuffer,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDispatchBaseKHX(IntPtr commandBuffer,
             int baseGroupX, int baseGroupY, int baseGroupZ,
             int groupCountX, int groupCountY, int groupCountZ);
     }

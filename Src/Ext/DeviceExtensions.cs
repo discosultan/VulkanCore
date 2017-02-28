@@ -75,7 +75,7 @@ namespace VulkanCore.Ext
             DisplayPowerInfoExt displayPowerInfo)
         {
             displayPowerInfo.Prepare();
-            Result result = DisplayPowerControlExt(device, display, &displayPowerInfo);
+            Result result = vkDisplayPowerControlEXT(device, display, &displayPowerInfo);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -100,7 +100,7 @@ namespace VulkanCore.Ext
             }
 
             long handle;
-            Result result = RegisterDeviceEventExt(device, &deviceEventInfo, nativeAllocator, &handle);
+            Result result = vkRegisterDeviceEventEXT(device, &deviceEventInfo, nativeAllocator, &handle);
             Interop.Free(nativeAllocator);
             VulkanException.ThrowForInvalidResult(result);
             return new Fence(device, ref allocator, handle);
@@ -130,7 +130,7 @@ namespace VulkanCore.Ext
             }
 
             long handle;
-            Result result = RegisterDisplayEventExt(device, display, &displayEventInfo, nativeAllocator, &handle);
+            Result result = vkRegisterDisplayEventEXT(device, display, &displayEventInfo, nativeAllocator, &handle);
             Interop.Free(nativeAllocator);
             VulkanException.ThrowForInvalidResult(result);
             return new Fence(device, ref allocator, handle);
@@ -149,26 +149,26 @@ namespace VulkanCore.Ext
             for (int i = 0; i < count; i++)
                 swapchainPtrs[i] = swapchains[i];
             fixed (Smpte2086MetadataExt* metadataPtr = metadata)
-                SetSmpte2086MetadataExt(device, count, swapchainPtrs, metadataPtr);
+                vkSetSMPTE2086MetadataEXT(device, count, swapchainPtrs, metadataPtr);
         }
 
         private delegate Result DebugMarkerSetObjectNameExtDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
 
         private delegate Result DebugMarkerSetObjectTagExtDelegate(IntPtr device, DebugMarkerObjectTagInfoExt.Native* tagInfo);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDisplayPowerControlEXT", CallingConvention = CallConv)]
-        private static extern Result DisplayPowerControlExt(IntPtr device, long display, DisplayPowerInfoExt* displayPowerInfo);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkDisplayPowerControlEXT(IntPtr device, long display, DisplayPowerInfoExt* displayPowerInfo);
 
-        [DllImport(VulkanDll, EntryPoint = "vkRegisterDeviceEventEXT", CallingConvention = CallConv)]
-        private static extern Result RegisterDeviceEventExt(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkRegisterDeviceEventEXT(IntPtr device, 
             DeviceEventInfoExt* deviceEventInfo, AllocationCallbacks.Native* allocator, long* fence);
 
-        [DllImport(VulkanDll, EntryPoint = "vkRegisterDisplayEventEXT", CallingConvention = CallConv)]
-        private static extern Result RegisterDisplayEventExt(IntPtr device, long display, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkRegisterDisplayEventEXT(IntPtr device, long display, 
             DisplayEventInfoExt* displayEventInfo, AllocationCallbacks.Native* allocator, long* fence);
 
-        [DllImport(VulkanDll, EntryPoint = "vkSetSMPTE2086MetadataEXT", CallingConvention = CallConv)]
-        private static extern void SetSmpte2086MetadataExt(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkSetSMPTE2086MetadataEXT(IntPtr device, 
             int swapchainCount, long* swapchains, Smpte2086MetadataExt* metadata);
     }
 

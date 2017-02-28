@@ -29,7 +29,7 @@ namespace VulkanCore.Khr
 
             long handle;
             createInfo.ToNative(out SwapchainCreateInfoKhr.Native nativeCreateInfo);
-            Result result = CreateSwapchainKhr(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+            Result result = vkCreateSwapchainKHR(Parent, &nativeCreateInfo, NativeAllocator, &handle);
             nativeCreateInfo.Free();
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
@@ -60,11 +60,11 @@ namespace VulkanCore.Khr
         public Image[] GetImages()
         {
             int swapchainImageCount;
-            Result result = GetSwapchainImagesKhr(Parent, this, &swapchainImageCount, null);
+            Result result = vkGetSwapchainImagesKHR(Parent, this, &swapchainImageCount, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var swapchainImages = stackalloc long[swapchainImageCount];
-            result = GetSwapchainImagesKhr(Parent, this, &swapchainImageCount, swapchainImages);
+            result = vkGetSwapchainImagesKHR(Parent, this, &swapchainImageCount, swapchainImages);
             VulkanException.ThrowForInvalidResult(result);
 
             var images = new Image[swapchainImageCount];
@@ -100,7 +100,7 @@ namespace VulkanCore.Khr
         public int AcquireNextImage(long timeout = ~0, Semaphore semaphore = null, Fence fence = null)
         {
             int nextImageIndex;
-            Result result = AcquireNextImageKhr(Parent, this, timeout, semaphore, fence, &nextImageIndex);
+            Result result = vkAcquireNextImageKHR(Parent, this, timeout, semaphore, fence, &nextImageIndex);
             VulkanException.ThrowForInvalidResult(result);
             return nextImageIndex;
         }
@@ -117,7 +117,7 @@ namespace VulkanCore.Khr
             allocator?.ToNative(&nativeAllocator);
 
             long* handles = stackalloc long[count];
-            Result result = CreateSharedSwapchainsKhr(parent, count, nativeCreateInfos,
+            Result result = vkCreateSharedSwapchainsKHR(parent, count, nativeCreateInfos,
                 allocator.HasValue ? &nativeAllocator : null, handles);
             for (int i = 0; i < count; i++)
                 nativeCreateInfos[i].Free();
@@ -134,26 +134,26 @@ namespace VulkanCore.Khr
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroySwapchainKhr(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroySwapchainKHR(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateSwapchainKHR", CallingConvention = CallConv)]
-        private static extern Result CreateSwapchainKhr(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateSwapchainKHR(IntPtr device, 
             SwapchainCreateInfoKhr.Native* createInfo, AllocationCallbacks.Native* allocator, long* swapchain);
         
-        [DllImport(VulkanDll, EntryPoint = "vkDestroySwapchainKHR", CallingConvention = CallConv)]
-        private static extern void DestroySwapchainKhr(IntPtr device, long swapchain, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroySwapchainKHR(IntPtr device, long swapchain, AllocationCallbacks.Native* allocator);
         
-        [DllImport(VulkanDll, EntryPoint = "vkGetSwapchainImagesKHR", CallingConvention = CallConv)]
-        private static extern Result GetSwapchainImagesKhr(IntPtr device, long swapchain, int* swapchainImageCount, long* swapchainImages);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetSwapchainImagesKHR(IntPtr device, long swapchain, int* swapchainImageCount, long* swapchainImages);
         
-        [DllImport(VulkanDll, EntryPoint = "vkAcquireNextImageKHR", CallingConvention = CallConv)]
-        private static extern Result AcquireNextImageKhr(IntPtr device, long swapchain, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkAcquireNextImageKHR(IntPtr device, long swapchain, 
             long timeout, long semaphore, long fence, int* imageIndex);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateSharedSwapchainsKHR", CallingConvention = CallConv)]
-        private static extern Result CreateSharedSwapchainsKhr(IntPtr device,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateSharedSwapchainsKHR(IntPtr device,
             int swapchainCount, SwapchainCreateInfoKhr.Native* createInfos, AllocationCallbacks.Native* allocator, long* swapchains);
     }
 

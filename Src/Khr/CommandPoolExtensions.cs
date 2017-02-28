@@ -19,11 +19,11 @@ namespace VulkanCore.Khr
         /// <param name="commandPool">The command pool to trim.</param>
         public static void TrimKhr(this CommandPool commandPool)
         {
-            TrimCommandPoolKhr(commandPool.Parent, commandPool, CommandPoolTrimFlags.None);
+            vkTrimCommandPoolKHR(commandPool.Parent, commandPool, CommandPoolTrimFlags.None);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkTrimCommandPoolKHR", CallingConvention = CallConv)]
-        private static extern void TrimCommandPoolKhr(IntPtr device, long commandPool, CommandPoolTrimFlags flags);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkTrimCommandPoolKHR(IntPtr device, long commandPool, CommandPoolTrimFlags flags);
     }
 
     // Is reserved for future use.

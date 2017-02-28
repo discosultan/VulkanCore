@@ -37,10 +37,10 @@ namespace VulkanCore
             createInfo.ToNative(out InstanceCreateInfo.Native nativeCreateInfo);
 
             IntPtr handle;
-            Result result = CreateInstance(&nativeCreateInfo, NativeAllocator, &handle);
+            Result result = vkCreateInstance(&nativeCreateInfo, NativeAllocator, &handle);
             nativeCreateInfo.Free();
 
-            VulkanException.ThrowForInvalidResult(result);        
+            VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
 
@@ -52,11 +52,11 @@ namespace VulkanCore
         public PhysicalDevice[] EnumeratePhysicalDevices()
         {
             int count;
-            Result result = EnumeratePhysicalDevices(this, &count, null);
+            Result result = vkEnumeratePhysicalDevices(this, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var devicesHandle = stackalloc IntPtr[count];
-            result = EnumeratePhysicalDevices(this, &count, devicesHandle);
+            result = vkEnumeratePhysicalDevices(this, &count, devicesHandle);
 
             var devices = new PhysicalDevice[count];
             for (int i = 0; i < count; i++)
@@ -85,7 +85,7 @@ namespace VulkanCore
                 int byteCount = Interop.String.GetMaxByteCount(name);
                 var dstPtr = stackalloc byte[byteCount];
                 Interop.String.ToPointer(name, dstPtr, byteCount);
-                addr = GetInstanceProcAddr(Handle, dstPtr);
+                addr = vkGetInstanceProcAddr(Handle, dstPtr);
                 _procAddrCache.TryAdd(name, addr);
             }
             return addr;
@@ -133,11 +133,11 @@ namespace VulkanCore
             Interop.String.ToPointer(layerName, dstLayerNamePtr, dstLayerNameByteCount);
 
             int count;
-            Result result = EnumerateInstanceExtensionProperties(dstLayerNamePtr, &count, null);
+            Result result = vkEnumerateInstanceExtensionProperties(dstLayerNamePtr, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var propertiesPtr = stackalloc ExtensionProperties.Native[count];
-            result = EnumerateInstanceExtensionProperties(dstLayerNamePtr, &count, propertiesPtr);
+            result = vkEnumerateInstanceExtensionProperties(dstLayerNamePtr, &count, propertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
 
             var properties = new ExtensionProperties[count];
@@ -154,11 +154,11 @@ namespace VulkanCore
         public static LayerProperties[] EnumerateLayerProperties()
         {
             int count;
-            Result result = EnumerateInstanceLayerProperties(&count, null);
+            Result result = vkEnumerateInstanceLayerProperties(&count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var nativePropertiesPtr = stackalloc LayerProperties.Native[count];
-            result = EnumerateInstanceLayerProperties(&count, nativePropertiesPtr);
+            result = vkEnumerateInstanceLayerProperties(&count, nativePropertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
 
             var properties = new LayerProperties[count];
@@ -172,29 +172,29 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyInstance(this, NativeAllocator);
+            if (!Disposed) vkDestroyInstance(this, NativeAllocator);
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkCreateInstance", CallingConvention = CallConv)]
-        private static extern Result CreateInstance(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateInstance(
             InstanceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* instance);
 
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyInstance", CallingConvention = CallConv)]
-        private static extern IntPtr DestroyInstance(IntPtr instance, AllocationCallbacks.Native* allocator);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern IntPtr vkDestroyInstance(IntPtr instance, AllocationCallbacks.Native* allocator);
 
-        [DllImport(VulkanDll, EntryPoint = "vkEnumeratePhysicalDevices", CallingConvention = CallConv)]
-        private static extern Result EnumeratePhysicalDevices(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkEnumeratePhysicalDevices(
             IntPtr instance, int* physicalDeviceCount, IntPtr* physicalDevices);
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetInstanceProcAddr", CallingConvention = CallConv)]
-        private static extern IntPtr GetInstanceProcAddr(IntPtr instance, byte* name);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern IntPtr vkGetInstanceProcAddr(IntPtr instance, byte* name);
 
-        [DllImport(VulkanDll, EntryPoint = "vkEnumerateInstanceLayerProperties", CallingConvention = CallConv)]
-        private static extern Result EnumerateInstanceLayerProperties(int* propertyCount, LayerProperties.Native* properties);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkEnumerateInstanceLayerProperties(int* propertyCount, LayerProperties.Native* properties);
 
-        [DllImport(VulkanDll, EntryPoint = "vkEnumerateInstanceExtensionProperties", CallingConvention = CallConv)]
-        private static extern Result EnumerateInstanceExtensionProperties(
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkEnumerateInstanceExtensionProperties(
             byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);        
     }
 

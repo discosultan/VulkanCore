@@ -22,7 +22,7 @@ namespace VulkanCore
             createInfo.Prepare(buffer);
 
             long handle;
-            Result result = CreateBufferView(Parent, &createInfo, NativeAllocator, &handle);
+            Result result = vkCreateBufferView(Parent, &createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -37,16 +37,16 @@ namespace VulkanCore
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) DestroyBufferView(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyBufferView(Parent, this, NativeAllocator);
             base.Dispose();
         }
         
-        [DllImport(VulkanDll, EntryPoint = "vkCreateBufferView", CallingConvention = CallConv)]
-        private static extern Result CreateBufferView(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkCreateBufferView(IntPtr device, 
             BufferViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
         
-        [DllImport(VulkanDll, EntryPoint = "vkDestroyBufferView", CallingConvention = CallConv)]
-        private static extern void DestroyBufferView(IntPtr device, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkDestroyBufferView(IntPtr device, 
             long bufferView, AllocationCallbacks.Native* allocator);
     }
 

@@ -21,12 +21,12 @@ namespace VulkanCore.Nvx
         {
             DeviceGeneratedCommandsFeaturesNvx features;
             DeviceGeneratedCommandsLimitsNvx limits;
-            GetPhysicalDeviceGeneratedCommandsPropertiesNvx(physicalDevice, &features, &limits);
+            vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX(physicalDevice, &features, &limits);
             return (features, limits);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX", CallingConvention = CallConv)]
-        private static extern void GetPhysicalDeviceGeneratedCommandsPropertiesNvx(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX(IntPtr physicalDevice, 
             DeviceGeneratedCommandsFeaturesNvx* features, DeviceGeneratedCommandsLimitsNvx* limits);
     }
 

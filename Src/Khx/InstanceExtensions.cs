@@ -18,11 +18,11 @@ namespace VulkanCore.Khx
             ExternalSemaphoreHandleTypesKhx handleType)
         {
             int count;
-            Result result = EnumeratePhysicalDeviceGroupsKhx(instance, &count, null);
+            Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var nativeProperties = new PhysicalDeviceGroupPropertiesKhx.Native[count];
-            result = EnumeratePhysicalDeviceGroupsKhx(instance, &count, nativeProperties);
+            result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, nativeProperties);
             VulkanException.ThrowForInvalidResult(result);
 
             var groupProperties = new PhysicalDeviceGroupPropertiesKhx[count];
@@ -37,10 +37,9 @@ namespace VulkanCore.Khx
 
             return groupProperties;
         }
-
         
-        [DllImport(VulkanDll, EntryPoint = "vkEnumeratePhysicalDeviceGroupsKHX", CallingConvention = CallConv)]
-        private static extern Result EnumeratePhysicalDeviceGroupsKhx(IntPtr instance,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkEnumeratePhysicalDeviceGroupsKHX(IntPtr instance,
             int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native[] physicalDeviceGroupProperties);
     }
 

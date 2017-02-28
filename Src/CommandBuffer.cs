@@ -37,7 +37,7 @@ namespace VulkanCore
         public void Begin(CommandBufferBeginInfo beginInfo = default(CommandBufferBeginInfo))
         {
             beginInfo.ToNative(out CommandBufferBeginInfo.Native nativeBeginInfo);
-            Result result = BeginCommandBuffer(this, &nativeBeginInfo);
+            Result result = vkBeginCommandBuffer(this, &nativeBeginInfo);
             nativeBeginInfo.Free();
             VulkanException.ThrowForInvalidResult(result);
         }
@@ -48,7 +48,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void End()
         {
-            Result result = EndCommandBuffer(this);
+            Result result = vkEndCommandBuffer(this);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -67,7 +67,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void Reset(CommandBufferResetFlags flags = 0)
         {
-            Result result = ResetCommandBuffer(this, flags);
+            Result result = vkResetCommandBuffer(this, flags);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -82,7 +82,7 @@ namespace VulkanCore
         /// <param name="pipeline">The pipeline to be bound.</param>
         public void CmdBindPipeline(PipelineBindPoint pipelineBindPoint, Pipeline pipeline)
         {
-            CmdBindPipeline(this, pipelineBindPoint, pipeline);
+            vkCmdBindPipeline(this, pipelineBindPoint, pipeline);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace VulkanCore
         /// <param name="viewport">Specifies viewport parameters.</param>
         public void CmdSetViewport(Viewport viewport)
         {
-            CmdSetViewport(this, 0, 1, &viewport);
+            vkCmdSetViewport(this, 0, 1, &viewport);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace VulkanCore
         public void CmdSetViewports(int firstViewport, int viewportCount, params Viewport[] viewports)
         {
             fixed (Viewport* viewportsPtr = viewports)
-                CmdSetViewport(this, firstViewport, viewportCount, viewportsPtr);
+                vkCmdSetViewport(this, firstViewport, viewportCount, viewportsPtr);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace VulkanCore
         /// <param name="scissor">Defines scissor rectangle.</param>
         public void CmdSetScissor(Rect2D scissor)
         {
-            CmdSetScissor(this, 0, 1, &scissor);
+            vkCmdSetScissor(this, 0, 1, &scissor);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace VulkanCore
         public void CmdSetScissors(int firstScissor, int scissorCount, params Rect2D[] scissors)
         {
             fixed (Rect2D* scissorsPtr = scissors)
-                CmdSetScissor(this, firstScissor, scissorCount, scissorsPtr);
+                vkCmdSetScissor(this, firstScissor, scissorCount, scissorsPtr);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace VulkanCore
         /// <param name="lineWidth">The width of rasterized line segments.</param>
         public void CmdSetLineWidth(float lineWidth)
         {
-            CmdSetLineWidth(this, lineWidth);
+            vkCmdSetLineWidth(this, lineWidth);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace VulkanCore
         /// </param>
         public void CmdSetDepthBias(float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor)
         {
-            CmdSetDepthBias(this, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
+            vkCmdSetDepthBias(this, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace VulkanCore
         /// </param>
         public void CmdSetBlendConstants(ColorF4 blendConstants)
         {
-            CmdSetBlendConstants(this, blendConstants);
+            vkCmdSetBlendConstants(this, blendConstants);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace VulkanCore
         /// <param name="maxDepthBounds">The upper bound of the range.</param>
         public void CmdSetDepthBounds(float minDepthBounds, float maxDepthBounds)
         {
-            CmdSetDepthBounds(this, minDepthBounds, maxDepthBounds);
+            vkCmdSetDepthBounds(this, minDepthBounds, maxDepthBounds);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace VulkanCore
         /// <param name="compareMask">The new value to use as the stencil compare mask.</param>
         public void CmdSetStencilCompareMask(StencilFaces faceMask, int compareMask)
         {
-            CmdSetStencilCompareMask(this, faceMask, compareMask);
+            vkCmdSetStencilCompareMask(this, faceMask, compareMask);
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace VulkanCore
         /// <param name="writeMask">The new value to use as the stencil write mask.</param>
         public void CmdSetStencilWriteMask(StencilFaces faceMask, int writeMask)
         {
-            CmdSetStencilWriteMask(this, faceMask, writeMask);
+            vkCmdSetStencilWriteMask(this, faceMask, writeMask);
         }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace VulkanCore
         /// <param name="reference">the new value to use as the stencil reference value.</param>
         public void CmdSetStencilReference(StencilFaces faceMask, int reference)
         {
-            CmdSetStencilReference(this, faceMask, reference);
+            vkCmdSetStencilReference(this, faceMask, reference);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace VulkanCore
         {
             long descriptorSetHandle = descriptorSet;
             int dynamicOffsetValue = dynamicOffset ?? 0;
-            CmdBindDescriptorSets(this, pipelineBindPoint, layout, 0, 1,
+            vkCmdBindDescriptorSets(this, pipelineBindPoint, layout, 0, 1,
                 &descriptorSetHandle, dynamicOffset.HasValue ? 1 : 0,
                 dynamicOffset.HasValue ? &dynamicOffsetValue : null);
         }
@@ -338,7 +338,7 @@ namespace VulkanCore
 
             fixed (int* dynamicOffsetsPtr = dynamicOffsets)
             {
-                CmdBindDescriptorSets(this, pipelineBindPoint, layout, firstSet, count,
+                vkCmdBindDescriptorSets(this, pipelineBindPoint, layout, firstSet, count,
                     descriptorSetsPtr, dynamicOffsets?.Length ?? 0, dynamicOffsetsPtr);
             }
         }
@@ -353,7 +353,7 @@ namespace VulkanCore
         /// <param name="indexType">Selects whether indices are treated as 16 bits or 32 bits.</param>
         public void CmdBindIndexBuffer(Buffer buffer, long offset = 0, IndexType indexType = IndexType.UInt32)
         {
-            CmdBindIndexBuffer(this, buffer, offset, indexType);
+            vkCmdBindIndexBuffer(this, buffer, offset, indexType);
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace VulkanCore
         public void CmdBindVertexBuffer(Buffer buffer, long offset = 0)
         {
             long handle = buffer.Handle;
-            CmdBindVertexBuffers(this, 0, 1, &handle, &offset);
+            vkCmdBindVertexBuffers(this, 0, 1, &handle, &offset);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace VulkanCore
                 buffersPtr[i] = buffers[i];
 
             fixed (long* offsetsPtr = offsets)
-                CmdBindVertexBuffers(this, firstBinding, bindingCount, buffersPtr, offsetsPtr);
+                vkCmdBindVertexBuffers(this, firstBinding, bindingCount, buffersPtr, offsetsPtr);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace VulkanCore
         /// <param name="firstInstance">The instance id of the first instance to draw.</param>
         public void CmdDraw(int vertexCount, int instanceCount, int firstVertex = 0, int firstInstance = 0)
         {
-            CmdDraw(this, vertexCount, instanceCount, firstVertex, firstInstance);
+            vkCmdDraw(this, vertexCount, instanceCount, firstVertex, firstInstance);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace VulkanCore
         /// <param name="firstInstance">The instance id of the first instance to draw.</param>
         public void CmdDrawIndexed(int indexCount, int instanceCount, int firstIndex, int vertexOffset, int firstInstance)
         {
-            CmdDrawIndexed(this, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+            vkCmdDrawIndexed(this, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace VulkanCore
         /// <param name="stride">The byte stride between successive sets of draw parameters.</param>
         public void CmdDrawIndirect(Buffer buffer, long offset, int drawCount, int stride)
         {
-            CmdDrawIndirect(this, buffer, offset, drawCount, stride);
+            vkCmdDrawIndirect(this, buffer, offset, drawCount, stride);
         }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace VulkanCore
         /// <param name="stride">The byte stride between successive sets of draw parameters.</param>
         public void CmdDrawIndexedIndirect(Buffer buffer, long offset, int drawCount, int stride)
         {
-            CmdDrawIndexedIndirect(this, buffer, offset, drawCount, stride);
+            vkCmdDrawIndexedIndirect(this, buffer, offset, drawCount, stride);
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace VulkanCore
         /// <param name="groupCountZ">The number of local workgroups to dispatch in the Z dimension.</param>
         public void CmdDispatch(int groupCountX, int groupCountY, int groupCountZ)
         {
-            CmdDispatch(this, groupCountX, groupCountY, groupCountZ);
+            vkCmdDispatch(this, groupCountX, groupCountY, groupCountZ);
         }
 
         /// <summary>
@@ -496,7 +496,7 @@ namespace VulkanCore
         /// <param name="offset">The byte offset into buffer where parameters begin.</param>
         public void CmdDispatchIndirect(Buffer buffer, long offset)
         {
-            CmdDispatchIndirect(this, buffer, offset);
+            vkCmdDispatchIndirect(this, buffer, offset);
         }
 
         /// <summary>
@@ -514,7 +514,7 @@ namespace VulkanCore
         public void CmdCopyBuffer(Buffer srcBuffer, Buffer dstBuffer, params BufferCopy[] regions)
         {
             fixed (BufferCopy* regionsPtr = regions)
-                CmdCopyBuffer(this, srcBuffer, dstBuffer, regions?.Length ?? 0, regionsPtr);
+                vkCmdCopyBuffer(this, srcBuffer, dstBuffer, regions?.Length ?? 0, regionsPtr);
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace VulkanCore
             params ImageCopy[] regions)
         {
             fixed (ImageCopy* regionsPtr = regions)
-                CmdCopyImage(this, srcImage, srcImageLayout, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr);
+                vkCmdCopyImage(this, srcImage, srcImageLayout, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr);
         }
 
         /// <summary>
@@ -552,8 +552,7 @@ namespace VulkanCore
             ImageLayout dstImageLayout, ImageBlit[] regions, Filter filter)
         {
             fixed (ImageBlit* regionsPtr = regions)
-                CmdBlitImage(this, srcImage, srcImageLayout, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr,
-                    filter);
+                vkCmdBlitImage(this, srcImage, srcImageLayout, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr, filter);
         }
 
         /// <summary>
@@ -573,7 +572,7 @@ namespace VulkanCore
             params BufferImageCopy[] regions)
         {
             fixed (BufferImageCopy* regionsPtr = regions)
-                CmdCopyBufferToImage(this, srcBuffer, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr);
+                vkCmdCopyBufferToImage(this, srcBuffer, dstImage, dstImageLayout, regions?.Length ?? 0, regionsPtr);
         }
 
         /// <summary>
@@ -591,7 +590,7 @@ namespace VulkanCore
             params BufferImageCopy[] regions)
         {
             fixed (BufferImageCopy* regionsPtr = regions)
-                CmdCopyImageToBuffer(this, srcImage, srcImageLayout, dstBuffer, regions?.Length ?? 0, regionsPtr);
+                vkCmdCopyImageToBuffer(this, srcImage, srcImageLayout, dstBuffer, regions?.Length ?? 0, regionsPtr);
         }
 
         /// <summary>
@@ -618,7 +617,7 @@ namespace VulkanCore
         /// </param>
         public void CmdUpdateBuffer(Buffer dstBuffer, long dstOffset, long dataSize, IntPtr data)
         {
-            CmdUpdateBuffer(this, dstBuffer, dstOffset, dataSize, data);
+            vkCmdUpdateBuffer(this, dstBuffer, dstOffset, dataSize, data);
         }
 
         /// <summary>
@@ -645,7 +644,7 @@ namespace VulkanCore
         /// </param>
         public void CmdFillBuffer(Buffer dstBuffer, long dstOffset, long size, int data)
         {
-            CmdFillBuffer(this, dstBuffer, dstOffset, size, data);
+            vkCmdFillBuffer(this, dstBuffer, dstOffset, size, data);
         }
 
         /// <summary>
@@ -671,7 +670,7 @@ namespace VulkanCore
             ClearColorValue color, params ImageSubresourceRange[] ranges)
         {
             fixed (ImageSubresourceRange* rangesPtr = ranges)
-                CmdClearColorImage(this, image, imageLayout, &color, ranges?.Length ?? 0, rangesPtr);
+                vkCmdClearColorImage(this, image, imageLayout, &color, ranges?.Length ?? 0, rangesPtr);
         }
 
         /// <summary>
@@ -696,7 +695,7 @@ namespace VulkanCore
             ClearDepthStencilValue depthStencil, params ImageSubresourceRange[] ranges)
         {
             fixed (ImageSubresourceRange* rangesPtr = ranges)
-                CmdClearDepthStencilImage(this, image, imageLayout, &depthStencil, ranges?.Length ?? 0, rangesPtr);
+                vkCmdClearDepthStencilImage(this, image, imageLayout, &depthStencil, ranges?.Length ?? 0, rangesPtr);
         }
 
         /// <summary>
@@ -719,7 +718,7 @@ namespace VulkanCore
             fixed (ClearAttachment* attachmentsPtr = attachments)
             fixed (ClearRect* rectsPtr = rects)
             {
-                CmdClearAttachments(
+                vkCmdClearAttachments(
                     this,
                     attachments?.Length ?? 0, attachmentsPtr,
                     rects?.Length ?? 0, rectsPtr);
@@ -748,7 +747,7 @@ namespace VulkanCore
         {
             fixed (ImageResolve* regionsPtr = regions)
             {
-                CmdResolveImage(
+                vkCmdResolveImage(
                     this,
                     srcImage, srcImageLayout,
                     dstImage, dstImageLayout,
@@ -770,7 +769,7 @@ namespace VulkanCore
         /// </param>
         public void CmdSetEvent(Event @event, PipelineStages stageMask)
         {
-            CmdSetEvent(this, @event, stageMask);
+            vkCmdSetEvent(this, @event, stageMask);
         }
 
         /// <summary>
@@ -787,7 +786,7 @@ namespace VulkanCore
         /// </param>
         public void CmdResetEvent(Event @event, PipelineStages stageMask)
         {
-            CmdResetEvent(this, @event, stageMask);
+            vkCmdResetEvent(this, @event, stageMask);
         }
 
         /// <summary>
@@ -814,7 +813,7 @@ namespace VulkanCore
             fixed (BufferMemoryBarrier* bufferMemoryBarriersPtr = bufferMemoryBarriers)
             fixed (ImageMemoryBarrier* imageMemoryBarriersPtr = imageMemoryBarriers)
             {
-                CmdWaitEvents(this, events?.Length ?? 0, eventsPtr, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0, 
+                vkCmdWaitEvents(this, events?.Length ?? 0, eventsPtr, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0, 
                     memoryBarriersPtr, bufferMemoryBarriers?.Length ?? 0, bufferMemoryBarriersPtr, 
                     imageMemoryBarriers?.Length ?? 0, imageMemoryBarriersPtr);
             }
@@ -843,7 +842,7 @@ namespace VulkanCore
             fixed (BufferMemoryBarrier* bufferMemoryBarriersPtr = bufferMemoryBarriers)
             fixed (ImageMemoryBarrier* imageMemoryBarriersPtr = imageMemoryBarriers)
             {
-                CmdPipelineBarrier(this, srcStageMask, dstStageMask, dependencyFlags, memoryBarriers?.Length ?? 0,
+                vkCmdPipelineBarrier(this, srcStageMask, dstStageMask, dependencyFlags, memoryBarriers?.Length ?? 0,
                     memoryBarriersPtr, bufferMemoryBarriers?.Length ?? 0, bufferMemoryBarriersPtr,
                     imageMemoryBarriers?.Length ?? 0, imageMemoryBarriersPtr);
             }
@@ -859,7 +858,7 @@ namespace VulkanCore
         /// </param>
         public void CmdBeginQuery(QueryPool queryPool, int query, QueryControlFlags flags = 0)
         {
-            CmdBeginQuery(this, queryPool, query, flags);
+            vkCmdBeginQuery(this, queryPool, query, flags);
         }
 
         /// <summary>
@@ -867,7 +866,7 @@ namespace VulkanCore
         /// <para>
         /// As queries operate asynchronously, ending a query does not immediately set the query’s
         /// status to available. A query is considered finished when the final results of the query
-        /// are ready to be retrieved by <see cref="QueryPool.GetQueryPoolResults"/> and <see
+        /// are ready to be retrieved by <see cref="QueryPool.vkGetQueryPoolResults"/> and <see
         /// cref="CmdCopyQueryPoolResults"/>, and this is when the query’s status is set to available.
         /// </para>
         /// <para>
@@ -879,7 +878,7 @@ namespace VulkanCore
         /// <param name="query">The query index within the query pool where the result is stored.</param>
         public void CmdEndQuery(QueryPool queryPool, int query)
         {
-            CmdEndQuery(this, queryPool, query);
+            vkCmdEndQuery(this, queryPool, query);
         }
 
         /// <summary>
@@ -894,7 +893,7 @@ namespace VulkanCore
         /// <param name="queryCount">The number of queries to reset.</param>
         public void CmdResetQueryPool(QueryPool queryPool, int firstQuery, int queryCount)
         {
-            CmdResetQueryPool(this, queryPool, firstQuery, queryCount);
+            vkCmdResetQueryPool(this, queryPool, firstQuery, queryCount);
         }
 
         /// <summary>
@@ -910,7 +909,7 @@ namespace VulkanCore
         /// <param name="query">The query within the query pool that will contain the timestamp.</param>
         public void CmdWriteTimestamp(PipelineStages pipelineStage, QueryPool queryPool, int query)
         {
-            CmdWriteTimestamp(this, pipelineStage, queryPool, query);
+            vkCmdWriteTimestamp(this, pipelineStage, queryPool, query);
         }
 
         /// <summary>
@@ -940,7 +939,7 @@ namespace VulkanCore
         public void CmdCopyQueryPoolResults(QueryPool queryPool, int firstQuery, int queryCount, Buffer dstBuffer,
             long dstOffset, long stride, QueryResults flags = 0)
         {
-            CmdCopyQueryPoolResults(this, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
+            vkCmdCopyQueryPoolResults(this, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
         }
 
         /// <summary>
@@ -973,7 +972,7 @@ namespace VulkanCore
         public void CmdPushConstants(PipelineLayout layout, ShaderStages stageFlags, int offset, int size,
             IntPtr values)
         {
-            CmdPushConstants(this, layout, stageFlags, offset, size, values);
+            vkCmdPushConstants(this, layout, stageFlags, offset, size, values);
         }
 
         /// <summary>
@@ -992,7 +991,7 @@ namespace VulkanCore
             fixed (ClearValue* clearValuesPtr = beginInfo.ClearValues)
             {
                 beginInfo.ToNative(out RenderPassBeginInfo.Native nativeBeginInfo, clearValuesPtr);
-                CmdBeginRenderPass(this, &nativeBeginInfo, contents);
+                vkCmdBeginRenderPass(this, &nativeBeginInfo, contents);
             }
         }
 
@@ -1023,7 +1022,7 @@ namespace VulkanCore
         /// </param>
         public void CmdNextSubpass(SubpassContents contents)
         {
-            CmdNextSubpass(this, contents);
+            vkCmdNextSubpass(this, contents);
         }
 
         /// <summary>
@@ -1034,7 +1033,7 @@ namespace VulkanCore
         /// </summary>
         public void CmdEndRenderPass()
         {
-            CmdEndRenderPass(this);
+            vkCmdEndRenderPass(this);
         }
 
         /// <summary>
@@ -1050,7 +1049,7 @@ namespace VulkanCore
         public void CmdExecuteCommand(CommandBuffer commandBuffer)
         {
             IntPtr handle = commandBuffer;
-            CmdExecuteCommands(this, 1, &handle);
+            vkCmdExecuteCommands(this, 1, &handle);
         }
 
         /// <summary>
@@ -1071,7 +1070,7 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 commandBuffersPtr[i] = commandBuffers[i];
 
-            CmdExecuteCommands(this, count, commandBuffersPtr);
+            vkCmdExecuteCommands(this, count, commandBuffersPtr);
         }
 
         /// <summary>
@@ -1082,7 +1081,7 @@ namespace VulkanCore
             if (!Disposed)
             {
                 IntPtr handle = this;
-                FreeCommandBuffers(Parent.Parent, Parent, 1, &handle);
+                vkFreeCommandBuffers(Parent.Parent, Parent, 1, &handle);
             }
             base.Dispose();
         }
@@ -1093,7 +1092,7 @@ namespace VulkanCore
             var commandBuffersPtr = stackalloc IntPtr[count];
             allocateInfo->Prepare(parent);
 
-            Result result = AllocateCommandBuffers(parent.Parent, allocateInfo, commandBuffersPtr);
+            Result result = vkAllocateCommandBuffers(parent.Parent, allocateInfo, commandBuffersPtr);
             VulkanException.ThrowForInvalidResult(result);
 
             var commandBuffers = new CommandBuffer[count];
@@ -1109,7 +1108,7 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 commandBuffersPtr[i] = commandBuffers[i];
 
-            FreeCommandBuffers(
+            vkFreeCommandBuffers(
                 parent.Parent,
                 parent,
                 count,
@@ -1132,166 +1131,166 @@ namespace VulkanCore
                 imageMemoryBarriers[i].Prepare();
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkAllocateCommandBuffers", CallingConvention = CallConv)]
-        private static extern Result AllocateCommandBuffers(IntPtr device, CommandBufferAllocateInfo* allocateInfo, IntPtr* commandBuffers);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkAllocateCommandBuffers(IntPtr device, CommandBufferAllocateInfo* allocateInfo, IntPtr* commandBuffers);
         
-        [DllImport(VulkanDll, EntryPoint = "vkFreeCommandBuffers", CallingConvention = CallConv)]
-        private static extern void FreeCommandBuffers(IntPtr device, long commandPool, int commandBufferCount, IntPtr* commandBuffers);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkFreeCommandBuffers(IntPtr device, long commandPool, int commandBufferCount, IntPtr* commandBuffers);
         
-        [DllImport(VulkanDll, EntryPoint = "vkBeginCommandBuffer", CallingConvention = CallConv)]
-        private static extern Result BeginCommandBuffer(IntPtr commandBuffer, CommandBufferBeginInfo.Native* beginInfo);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkBeginCommandBuffer(IntPtr commandBuffer, CommandBufferBeginInfo.Native* beginInfo);
         
-        [DllImport(VulkanDll, EntryPoint = "vkEndCommandBuffer", CallingConvention = CallConv)]
-        private static extern Result EndCommandBuffer(IntPtr commandBuffer);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkEndCommandBuffer(IntPtr commandBuffer);
         
-        [DllImport(VulkanDll, EntryPoint = "vkResetCommandBuffer", CallingConvention = CallConv)]
-        private static extern Result ResetCommandBuffer(IntPtr commandBuffer, CommandBufferResetFlags flags);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkResetCommandBuffer(IntPtr commandBuffer, CommandBufferResetFlags flags);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBindPipeline", CallingConvention = CallConv)]
-        private static extern void CmdBindPipeline(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, long pipeline);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBindPipeline(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, long pipeline);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetViewport", CallingConvention = CallConv)]
-        private static extern void CmdSetViewport(IntPtr commandBuffer, int firstViewport, int viewportCount, Viewport* viewports);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetViewport(IntPtr commandBuffer, int firstViewport, int viewportCount, Viewport* viewports);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetScissor", CallingConvention = CallConv)]
-        private static extern void CmdSetScissor(IntPtr commandBuffer, int firstScissor, int scissorCount, Rect2D* Scissors);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetScissor(IntPtr commandBuffer, int firstScissor, int scissorCount, Rect2D* Scissors);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetLineWidth", CallingConvention = CallConv)]
-        private static extern void CmdSetLineWidth(IntPtr commandBuffer, float lineWidth);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetLineWidth(IntPtr commandBuffer, float lineWidth);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetDepthBias", CallingConvention = CallConv)]
-        private static extern void CmdSetDepthBias(IntPtr commandBuffer, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetDepthBias(IntPtr commandBuffer, 
             float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetBlendConstants", CallingConvention = CallConv)]
-        private static extern void CmdSetBlendConstants(IntPtr commandBuffer, ColorF4 blendConstants);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetBlendConstants(IntPtr commandBuffer, ColorF4 blendConstants);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetDepthBounds", CallingConvention = CallConv)]
-        private static extern void CmdSetDepthBounds(IntPtr commandBuffer, float minDepthBounds, float maxDepthBounds);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetDepthBounds(IntPtr commandBuffer, float minDepthBounds, float maxDepthBounds);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetStencilCompareMask", CallingConvention = CallConv)]
-        private static extern void CmdSetStencilCompareMask(IntPtr commandBuffer, StencilFaces faceMask, int compareMask);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetStencilCompareMask(IntPtr commandBuffer, StencilFaces faceMask, int compareMask);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetStencilWriteMask", CallingConvention = CallConv)]
-        private static extern void CmdSetStencilWriteMask(IntPtr commandBuffer, StencilFaces faceMask, int writeMask);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetStencilWriteMask(IntPtr commandBuffer, StencilFaces faceMask, int writeMask);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetStencilReference", CallingConvention = CallConv)]
-        private static extern void CmdSetStencilReference(IntPtr commandBuffer, StencilFaces faceMask, int reference);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetStencilReference(IntPtr commandBuffer, StencilFaces faceMask, int reference);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBindDescriptorSets", CallingConvention = CallConv)]
-        private static extern void CmdBindDescriptorSets(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBindDescriptorSets(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, 
             long layout, int firstSet, int descriptorSetCount, long* descriptorSets, int dynamicOffsetCount, int* dynamicOffsets);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBindIndexBuffer", CallingConvention = CallConv)]
-        private static extern void CmdBindIndexBuffer(IntPtr commandBuffer, long buffer, long offset, IndexType indexType);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBindIndexBuffer(IntPtr commandBuffer, long buffer, long offset, IndexType indexType);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBindVertexBuffers", CallingConvention = CallConv)]
-        private static extern void CmdBindVertexBuffers(IntPtr commandBuffer, int firstBinding, int bindingCount, long* buffers, long* offsets);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBindVertexBuffers(IntPtr commandBuffer, int firstBinding, int bindingCount, long* buffers, long* offsets);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDraw", CallingConvention = CallConv)]
-        private static extern void CmdDraw(IntPtr commandBuffer, int vertexCount, int instanceCount, int firstVertex, int firstInstance);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDraw(IntPtr commandBuffer, int vertexCount, int instanceCount, int firstVertex, int firstInstance);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDrawIndexed", CallingConvention = CallConv)]
-        private static extern void CmdDrawIndexed(IntPtr commandBuffer, int indexCount, int instanceCount, int firstIndex, int vertexOffset, int firstInstance);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDrawIndexed(IntPtr commandBuffer, int indexCount, int instanceCount, int firstIndex, int vertexOffset, int firstInstance);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDrawIndirect", CallingConvention = CallConv)]
-        private static extern void CmdDrawIndirect(IntPtr commandBuffer, long buffer, long offset, int drawCount, int stride);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDrawIndirect(IntPtr commandBuffer, long buffer, long offset, int drawCount, int stride);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDrawIndexedIndirect", CallingConvention = CallConv)]
-        private static extern void CmdDrawIndexedIndirect(IntPtr commandBuffer, Buffer buffer, long offset, int drawCount, int stride);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDrawIndexedIndirect(IntPtr commandBuffer, Buffer buffer, long offset, int drawCount, int stride);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDispatch", CallingConvention = CallConv)]
-        private static extern void CmdDispatch(IntPtr commandBuffer, int x, int y, int z);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDispatch(IntPtr commandBuffer, int x, int y, int z);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdDispatchIndirect", CallingConvention = CallConv)]
-        private static extern void CmdDispatchIndirect(IntPtr commandBuffer, long buffer, long offset);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdDispatchIndirect(IntPtr commandBuffer, long buffer, long offset);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdCopyBuffer", CallingConvention = CallConv)]
-        private static extern void CmdCopyBuffer(IntPtr commandBuffer, long srcBuffer, long dstBuffer, int regionCount, BufferCopy* regions);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdCopyBuffer(IntPtr commandBuffer, long srcBuffer, long dstBuffer, int regionCount, BufferCopy* regions);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdCopyImage", CallingConvention = CallConv)]
-        private static extern void CmdCopyImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdCopyImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, 
             long dstImage, ImageLayout dstImageLayout, int regionCount, ImageCopy* regions);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBlitImage", CallingConvention = CallConv)]
-        private static extern void CmdBlitImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBlitImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, 
             long dstImage, ImageLayout dstImageLayout, int regionCount, ImageBlit* regions, Filter filter);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdCopyBufferToImage", CallingConvention = CallConv)]
-        private static extern void CmdCopyBufferToImage(IntPtr commandBuffer, long srcBuffer, long dstImage, ImageLayout dstImageLayout, int regionCount, BufferImageCopy* regions);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdCopyBufferToImage(IntPtr commandBuffer, long srcBuffer, long dstImage, ImageLayout dstImageLayout, int regionCount, BufferImageCopy* regions);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdCopyImageToBuffer", CallingConvention = CallConv)]
-        private static extern void CmdCopyImageToBuffer(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstBuffer, int regionCount, BufferImageCopy* regions);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdCopyImageToBuffer(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstBuffer, int regionCount, BufferImageCopy* regions);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdUpdateBuffer", CallingConvention = CallConv)]
-        private static extern void CmdUpdateBuffer(IntPtr commandBuffer, long dstBuffer, long dstOffset, long dataSize, IntPtr Data);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdUpdateBuffer(IntPtr commandBuffer, long dstBuffer, long dstOffset, long dataSize, IntPtr Data);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdFillBuffer", CallingConvention = CallConv)]
-        private static extern void CmdFillBuffer(IntPtr commandBuffer, long dstBuffer, long dstOffset, long size, int data);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdFillBuffer(IntPtr commandBuffer, long dstBuffer, long dstOffset, long size, int data);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdClearColorImage", CallingConvention = CallConv)]
-        private static extern void CmdClearColorImage(IntPtr commandBuffer, long image, ImageLayout imageLayout, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdClearColorImage(IntPtr commandBuffer, long image, ImageLayout imageLayout, 
             ClearColorValue* Color, int rangeCount, ImageSubresourceRange* ranges);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdClearDepthStencilImage", CallingConvention = CallConv)]
-        private static extern void CmdClearDepthStencilImage(IntPtr commandBuffer, long image, ImageLayout imageLayout, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdClearDepthStencilImage(IntPtr commandBuffer, long image, ImageLayout imageLayout, 
             ClearDepthStencilValue* depthStencil, int rangeCount, ImageSubresourceRange* ranges);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdClearAttachments", CallingConvention = CallConv)]
-        private static extern void CmdClearAttachments(IntPtr commandBuffer, int attachmentCount, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdClearAttachments(IntPtr commandBuffer, int attachmentCount, 
             ClearAttachment* attachments, int rectCount, ClearRect* rects);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdResolveImage", CallingConvention = CallConv)]
-        private static extern void CmdResolveImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstImage, ImageLayout dstImageLayout, int regionCount, ImageResolve* regions);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdResolveImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstImage, ImageLayout dstImageLayout, int regionCount, ImageResolve* regions);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdSetEvent", CallingConvention = CallConv)]
-        private static extern void CmdSetEvent(IntPtr commandBuffer, long @event, PipelineStages stageMask);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdSetEvent(IntPtr commandBuffer, long @event, PipelineStages stageMask);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdResetEvent", CallingConvention = CallConv)]
-        private static extern void CmdResetEvent(IntPtr commandBuffer, Event @event, PipelineStages stageMask);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdResetEvent(IntPtr commandBuffer, Event @event, PipelineStages stageMask);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdWaitEvents", CallingConvention = CallConv)]
-        private static extern void CmdWaitEvents(IntPtr commandBuffer, int eventCount, long* events,
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdWaitEvents(IntPtr commandBuffer, int eventCount, long* events,
             PipelineStages srcStageMask, PipelineStages dstStageMask, int memoryBarrierCount, 
             MemoryBarrier* memoryBarriers, int bufferMemoryBarrierCount, BufferMemoryBarrier* BufferMemoryBarriers, 
             int imageMemoryBarrierCount, ImageMemoryBarrier* imageMemoryBarriers);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdPipelineBarrier", CallingConvention = CallConv)]
-        private static extern void CmdPipelineBarrier(IntPtr commandBuffer, PipelineStages srcStageMask, PipelineStages dstStageMask, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdPipelineBarrier(IntPtr commandBuffer, PipelineStages srcStageMask, PipelineStages dstStageMask, 
             Dependencies dependencyFlags, int memoryBarrierCount, MemoryBarrier* memoryBarriers, int bufferMemoryBarrierCount, 
             BufferMemoryBarrier* bufferMemoryBarriers, int imageMemoryBarrierCount, ImageMemoryBarrier* imageMemoryBarriers);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBeginQuery", CallingConvention = CallConv)]
-        private static extern void CmdBeginQuery(IntPtr commandBuffer, long queryPool, int query, QueryControlFlags flags);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBeginQuery(IntPtr commandBuffer, long queryPool, int query, QueryControlFlags flags);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdEndQuery", CallingConvention = CallConv)]
-        private static extern void CmdEndQuery(IntPtr commandBuffer, long queryPool, int query);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdEndQuery(IntPtr commandBuffer, long queryPool, int query);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdResetQueryPool", CallingConvention = CallConv)]
-        private static extern void CmdResetQueryPool(IntPtr commandBuffer, long queryPool, int firstQuery, int queryCount);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdResetQueryPool(IntPtr commandBuffer, long queryPool, int firstQuery, int queryCount);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdWriteTimestamp", CallingConvention = CallConv)]
-        private static extern void CmdWriteTimestamp(IntPtr commandBuffer, PipelineStages pipelineStage, long queryPool, int query);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdWriteTimestamp(IntPtr commandBuffer, PipelineStages pipelineStage, long queryPool, int query);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdCopyQueryPoolResults", CallingConvention = CallConv)]
-        private static extern void CmdCopyQueryPoolResults(IntPtr commandBuffer, long queryPool, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdCopyQueryPoolResults(IntPtr commandBuffer, long queryPool, 
             int firstQuery, int queryCount, long dstBuffer, long dstOffset, long stride, QueryResults flags);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdPushConstants", CallingConvention = CallConv)]
-        private static extern void CmdPushConstants(IntPtr commandBuffer, long layout, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdPushConstants(IntPtr commandBuffer, long layout, 
             ShaderStages stageFlags, int offset, int size, IntPtr values);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdBeginRenderPass", CallingConvention = CallConv)]
-        private static extern void CmdBeginRenderPass(IntPtr commandBuffer, RenderPassBeginInfo.Native* renderPassBegin, SubpassContents contents);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdBeginRenderPass(IntPtr commandBuffer, RenderPassBeginInfo.Native* renderPassBegin, SubpassContents contents);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdNextSubpass", CallingConvention = CallConv)]
-        private static extern void CmdNextSubpass(IntPtr commandBuffer, SubpassContents contents);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdNextSubpass(IntPtr commandBuffer, SubpassContents contents);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdEndRenderPass", CallingConvention = CallConv)]
-        private static extern void CmdEndRenderPass(IntPtr commandBuffer);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdEndRenderPass(IntPtr commandBuffer);
 
-        [DllImport(VulkanDll, EntryPoint = "vkCmdExecuteCommands", CallingConvention = CallConv)]
-        private static extern void CmdExecuteCommands(IntPtr commandBuffer, int commandBufferCount, IntPtr* commandBuffers);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkCmdExecuteCommands(IntPtr commandBuffer, int commandBufferCount, IntPtr* commandBuffers);
     }
 
     /// <summary>

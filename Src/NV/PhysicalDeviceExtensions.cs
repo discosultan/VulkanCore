@@ -30,14 +30,14 @@ namespace VulkanCore.NV
             ExternalMemoryHandleTypesNV externalHandleType)
         {
             ExternalImageFormatPropertiesNV properties;
-            Result result = GetPhysicalDeviceExternalImageFormatPropertiesNV(physicalDevice, format, type, tiling, usage, flags,
+            Result result = vkGetPhysicalDeviceExternalImageFormatPropertiesNV(physicalDevice, format, type, tiling, usage, flags,
                 externalHandleType, &properties);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkGetPhysicalDeviceExternalImageFormatPropertiesNV", CallingConvention = CallConv)]
-        private static extern Result GetPhysicalDeviceExternalImageFormatPropertiesNV(IntPtr physicalDevice, 
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern Result vkGetPhysicalDeviceExternalImageFormatPropertiesNV(IntPtr physicalDevice, 
             Format format, ImageType type, ImageTiling tiling, ImageUsages usage, ImageCreateFlags flags, 
             ExternalMemoryHandleTypesNV externalHandleType, ExternalImageFormatPropertiesNV* externalImageFormatProperties);
     }
@@ -50,7 +50,7 @@ namespace VulkanCore.NV
     {
         /// <summary>
         /// Will be filled in as when calling <see
-        /// cref="PhysicalDeviceExtensions.GetPhysicalDeviceExternalImageFormatPropertiesNV"/>, but
+        /// cref="PhysicalDeviceExtensions.vkGetPhysicalDeviceExternalImageFormatPropertiesNV"/>, but
         /// the values returned may vary depending on the external handle type requested.
         /// </summary>
         public ImageFormatProperties ImageFormatProperties;

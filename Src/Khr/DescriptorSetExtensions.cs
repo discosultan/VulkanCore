@@ -16,10 +16,10 @@ namespace VulkanCore.Khr
         public static void UpdateWithTemplateKhr(this DescriptorSet descriptorSet,
             DescriptorUpdateTemplateKhr descriptorUpdateTemplate, IntPtr data)
         {
-            UpdateDescriptorSetWithTemplateKhr(descriptorSet.Parent.Parent, descriptorSet, descriptorUpdateTemplate, data);
+            vkUpdateDescriptorSetWithTemplateKHR(descriptorSet.Parent.Parent, descriptorSet, descriptorUpdateTemplate, data);
         }
 
-        [DllImport(VulkanDll, EntryPoint = "vkUpdateDescriptorSetWithTemplateKHR", CallingConvention = CallConv)]
-        private static extern void UpdateDescriptorSetWithTemplateKhr(IntPtr device, long descriptorSet, long descriptorUpdateTemplate, IntPtr data);
+        [DllImport(VulkanDll, CallingConvention = CallConv)]
+        private static extern void vkUpdateDescriptorSetWithTemplateKHR(IntPtr device, long descriptorSet, long descriptorUpdateTemplate, IntPtr data);
     }
 }
