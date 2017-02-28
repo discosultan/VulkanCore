@@ -54,13 +54,12 @@
             return SwapchainKhr.CreateSharedKhr(device, createInfos, ref allocator);
         }
 
-        // TODO: doc
         /// <summary>
         /// Create a new descriptor update template.
         /// </summary>
         /// <param name="device">The logical device that creates the descriptor update template.</param>
         /// <param name="createInfo">
-        /// Specifies the set of descriptors to update with a single call to flink:vkUpdateDescriptorSetWithTemplateKHR
+        /// Specifies the set of descriptors to update with a single call to <see cref="DescriptorSetExtensions.UpdateWithTemplateKhr"/>.
         /// </param>
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>The resulting descriptor update template object.</returns>

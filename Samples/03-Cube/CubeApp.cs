@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
@@ -28,6 +29,7 @@ namespace VulkanCore.Samples.Cube
         private Buffer _uniformBuffer;
         private DeviceMemory _uniformBufferMemory;
 
+        private Format _depthStencilFormat;
         private Image _depthStencil;
         private ImageView _depthStencilView;
         private DeviceMemory _depthStencilMemory;
@@ -249,10 +251,31 @@ namespace VulkanCore.Samples.Cube
 
         private void CreateDepthStencil()
         {
+            Format[] validFormats =
+            {
+                Format.D32SFloatS8UInt,
+                Format.D32SFloat,
+                Format.D24UNormS8UInt,
+                Format.D16UNormS8UInt,
+                Format.D16UNorm
+            };
+
+            Format? potentialFormat = validFormats.FirstOrDefault(
+                format =>
+                {
+                    FormatProperties formatProps = PhysicalDevice.GetFormatProperties(format);
+                    return (formatProps.OptimalTilingFeatures & FormatFeatures.DepthStencilAttachment) > 0;
+                });
+
+            if (!potentialFormat.HasValue)
+                throw new ApplicationException("Required depth stencil format not supported.");
+
+            _depthStencilFormat = potentialFormat.Value;
+
             _depthStencil = Device.CreateImage(new ImageCreateInfo
             {
                 ImageType = ImageType.Image2D,
-                Format = Format.D24UNormS8UInt,
+                Format = _depthStencilFormat,
                 Extent = new Extent3D(Window.Width, Window.Height, 1),
                 MipLevels = 1,
                 ArrayLayers = 1,
@@ -265,7 +288,7 @@ namespace VulkanCore.Samples.Cube
                 memReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
             _depthStencilMemory = Device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, heapIndex));
             _depthStencil.BindMemory(_depthStencilMemory);
-            _depthStencilView = _depthStencil.CreateView(new ImageViewCreateInfo(Format.D24UNormS8UInt,
+            _depthStencilView = _depthStencil.CreateView(new ImageViewCreateInfo(_depthStencilFormat,
                 new ImageSubresourceRange(ImageAspects.Depth | ImageAspects.Stencil)));
         }
 
@@ -341,7 +364,7 @@ namespace VulkanCore.Samples.Cube
                 // Depth attachment.
                 new AttachmentDescription
                 {
-                    Format = Format.D24UNormS8UInt,
+                    Format = _depthStencilFormat,
                     Samples = SampleCounts.Count1,
                     LoadOp = AttachmentLoadOp.Clear,
                     StoreOp = AttachmentStoreOp.DontCare,
