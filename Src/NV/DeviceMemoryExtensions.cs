@@ -43,4 +43,130 @@ namespace VulkanCore.NV
         D3D11Image = 1 << 2,
         D3D11ImageKmt = 1 << 3
     }
+
+    /// <summary>
+    /// Specify a dedicated memory allocation resource.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DedicatedAllocationMemoryAllocateInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is 0 or a handle of an <see cref="VulkanCore.Image"/> which this memory will be bound to.
+        /// </summary>
+        public long Image;
+        /// <summary>
+        /// Is 0 or a handle of a <see cref="VulkanCore.Buffer"/> which this memory will be bound to.
+        /// </summary>
+        public long Buffer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DedicatedAllocationMemoryAllocateInfoNV"/> structure.
+        /// </summary>
+        /// <param name="image">An image which this memory will be bound to.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DedicatedAllocationMemoryAllocateInfoNV(Image image, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DedicatedAllocationMemoryAllocateInfoNV;
+            Next = next;
+            Image = image;
+            Buffer = 0;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DedicatedAllocationMemoryAllocateInfoNV"/> structure.
+        /// </summary>
+        /// <param name="buffer">A buffer which this memory will be bound to.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DedicatedAllocationMemoryAllocateInfoNV(Buffer buffer, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DedicatedAllocationMemoryAllocateInfoNV;
+            Next = next;
+            Image = 0;
+            Buffer = buffer;
+        }
+    }
+
+    /// <summary>
+    /// Specify that a buffer is bound to a dedicated memory resource.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DedicatedAllocationBufferCreateInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Indicates whether the buffer will have a dedicated allocation bound to it.
+        /// </summary>
+        public Bool DedicatedAllocation;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DedicatedAllocationBufferCreateInfoNV"/> structure.
+        /// </summary>
+        /// <param name="dedicatedAllocation">
+        /// Indicates whether the buffer will have a dedicated allocation bound to it.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DedicatedAllocationBufferCreateInfoNV(bool dedicatedAllocation, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DedicatedAllocationBufferCreateInfoNV;
+            Next = next;
+            DedicatedAllocation = dedicatedAllocation;
+        }
+    }
+
+    /// <summary>
+    /// Specify that an image is bound to a dedicated memory resource.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DedicatedAllocationImageCreateInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Indicates whether the image will have a dedicated allocation bound to it.
+        /// </summary>
+        public Bool DedicatedAllocation;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DedicatedAllocationBufferCreateInfoNV"/> structure.
+        /// </summary>
+        /// <param name="dedicatedAllocation">
+        /// Indicates whether the image will have a dedicated allocation bound to it.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DedicatedAllocationImageCreateInfoNV(bool dedicatedAllocation, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DedicatedAllocationImageCreateInfoNV;
+            Next = next;
+            DedicatedAllocation = dedicatedAllocation;
+        }
+    }
 }

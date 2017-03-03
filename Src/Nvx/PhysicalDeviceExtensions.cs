@@ -77,4 +77,19 @@ namespace VulkanCore.Nvx
         /// </summary>
         public int MinCommandsTokenBufferOffsetAlignment;
     }
+
+    /// <summary>
+    /// Structure describing multiview limits that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceMultiviewPerViewAttributesPropertiesNvx
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        public Bool PerViewPositionAllComponents;
+    }
 }

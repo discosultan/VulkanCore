@@ -660,4 +660,212 @@ namespace VulkanCore.Khx
             Type = StructureType.AcquireNextImageInfoKhx;
         }
     }
+
+    /// <summary>
+    /// Structure describing multiview features that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceMultiviewFeaturesKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Multiple views in a renderpass.
+        /// </summary>
+        public Bool Multiview;
+        /// <summary>
+        /// Multiple views in a renderpass w/ geometry shader.
+        /// </summary>
+        public Bool MultiviewGeometryShader;
+        /// <summary>
+        /// Multiple views in a renderpass w/ tessellation shader.
+        /// </summary>
+        public Bool MultiviewTessellationShader;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhysicalDeviceMultiviewFeaturesKhx"/> structure.
+        /// </summary>
+        /// <param name="multiview">Multiple views in a renderpass.</param>
+        /// <param name="multiviewGeometryShader">Multiple views in a renderpass w/ geometry shader.</param>
+        /// <param name="multiviewTessellationShader">
+        /// Multiple views in a renderpass w/ tessellation shader.
+        /// </param>
+        /// <param name="next">Pointer to next structure.</param>
+        public PhysicalDeviceMultiviewFeaturesKhx(bool multiview, bool multiviewGeometryShader, bool multiviewTessellationShader,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PhysicalDeviceMultiviewFeaturesKhx;
+            Next = next;
+            Multiview = multiview;
+            MultiviewGeometryShader = multiviewGeometryShader;
+            MultiviewTessellationShader = multiviewTessellationShader;
+        }
+    }
+
+    /// <summary>
+    /// Create a logical device from multiple physical devices.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DeviceGroupDeviceCreateInfoKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of elements in the <see cref="PhysicalDevices"/> array.
+        /// </summary>
+        public int PhysicalDeviceCount;
+        /// <summary>
+        /// An array of <see cref="PhysicalDevice"/> handles belonging to the same device group.
+        /// </summary>
+        public IntPtr[] PhysicalDevices;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceGroupDeviceCreateInfoKhx"/> structure.
+        /// </summary>
+        /// <param name="physicalDevices">
+        /// An array of <see cref="PhysicalDevice"/> handles belonging to the same device group.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DeviceGroupDeviceCreateInfoKhx(PhysicalDevice[] physicalDevices, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DeviceGroupDeviceCreateInfoKhx;
+            Next = next;
+            PhysicalDeviceCount = physicalDevices?.Length ?? 0;
+            PhysicalDevices = physicalDevices?.ToHandleArray();
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying swapchain image memory to bind to.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BindImageMemorySwapchainInfoKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is 0 or a <see cref="SwapchainKhr"/> handle.
+        /// </summary>
+        public long Swapchain;
+        /// <summary>
+        /// An image index within <see cref="Swapchain"/>.
+        /// </summary>
+        public int ImageIndex;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindImageMemorySwapchainInfoKhx"/> structure.
+        /// </summary>
+        /// <param name="swapchain">Is <c>null</c> or a <see cref="SwapchainKhr"/> handle.</param>
+        /// <param name="imageIndex">An image index within <see cref="Swapchain"/>.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public BindImageMemorySwapchainInfoKhx(SwapchainKhr swapchain, int imageIndex, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.BindImageMemorySwapchainInfoKhx;
+            Next = next;
+            Swapchain = swapchain;
+            ImageIndex = imageIndex;
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying parameters of a newly created swapchain object.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DeviceGroupSwapchainCreateInfoKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bitfield of modes that the swapchain can be used with.
+        /// </summary>
+        public DeviceGroupPresentModesKhx Modes;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceGroupSwapchainCreateInfoKhx"/> structure.
+        /// </summary>
+        /// <param name="modes">A bitfield of modes that the swapchain can be used with.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DeviceGroupSwapchainCreateInfoKhx(DeviceGroupPresentModesKhx modes, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DeviceGroupSwapchainCreateInfoKhx;
+            Next = next;
+            Modes = modes;
+        }
+    }
+
+    /// <summary>
+    /// Mode and mask controlling which physical devices' images are presented.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DeviceGroupPresentInfoKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is zero or the number of elements in <see cref="DeviceMasks"/>.
+        /// </summary>
+        public int SwapchainCount;
+        /// <summary>
+        /// Device masks, one for each element of <see cref="PresentInfoKhr.Swapchains"/>.
+        /// </summary>
+        public int[] DeviceMasks;
+        /// <summary>
+        /// The device group present mode that will be used for this present.
+        /// </summary>
+        public DeviceGroupPresentModesKhx Mode;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceGroupPresentInfoKhx"/> structure.
+        /// </summary>
+        /// <param name="deviceMasks">Device masks, one for each element of <see cref="PresentInfoKhr.Swapchains"/>.</param>
+        /// <param name="mode">The device group present mode that will be used for this present.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public DeviceGroupPresentInfoKhx(int[] deviceMasks, DeviceGroupPresentModesKhx mode,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.DeviceGroupPresentInfoKhx;
+            Next = next;
+            SwapchainCount = deviceMasks?.Length ?? 0;
+            DeviceMasks = deviceMasks;
+            Mode = mode;
+        }
+    }
 }

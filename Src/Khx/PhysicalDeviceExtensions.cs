@@ -197,8 +197,8 @@ namespace VulkanCore.Khx
         /// </summary>
         public ExternalMemoryFeaturesKhx ExternalMemoryFeatures;
         /// <summary>
-        /// A bitmask specifying handle types that can be used to import objects from which
-        /// handle type can be exported.
+        /// A bitmask specifying handle types that can be used to import objects from which handle
+        /// type can be exported.
         /// </summary>
         public ExternalMemoryHandleTypesKhx ExportFromImportedHandleTypes;
         /// <summary>
@@ -309,5 +309,120 @@ namespace VulkanCore.Khx
         /// Indicates handles of this type can be imported as Vulkan semaphore objects.
         /// </summary>
         Importable = 1 << 1
+    }
+
+    // TODO: Let Guids be marshalled directly?
+    /// <summary>
+    /// Structure specifying IDs related to the physical device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct PhysicalDeviceIdPropertiesKhx
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// An array of size <see cref="UuidSize"/>, containing 8-bit values that represent a
+        /// universally unique identifier for the device.
+        /// </summary>
+        public fixed byte DeviceUUID[16];
+        /// <summary>
+        /// An array of size <see cref="UuidSize"/>, containing 8-bit values that represent a
+        /// universally unique identifier for the driver build in use by the device.
+        /// </summary>
+        public fixed byte DriverUUID[16];
+        /// <summary>
+        /// A array of size <see cref="LuidSizeKhx"/>, containing 8-bit values that represent a
+        /// locally unique identifier for the device.
+        /// </summary>
+        public fixed byte DeviceLUID[8];
+        /// <summary>
+        /// A boolean value that will be <c>true</c> if <see cref="DeviceLUID"/> contains a valid
+        /// LUID, and <c>false</c> if it does not.
+        /// </summary>
+        public Bool DeviceLUIDValid;
+    }
+
+    /// <summary>
+    /// Structure describing multiview limits that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceMultiviewPropertiesKhx
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Max number of views in a subpass.
+        /// </summary>
+        public int MaxMultiviewViewCount;
+        /// <summary>
+        /// Max instance index for a draw in a multiview subpass.
+        /// </summary>
+        public int MaxMultiviewInstanceIndex;
+    }
+
+    /// <summary>
+    /// Structure specifying supported external handle properties.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalImageFormatPropertiesKHX
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies various capabilities of the external handle type when used with the specified
+        /// image creation parameters.
+        /// </summary>
+        public ExternalMemoryPropertiesKhx ExternalMemoryProperties;
+    }
+
+    /// <summary>
+    /// Structure specifying external image creation parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceExternalImageFormatInfoKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bit indicating a memory handle type that will be used with the memory associated with
+        /// the image.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhx HandleType;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhysicalDeviceExternalImageFormatInfoKhx"/> structure.
+        /// </summary>
+        /// <param name="handleType">
+        /// A bit indicating a memory handle type that will be used with the memory associated with
+        /// the image.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public PhysicalDeviceExternalImageFormatInfoKhx(ExternalMemoryHandleTypesKhx handleType,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PhysicalDeviceExternalImageFormatInfoKhx;
+            Next = next;
+            HandleType = handleType;
+        }
     }
 }

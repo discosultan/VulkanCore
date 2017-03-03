@@ -157,4 +157,19 @@ namespace VulkanCore.Ext
         /// </summary>
         VBlank = 1 << 0
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceDiscardRectanglePropertiesExt
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Max number of active discard rectangles.
+        /// </summary>
+        public int MaxDiscardRectangles;
+    }
 }

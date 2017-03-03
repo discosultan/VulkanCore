@@ -1016,4 +1016,20 @@ namespace VulkanCore.Khr
         /// </summary>
         public SurfaceCountersExt SupportedSurfaceCounters;
     }
+
+    /// <summary>
+    /// Structure describing push descriptor limits that can be supported by an
+    /// implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDevicePushDescriptorPropertiesKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        public int MaxPushDescriptors;
+    }
 }

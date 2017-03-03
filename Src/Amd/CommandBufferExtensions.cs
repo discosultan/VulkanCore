@@ -85,4 +85,38 @@ namespace VulkanCore.Amd
         private static extern void vkCmdDrawIndexedIndirectCountAMD(IntPtr commandBuffer, 
             long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineRasterizationStateRasterizationOrderAmd
+    {
+        public StructureType Type;
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Rasterization order to use for the pipeline.
+        /// </summary>
+        public RasterizationOrderAmd RasterizationOrder;
+
+        /// <summary>
+        /// Initializes a new instance of the <see
+        /// cref="PipelineRasterizationStateRasterizationOrderAmd"/> structure.
+        /// </summary>
+        /// <param name="rasterizationOrder">Rasterization order to use for the pipeline.</param>
+        /// <param name="next">Pointer to next structure.</param>
+        public PipelineRasterizationStateRasterizationOrderAmd(RasterizationOrderAmd rasterizationOrder,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PipelineRasterizationStateRasterizationOrderAmd;
+            Next = next;
+            RasterizationOrder = rasterizationOrder;
+        }
+    }
+
+    public enum RasterizationOrderAmd
+    {
+        Strict = 0,
+        Relaxed = 1
+    }
 }

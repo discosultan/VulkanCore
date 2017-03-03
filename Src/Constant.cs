@@ -14,6 +14,7 @@ namespace VulkanCore
 
         public const int MaxPhysicalDeviceNameSize = 256;
         public const int UuidSize = 16;
+        public const int LuidSizeKhx = 8;
         public const int MaxExtensionNameSize = 256;
         public const int MaxDescriptionSize = 256;
         public const int MaxMemoryTypes = 32;
@@ -29,7 +30,9 @@ namespace VulkanCore
         public const int True = 1;
         public const int False = 0;
         public const int QueueFamilyIgnored = ~0;
+        public const int QueueFamilyExternalKhx = ~0 - 1;
         public const int SubpassExternal = ~0;
+        public const int MaxDeviceGroupSizeKhx = 32;
 
         /// <summary>
         /// Provides name constants for common Vulkan instance extensions.
