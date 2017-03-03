@@ -100,7 +100,7 @@ namespace VulkanCore.NV
         public PipelineViewportWScalingStateCreateInfoNV(bool viewportWScalingEnable, ViewportWScalingNV[] viewportWScalings,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.PipelineViewportWScalingStateCreateInfoNv;
+            Type = StructureType.PipelineViewportWScalingStateCreateInfoNV;
             Next = next;
             ViewportWScalingEnable = viewportWScalingEnable;
             ViewportCount = viewportWScalings?.Length ?? 0;
