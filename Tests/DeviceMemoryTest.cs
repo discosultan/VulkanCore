@@ -8,7 +8,7 @@ namespace VulkanCore.Tests
     public class DeviceMemoryTest : HandleTestBase
     {
         [Fact]
-        public void MapMemory_UnmapMemory_Succeeds()
+        public void MapAndUnmapMemory()
         {
             const int allocationSize = 32;
             using (DeviceMemory memory = AllocateHostVisibleMemory(allocationSize))
@@ -19,7 +19,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void GetCommitment_Succeeds()
+        public void GetCommitment()
         {
             const int allocationSize = 32;
             using (DeviceMemory memory = AllocateHostVisibleMemory(allocationSize))

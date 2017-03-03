@@ -27,20 +27,20 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WaitIdle_Succeeds()
+        public void WaitIdle()
         {
             GraphicsQueue.WaitIdle();
         }
 
         [Fact]
-        public void Submit_Succeeds()
+        public void Submit()
         {
             GraphicsQueue.Submit(new SubmitInfo());
             GraphicsQueue.Submit(new[] { new SubmitInfo() });
         }
 
         [Fact]
-        public void BindSparse_Succeeds()
+        public void BindSparse()
         {
             var bindSparseInfo = new BindSparseInfo(null, null, null, null, null);
             GraphicsQueue.BindSparse(bindSparseInfo);

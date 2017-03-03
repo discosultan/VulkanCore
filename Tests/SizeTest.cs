@@ -22,7 +22,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ToString_EqualToIntPtrToString()
+        public void ConvertToString()
         {
             IntPtr intPtrVal = new IntPtr(1);
             Size sizeVal = intPtrVal;

@@ -8,7 +8,7 @@ namespace VulkanCore.Tests
     public unsafe class QueryTest : HandleTestBase
     {
         [Fact]
-        public void GetResults_Succeeds()
+        public void GetResults()
         {
             using (var cmdPool = Device.CreateCommandPool(new CommandPoolCreateInfo(GraphicsQueue.FamilyIndex)))
             using (var cmdBuffer = cmdPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0])

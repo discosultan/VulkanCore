@@ -7,7 +7,7 @@ namespace VulkanCore.Tests
     public class DescriptorSetTest : HandleTestBase
     {
         [Fact]
-        public void AllocateSetsAndFreeSets_Succeeds()
+        public void AllocateSetsAndFreeSets()
         {
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1));
@@ -25,7 +25,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void UpdateSetsDescriptorWrite_Succeeds()
+        public void UpdateSetsDescriptorWrite()
         {
             const int bufferSize = 256;
 
@@ -53,7 +53,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact(Skip = "Resolve valid usage")]
-        public void UpdateSetsDescriptorCopy_Succeeds()
+        public void UpdateSetsDescriptorCopy()
         {
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 2));
@@ -72,7 +72,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ResetPool_Succeeds()
+        public void ResetPool()
         {
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1));

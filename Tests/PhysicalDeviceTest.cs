@@ -8,21 +8,21 @@ namespace VulkanCore.Tests
     public class PhysicalDeviceTest : HandleTestBase
     {
         [Fact]
-        public void GetProperties_Succeeds()
+        public void GetProperties()
         {
             PhysicalDeviceProperties properties = PhysicalDevice.GetProperties();
             Assert.True(properties.DeviceName.Length > 0);
         }
 
         [Fact]
-        public void GetQueueFamilyProperties_Succeeds()
+        public void GetQueueFamilyProperties()
         {
             QueueFamilyProperties[] properties = PhysicalDevice.GetQueueFamilyProperties();
             Assert.True(properties.Length > 0);
         }
 
         [Fact]
-        public void GetMemoryProperties_Succeeds()
+        public void GetMemoryProperties()
         {
             PhysicalDeviceMemoryProperties properties = PhysicalDevice.GetMemoryProperties();
             Assert.True(properties.MemoryHeaps.Length > 0);
@@ -34,34 +34,34 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void GetFeatures_Succeeds()
+        public void GetFeatures()
         {
             PhysicalDevice.GetFeatures();
         }
 
         [Fact]
-        public void GetImageFormatFeatures_Succeeds()
+        public void GetImageFormatFeatures()
         {
             PhysicalDevice.GetImageFormatProperties(Format.B8G8R8A8UNorm, ImageType.Image2D,
                 ImageTiling.Optimal, ImageUsages.ColorAttachment);
         }
 
         [Fact]
-        public void EnumerateExtensionProperties_Succeeds()
+        public void EnumerateExtensionProperties()
         {
             ExtensionProperties[] properties = PhysicalDevice.EnumerateExtensionProperties();
             Assert.True(properties.Length > 0);
         }
 
         [Fact]
-        public void EnumerateLayerProperties_Succeeds()
+        public void EnumerateLayerProperties()
         {
             LayerProperties[] properties = PhysicalDevice.EnumerateLayerProperties();
             Assert.True(properties.Length > 0);
         }
 
         [Fact]
-        public void CreateDevice_Succeeds()
+        public void CreateDevice()
         {
             // Required in order to keep the validation layer happy :)
             PhysicalDevice.GetQueueFamilyProperties();
@@ -75,7 +75,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void GetSparseImageFormatProperties_Succeeds()
+        public void GetSparseImageFormatProperties()
         {
             PhysicalDevice.GetSparseImageFormatProperties(
                 Format.B8G8R8A8UNorm,
@@ -86,7 +86,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void GetFormatProperties_Succeeds()
+        public void GetFormatProperties()
         {
             PhysicalDevice.GetFormatProperties(Format.B8G8R8A8UNorm);
         }

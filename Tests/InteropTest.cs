@@ -6,39 +6,14 @@ namespace VulkanCore.Tests
     public unsafe class InteropTest
     {
         [Fact]
-        public void AllocZeroBytes_ReturnsNullHandle()
+        public void AllocZeroBytes()
         {
             IntPtr handle = Interop.Alloc(0);
             Assert.Equal(IntPtr.Zero, handle);
         }
 
         [Fact]
-        public void AllocStringToPtr_ReturnsNullHandleForNull()
-        {
-            IntPtr handle = Interop.String.AllocToPointer(null);
-            Assert.Equal(IntPtr.Zero, handle);
-        }
-
-        [Fact]
-        public void AllocStringToPtr_ReturnsValidHandleForEmptyString()
-        {
-            const string value = "";
-            IntPtr handle = IntPtr.Zero;
-            try
-            {
-                handle = Interop.String.AllocToPointer(value);
-                var ptr = (byte*)handle;
-                    
-                Assert.Equal(0x00, ptr[0]); // '\0' - null-terminator
-            }
-            finally
-            {
-                Interop.Free(handle);
-            }
-        }
-
-        [Fact]
-        public void AllocStringToPtr_ReturnsValidHandleForString()
+        public void AllocStringToPtr()
         {
             const string value = "hi"; // 0x68 + 0x69
             IntPtr handle = IntPtr.Zero;
@@ -58,27 +33,32 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void StringToPtr_DoesNothingForNullString()
+        public void AllocEmptyStringToPtr()
         {
-            const string str = null;
-            int count = Interop.String.GetMaxByteCount(str);
-            var bytes = stackalloc byte[count];
-            Interop.String.ToPointer(str, bytes, count);
-            Assert.Equal(0, count);            
+            const string value = "";
+            IntPtr handle = IntPtr.Zero;
+            try
+            {
+                handle = Interop.String.AllocToPointer(value);
+                var ptr = (byte*)handle;
+
+                Assert.Equal(0x00, ptr[0]); // '\0' - null-terminator
+            }
+            finally
+            {
+                Interop.Free(handle);
+            }
         }
 
         [Fact]
-        public void StringToPtr_WritesNullTerminatorForEmptyString()
+        public void AllocNullStringToPtr()
         {
-            const string str = "";
-            int count = Interop.String.GetMaxByteCount(str);
-            var bytes = stackalloc byte[count];
-            Interop.String.ToPointer(str, bytes, count);
-            Assert.Equal(0, bytes[0]);
+            IntPtr handle = Interop.String.AllocToPointer(null);
+            Assert.Equal(IntPtr.Zero, handle);
         }
 
         [Fact]
-        public void StringToPtr_WritesString()
+        public void StringToPtr()
         {
             const string str = "hi"; // 0x68 + 0x69
             int count = Interop.String.GetMaxByteCount(str);
@@ -90,14 +70,34 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void PtrToString_ReturnsNullForNullHandle()
+        public void EmptyStringToPtr()
+        {
+            const string str = "";
+            int count = Interop.String.GetMaxByteCount(str);
+            var bytes = stackalloc byte[count];
+            Interop.String.ToPointer(str, bytes, count);
+            Assert.Equal(0, bytes[0]);
+        }
+
+        [Fact]
+        public void NullStringToPtr()
+        {
+            const string str = null;
+            int count = Interop.String.GetMaxByteCount(str);
+            var bytes = stackalloc byte[count];
+            Interop.String.ToPointer(str, bytes, count);
+            Assert.Equal(0, count);            
+        }
+
+        [Fact]
+        public void NullPtrToString()
         {
             string value = Interop.String.FromPointer(null);
             Assert.Equal(null, value);
         }
 
         [Fact]
-        public void PtrToString_ReturnsEmptyStringForValidHandle()
+        public void PtrToEmptyString()
         {
             const string value = "";
             IntPtr handle = IntPtr.Zero;
@@ -115,7 +115,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void PtrToString_ReturnsStringForValidHandle()
+        public void PtrToString()
         {
             const string value = "hi";
             IntPtr handle = IntPtr.Zero;
@@ -133,21 +133,21 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void AllocStringsToPtrs_ReturnsNullForNullStrings()
+        public void AllocNullStringsToPtrs()
         {
             IntPtr* ptr = Interop.String.AllocToPointers(null);
             Assert.Equal(IntPtr.Zero, (IntPtr)ptr);
         }
 
         [Fact]
-        public void AllocStringsToPtrs_ReturnsNullForEmptyStringsArray()
+        public void AllocEmptyStringsToPtrs()
         {
             IntPtr* ptr = Interop.String.AllocToPointers(new string[0]);
             Assert.Equal(IntPtr.Zero, (IntPtr)ptr);
         }
 
         [Fact]
-        public void AllocStringsToPtrs_ReturnsValidPtrForStrings()
+        public void AllocStringsToPtrs()
         {
             string[] values = { "hi", "hello" };
             IntPtr* ptr = null;
@@ -167,7 +167,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void AllocNullStructToPtr_ReturnsNull()
+        public void AllocNullStructToPtr()
         {
             int? value = null;
             IntPtr ptr = Interop.Struct.AllocToPointer(ref value);
@@ -175,7 +175,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void AllocStructToPtr_Succeeds()
+        public void AllocStructToPtr()
         {
             IntPtr ptr = IntPtr.Zero;
             try
@@ -191,7 +191,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void AllocNullableStructToPtr_Succeeds()
+        public void AllocNullableStructToPtr()
         {
             IntPtr ptr = IntPtr.Zero;
             try
@@ -207,21 +207,21 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void AllocStructsToPtr_ReturnsNullForNullStructs()
+        public void AllocNullStructsToPtr()
         {
             IntPtr ptr = Interop.Struct.AllocToPointer<int>(null);
             Assert.Equal(IntPtr.Zero, ptr);
         }
 
         [Fact]
-        public void AllocStructsToPtr_ReturnsNullForEmptyStructs()
+        public void AllocEmptyStructsToPtr()
         {
             IntPtr ptr = Interop.Struct.AllocToPointer(new int[0]);
             Assert.Equal(IntPtr.Zero, ptr);
         }
 
         [Fact]
-        public void Alloc32BitStructsToPtr_Succeeds()
+        public void Alloc32BitStructsToPtr()
         {
             int[] structs = { 1, 2, 3, 4 };
             IntPtr ptr = IntPtr.Zero;
@@ -239,7 +239,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Alloc64BitStructsToPtr_Succeeds()
+        public void Alloc64BitStructsToPtr()
         {
             long[] structs = { 1, 2, 3, 4 };
             IntPtr ptr = IntPtr.Zero;
@@ -257,7 +257,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ReAlloc_Succeeds()
+        public void ReAlloc()
         {
             IntPtr ptr = IntPtr.Zero;
             try
@@ -273,7 +273,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ReadValue_Succeeds()
+        public void ReadValue()
         {
             long src = 0L;
             long dst = 1L;
@@ -282,7 +282,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WriteValue_Succeeds()
+        public void WriteValue()
         {
             long src = 1L;
             long dst = 0L;
@@ -291,7 +291,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ReadArray_Succeeds()
+        public void ReadArray()
         {
             var dst = new long[2];
             long[] src = { 1L, 2L };
@@ -302,7 +302,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WriteArray_Succeeds()
+        public void WriteArray()
         {
             long[] src = { 1L, 2L };
             var dst = new long[2];
@@ -313,7 +313,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ReadEmptyArray_Succeeds()
+        public void ReadEmptyArray()
         {
             var dst = new long[0];
             var src = new long[0];
@@ -322,12 +322,12 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WriteEmptyArray_Succeeds()
+        public void WriteEmptyArray()
         {
             var src = new long[0];
             var dst = new long[0];
             fixed (long* dstPtr = dst)
-                Interop.Write(new IntPtr(dstPtr), src);            
+                Interop.Write(new IntPtr(dstPtr), src);
         }
     }
 }

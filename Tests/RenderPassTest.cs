@@ -7,7 +7,7 @@ namespace VulkanCore.Tests
     public class RenderPassTest : HandleTestBase
     {
         [Fact]
-        public void GetRenderAreaGranularity_Succeeds()
+        public void GetRenderAreaGranularity()
         {
             using (RenderPass renderPass = CreateRenderPass())
             {
@@ -18,7 +18,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateFramebuffer_Succeeds()
+        public void CreateFramebuffer()
         {
             var renderPassCreateInfo = new RenderPassCreateInfo(
                 new[] { new SubpassDescription() }

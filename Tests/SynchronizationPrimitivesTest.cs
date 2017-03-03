@@ -7,7 +7,7 @@ namespace VulkanCore.Tests
     public class SynchronizationPrimitivesTest : HandleTestBase
     {
         [Fact]
-        public void WaitFence_Succeeds()
+        public void WaitFence()
         {
             using (Fence fence = Device.CreateFence(new FenceCreateInfo(FenceCreateFlags.Signaled)))
                 fence.Wait();
@@ -16,7 +16,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ResetFence_Succeeds()
+        public void ResetFence()
         {
             using (Fence fence = Device.CreateFence(new FenceCreateInfo(FenceCreateFlags.Signaled)))
                 fence.Reset();
@@ -25,21 +25,21 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetEvent_Succeeds()
+        public void SetEvent()
         {
             using (Event evt = Device.CreateEvent())
-                evt.Set();            
+                evt.Set();
         }
 
         [Fact]
-        public void ResetEvent_Succeeds()
+        public void ResetEvent()
         {
             using (Event evt = Device.CreateEvent())
                 evt.Reset();
         }
 
         [Fact]
-        public void GetEventStatus_Succeeds()
+        public void GetEventStatus()
         {
             using (Event evt = Device.CreateEvent())
             {

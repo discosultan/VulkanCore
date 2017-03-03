@@ -19,7 +19,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Equals_Equal()
+        public void Equal()
         {
             var version1 = new Version(1, 2, 3);
             var version2 = new Version(1, 2, 3);
@@ -28,7 +28,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Equals_NotEqual()
+        public void NotEqual()
         {
             var version1 = new Version(1, 2, 3);
             var version2 = new Version(3, 2, 1);
@@ -37,7 +37,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CompareTo_LessThan()
+        public void CompareLessThan()
         {
             var version1 = new Version(1, 2, 3);
             var version2 = new Version(1, 2, 4);
@@ -46,7 +46,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CompareTo_Equal()
+        public void CompareEqual()
         {
             var version1 = new Version(1, 2, 3);
             var version2 = new Version(1, 2, 3);
@@ -55,7 +55,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CompareTo_GreaterThan()
+        public void CompareGreaterThan()
         {
             var version1 = new Version(1, 2, 3);
             var version2 = new Version(1, 2, 2);
@@ -64,7 +64,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Zero_ReturnsZeroVersion()
+        public void Zero()
         {
             var version = Version.Zero;
             Assert.Equal(0, version.Major);

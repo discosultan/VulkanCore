@@ -9,7 +9,7 @@ namespace VulkanCore.Tests
         private const int DefaultBufferSize = 32;
 
         [Fact]
-        public void GetMemoryRequirements_Succeeds()
+        public void GetMemoryRequirements()
         {
             using (Buffer buffer = CreateBuffer())
             {
@@ -18,7 +18,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BindMemoryAndCreateBufferView_Succeeds()
+        public void BindMemoryAndCreateBufferView()
         {
             using (Buffer buffer = CreateBuffer())
             {

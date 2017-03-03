@@ -7,14 +7,14 @@ namespace VulkanCore.Tests
     public class CommandBufferTest : HandleTestBase
     {
         [Fact]
-        public void BeginEnd_Succeeds()
+        public void BeginAndEnd()
         {
             CommandBuffer.Begin();
             CommandBuffer.End();
         }
 
         [Fact]
-        public void BeginEndQuery_Succeeds()
+        public void BeginAndEndQuery()
         {
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Occlusion, 1)))
             {
@@ -26,7 +26,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WriteTimestamp_Succeeds()
+        public void WriteTimestamp()
         {
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Timestamp, 1)))
             {
@@ -37,7 +37,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CopyQueryPoolResults_Succeeds()
+        public void CopyQueryPoolResults()
         {
             const long bufferSize = 256L;
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Timestamp, 1)))
@@ -56,7 +56,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ResetQueryPool_Succeeds()
+        public void ResetQueryPool()
         {
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Timestamp, 1)))
             {
@@ -67,7 +67,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BeginEndRenderPass_Succeeds()
+        public void BeginEndRenderPass()
         {
             using (RenderPass renderPass = Device.CreateRenderPass(new RenderPassCreateInfo(new[] { new SubpassDescription(null) })))
             using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo()))
@@ -80,7 +80,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetScissor_Succeeds()
+        public void SetScissor()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetScissor(new Rect2D(Offset2D.Zero, new Extent2D(32, 32)));
@@ -89,7 +89,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetViewport_Succeeds()
+        public void SetViewport()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetViewport(new Viewport(0, 0, 32, 32));
@@ -98,7 +98,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetLineWidth_Succeeds()
+        public void SetLineWidth()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetLineWidth(1.0f);
@@ -106,7 +106,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetDepthParameters_Succeeds()
+        public void SetDepthParameters()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetDepthBias(1.0f, 1.0f, 1.0f);
@@ -115,7 +115,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact(Skip = "Resolve blend constants param")]
-        public void SetBlendConstants_Succeeds()
+        public void SetBlendConstants()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetBlendConstants(new ColorF4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -123,7 +123,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetStencilParameters_Succeeds()
+        public void SetStencilParameters()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetStencilCompareMask(StencilFaces.Front, ~0);
@@ -133,7 +133,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BindDescriptorSet_Succeeds()
+        public void BindDescriptorSet()
         {
             const int bufferSize = 256;
 
@@ -172,14 +172,14 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Reset_Succeeds()
+        public void Reset()
         {
             CommandPool.Reset();
             CommandBuffer.Reset();
         }
 
         [Fact]
-        public void Free_Succeeds()
+        public void Free()
         {
             using (CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0]) { }
             CommandBuffer[] buffers = CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1));

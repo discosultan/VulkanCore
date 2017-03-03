@@ -11,7 +11,7 @@ namespace VulkanCore.Tests
         private const int DefaultBytesPerPx = 4;
 
         [Fact]
-        public void GetSubresourceLayout_Succeeds()
+        public void GetSubresourceLayout()
         {
             using (Image image = CreateImage(tiling: ImageTiling.Linear))
             {
@@ -22,7 +22,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BindMemoryAndCreateView_Succeeds()
+        public void BindMemoryAndCreateView()
         {
             using (Image image = CreateImage())
             {
@@ -53,7 +53,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void GetSparseMemoryRequirements_Succeeds()
+        public void GetSparseMemoryRequirements()
         {
             if (!PhysicalDeviceFeatures.SparseBinding || !PhysicalDeviceFeatures.SparseResidencyImage2D) return;
 

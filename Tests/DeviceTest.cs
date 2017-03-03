@@ -11,61 +11,61 @@ namespace VulkanCore.Tests
     public class DeviceTest : HandleTestBase
     {
         [Fact]
-        public void GetProcAddr_ThrowsArgumentNullExForNullName()
-        {
-            Assert.Throws<ArgumentNullException>(() => Device.GetProcAddr(null));
-        }
-
-        [Fact]
-        public void GetProcAddr_ReturnsZeroPtrForUnknownProcedure()
-        {
-            IntPtr ptr = Device.GetProcAddr("does not exist");
-            Assert.Equal(IntPtr.Zero, ptr);
-        }
-
-        [Fact]
-        public void GetProcAddr_ReturnsValidHandleForExistingCommand()
+        public void GetProcAddrForExistingCommand()
         {
             IntPtr address = Device.GetProcAddr("vkDebugMarkerSetObjectNameEXT");
             Assert.NotEqual(IntPtr.Zero, address);
         }
 
         [Fact]
-        public void GetProc_ThrowsArgumentNullForNull()
+        public void GetProcAddrForMissingCommand()
+        {
+            IntPtr ptr = Device.GetProcAddr("does not exist");
+            Assert.Equal(IntPtr.Zero, ptr);
+        }
+
+        [Fact]
+        public void GetProcAddrForNullName()
+        {
+            Assert.Throws<ArgumentNullException>(() => Device.GetProcAddr(null));
+        }
+
+        [Fact]
+        public void GetProcForMissingCommand()
+        {
+            Assert.Null(Device.GetProc<EventHandler>("does not exist"));
+        }
+
+        [Fact]
+        public void GetProcForExistingCommand()
+        {
+            var commandDelegate = Device.GetProc<DebugMarkerSetObjectNameExtDelegate>("vkDebugMarkerSetObjectNameEXT");
+            Assert.NotNull(commandDelegate);
+        }
+
+        [Fact]
+        public void GetProcForNull()
         {
             Assert.Throws<ArgumentNullException>(() => Device.GetProc<EventHandler>(null));
         }
 
         [Fact]
-        public void GetProc_ReturnsNullForMissingCommand()
-        {
-            Assert.Null(Device.GetProc<EventHandler>("does not exist"));
-        }
-        
-        [Fact]
-        public void GetProc_ReturnsValidDelegate()
-        {
-            var commandDelegate = Device.GetProc<DebugMarkerSetObjectNameExt>("vkDebugMarkerSetObjectNameEXT");
-            Assert.NotNull(commandDelegate);
-        }
-
-        [Fact]
-        public void GetProcTwice_DelegatesEqual()
+        public void GetProcTwice()
         {
             const string commandName = "vkDebugMarkerSetObjectNameEXT";
-            var commandDelegate1 = Device.GetProc<DebugMarkerSetObjectNameExt>(commandName);
-            var commandDelegate2 = Device.GetProc<DebugMarkerSetObjectNameExt>(commandName);
+            var commandDelegate1 = Device.GetProc<DebugMarkerSetObjectNameExtDelegate>(commandName);
+            var commandDelegate2 = Device.GetProc<DebugMarkerSetObjectNameExtDelegate>(commandName);
             Assert.Equal(commandDelegate1, commandDelegate2);
         }
 
         [Fact]
-        public void GetQueue_Succeeds()
+        public void GetQueue()
         {
             Device.GetQueue(0);
         }
 
         [Fact]
-        public void CreateBuffer_Succeeds()
+        public void CreateBuffer()
         {
             var createInfo = new BufferCreateInfo(32, BufferUsages.VertexBuffer);
             using (Device.CreateBuffer(createInfo)) { }
@@ -73,7 +73,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateImage_Succeeds()
+        public void CreateImage()
         {
             var createInfo = new ImageCreateInfo
             {
@@ -90,7 +90,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void AllocateMemory_Succeeds()
+        public void AllocateMemory()
         {
             var allocateInfo = new MemoryAllocateInfo(32, 0);
             using (Device.AllocateMemory(allocateInfo)) { }
@@ -98,7 +98,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreatePipelineCache_Succeeds()
+        public void CreatePipelineCache()
         {
             var createInfo = new PipelineCacheCreateInfo();
             using (Device.CreatePipelineCache(createInfo)) { }
@@ -106,7 +106,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreatePipelineLayout_Succeeds()
+        public void CreatePipelineLayout()
         {
             var createInfo = new PipelineLayoutCreateInfo();
             using (Device.CreatePipelineLayout(createInfo)) { }
@@ -114,7 +114,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateSampler_Succeeds()
+        public void CreateSampler()
         {
             var createInfo = new SamplerCreateInfo();
             using (Device.CreateSampler(createInfo)) { }
@@ -122,7 +122,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateDescriptorPool_Succeeds()
+        public void CreateDescriptorPool()
         {
             var createInfo = new DescriptorPoolCreateInfo(
                 1,
@@ -132,28 +132,28 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateEvent_Succeeds()
+        public void CreateEvent()
         {
             using (Device.CreateEvent()) { }
             using (Device.CreateEvent(CustomAllocator)) { }
         }
 
         [Fact]
-        public void CreateFence_Succeeds()
+        public void CreateFence()
         {
             using (Device.CreateFence()) { }
             using (Device.CreateFence(allocator: CustomAllocator)) { }
         }
 
         [Fact]
-        public void CreateSemaphore_Succeeds()
+        public void CreateSemaphore()
         {
             using (Device.CreateSemaphore()) { }
             using (Device.CreateSemaphore(CustomAllocator)) { }
         }
 
         [Fact]
-        public void CreateRenderPass_Succeeds()
+        public void CreateRenderPass()
         {
             var createInfo = new RenderPassCreateInfo(
                 new[] { new SubpassDescription() }
@@ -163,7 +163,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void DebugMarkerSetObjectNameExt_Succeeds()
+        public void DebugMarkerSetObjectNameExt()
         {
             if (!AvailableDeviceExtensions.Contains(Constant.DeviceExtension.ExtDebugMarker)) return;
 
@@ -171,7 +171,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void DebugMarkerSetObjectTagExt_Succeeds()
+        public void DebugMarkerSetObjectTagExt()
         {
             if (!AvailableDeviceExtensions.Contains(Constant.DeviceExtension.ExtDebugMarker)) return;
 
@@ -180,7 +180,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateCommandPool_Succeeds()
+        public void CreateCommandPool()
         {
             var createInfo = new CommandPoolCreateInfo(0);
             using (Device.CreateCommandPool(createInfo)) { }
@@ -188,7 +188,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateQueryPool_Succeeds()
+        public void CreateQueryPool()
         {
             var createInfo = new QueryPoolCreateInfo(QueryType.Timestamp, 1);
             using (Device.CreateQueryPool(createInfo)) { }
@@ -196,7 +196,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateShaderModule_Succeeds()
+        public void CreateShaderModule()
         {
             var createInfo = new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.vert.spv"));
             using (Device.CreateShaderModule(createInfo)) { }
@@ -204,7 +204,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateGraphicsPipeline_Succeeds()
+        public void CreateGraphicsPipeline()
         {
             var attachment = new AttachmentDescription
             {
@@ -300,7 +300,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateComputePipeline_Succeeds()
+        public void CreateComputePipeline()
         {
             var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.Compute),
@@ -326,7 +326,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void FlushMappedMemoryRange_Succeeds()
+        public void FlushMappedMemoryRange()
         {
             PhysicalDeviceMemoryProperties memoryProperties = PhysicalDevice.GetMemoryProperties();
             int memoryTypeIndex = memoryProperties.MemoryTypes.Select((mem, i) => (mem, i))
@@ -343,7 +343,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void InvalidateMappedMemoryRange_Succeeds()
+        public void InvalidateMappedMemoryRange()
         {
             PhysicalDeviceMemoryProperties memoryProperties = PhysicalDevice.GetMemoryProperties();
             int memoryTypeIndex = memoryProperties.MemoryTypes.Select((mem, i) => (mem, i))
@@ -361,6 +361,6 @@ namespace VulkanCore.Tests
 
         public DeviceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
 
-        private delegate Result DebugMarkerSetObjectNameExt(IntPtr p1, IntPtr p2);
+        private delegate Result DebugMarkerSetObjectNameExtDelegate(IntPtr p1, IntPtr p2);
     }
 }

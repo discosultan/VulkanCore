@@ -10,7 +10,7 @@ namespace VulkanCore.Tests
     public unsafe class InstanceTest : HandleTestBase
     {
         [Fact]
-        public void Constructor_Succeeds()
+        public void Constructor()
         {
             using (new Instance()) { }
             using (var instance = new Instance(allocator: CustomAllocator))
@@ -20,7 +20,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Constructor_ApplicationInfo_Succeeds()
+        public void ConstructorWithApplicationInfo()
         {
             var createInfo1 = new InstanceCreateInfo(new ApplicationInfo());
             var createInfo2 = new InstanceCreateInfo(new ApplicationInfo("app name", 1, "engine name", 2));
@@ -29,7 +29,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Constructor_EnabledLayerAndExtension_Succeeds()
+        public void ConstructorWithEnabledLayerAndExtension()
         {
             var createInfo = new InstanceCreateInfo(
                 enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
@@ -39,7 +39,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void DisposeTwice_Succeeds()
+        public void DisposeTwice()
         {
             var instance = new Instance();
             instance.Dispose();
@@ -47,7 +47,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CreateDebugReportCallbackExt_Succeeds()
+        public void CreateDebugReportCallbackExt()
         {
             var createInfo = new InstanceCreateInfo(
                 enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
@@ -77,7 +77,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void EnumeratePhysicalDevices_ReturnsAtLeastOneDevice()
+        public void EnumeratePhysicalDevices()
         {
             PhysicalDevice[] physicalDevices = Instance.EnumeratePhysicalDevices();
             Assert.True(physicalDevices.Length > 0);
@@ -85,53 +85,53 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void GetProcAddr_ReturnsValidHandleForExistingCommand()
+        public void GetProcAddrForExistingCommand()
         {
             IntPtr address = Instance.GetProcAddr("vkCreateDebugReportCallbackEXT");
             Assert.NotEqual(IntPtr.Zero, address);
         }
 
         [Fact]
-        public void GetProcAddr_ReturnsNullHandleForMissingCommand()
+        public void GetProcAddrForMissingCommand()
         {
             IntPtr address = Instance.GetProcAddr("does not exist");
             Assert.Equal(IntPtr.Zero, address);
         }
 
         [Fact]
-        public void GetProcAddr_ThrowsArgumentNullForNull()
+        public void GetProcAddrForNull()
         {
             Assert.Throws<ArgumentNullException>(() => Instance.GetProcAddr(null));
         }
 
         [Fact]
-        public void GetProc_ThrowsArgumentNullForNull()
+        public void GetProcForExistingCommand()
         {
-            Assert.Throws<ArgumentNullException>(() => Instance.GetProc<EventHandler>(null));
+            var commandDelegate = Instance.GetProc<CreateDebugReportCallbackExtDelegate>("vkCreateDebugReportCallbackEXT");
+            Assert.NotNull(commandDelegate);
         }
 
         [Fact]
-        public void GetProc_ReturnsNullForMissingCommand()
+        public void GetProcForMissingCommand()
         {
             Assert.Null(Instance.GetProc<EventHandler>("does not exist"));
         }
 
         [Fact]
-        public void GetProc_ReturnsValidDelegate()
+        public void GetProcForNull()
         {
-            var commandDelegate = Instance.GetProc<CreateDebugReportCallbackExt>("vkCreateDebugReportCallbackEXT");
-            Assert.NotNull(commandDelegate);
+            Assert.Throws<ArgumentNullException>(() => Instance.GetProc<EventHandler>(null));
         }
 
         [Fact]
-        public void EnumerateExtensionProperties_SucceedsWithoutLayerName()
+        public void EnumerateExtensionPropertiesForAllLayers()
         {
             ExtensionProperties[] properties = Instance.EnumerateExtensionProperties();
             Assert.True(properties.Length > 0);
         }
 
         [Fact]
-        public void EnumerateExtensionProperties_SucceedsForLayerName()
+        public void EnumerateExtensionPropertiesForSingleLayer()
         {
             ExtensionProperties[] properties = Instance.EnumerateExtensionProperties(
                 Constant.InstanceLayer.LunarGStandardValidation);
@@ -142,7 +142,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        private void EnumerateLayerProperties_Succeeds()
+        private void EnumerateLayerProperties()
         {
             LayerProperties[] properties = Instance.EnumerateLayerProperties();
             Assert.True(properties.Length > 0);
@@ -152,7 +152,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void DebugReportMessageExt_Succeeds()
+        public void DebugReportMessageExt()
         {
             const string message = "message õäöü";
             const DebugReportObjectTypeExt objectType = DebugReportObjectTypeExt.DebugReport;
@@ -192,6 +192,6 @@ namespace VulkanCore.Tests
 
         public InstanceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
 
-        private delegate Result CreateDebugReportCallbackExt(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
+        private delegate Result CreateDebugReportCallbackExtDelegate(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
     }
 }

@@ -20,7 +20,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ToString_SameOutputAsPrimitive()
+        public void ConvertToString()
         {
             Bool boolTrue = true;
             Bool boolFalse = false;
