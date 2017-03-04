@@ -42,18 +42,14 @@ namespace VulkanCore.Samples.Triangle
             // Acquire drawing image.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
-            GraphicsQueue.Submit(new SubmitInfo(
-                new[] { ImageAvailableSemaphore },
-                new[] { PipelineStages.ColorAttachmentOutput },
-                new[] { CommandBuffers[imageIndex] },
-                new[] { RenderingFinishedSemaphore }
-            ));
+            GraphicsQueue.Submit(
+                ImageAvailableSemaphore,
+                PipelineStages.ColorAttachmentOutput,
+                CommandBuffers[imageIndex],
+                RenderingFinishedSemaphore
+            );
 
-            PresentQueue.PresentKhr(new PresentInfoKhr(
-                new[] { RenderingFinishedSemaphore },
-                new[] { Swapchain },
-                new[] { imageIndex }
-            ));
+            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         public override void Dispose()

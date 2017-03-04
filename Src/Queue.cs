@@ -35,23 +35,6 @@ namespace VulkanCore
         /// <summary>
         /// Submits a sequence of semaphores or command buffers to a queue.
         /// </summary>
-        /// <param name="submit">Specifies a command buffer submission batch.</param>
-        /// <param name="fence">
-        /// An optional handle to a fence to be signaled. If fence is not <c>null</c>, it defines a
-        /// fence signal operation.
-        /// </param>
-        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void Submit(SubmitInfo submit, Fence fence = null)
-        {
-            submit.ToNative(out SubmitInfo.Native nativeSubmit);
-            Result result = vkQueueSubmit(this, 1, &nativeSubmit, fence);
-            nativeSubmit.Free();
-            VulkanException.ThrowForInvalidResult(result);
-        }
-
-        /// <summary>
-        /// Submits a sequence of semaphores or command buffers to a queue.
-        /// </summary>
         /// <param name="submits">Structures, each specifying a command buffer submission batch.</param>
         /// <param name="fence">
         /// An optional handle to a fence to be signaled. If fence is not <c>null</c>, it defines a
@@ -69,6 +52,62 @@ namespace VulkanCore
             for (int i = 0; i < count; i++)
                 nativeSubmits[i].Free();
 
+            VulkanException.ThrowForInvalidResult(result);
+        }
+
+        /// <summary>
+        /// Submits a sequence of semaphores or command buffers to a queue.
+        /// </summary>
+        /// <param name="submit">Specifies a command buffer submission batch.</param>
+        /// <param name="fence">
+        /// An optional handle to a fence to be signaled. If fence is not <c>null</c>, it defines a
+        /// fence signal operation.
+        /// </param>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public void Submit(SubmitInfo submit, Fence fence = null)
+        {
+            submit.ToNative(out SubmitInfo.Native nativeSubmit);
+            Result result = vkQueueSubmit(this, 1, &nativeSubmit, fence);
+            nativeSubmit.Free();
+            VulkanException.ThrowForInvalidResult(result);
+        }
+
+        /// <summary>
+        /// Submits semaphores or a command buffer to a queue.
+        /// </summary>
+        /// <param name="fence">
+        /// An optional handle to a fence to be signaled. If fence is not <c>null</c>, it defines a
+        /// fence signal operation.
+        /// </param>
+        /// <param name="waitSemaphore">
+        /// Semaphore upon which to wait before the command buffer for this batch begins execution.
+        /// If semaphore to wait on is provided, it defines a semaphore wait operation.
+        /// </param>
+        /// <param name="waitDstStageMask">Pipeline stages at which semaphore wait will occur.</param>
+        /// <param name="commandBuffer">Command buffer to execute in the batch.</param>
+        /// <param name="signalSemaphore">
+        /// Semaphore which will be signaled when the command buffer for this batch has completed
+        /// execution. If semaphore to be signaled is provided, it defines a semaphore signal operation.
+        /// </param>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public void Submit(Semaphore waitSemaphore, PipelineStages waitDstStageMask,
+            CommandBuffer commandBuffer, Semaphore signalSemaphore, Fence fence = null)
+        {
+            long waitSemaphoreHandle = waitSemaphore;
+            IntPtr commandBufferHandle = commandBuffer;
+            long signalSemaphoreHandle = signalSemaphore;
+            var nativeSubmit = new SubmitInfo.Native
+            {
+                Type = StructureType.SubmitInfo,
+                WaitSemaphoreCount = waitSemaphoreHandle == 0 ? 0 : 1,
+                WaitSemaphores = new IntPtr(&waitSemaphoreHandle),
+                WaitDstStageMask = new IntPtr(&waitDstStageMask),
+                CommandBufferCount = waitSemaphoreHandle == 0 ? 0 : 1,
+                CommandBuffers = new IntPtr(&commandBufferHandle),
+                SignalSemaphoreCount = signalSemaphoreHandle == 0 ? 0 : 1,
+                SignalSemaphores = new IntPtr(&signalSemaphoreHandle)
+            };
+            Result result = vkQueueSubmit(this, 1, &nativeSubmit, fence);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -179,7 +218,8 @@ namespace VulkanCore
         /// </param>
         /// <param name="commandBuffers">
         /// Command buffers to execute in the batch. The command buffers submitted in a batch begin
-        /// execution in the order they appear in pCommandBuffers, but may complete out of order.
+        /// execution in the order they appear in <paramref name="commandBuffers"/>, but may complete
+        /// out of order.
         /// </param>
         /// <param name="signalSemaphores">
         /// Semaphores which will be signaled when the command buffers for this batch have completed

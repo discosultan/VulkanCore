@@ -268,7 +268,7 @@ namespace VulkanCore.Tests
                     AlphaBlendOp = BlendOp.Add,
                     ColorWriteMask = ColorComponents.All
                 };
-                var depthStencilStateCreateInfo = new PipelineDepthStencilStateCreateInfo();                
+                var depthStencilStateCreateInfo = new PipelineDepthStencilStateCreateInfo();
                 var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
                     new[] { colorBlendAttachmentState });
                 var dynamicStateCreateInfo = new PipelineDynamicStateCreateInfo(DynamicState.LineWidth);
@@ -329,8 +329,7 @@ namespace VulkanCore.Tests
         public void FlushMappedMemoryRange()
         {
             PhysicalDeviceMemoryProperties memoryProperties = PhysicalDevice.GetMemoryProperties();
-            int memoryTypeIndex = memoryProperties.MemoryTypes.Select((mem, i) => (mem, i))
-                .First(x => x.Item1.PropertyFlags.HasFlag(MemoryProperties.HostVisible)).Item2;
+            int memoryTypeIndex = memoryProperties.MemoryTypes.IndexOf(~0, MemoryProperties.HostVisible);
 
             const int size = 1024;
             using (var memory = Device.AllocateMemory(new MemoryAllocateInfo(size, memoryTypeIndex)))
@@ -346,8 +345,7 @@ namespace VulkanCore.Tests
         public void InvalidateMappedMemoryRange()
         {
             PhysicalDeviceMemoryProperties memoryProperties = PhysicalDevice.GetMemoryProperties();
-            int memoryTypeIndex = memoryProperties.MemoryTypes.Select((mem, i) => (mem, i))
-                .First(x => x.Item1.PropertyFlags.HasFlag(MemoryProperties.HostVisible)).Item2;
+            int memoryTypeIndex = memoryProperties.MemoryTypes.IndexOf(~0, MemoryProperties.HostVisible);
 
             const int size = 1024;
             using (var memory = Device.AllocateMemory(new MemoryAllocateInfo(size, memoryTypeIndex)))

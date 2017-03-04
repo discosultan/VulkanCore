@@ -1181,44 +1181,17 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying physical device memory properties.
     /// </summary>
-    public unsafe struct PhysicalDeviceMemoryProperties
+    public struct PhysicalDeviceMemoryProperties
     {
         /// <summary>
-        /// An array of <see cref="MemoryType"/> structures describing the memory types that can be
-        /// used to access memory allocated from the heaps specified by <see cref="MemoryHeaps"/>.
+        /// Structures describing the memory types that can be used to access memory allocated from
+        /// the heaps specified by <see cref="MemoryHeaps"/>.
         /// </summary>
         public MemoryType[] MemoryTypes;
         /// <summary>
-        /// An array of <see cref="MemoryHeap"/> structures describing the memory heaps from which
-        /// memory can be allocated.
+        /// Structures describing the memory heaps from which memory can be allocated.
         /// </summary>
         public MemoryHeap[] MemoryHeaps;
-
-        /// <summary>
-        /// Gets the index of the <see cref="MemoryType"/> that has all the requested <paramref
-        /// name="properties"/> set.
-        /// </summary>
-        /// <param name="memoryTypeBits">
-        /// A bitmask of <see cref="MemoryRequirements.MemoryTypeBits"/> that contains one bit set
-        /// for every memory type supported by the resource.
-        /// </param>
-        /// <param name="properties">A bitmask of properties to request.</param>
-        /// <returns>Index of the requested <see cref="MemoryType"/>.</returns>
-        /// <exception cref="InvalidOperationException">Requested memory type not found.</exception>
-        public int GetMemoryTypeIndex(int memoryTypeBits, MemoryProperties properties)
-        {
-            int count = MemoryTypes?.Length ?? 0;
-            for (int i = 0; i < count; i++)
-            {
-                if ((memoryTypeBits & 1) == 1 &&
-                    (MemoryTypes[i].PropertyFlags & properties) == properties)
-                {
-                    return i;
-                }
-                memoryTypeBits >>= 1;
-            }
-            throw new InvalidOperationException("No suitable memory type found.");
-        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native

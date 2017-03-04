@@ -13,8 +13,8 @@ namespace VulkanCore.Khr
         /// Queue an image for presentation.
         /// </summary>
         /// <param name="queue">
-        /// The queue that is capable of presentation to the target surface’s platform on the same
-        /// device as the image’s swapchain.
+        /// The queue that is capable of presentation to the target surface's platform on the same
+        /// device as the image's swapchain.
         /// </param>
         /// <param name="presentInfo">The structure specifying the parameters of the presentation.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
@@ -33,6 +33,35 @@ namespace VulkanCore.Khr
                 Result result = vkQueuePresentKHR(queue, &nativePresentInfo);
                 VulkanException.ThrowForInvalidResult(result);
             }
+        }
+
+        /// <summary>
+        /// Queue an image for presentation.
+        /// </summary>
+        /// <param name="queue">
+        /// The queue that is capable of presentation to the target surface's platform on the same
+        /// device as the image's swapchain.
+        /// </param>
+        /// <param name="waitSemaphore">Semaphore to wait for before presenting.</param>
+        /// <param name="swapchain">Valid swapchain handle.</param>
+        /// <param name="imageIndex">Index into the array of swapchain's presentable images.</param>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static void PresentKhr(this Queue queue, Semaphore waitSemaphore, SwapchainKhr swapchain, int imageIndex)
+        {
+            long waitSemaphoreHandle = waitSemaphore;
+            long swapchainHandle = swapchain;
+            var nativePresentInfo = new PresentInfoKhr.Native
+            {
+                Type = StructureType.PresentInfoKhr,
+                WaitSemaphoreCount = waitSemaphoreHandle == 0 ? 0 : 1,
+                WaitSemaphores = &waitSemaphoreHandle,
+                SwapchainCount = swapchainHandle == 0 ? 0 : 1,
+                Swapchains = &swapchainHandle,
+                ImageIndices = &imageIndex
+            };
+
+            Result result = vkQueuePresentKHR(queue, &nativePresentInfo);
+            VulkanException.ThrowForInvalidResult(result);
         }
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
@@ -57,7 +86,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public long[] Swapchains;
         /// <summary>
-        /// Indices into the array of each swapchain’s presentable images, with swapchain count
+        /// Indices into the array of each swapchain's presentable images, with swapchain count
         /// entries. Each entry in this array identifies the image to present on the corresponding
         /// entry in the <see cref="Swapchains"/> array.
         /// </summary>

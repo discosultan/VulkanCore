@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 
 namespace VulkanCore.Samples.Cube
 {
@@ -53,7 +52,7 @@ namespace VulkanCore.Samples.Cube
             // Vertex buffer.
             Buffer vertexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.TransferSrc));
             MemoryRequirements vertexStagingReq = vertexStagingBuffer.GetMemoryRequirements();
-            int vertexStagingMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+            int vertexStagingMemoryTypeIndex = _memoryProperties.MemoryTypes.IndexOf(
                 vertexStagingReq.MemoryTypeBits,
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
             DeviceMemory vertexStagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(vertexStagingReq.Size, vertexStagingMemoryTypeIndex));
@@ -65,7 +64,7 @@ namespace VulkanCore.Samples.Cube
             // Create a device local buffer where the vertex data will be copied and which will be used for rendering.
             _vertexBuffer = _device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.VertexBuffer | BufferUsages.TransferDst));
             MemoryRequirements vertexReq = _vertexBuffer.GetMemoryRequirements();
-            int vertexMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+            int vertexMemoryTypeIndex = _memoryProperties.MemoryTypes.IndexOf(
                 vertexReq.MemoryTypeBits,
                 MemoryProperties.DeviceLocal);
             _vertexBufferMemory = _device.AllocateMemory(new MemoryAllocateInfo(vertexReq.Size, vertexMemoryTypeIndex));
@@ -74,7 +73,7 @@ namespace VulkanCore.Samples.Cube
             // Index buffer.
             Buffer indexStagingBuffer = _device.CreateBuffer(new BufferCreateInfo(indexBufferSize, BufferUsages.TransferSrc));
             MemoryRequirements indexStagingReq = indexStagingBuffer.GetMemoryRequirements();
-            int indexStagingMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+            int indexStagingMemoryTypeIndex = _memoryProperties.MemoryTypes.IndexOf(
                 indexStagingReq.MemoryTypeBits,
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
             DeviceMemory indexStagingMemory = _device.AllocateMemory(new MemoryAllocateInfo(indexStagingReq.Size, indexStagingMemoryTypeIndex));
@@ -86,7 +85,7 @@ namespace VulkanCore.Samples.Cube
             // Create a device local buffer.
             _indexBuffer = _device.CreateBuffer(new BufferCreateInfo(indexBufferSize, BufferUsages.IndexBuffer | BufferUsages.TransferDst));
             MemoryRequirements indexReq = _indexBuffer.GetMemoryRequirements();
-            int indexMemoryTypeIndex = _memoryProperties.GetMemoryTypeIndex(
+            int indexMemoryTypeIndex = _memoryProperties.MemoryTypes.IndexOf(
                 indexReq.MemoryTypeBits,
                 MemoryProperties.DeviceLocal);
             _indexBufferMemory = _device.AllocateMemory(new MemoryAllocateInfo(indexReq.Size, indexMemoryTypeIndex));

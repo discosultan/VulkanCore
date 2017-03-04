@@ -11,18 +11,20 @@ namespace VulkanCore.Tests
         public void PropertiesSet()
         {
             QueueFamilyProperties[] props = PhysicalDevice.GetQueueFamilyProperties();
-            (QueueFamilyProperties prop, int index) = props.Select((x, i) => (x, i)).Last();
+            int queueFamilyIndex = props.Length - 1;
+            int queueCount = props[props.Length - 1].QueueCount;
+            int queueIndex = queueCount - 1;
             var deviceCreateInfo = new DeviceCreateInfo(new[]
             {
-                new DeviceQueueCreateInfo(index, 1, 1.0f)
+                new DeviceQueueCreateInfo(queueFamilyIndex, queueCount, Enumerable.Range(0, queueCount).Select(_ => 1.0f).ToArray())
             });
             using (Device device = PhysicalDevice.CreateDevice(deviceCreateInfo))
             {
-                Queue queue = device.GetQueue(index, 0);
+                Queue queue = device.GetQueue(queueFamilyIndex);
 
                 Assert.Equal(device, queue.Parent);
-                Assert.Equal(index, queue.FamilyIndex);
-                Assert.Equal(0, queue.Index);
+                Assert.Equal(queueFamilyIndex, queue.FamilyIndex);
+                Assert.Equal(queueIndex, queue.Index);
             }
         }
 
@@ -35,6 +37,7 @@ namespace VulkanCore.Tests
         [Fact]
         public void Submit()
         {
+            GraphicsQueue.Submit(null, 0, null, null);
             GraphicsQueue.Submit(new SubmitInfo());
             GraphicsQueue.Submit(new[] { new SubmitInfo() });
         }

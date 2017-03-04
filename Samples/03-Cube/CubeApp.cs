@@ -85,7 +85,7 @@ namespace VulkanCore.Samples.Cube
             Buffer stagingBuffer = Device.CreateBuffer(
                 new BufferCreateInfo(tex2D.Mipmaps[0].Size, BufferUsages.TransferSrc));
             MemoryRequirements stagingMemReq = stagingBuffer.GetMemoryRequirements();
-            int heapIndex = PhysicalDeviceMemoryProperties.GetMemoryTypeIndex(
+            int heapIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 stagingMemReq.MemoryTypeBits, MemoryProperties.HostVisible);
             DeviceMemory stagingMemory = Device.AllocateMemory(
                 new MemoryAllocateInfo(stagingMemReq.Size, heapIndex));
@@ -127,7 +127,7 @@ namespace VulkanCore.Samples.Cube
                 Usage = ImageUsages.Sampled | ImageUsages.TransferDst
             });
             MemoryRequirements imageMemReq = _texture.GetMemoryRequirements();
-            int imageHeapIndex = PhysicalDeviceMemoryProperties.GetMemoryTypeIndex(
+            int imageHeapIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 imageMemReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
             _textureMemory = Device.AllocateMemory(new MemoryAllocateInfo(imageMemReq.Size, imageHeapIndex));
             _texture.BindMemory(_textureMemory);
@@ -225,18 +225,14 @@ namespace VulkanCore.Samples.Cube
             // Acquire drawing image.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
-            GraphicsQueue.Submit(new SubmitInfo(
-                new[] { ImageAvailableSemaphore },
-                new[] { PipelineStages.ColorAttachmentOutput },
-                new[] { CommandBuffers[imageIndex] },
-                new[] { RenderingFinishedSemaphore }
-            ));
+            GraphicsQueue.Submit(
+                ImageAvailableSemaphore,
+                PipelineStages.ColorAttachmentOutput,
+                CommandBuffers[imageIndex],
+                RenderingFinishedSemaphore
+            );
 
-            PresentQueue.PresentKhr(new PresentInfoKhr(
-                new[] { RenderingFinishedSemaphore },
-                new[] { Swapchain },
-                new[] { imageIndex }
-            ));
+            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         private void SetViewProjection()
@@ -284,7 +280,7 @@ namespace VulkanCore.Samples.Cube
                 Usage = ImageUsages.DepthStencilAttachment | ImageUsages.TransferSrc
             });
             MemoryRequirements memReq = _depthStencil.GetMemoryRequirements();
-            int heapIndex = PhysicalDeviceMemoryProperties.GetMemoryTypeIndex(
+            int heapIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 memReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
             _depthStencilMemory = Device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, heapIndex));
             _depthStencil.BindMemory(_depthStencilMemory);
@@ -298,7 +294,7 @@ namespace VulkanCore.Samples.Cube
             MemoryRequirements memoryRequirements = _uniformBuffer.GetMemoryRequirements();
             // We require host visible memory so we can map it and write to it directly.
             // We require host coherent memory so that writes are visible to the GPU right after unmapping it.
-            int memoryTypeIndex = PhysicalDeviceMemoryProperties.GetMemoryTypeIndex(
+            int memoryTypeIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 memoryRequirements.MemoryTypeBits,
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
             _uniformBufferMemory = Device.AllocateMemory(new MemoryAllocateInfo(memoryRequirements.Size, memoryTypeIndex));

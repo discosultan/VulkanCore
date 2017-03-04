@@ -27,18 +27,14 @@ namespace VulkanCore.Samples.ClearScreen
             // Acquire drawing image.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
-            GraphicsQueue.Submit(new SubmitInfo(
-                new[] { ImageAvailableSemaphore },
-                new[] { PipelineStages.Transfer },
-                new[] { CommandBuffers[imageIndex] },
-                new[] { RenderingFinishedSemaphore }
-            ));
+            GraphicsQueue.Submit(
+                ImageAvailableSemaphore,
+                PipelineStages.Transfer,
+                CommandBuffers[imageIndex],
+                RenderingFinishedSemaphore
+            );
 
-            PresentQueue.PresentKhr(new PresentInfoKhr(
-                new[] { RenderingFinishedSemaphore },
-                new[] { Swapchain },
-                new[] { imageIndex }
-            ));
+            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         private void RecordCommandBuffers()

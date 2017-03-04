@@ -31,7 +31,7 @@ namespace VulkanCore.Tests
 
                 using (DeviceMemory memory = Device.AllocateMemory(new MemoryAllocateInfo(
                     memReq.Size, 
-                    deviceMemProps.GetMemoryTypeIndex(memReq.MemoryTypeBits, 0))))
+                    deviceMemProps.MemoryTypes.IndexOf(memReq.MemoryTypeBits, 0))))
                 {
                     image.BindMemory(memory);
 

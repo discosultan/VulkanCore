@@ -26,7 +26,7 @@ namespace VulkanCore.Tests
                 MemoryRequirements memReq = buffer.GetMemoryRequirements();
                 var memoryAllocateInfo = new MemoryAllocateInfo(
                     memReq.Size,
-                    deviceMemProps.GetMemoryTypeIndex(memReq.MemoryTypeBits, 0));
+                    deviceMemProps.MemoryTypes.IndexOf(memReq.MemoryTypeBits, 0));
 
                 using (DeviceMemory memory = Device.AllocateMemory(memoryAllocateInfo))
                 {

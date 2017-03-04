@@ -451,9 +451,10 @@ namespace VulkanCore
         /// </summary>
         Preinitialized = 8,
         /// <summary>
-        /// Must only be used for presenting a swapchain image for display. A swapchain’s image must
-        /// be transitioned to this layout before calling <see cref="QueueExtensions.PresentKhr"/>,
-        /// and must be transitioned away from this layout after calling <see cref="SwapchainKhr.vkAcquireNextImageKHR"/>.
+        /// Must only be used for presenting a swapchain image for display. A swapchain's image must
+        /// be transitioned to this layout before calling <see
+        /// cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/>, and must be transitioned away
+        /// from this layout after calling <see cref="SwapchainKhr.vkAcquireNextImageKHR"/>.
         /// </summary>
         PresentSrcKhr = 1000001002
     }
