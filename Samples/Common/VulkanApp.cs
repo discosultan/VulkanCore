@@ -46,8 +46,6 @@ namespace VulkanCore.Samples
             CreateSemaphoresAndCommandBuffers();
         }
 
-        public virtual void Run() => Window.Run(Update, Draw);
-
         protected virtual void OnResized()
         {
             Device.WaitIdle();
@@ -55,6 +53,15 @@ namespace VulkanCore.Samples
             CreateSwapchain();
             CommandPool.Reset(); // Resets all the command buffers allocated from the pool.
         }
+
+        public virtual void Run() => Window.Run(Tick);
+
+        private void Tick(Timer timer)
+        {
+            Update(timer);
+            Draw(timer);
+        }
+
         protected virtual void Update(Timer timer) { }
         protected virtual void Draw(Timer timer) { }
 

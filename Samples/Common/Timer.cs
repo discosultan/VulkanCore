@@ -37,9 +37,9 @@ namespace VulkanCore.Samples
             get
             {
                 if (_stopped)
-                    return (float)(((_stopTime - _pausedTime) - _baseTime) * _secondsPerCount);
+                    return (float)((_stopTime - _pausedTime - _baseTime) * _secondsPerCount);
 
-                return (float)(((_currTime - _pausedTime) - _baseTime) * _secondsPerCount);
+                return (float)((_currTime - _pausedTime - _baseTime) * _secondsPerCount);
             }
         }
 

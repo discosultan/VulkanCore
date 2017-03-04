@@ -122,7 +122,7 @@ namespace VulkanCore.Samples
             };
         }
 
-        public void Run(Action<Timer> update, Action<Timer> draw)
+        public void Run(Action<Timer> tick)
         {
             _running = true;
             _form.Show();
@@ -135,8 +135,7 @@ namespace VulkanCore.Samples
                 if (!_appPaused)
                 {
                     CalculateFrameRateStats();
-                    update(_timer);
-                    draw(_timer);
+                    tick(_timer);
                 }
                 else
                 {

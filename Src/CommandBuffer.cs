@@ -404,7 +404,7 @@ namespace VulkanCore
         /// <param name="instanceCount">The number of instances to draw.</param>
         /// <param name="firstVertex">The index of the first vertex to draw.</param>
         /// <param name="firstInstance">The instance id of the first instance to draw.</param>
-        public void CmdDraw(int vertexCount, int instanceCount, int firstVertex = 0, int firstInstance = 0)
+        public void CmdDraw(int vertexCount, int instanceCount = 1, int firstVertex = 0, int firstInstance = 0)
         {
             vkCmdDraw(this, vertexCount, instanceCount, firstVertex, firstInstance);
         }
@@ -426,7 +426,7 @@ namespace VulkanCore
         /// The value added to the vertex index before indexing into the vertex buffer.
         /// </param>
         /// <param name="firstInstance">The instance id of the first instance to draw.</param>
-        public void CmdDrawIndexed(int indexCount, int instanceCount, int firstIndex, int vertexOffset, int firstInstance)
+        public void CmdDrawIndexed(int indexCount, int instanceCount = 1, int firstIndex = 0, int vertexOffset = 0, int firstInstance = 0)
         {
             vkCmdDrawIndexed(this, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
         }

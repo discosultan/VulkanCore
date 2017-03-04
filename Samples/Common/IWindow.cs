@@ -9,6 +9,6 @@ namespace VulkanCore.Samples
         int Height { get; }
 
         void Initialize(Action onResized);
-        void Run(Action<Timer> update, Action<Timer> draw);
+        void Run(Action<Timer> tick);
     }
 }
