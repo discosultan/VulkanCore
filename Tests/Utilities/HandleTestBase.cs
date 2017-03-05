@@ -33,6 +33,7 @@ namespace VulkanCore.Tests.Utilities
         protected Queue GraphicsQueue => _defaults.GraphicsQueue;
         protected string[] AvailableDeviceExtensions => _defaults.AvailableDeviceExtensions;
         protected PhysicalDeviceFeatures PhysicalDeviceFeatures => _defaults.PhysicalDeviceFeatures;
+        protected PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties => _defaults.PhysicalDeviceMemoryProperties;
 
         public virtual void Dispose()
         {

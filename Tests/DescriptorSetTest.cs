@@ -56,17 +56,17 @@ namespace VulkanCore.Tests
         public void UpdateSetsDescriptorCopy()
         {
             var layoutCreateInfo = new DescriptorSetLayoutCreateInfo(
-                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 2));
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1),
+                new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1));
             var poolCreateInfo = new DescriptorPoolCreateInfo(
                 1,
-                new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 2) },
-                DescriptorPoolCreateFlags.FreeDescriptorSet);
+                new[] { new DescriptorPoolSize(DescriptorType.StorageBuffer, 2) });
             using (DescriptorSetLayout layout = Device.CreateDescriptorSetLayout(layoutCreateInfo))
             using (DescriptorPool pool = Device.CreateDescriptorPool(poolCreateInfo))
-            using (DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout))[0])
             {
+                DescriptorSet set = pool.AllocateSets(new DescriptorSetAllocateInfo(1, layout))[0];
                 // It is valid to copy from self to self (without overlapping memory boundaries).
-                var descriptorCopy = new CopyDescriptorSet(set, 0, 0, set, 0, 1, 1);
+                var descriptorCopy = new CopyDescriptorSet(set, 0, 0, set, 1, 0, 1);
                 pool.UpdateSets(descriptorCopies: new[] { descriptorCopy });
             }
         }

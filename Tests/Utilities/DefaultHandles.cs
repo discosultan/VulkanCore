@@ -19,6 +19,7 @@ namespace VulkanCore.Tests.Utilities
         public Instance Instance { get; private set; }
         public PhysicalDevice PhysicalDevice { get; private set; }
         public PhysicalDeviceFeatures PhysicalDeviceFeatures { get; private set; }
+        public PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties { get; private set; }
         public Device Device { get; private set; }
 
         public Queue ComputeQueue { get; private set; }
@@ -71,6 +72,7 @@ namespace VulkanCore.Tests.Utilities
             // smarter choice here.
             PhysicalDevice = Instance.EnumeratePhysicalDevices()[0];
             PhysicalDeviceFeatures = PhysicalDevice.GetFeatures();
+            PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
         }
 
         private void CreateDevice()

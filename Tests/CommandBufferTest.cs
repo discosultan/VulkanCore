@@ -1,4 +1,5 @@
-﻿using VulkanCore.Tests.Utilities;
+﻿using System.IO;
+using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -168,6 +169,63 @@ namespace VulkanCore.Tests
                 CommandBuffer.End();
 
                 descriptorPool.Reset();
+            }
+        }
+
+        [Fact]
+        public void BindVertexAndIndexBuffer()
+        {
+            const int bufferSize = 256;
+            using (Buffer buffer = Device.CreateBuffer(new BufferCreateInfo(bufferSize, BufferUsages.VertexBuffer | BufferUsages.IndexBuffer)))
+            {
+                MemoryRequirements memReq = buffer.GetMemoryRequirements();
+                int memTypeIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
+                    memReq.MemoryTypeBits, MemoryProperties.HostVisible);
+                using (DeviceMemory memory = Device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, memTypeIndex)))
+                {
+                    buffer.BindMemory(memory);
+
+                    CommandBuffer.Begin();
+                    CommandBuffer.CmdBindVertexBuffer(buffer);
+                    CommandBuffer.CmdBindVertexBuffers(0, 1, new[] { buffer }, new long[] { 0 });
+                    CommandBuffer.CmdBindIndexBuffer(buffer);
+                    CommandBuffer.End();
+                }
+            }
+        }
+
+        [Fact]
+        public void BindPipeline()
+        {
+            var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo(
+                new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.Compute),
+                new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
+            using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
+            using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
+            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.comp.spv"))))
+            {
+                var pipelineCreateInfo = new ComputePipelineCreateInfo(
+                    new PipelineShaderStageCreateInfo(ShaderStages.Compute, shader, "main"),
+                    pipelineLayout);
+
+                using (Pipeline pipeline = Device.CreateComputePipeline(pipelineCreateInfo))
+                {
+                    CommandBuffer.Begin();
+                    CommandBuffer.CmdBindPipeline(PipelineBindPoint.Compute, pipeline);
+                    CommandBuffer.End();
+                }
+            }
+        }
+
+        [Fact(Skip = "Resolve invalidation warnings")]
+        public void SetAndResetEvent()
+        {
+            using (Event evt = Device.CreateEvent())
+            {
+                CommandBuffer.Begin();
+                CommandBuffer.CmdSetEvent(evt, PipelineStages.AllCommands);
+                CommandBuffer.CmdResetEvent(evt, PipelineStages.AllCommands);
+                CommandBuffer.End();
             }
         }
 
