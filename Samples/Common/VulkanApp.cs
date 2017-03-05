@@ -36,22 +36,38 @@ namespace VulkanCore.Samples
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
 
-        public virtual void Initialize()
+        public void Initialize()
         {
-            Window.Initialize(OnResized);
+            Window.Initialize(Rezize);
 
             CreateInstanceAndSurface();
             CreateDeviceAndGetQueues();
             CreateSwapchain();
             CreateSemaphoresAndCommandBuffers();
+
+            OnInitialized();
+
+            RecordCommandBuffers();
         }
 
-        protected virtual void OnResized()
+        protected virtual void OnInitialized()
+        {
+        }
+
+        private void Rezize()
         {
             Device.WaitIdle();
             Swapchain.Dispose();
             CreateSwapchain();
+
+            OnResized();
+
             CommandPool.Reset(); // Resets all the command buffers allocated from the pool.
+            RecordCommandBuffers();
+        }
+
+        protected virtual void OnResized()
+        {
         }
 
         public virtual void Run() => Window.Run(Tick);
@@ -63,7 +79,23 @@ namespace VulkanCore.Samples
         }
 
         protected virtual void Update(Timer timer) { }
-        protected virtual void Draw(Timer timer) { }
+
+        protected virtual void Draw(Timer timer)
+        {
+            // Acquire an index of drawing image for this frame.
+            int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
+
+            // Submit recorded commands to graphics queue for execution.
+            GraphicsQueue.Submit(
+                ImageAvailableSemaphore,
+                PipelineStages.ColorAttachmentOutput,
+                CommandBuffers[imageIndex],
+                RenderingFinishedSemaphore
+            );
+
+            // Present the color output to screen.
+            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
+        }
 
         public virtual void Dispose()
         {
@@ -197,5 +229,49 @@ namespace VulkanCore.Samples
             CommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(GraphicsQueue.FamilyIndex));
             CommandBuffers = CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
         }
+
+        private void RecordCommandBuffers()
+        {
+            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color);
+            for (int i = 0; i < CommandBuffers.Length; i++)
+            {
+                CommandBuffer cmdBuffer = CommandBuffers[i];
+                cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.SimultaneousUse));
+
+                if (PresentQueue != GraphicsQueue)
+                {
+                    var barrierFromPresentToDraw = new ImageMemoryBarrier(
+                        SwapchainImages[i], subresourceRange,
+                        Accesses.MemoryRead, Accesses.ColorAttachmentWrite,
+                        ImageLayout.Undefined, ImageLayout.PresentSrcKhr,
+                        PresentQueue.FamilyIndex, GraphicsQueue.FamilyIndex);
+
+                    cmdBuffer.CmdPipelineBarrier(
+                        PipelineStages.ColorAttachmentOutput,
+                        PipelineStages.ColorAttachmentOutput,
+                        imageMemoryBarriers: new[] { barrierFromPresentToDraw });
+                }
+
+                RecordCommandBuffer(cmdBuffer, i);
+
+                if (PresentQueue != GraphicsQueue)
+                {
+                    var barrierFromDrawToPresent = new ImageMemoryBarrier(
+                        SwapchainImages[i], subresourceRange,
+                        Accesses.ColorAttachmentWrite, Accesses.MemoryRead,
+                        ImageLayout.PresentSrcKhr, ImageLayout.PresentSrcKhr,
+                        GraphicsQueue.FamilyIndex, PresentQueue.FamilyIndex);
+
+                    cmdBuffer.CmdPipelineBarrier(
+                        PipelineStages.ColorAttachmentOutput,
+                        PipelineStages.BottomOfPipe,
+                        imageMemoryBarriers: new[] { barrierFromDrawToPresent });
+                }
+
+                cmdBuffer.End();
+            }
+        }
+        
+        protected abstract void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex);
     }
 }

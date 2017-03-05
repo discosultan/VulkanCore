@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using VulkanCore.Khr;
 
 namespace VulkanCore.Samples.Triangle
 {
@@ -16,40 +15,21 @@ namespace VulkanCore.Samples.Triangle
         {
         }
 
-        public override void Initialize()
+        protected override void OnInitialized()
         {
-            base.Initialize();
             CreateRenderPass();
             CreateFramebuffers();
             CreatePipelineLayout();
             CreateGraphicsPipeline();
-            RecordCommandBuffers();
         }
 
         protected override void OnResized()
         {
-            base.OnResized();
             _pipeline.Dispose();
             Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
             Array.ForEach(_imageViews, imageView => imageView.Dispose());
             CreateFramebuffers();
             CreateGraphicsPipeline();
-            RecordCommandBuffers();
-        }
-
-        protected override void Draw(Timer timer)
-        {
-            // Acquire drawing image.
-            int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
-
-            GraphicsQueue.Submit(
-                ImageAvailableSemaphore,
-                PipelineStages.ColorAttachmentOutput,
-                CommandBuffers[imageIndex],
-                RenderingFinishedSemaphore
-            );
-
-            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         public override void Dispose()
@@ -176,54 +156,17 @@ namespace VulkanCore.Samples.Triangle
             }
         }
 
-        private void RecordCommandBuffers()
+        protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
-            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color);
-            for (int i = 0; i < CommandBuffers.Length; i++)
-            {
-                CommandBuffer cmdBuffer = CommandBuffers[i];
-                cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.SimultaneousUse));
+            var renderPassBeginInfo = new RenderPassBeginInfo(
+                _framebuffers[imageIndex],
+                new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)),
+                new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)));
 
-                if (PresentQueue != GraphicsQueue)
-                {
-                    var barrierFromPresentToDraw = new ImageMemoryBarrier(
-                        SwapchainImages[i], subresourceRange,
-                        Accesses.MemoryRead, Accesses.ColorAttachmentWrite,
-                        ImageLayout.Undefined, ImageLayout.PresentSrcKhr,
-                        PresentQueue.FamilyIndex, GraphicsQueue.FamilyIndex);
-
-                    cmdBuffer.CmdPipelineBarrier(
-                        PipelineStages.ColorAttachmentOutput,
-                        PipelineStages.ColorAttachmentOutput,
-                        imageMemoryBarriers: new[] { barrierFromPresentToDraw });
-                }
-
-                var renderPassBeginInfo = new RenderPassBeginInfo(
-                    _framebuffers[i],
-                    new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)),
-                    new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)));
-
-                cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
-                cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
-                cmdBuffer.CmdDraw(3, 1);
-                cmdBuffer.CmdEndRenderPass();
-
-                if (PresentQueue != GraphicsQueue)
-                {
-                    var barrierFromDrawToPresent = new ImageMemoryBarrier(
-                        SwapchainImages[i], subresourceRange,
-                        Accesses.ColorAttachmentWrite, Accesses.MemoryRead,
-                        ImageLayout.PresentSrcKhr, ImageLayout.PresentSrcKhr,
-                        GraphicsQueue.FamilyIndex, PresentQueue.FamilyIndex);
-
-                    cmdBuffer.CmdPipelineBarrier(
-                        PipelineStages.ColorAttachmentOutput,
-                        PipelineStages.BottomOfPipe, 
-                        imageMemoryBarriers: new[] { barrierFromDrawToPresent });
-                }
-
-                cmdBuffer.End();
-            }
+            cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
+            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
+            cmdBuffer.CmdDraw(3);
+            cmdBuffer.CmdEndRenderPass();
         }
     }
 }

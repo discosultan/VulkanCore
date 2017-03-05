@@ -2175,6 +2175,10 @@ namespace VulkanCore
     public enum Accesses
     {
         /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
+        /// <summary>
         /// Read access to an indirect command structure read as part of an indirect drawing or
         /// dispatch command.
         /// </summary>

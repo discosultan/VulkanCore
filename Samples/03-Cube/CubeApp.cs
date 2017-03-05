@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using VulkanCore.Khr;
 
 namespace VulkanCore.Samples.Cube
 {
@@ -47,10 +46,8 @@ namespace VulkanCore.Samples.Cube
         {
         }
 
-        public override void Initialize()
+        protected override void OnInitialized()
         {
-            base.Initialize();
-
             _cube = new Cube(this);
             _cube.Initialize();
             CreateDepthStencil();
@@ -62,8 +59,55 @@ namespace VulkanCore.Samples.Cube
             CreateDescriptorSetAndPipelineLayouts();
             CreateDescriptorSet();
             CreateGraphicsPipeline();
-            RecordCommandBuffers();
             SetViewProjection();
+        }
+
+        protected override void OnResized()
+        {
+            _depthStencilView.Dispose();
+            _depthStencilMemory.Dispose();
+            _depthStencil.Dispose();
+            _pipeline.Dispose();
+            Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
+            Array.ForEach(_imageViews, imageView => imageView.Dispose());
+
+            CreateDepthStencil();
+            CreateFramebuffers();
+            CreateGraphicsPipeline();
+            SetViewProjection();
+        }
+
+        protected override void Update(Timer timer)
+        {
+            const float twoPi      = (float)Math.PI * 2.0f;
+            const float yawSpeed   = twoPi / 4.0f;
+            const float pitchSpeed = 0.0f;
+            const float rollSpeed  = twoPi / 4.0f;
+
+            _wvp.World = Matrix4x4.CreateFromYawPitchRoll(
+                timer.TotalTime * yawSpeed % twoPi,
+                timer.TotalTime * pitchSpeed % twoPi,
+                timer.TotalTime * rollSpeed % twoPi);
+
+            UpdateUniformBuffers();
+        }
+
+        public override void Dispose()
+        {
+            _uniformBufferMemory.Dispose();
+            _uniformBuffer.Dispose();
+            _descriptorPool.Dispose();
+            _descriptorSetLayout.Dispose();
+            _pipeline.Dispose();
+            _pipelineLayout.Dispose();
+            Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
+            Array.ForEach(_imageViews, imageView => imageView.Dispose());
+            _renderPass.Dispose();
+            _depthStencilView.Dispose();
+            _depthStencilMemory.Dispose();
+            _depthStencil.Dispose();
+            _cube.Dispose();
+            base.Dispose();
         }
 
         private void CreateSampler()
@@ -100,7 +144,7 @@ namespace VulkanCore.Samples.Cube
             int offset = 0;
             for (int i = 0; i < bufferCopyRegions.Length; i++)
             {
-                bufferCopyRegions = new[] 
+                bufferCopyRegions = new[]
                 {
                     new BufferImageCopy
                     {
@@ -142,7 +186,7 @@ namespace VulkanCore.Samples.Cube
                 {
                     new ImageMemoryBarrier(
                         _texture, subresourceRange,
-                        0, Accesses.TransferWrite, 
+                        0, Accesses.TransferWrite,
                         ImageLayout.Undefined, ImageLayout.TransferDstOptimal)
                 });
             cmdBuffer.CmdCopyBufferToImage(stagingBuffer, _texture, ImageLayout.TransferDstOptimal, bufferCopyRegions);
@@ -167,72 +211,6 @@ namespace VulkanCore.Samples.Cube
 
             // Create image view.
             _textureView = _texture.CreateView(new ImageViewCreateInfo(format, subresourceRange));
-        }
-
-        protected override void OnResized()
-        {
-            base.OnResized();
-
-            _depthStencilView.Dispose();
-            _depthStencilMemory.Dispose();
-            _depthStencil.Dispose();
-            _pipeline.Dispose();
-            Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
-            Array.ForEach(_imageViews, imageView => imageView.Dispose());
-
-            CreateDepthStencil();
-            CreateFramebuffers();
-            CreateGraphicsPipeline();
-            RecordCommandBuffers();
-            SetViewProjection();
-        }
-
-        public override void Dispose()
-        {
-            _uniformBufferMemory.Dispose();
-            _uniformBuffer.Dispose();
-            _descriptorPool.Dispose();
-            _descriptorSetLayout.Dispose();
-            _pipeline.Dispose();
-            _pipelineLayout.Dispose();
-            Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
-            Array.ForEach(_imageViews, imageView => imageView.Dispose());
-            _renderPass.Dispose();
-            _depthStencilView.Dispose();
-            _depthStencilMemory.Dispose();
-            _depthStencil.Dispose();
-            _cube.Dispose();
-            base.Dispose();
-        }
-
-        protected override void Update(Timer timer)
-        {
-            const float twoPi = (float)Math.PI * 2.0f;
-            const float yawSpeed   = 1.0f;
-            const float pitchSpeed = 0.0f;
-            const float rollSpeed  = 1.0f;
-
-            _wvp.World = Matrix4x4.CreateFromYawPitchRoll(
-                (timer.TotalTime * yawSpeed) % twoPi,
-                (timer.TotalTime * pitchSpeed) % twoPi,
-                (timer.TotalTime * rollSpeed) % twoPi);
-
-            UpdateUniformBuffers();
-        }
-
-        protected override void Draw(Timer timer)
-        {
-            // Acquire drawing image.
-            int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
-
-            GraphicsQueue.Submit(
-                ImageAvailableSemaphore,
-                PipelineStages.ColorAttachmentOutput,
-                CommandBuffers[imageIndex],
-                RenderingFinishedSemaphore
-            );
-
-            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         private void SetViewProjection()
@@ -518,58 +496,21 @@ namespace VulkanCore.Samples.Cube
             }
         }
 
-        private void RecordCommandBuffers()
+        protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
-            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color);
-            for (int i = 0; i < CommandBuffers.Length; i++)
-            {
-                CommandBuffer cmdBuffer = CommandBuffers[i];
-                cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.SimultaneousUse));
+            var renderPassBeginInfo = new RenderPassBeginInfo(
+                _framebuffers[imageIndex],
+                new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)),
+                new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
+                new ClearDepthStencilValue(1.0f, 0));
 
-                if (PresentQueue != GraphicsQueue)
-                {
-                    var barrierFromPresentToDraw = new ImageMemoryBarrier(
-                        SwapchainImages[i], subresourceRange,
-                        Accesses.MemoryRead, Accesses.ColorAttachmentWrite,
-                        ImageLayout.Undefined, ImageLayout.PresentSrcKhr,
-                        PresentQueue.FamilyIndex, GraphicsQueue.FamilyIndex);
-
-                    cmdBuffer.CmdPipelineBarrier(
-                        PipelineStages.ColorAttachmentOutput,
-                        PipelineStages.ColorAttachmentOutput,
-                        imageMemoryBarriers: new[] { barrierFromPresentToDraw });
-                }
-
-                var renderPassBeginInfo = new RenderPassBeginInfo(
-                    _framebuffers[i],
-                    new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)),
-                    new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
-                    new ClearDepthStencilValue(1.0f, 0));
-
-                cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
-                cmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, _pipelineLayout, _descriptorSet);
-                cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
-                cmdBuffer.CmdBindVertexBuffer(_cube.VertexBuffer);
-                cmdBuffer.CmdBindIndexBuffer(_cube.IndexBuffer);
-                cmdBuffer.CmdDrawIndexed(_cube.IndexCount, 1, 0, 0, 0);
-                cmdBuffer.CmdEndRenderPass();
-
-                if (PresentQueue != GraphicsQueue)
-                {
-                    var barrierFromDrawToPresent = new ImageMemoryBarrier(
-                        SwapchainImages[i], subresourceRange,
-                        Accesses.ColorAttachmentWrite, Accesses.MemoryRead,
-                        ImageLayout.PresentSrcKhr, ImageLayout.PresentSrcKhr,
-                        GraphicsQueue.FamilyIndex, PresentQueue.FamilyIndex);
-
-                    cmdBuffer.CmdPipelineBarrier(
-                        PipelineStages.ColorAttachmentOutput,
-                        PipelineStages.BottomOfPipe,
-                         imageMemoryBarriers: new[] { barrierFromDrawToPresent });
-                }
-
-                cmdBuffer.End();
-            }
+            cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
+            cmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, _pipelineLayout, _descriptorSet);
+            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
+            cmdBuffer.CmdBindVertexBuffer(_cube.VertexBuffer);
+            cmdBuffer.CmdBindIndexBuffer(_cube.IndexBuffer);
+            cmdBuffer.CmdDrawIndexed(_cube.IndexCount);
+            cmdBuffer.CmdEndRenderPass();
         }
     }
 }

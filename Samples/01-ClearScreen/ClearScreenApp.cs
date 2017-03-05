@@ -9,24 +9,38 @@ namespace VulkanCore.Samples.ClearScreen
         {
         }
 
-        public override void Initialize()
+        protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
-            base.Initialize();
-            RecordCommandBuffers();
-        }
+            var imageSubresourceRange = new ImageSubresourceRange(ImageAspects.Color);
 
-        protected override void OnResized()
-        {
-            base.OnResized();
-            // Command buffers are automatically reset on resize by parent class.
-            RecordCommandBuffers();
+            var barrierFromPresentToClear = new ImageMemoryBarrier(
+                SwapchainImages[imageIndex], imageSubresourceRange,
+                Accesses.None, Accesses.TransferWrite,
+                ImageLayout.Undefined, ImageLayout.TransferDstOptimal);
+            var barrierFromClearToPresent = new ImageMemoryBarrier(
+                SwapchainImages[imageIndex], imageSubresourceRange,
+                Accesses.TransferWrite, Accesses.MemoryRead,
+                ImageLayout.TransferDstOptimal, ImageLayout.PresentSrcKhr);
+
+            cmdBuffer.CmdPipelineBarrier(
+                PipelineStages.Transfer, PipelineStages.Transfer,
+                imageMemoryBarriers: new[] { barrierFromPresentToClear });
+            cmdBuffer.CmdClearColorImage(
+                SwapchainImages[imageIndex], 
+                ImageLayout.TransferDstOptimal,
+                new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
+                imageSubresourceRange);
+            cmdBuffer.CmdPipelineBarrier(
+                PipelineStages.Transfer, PipelineStages.Transfer,
+                imageMemoryBarriers: new[] { barrierFromClearToPresent });
         }
 
         protected override void Draw(Timer timer)
         {
-            // Acquire drawing image.
+            // Acquire an index of drawing image for this frame.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
+            // Submit recorded commands to graphics queue for execution.
             GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.Transfer,
@@ -34,41 +48,8 @@ namespace VulkanCore.Samples.ClearScreen
                 RenderingFinishedSemaphore
             );
 
+            // Present the color output to screen.
             PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
-        }
-
-        private void RecordCommandBuffers()
-        {
-            var imageSubresourceRange = new ImageSubresourceRange(ImageAspects.Color);
-            for (int i = 0; i < SwapchainImages.Length; i++)
-            {
-                var barrierFromPresentToClear = new ImageMemoryBarrier(
-                    SwapchainImages[i], imageSubresourceRange,
-                    Accesses.MemoryRead, Accesses.TransferWrite,
-                    ImageLayout.Undefined, ImageLayout.TransferDstOptimal);
-
-                var barrierFromClearToPresent = new ImageMemoryBarrier(
-                    SwapchainImages[i], imageSubresourceRange,
-                    Accesses.TransferWrite, Accesses.MemoryRead,
-                    ImageLayout.TransferDstOptimal, ImageLayout.PresentSrcKhr);
-                
-                CommandBuffer cmdBuffer = CommandBuffers[i];
-                cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.SimultaneousUse));
-
-                cmdBuffer.CmdPipelineBarrier(
-                    PipelineStages.Transfer, PipelineStages.Transfer,
-                    imageMemoryBarriers: new[] { barrierFromPresentToClear });
-                cmdBuffer.CmdClearColorImage(
-                    SwapchainImages[i], 
-                    ImageLayout.TransferDstOptimal,
-                    new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
-                    imageSubresourceRange);
-                cmdBuffer.CmdPipelineBarrier(
-                    PipelineStages.Transfer, PipelineStages.BottomOfPipe,
-                    imageMemoryBarriers: new[] { barrierFromClearToPresent });
-
-                cmdBuffer.End();
-            }
         }
     }
 }
