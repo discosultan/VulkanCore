@@ -217,7 +217,7 @@ namespace VulkanCore.Tests
             }
         }
 
-        [Fact(Skip = "Resolve invalidation warnings")]
+        [Fact]
         public void SetAndResetEvent()
         {
             using (Event evt = Device.CreateEvent())
@@ -225,6 +225,18 @@ namespace VulkanCore.Tests
                 CommandBuffer.Begin();
                 CommandBuffer.CmdSetEvent(evt, PipelineStages.AllCommands);
                 CommandBuffer.CmdResetEvent(evt, PipelineStages.AllCommands);
+                CommandBuffer.End();
+            }
+        }
+
+        [Fact]
+        public void WaitEvents()
+        {
+            using (Event evt = Device.CreateEvent())
+            {
+                CommandBuffer.Begin();
+                CommandBuffer.CmdWaitEvent(evt, PipelineStages.AllCommands, PipelineStages.AllCommands);
+                CommandBuffer.CmdWaitEvents(new[] { evt }, PipelineStages.AllCommands, PipelineStages.AllCommands);
                 CommandBuffer.End();
             }
         }

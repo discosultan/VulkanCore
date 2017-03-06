@@ -802,19 +802,56 @@ namespace VulkanCore
         /// <param name="memoryBarriers">An array of <see cref="MemoryBarrier"/> structures.</param>
         /// <param name="bufferMemoryBarriers">An array of <see cref="BufferMemoryBarrier"/> structures.</param>
         /// <param name="imageMemoryBarriers">An array of <see cref="ImageMemoryBarrier"/> structures.</param>
-        public void CmdWaitEvents(long[] events, PipelineStages srcStageMask, PipelineStages dstStageMask,
-            MemoryBarrier[] memoryBarriers, 
-            BufferMemoryBarrier[] bufferMemoryBarriers,
-            ImageMemoryBarrier[] imageMemoryBarriers)
+        public void CmdWaitEvents(Event[] events, PipelineStages srcStageMask, PipelineStages dstStageMask,
+            MemoryBarrier[] memoryBarriers = null,
+            BufferMemoryBarrier[] bufferMemoryBarriers = null,
+            ImageMemoryBarrier[] imageMemoryBarriers = null)
         {
             PrepareBarriers(memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
-            fixed (long* eventsPtr = events)
+
+            int eventCount = events?.Length ?? 0;
+            long* eventsHandles = stackalloc long[eventCount];
+            for (int i = 0; i < eventCount; i++)
+                eventsHandles[i] = events[i];
+
             fixed (MemoryBarrier* memoryBarriersPtr = memoryBarriers)
             fixed (BufferMemoryBarrier* bufferMemoryBarriersPtr = bufferMemoryBarriers)
             fixed (ImageMemoryBarrier* imageMemoryBarriersPtr = imageMemoryBarriers)
             {
-                vkCmdWaitEvents(this, events?.Length ?? 0, eventsPtr, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0, 
+                vkCmdWaitEvents(this, eventCount, eventsHandles, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0, 
                     memoryBarriersPtr, bufferMemoryBarriers?.Length ?? 0, bufferMemoryBarriersPtr, 
+                    imageMemoryBarriers?.Length ?? 0, imageMemoryBarriersPtr);
+            }
+        }
+
+        /// <summary>
+        /// Wait for an event and insert a set of memory.
+        /// <para>
+        /// When <see cref="CmdWaitEvent"/> is submitted to a queue, it defines a memory dependency
+        /// between prior event signal operations, and subsequent commands.
+        /// </para>
+        /// </summary>
+        /// <param name="event">Event object handle to wait on.</param>
+        /// <param name="srcStageMask">The source stage mask.</param>
+        /// <param name="dstStageMask">The destination stage mask.</param>
+        /// <param name="memoryBarriers">An array of <see cref="MemoryBarrier"/> structures.</param>
+        /// <param name="bufferMemoryBarriers">An array of <see cref="BufferMemoryBarrier"/> structures.</param>
+        /// <param name="imageMemoryBarriers">An array of <see cref="ImageMemoryBarrier"/> structures.</param>
+        public void CmdWaitEvent(Event @event, PipelineStages srcStageMask, PipelineStages dstStageMask,
+            MemoryBarrier[] memoryBarriers = null,
+            BufferMemoryBarrier[] bufferMemoryBarriers = null,
+            ImageMemoryBarrier[] imageMemoryBarriers = null)
+        {
+            PrepareBarriers(memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
+
+            long eventHandle = @event;
+
+            fixed (MemoryBarrier* memoryBarriersPtr = memoryBarriers)
+            fixed (BufferMemoryBarrier* bufferMemoryBarriersPtr = bufferMemoryBarriers)
+            fixed (ImageMemoryBarrier* imageMemoryBarriersPtr = imageMemoryBarriers)
+            {
+                vkCmdWaitEvents(this, 1, &eventHandle, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0,
+                    memoryBarriersPtr, bufferMemoryBarriers?.Length ?? 0, bufferMemoryBarriersPtr,
                     imageMemoryBarriers?.Length ?? 0, imageMemoryBarriersPtr);
             }
         }
@@ -838,6 +875,7 @@ namespace VulkanCore
             ImageMemoryBarrier[] imageMemoryBarriers = null)
         {
             PrepareBarriers(memoryBarriers, bufferMemoryBarriers, imageMemoryBarriers);
+
             fixed (MemoryBarrier* memoryBarriersPtr = memoryBarriers)
             fixed (BufferMemoryBarrier* bufferMemoryBarriersPtr = bufferMemoryBarriers)
             fixed (ImageMemoryBarrier* imageMemoryBarriersPtr = imageMemoryBarriers)
@@ -1217,10 +1255,12 @@ namespace VulkanCore
             long dstImage, ImageLayout dstImageLayout, int regionCount, ImageBlit* regions, Filter filter);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdCopyBufferToImage(IntPtr commandBuffer, long srcBuffer, long dstImage, ImageLayout dstImageLayout, int regionCount, BufferImageCopy* regions);
+        private static extern void vkCmdCopyBufferToImage(IntPtr commandBuffer, long srcBuffer,
+            long dstImage, ImageLayout dstImageLayout, int regionCount, BufferImageCopy* regions);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdCopyImageToBuffer(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstBuffer, int regionCount, BufferImageCopy* regions);
+        private static extern void vkCmdCopyImageToBuffer(IntPtr commandBuffer, long srcImage,
+            ImageLayout srcImageLayout, long dstBuffer, int regionCount, BufferImageCopy* regions);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
         private static extern void vkCmdUpdateBuffer(IntPtr commandBuffer, long dstBuffer, long dstOffset, long dataSize, IntPtr Data);
@@ -1241,13 +1281,14 @@ namespace VulkanCore
             ClearAttachment* attachments, int rectCount, ClearRect* rects);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdResolveImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstImage, ImageLayout dstImageLayout, int regionCount, ImageResolve* regions);
+        private static extern void vkCmdResolveImage(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout,
+            long dstImage, ImageLayout dstImageLayout, int regionCount, ImageResolve* regions);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
         private static extern void vkCmdSetEvent(IntPtr commandBuffer, long @event, PipelineStages stageMask);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdResetEvent(IntPtr commandBuffer, Event @event, PipelineStages stageMask);
+        private static extern void vkCmdResetEvent(IntPtr commandBuffer, long @event, PipelineStages stageMask);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
         private static extern void vkCmdWaitEvents(IntPtr commandBuffer, int eventCount, long* events,
