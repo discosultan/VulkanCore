@@ -20,7 +20,7 @@ namespace VulkanCore.Tests
             });
             using (Device device = PhysicalDevice.CreateDevice(deviceCreateInfo))
             {
-                Queue queue = device.GetQueue(queueFamilyIndex);
+                Queue queue = device.GetQueue(queueFamilyIndex, queueIndex);
 
                 Assert.Equal(device, queue.Parent);
                 Assert.Equal(queueFamilyIndex, queue.FamilyIndex);
