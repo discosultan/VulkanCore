@@ -23,4 +23,9 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.3.0" />
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="VulkanCore.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

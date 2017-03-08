@@ -9,6 +9,7 @@ namespace VulkanCore
     /// </summary>
     public static class Constant
     {
+        // The dll is forwarded to 'vulkan.so' on Linux based systems running under Mono.
         internal const string VulkanDll = "vulkan-1.dll";
         internal const CallingConvention CallConv = CallingConvention.Winapi;
 
