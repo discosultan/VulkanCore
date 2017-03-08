@@ -26,22 +26,22 @@ Cons:
 
 The latest version of [Visual Studio 2017 RC](https://www.visualstudio.com/vs/visual-studio-2017-rc/) is required to successfully compile the solution. [Rider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/) and [MonoDevelop](http://www.monodevelop.com/) will also work once .NET Standard 2.0 will RTM.
 
-## Samples
+## Samples <img height="24" src="Doc/Windows64.png">
 
 Vulkan-capable graphics hardware and drivers are required to run the samples. Currently only Win32 platform is supported but Ubuntu and Android are planned.
 
 ## [01-ClearScreen](Samples/01-ClearScreen)
-<img src="./Doc/ClearScreen.jpg" height="96px" align="right">
+<img src="Doc/ClearScreen.jpg" alt="ClearScreen" height="96px" align="right">
 Sets up a window and clears it to a solid color.
 <br><br>
 
 ## [02-Triangle](Samples/02-Triangle)
-<img src="./Doc/Triangle.jpg" height="96px" align="right">
+<img src="Doc/Triangle.jpg" alt="ColoredTriangle" height="96px" align="right">
 Renders a colored triangle defined in a shader.
 <br><br>
 
 ## [03-Cube](Samples/03-Cube)
-<img src="./Doc/Cube.jpg" height="96px" align="right">
+<img src="Doc/Cube.jpg" alt="TexturedCube" height="96px" align="right">
 Renders a textured cube.
 <br><br>
 
