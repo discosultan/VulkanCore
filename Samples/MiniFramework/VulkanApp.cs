@@ -113,6 +113,19 @@ namespace VulkanCore.Samples
         private void CreateInstanceAndSurface()
         {
             // Specify standard validation layers.
+            string surfaceExtension;
+            switch (Window.Platform)
+            {
+                case Platform.Android:
+                    surfaceExtension = Constant.InstanceExtension.KhrAndroidSurface;
+                    break;
+                case Platform.Win32:
+                    surfaceExtension = Constant.InstanceExtension.KhrWin32Surface;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
             Instance = new Instance(new InstanceCreateInfo(
 #if DEBUG
                 enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
@@ -120,7 +133,7 @@ namespace VulkanCore.Samples
                 enabledExtensionNames: new[] 
                 {
                     Constant.InstanceExtension.KhrSurface,
-                    Constant.InstanceExtension.KhrWin32Surface,
+                    surfaceExtension,
 #if DEBUG
                     Constant.InstanceExtension.ExtDebugReport
 #endif
@@ -133,7 +146,7 @@ namespace VulkanCore.Samples
                 DebugReportFlagsExt.All,
                 args =>
                 {
-                    Trace.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
+                    Debug.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
                     return args.Flags.HasFlag(DebugReportFlagsExt.Error);
                 }
             );
@@ -141,8 +154,17 @@ namespace VulkanCore.Samples
 #endif
 
             // Create surface.
-            Surface = Instance.CreateWin32SurfaceKhr( // TODO: x-plat
-                new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
+            switch (Window.Platform)
+            {
+                case Platform.Android:
+                    Surface = Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Window.Handle));
+                    break;
+                case Platform.Win32:
+                    Surface = Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         private void CreateDeviceAndGetQueues()
@@ -160,7 +182,7 @@ namespace VulkanCore.Samples
                         if (graphicsQueueFamilyIndex == -1) graphicsQueueFamilyIndex = i;
 
                         if (physicalDevice.GetSurfaceSupportKhr(i, Surface) &&
-                            physicalDevice.GetWin32PresentationSupportKhr(i)) // TODO: x-plat
+                            GetPresentationSupport(physicalDevice, i))
                         {
                             presentQueueFamilyIndex = i;
                             PhysicalDevice = physicalDevice;
@@ -172,7 +194,7 @@ namespace VulkanCore.Samples
             }
 
             if (PhysicalDevice == null)
-                throw new ApplicationException("No suitable physical device found.");
+                throw new InvalidOperationException("No suitable physical device found.");
 
             // Store memory properties of the physical device.
             PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
@@ -194,6 +216,19 @@ namespace VulkanCore.Samples
             PresentQueue = presentQueueFamilyIndex == graphicsQueueFamilyIndex 
                 ? GraphicsQueue 
                 : Device.GetQueue(presentQueueFamilyIndex);
+
+            bool GetPresentationSupport(PhysicalDevice physicalDevice, int i)
+            {
+                switch (Window.Platform)
+                {
+                    case Platform.Android:
+                        return true;
+                    case Platform.Win32:
+                        return physicalDevice.GetWin32PresentationSupportKhr(i);
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
         }
 
         private void CreateSwapchain()
@@ -269,7 +304,7 @@ namespace VulkanCore.Samples
                 }
 
                 cmdBuffer.End();
-            }
+            } 
         }
         
         protected abstract void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex);
