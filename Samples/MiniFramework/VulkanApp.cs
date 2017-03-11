@@ -40,7 +40,13 @@ namespace VulkanCore.Samples
         {
             Window.Initialize(Rezize);
 
-            CreateInstanceAndSurface();
+#if DEBUG
+            bool debug = true;
+#else
+            bool debug = false;
+#endif
+
+            CreateInstanceAndSurface(debug);
             CreateDeviceAndGetQueues();
             CreateSwapchain();
             CreateSemaphoresAndCommandBuffers();
@@ -110,7 +116,7 @@ namespace VulkanCore.Samples
             Instance.Dispose();
         }
 
-        private void CreateInstanceAndSurface()
+        private void CreateInstanceAndSurface(bool debug)
         {
             // Specify standard validation layers.
             string surfaceExtension;
@@ -126,32 +132,43 @@ namespace VulkanCore.Samples
                     throw new NotImplementedException();
             }
 
-            Instance = new Instance(new InstanceCreateInfo(
-#if DEBUG
-                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
-#endif
-                enabledExtensionNames: new[] 
+            var layers = Instance.EnumerateLayerProperties();
+
+            var createInfo = new InstanceCreateInfo();
+            if (debug)
+            {
+                createInfo.EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation };
+                createInfo.EnabledExtensionNames = new[]
                 {
                     Constant.InstanceExtension.KhrSurface,
                     surfaceExtension,
-#if DEBUG
                     Constant.InstanceExtension.ExtDebugReport
-#endif
-                }
-            ));
-
-#if DEBUG
-            // Attach debug callback.
-            var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
-                DebugReportFlagsExt.All,
-                args =>
+                };
+            }
+            else
+            {
+                createInfo.EnabledExtensionNames = new[]
                 {
-                    Debug.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
-                    return args.Flags.HasFlag(DebugReportFlagsExt.Error);
-                }
-            );
-            _debugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
-#endif
+                    Constant.InstanceExtension.KhrSurface,
+                    surfaceExtension,
+                };
+            }
+
+            Instance = new Instance(createInfo);
+
+            // Attach debug callback.
+            if (debug)
+            {
+                var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
+                    DebugReportFlagsExt.All,
+                    args =>
+                    {
+                        Debug.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
+                        return args.Flags.HasFlag(DebugReportFlagsExt.Error);
+                    }
+                );
+                _debugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
+            }
 
             // Create surface.
             switch (Window.Platform)
