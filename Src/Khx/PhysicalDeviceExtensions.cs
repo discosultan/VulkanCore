@@ -8,22 +8,6 @@ namespace VulkanCore.Khx
     // TODO: doc
     public static unsafe class PhysicalDeviceExtensions
     {
-        public static PhysicalDeviceProperties2Khx GetProperties2Khx(this PhysicalDevice physicalDevice)
-        {
-            PhysicalDeviceProperties2Khx.Native nativeProperties;
-            vkGetPhysicalDeviceProperties2KHX(physicalDevice, &nativeProperties);
-            PhysicalDeviceProperties2Khx.FromNative(ref nativeProperties, out var properties);
-            return properties;
-        }
-
-        public static ImageFormatProperties2Khx GetImageFormatProperties2Khx(this PhysicalDevice physicalDevice,
-            PhysicalDeviceImageFormatInfo2Khx info)
-        {
-            ImageFormatProperties2Khx properties;
-            vkGetPhysicalDeviceImageFormatProperties2KHX(physicalDevice, &info, &properties);
-            return properties;
-        }
-
         public static ExternalBufferPropertiesKhx GetExternalBufferPropertiesKhx(this PhysicalDevice physicalDevice,
             PhysicalDeviceExternalBufferInfoKhx info)
         {
@@ -69,14 +53,6 @@ namespace VulkanCore.Khx
         }
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceProperties2KHX(IntPtr physicalDevice, 
-            PhysicalDeviceProperties2Khx.Native* properties);
-
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceImageFormatProperties2KHX(IntPtr physicalDevice, 
-            PhysicalDeviceImageFormatInfo2Khx* imageFormatInfo, ImageFormatProperties2Khx* imageFormatProperties);
-
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
         private static extern void vkGetPhysicalDeviceExternalBufferPropertiesKHX(IntPtr physicalDevice, 
             PhysicalDeviceExternalBufferInfoKhx* externalBufferInfo, ExternalBufferPropertiesKhx* externalBufferProperties);
 
@@ -86,57 +62,6 @@ namespace VulkanCore.Khx
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
         private static extern Result vkGetPhysicalDevicePresentRectanglesKHX(IntPtr physicalDevice, long surface, int* rectCount, Rect2D* rects);
-    }
-
-    public struct PhysicalDeviceProperties2Khx
-    {
-        /// <summary>
-        /// Pointer to next structure.
-        /// </summary>
-        public IntPtr Next;
-        public PhysicalDeviceProperties Properties;
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct Native
-        {
-            public StructureType Type;
-            public IntPtr Next;
-            public PhysicalDeviceProperties.Native Properties;
-        }
-
-        internal static void FromNative(ref Native native, out PhysicalDeviceProperties2Khx managed)
-        {
-            managed.Next = native.Next;
-            PhysicalDeviceProperties.FromNative(ref native.Properties, out managed.Properties);
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct PhysicalDeviceImageFormatInfo2Khx
-    {
-        internal StructureType StructureType;
-
-        /// <summary>
-        /// Pointer to next structure.
-        /// </summary>
-        public IntPtr Next;
-        public Format Format;
-        public ImageType Type;
-        public ImageTiling Tiling;
-        public ImageUsages Usage;
-        public ImageCreateFlags Flags;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ImageFormatProperties2Khx
-    {
-        internal StructureType Type;
-
-        /// <summary>
-        /// Pointer to next structure.
-        /// </summary>
-        public IntPtr Next;
-        public ImageFormatProperties ImageFormatProperties;
     }
 
     /// <summary>
@@ -328,22 +253,22 @@ namespace VulkanCore.Khx
         /// An array of size <see cref="UuidSize"/>, containing 8-bit values that represent a
         /// universally unique identifier for the device.
         /// </summary>
-        public fixed byte DeviceUUID[16];
+        public fixed byte DeviceUuid[UuidSize];
         /// <summary>
         /// An array of size <see cref="UuidSize"/>, containing 8-bit values that represent a
         /// universally unique identifier for the driver build in use by the device.
         /// </summary>
-        public fixed byte DriverUUID[16];
+        public fixed byte DriverUuid[UuidSize];
         /// <summary>
         /// A array of size <see cref="LuidSizeKhx"/>, containing 8-bit values that represent a
         /// locally unique identifier for the device.
         /// </summary>
-        public fixed byte DeviceLUID[8];
+        public fixed byte DeviceLuid[LuidSizeKhx];
         /// <summary>
-        /// A boolean value that will be <c>true</c> if <see cref="DeviceLUID"/> contains a valid
+        /// A boolean value that will be <c>true</c> if <see cref="DeviceLuid"/> contains a valid
         /// LUID, and <c>false</c> if it does not.
         /// </summary>
-        public Bool DeviceLUIDValid;
+        public Bool DeviceLuidValid;
     }
 
     /// <summary>

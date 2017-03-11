@@ -145,10 +145,12 @@
         DeviceEventInfoExt = 1000091001,
         DisplayEventInfoExt = 1000091002,
         SwapchainCounterCreateInfoExt = 1000091003,
+        PresentTimesInfoGoogle = 1000092000,
         PhysicalDeviceMultiviewPerViewAttributesPropertiesNvx = 1000097000,
         PipelineViewportSwizzleStateCreateInfoNV = 1000098000,
         PhysicalDeviceDiscardRectanglePropertiesExt = 1000099000,
         PipelineDiscardRectangleStateCreateInfoExt = 1000099001,
+        HdrMetadataExt = 1000105000,
         IOSSurfaceCreateInfoMvk = 1000122000,
         MacOSSurfaceCreateInfoMvk = 1000123000
     }

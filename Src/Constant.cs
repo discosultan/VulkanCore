@@ -353,19 +353,28 @@ namespace VulkanCore
             public const string ExtSwapchainColorspace = "VK_EXT_swapchain_colorspace";
             /// <summary>
             /// This extension defines two new structures and a function to assign SMPTE (the Society
-            /// of Motion Picture and Television Engineers) 2086 metadata to a swapchain. This is the
-            /// Vulkan equivalent to the "EGL_EXT_surface_SMPTE2086_metadata" extension. The SMPTE 2086
-            /// metadata includes the color primaries, white point, and luminance range of the
-            /// mastering display, which all together define the color volume that contains all the
-            /// possible colors the mastering display can produce. The mastering display is the
-            /// display where creative work is done and creative intent is established. To preserve
-            /// such creative intent as much as possible and achieve consistent color reproduction on
-            /// different viewing displays, it is useful for the display pipeline to know the color
-            /// volume of the original mastering display where content was created or tuned. This
-            /// avoids performing unnecessary mapping of colors that are not displayable on the
-            /// original mastering display.
+            /// of Motion Picture and Television Engineers) 2086 metadata and CTA (Consumer
+            /// Technology Assocation) 861.3 metadata to a swapchain. The metadata includes the color
+            /// primaries, white point, and luminance range of the mastering display, which all
+            /// together define the color volume that contains all the possible colors the mastering
+            /// display can produce. The mastering display is the display where creative work is done
+            /// and creative intent is established. To preserve such creative intent as much as
+            /// possible and achieve consistent color reproduction on different viewing displays, it
+            /// is useful for the display pipeline to know the color volume of the original mastering
+            /// display where content was created or tuned. This avoids performing unnecessary
+            /// mapping of colors that are not displayable on the original mastering display. The
+            /// metadata also includes the <see cref="Ext.HdrMetadataExt.MaxContentLightLevel"/> and
+            /// <see cref="Ext.HdrMetadataExt.MaxFrameAverageLightLevel"/> as defined by CTA 861.3.
             /// </summary>
-            public const string ExtSmpte2086Metadata = "VK_EXT_SMPTE2086_metadata";
+            public const string ExtHdrMetadata = "VK_EXT_hdr_metadata";
+            /// <summary>
+            /// This device extension allows an application that uses the "VK_KHR_swapchain"
+            /// extension to obtain information about the presentation engine's display, to obtain
+            /// timing information about each present, and to schedule a present to happen no earlier
+            /// than a desired time. An application can use this to minimize various visual anomalies
+            /// (e.g. stuttering).
+            /// </summary>
+            public const string GoogleDisplayTiming = "VK_GOOGLE_display_timing";
             /// <summary>
             /// This extension has the same goal as the OpenGL ES "GL_OVR_multiview" extension - it
             /// enables rendering to multiple "views" by recording a single set of commands to be
