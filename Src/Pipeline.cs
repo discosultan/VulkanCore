@@ -1320,10 +1320,30 @@ namespace VulkanCore
     [Flags]
     public enum ColorComponents
     {
+        /// <summary>
+        /// If set, then the R value is written to color attachment for the appropriate sample,
+        /// otherwise the value in memory is unmodified.
+        /// </summary>
         R = 1 << 0,
+        /// <summary>
+        /// If set, then the G value is written to color attachment for the appropriate sample,
+        /// otherwise the value in memory is unmodified.
+        /// </summary>
         G = 1 << 1,
+        /// <summary>
+        /// If set, then the B value is written to color attachment for the appropriate sample,
+        /// otherwise the value in memory is unmodified.
+        /// </summary>
         B = 1 << 2,
+        /// <summary>
+        /// If set, then the A value is written to color attachment for the appropriate sample,
+        /// otherwise the value in memory is unmodified.
+        /// </summary>
         A = 1 << 3,
+        /// <summary>
+        /// If set, all the values are written to color attachment for the appropriate sample,
+        /// otherwise the value in memory is unmodified.
+        /// </summary>
         All = R | G | B | A
     }
 

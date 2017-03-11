@@ -152,12 +152,15 @@ namespace VulkanCore.Ext
     public enum SurfaceCountersExt
     {
         /// <summary>
-        /// A counter incrementing once every time a vblank period occurs on the display
-        /// associated with the surface.
+        /// A counter incrementing once every time a vblank period occurs on the display associated
+        /// with the surface.
         /// </summary>
         VBlank = 1 << 0
     }
 
+    /// <summary>
+    /// Structure describing discard rectangle limits that can be supported by an implementation.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceDiscardRectanglePropertiesExt
     {

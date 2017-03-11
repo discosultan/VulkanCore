@@ -53,7 +53,7 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Reset a command buffer.
+        /// Reset a command buffer to the initial state.
         /// </summary>
         /// <param name="flags">
         /// A bitmask controlling the reset operation.

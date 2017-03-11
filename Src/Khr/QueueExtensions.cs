@@ -154,4 +154,59 @@ namespace VulkanCore.Khr
             native.Results = results;
         }
     }
+
+    /// <summary>
+    /// Structure describing parameters of a queue presentation to a swapchain.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DisplayPresentInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A rectangular region of pixels to present.
+        /// <para>It must be a subset of the image being presented.</para>
+        /// <para>
+        /// If <see cref="DisplayPresentInfoKhr"/> is not specified, this region will be assumed to
+        /// be the entire presentable image.
+        /// </para>
+        /// </summary>
+        public Rect2D SrcRect;
+        /// <summary>
+        /// A rectangular region within the visible region of the swapchain's display mode.
+        /// <para>
+        /// If <see cref="DisplayPresentInfoKhr"/> is not specified, this region will be assumed to
+        /// be the entire visible region of the visible region of the swapchain's mode.
+        /// </para>
+        /// <para>
+        /// If the specified rectangle is a subset of the display mode's visible region, content from
+        /// display planes below the swapchain's plane will be visible outside the rectangle.
+        /// </para>
+        /// <para>
+        /// If there are no planes below the swapchain's, the area outside the specified rectangle
+        /// will be black.
+        /// </para>
+        /// <para>
+        /// If portions of the specified rectangle are outside of the display's visible region,
+        /// pixels mapping only to those portions of the rectangle will be discarded.
+        /// </para>
+        /// </summary>
+        public Rect2D DstRect;
+        /// <summary>
+        /// If this is <c>true</c>, the display engine will enable buffered mode on displays that
+        /// support it. This allows the display engine to stop sending content to the display until a
+        /// new image is presented. The display will instead maintain a copy of the last presented
+        /// image. This allows less power to be used, but may increase presentation latency.
+        /// <para>
+        /// If <see cref="DisplayPresentInfoKhr"/> is not specified, persistent mode will not be used.
+        /// </para>
+        /// </summary>
+        public Bool Persistent;
+    }
 }

@@ -137,19 +137,24 @@ namespace VulkanCore.Ext
         }
 
         /// <summary>
-        /// Function to set SMPTE2086 metadata.
+        /// Function to set HDR metadata.
         /// </summary>
         /// <param name="device">The logical device where the swapchain(s) were created.</param>
         /// <param name="swapchains">The array of <see cref="SwapchainKhr"/> handles.</param>
-        /// <param name="metadata">The array of <see cref="Smpte2086MetadataExt"/> structures.</param>
-        public static void SetSmpte2086MetadataExt(this Device device, SwapchainKhr[] swapchains, Smpte2086MetadataExt[] metadata)
+        /// <param name="metadata">The array of <see cref="HdrMetadataExt"/> structures.</param>
+        public static void SetHdrMetadataExt(this Device device, SwapchainKhr[] swapchains, HdrMetadataExt[] metadata)
         {
-            int count = swapchains?.Length ?? 0;
-            var swapchainPtrs = stackalloc long[count];
-            for (int i = 0; i < count; i++)
+            int swapchainCount = swapchains?.Length ?? 0;
+            var swapchainPtrs = stackalloc long[swapchainCount];
+            for (int i = 0; i < swapchainCount; i++)
                 swapchainPtrs[i] = swapchains[i];
-            fixed (Smpte2086MetadataExt* metadataPtr = metadata)
-                vkSetSMPTE2086MetadataEXT(device, count, swapchainPtrs, metadataPtr);
+
+            int metadataCount = metadata?.Length ?? 0;
+            for (int i = 0; i < metadataCount; i++)
+                metadata[i].Prepare();
+
+            fixed (HdrMetadataExt* metadataPtr = metadata)
+                vkSetHdrMetadataEXT(device, swapchainCount, swapchainPtrs, metadataPtr);
         }
 
         private delegate Result DebugMarkerSetObjectNameExtDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
@@ -168,8 +173,8 @@ namespace VulkanCore.Ext
             DisplayEventInfoExt* displayEventInfo, AllocationCallbacks.Native* allocator, long* fence);
 
         [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkSetSMPTE2086MetadataEXT(IntPtr device, 
-            int swapchainCount, long* swapchains, Smpte2086MetadataExt* metadata);
+        private static extern void vkSetHdrMetadataEXT(IntPtr device, 
+            int swapchainCount, long* swapchains, HdrMetadataExt* metadata);
     }
 
     /// <summary>
@@ -428,11 +433,17 @@ namespace VulkanCore.Ext
     }
 
     /// <summary>
-    /// Structure to specify SMPTE2086 metadata.
+    /// Structure to specify HDR metadata.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Smpte2086MetadataExt
+    public struct HdrMetadataExt
     {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
         /// <summary>
         /// The mastering display's red primary in chromaticity coordinates.
         /// </summary>
@@ -457,6 +468,19 @@ namespace VulkanCore.Ext
         /// The minimum luminance of the mastering display in nits.
         /// </summary>
         public float MinLuminance;
+        /// <summary>
+        /// Content's maximum luminance in nits.
+        /// </summary>
+        public float MaxContentLightLevel;
+        /// <summary>
+        /// The maximum frame average light level in nits.
+        /// </summary>
+        public float MaxFrameAverageLightLevel;
+
+        internal void Prepare()
+        {
+            Type = StructureType.HdrMetadataExt;
+        }
     }
 
     /// <summary>
