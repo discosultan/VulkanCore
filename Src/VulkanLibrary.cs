@@ -12,7 +12,7 @@ namespace VulkanCore
         {
             string name = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? "vulkan-1.dll"
-                : "vulkan.so";
+                : "libvulkan.so.1";
             _handle = LoadLibrary(name);
         }
 
