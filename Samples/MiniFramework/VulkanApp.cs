@@ -40,7 +40,13 @@ namespace VulkanCore.Samples
         {
             Window.Initialize(Rezize);
 
-            CreateInstanceAndSurface();
+#if DEBUG
+            bool debug = true;
+#else
+            bool debug = false;
+#endif
+
+            CreateInstanceAndSurface(debug);
             CreateDeviceAndGetQueues();
             CreateSwapchain();
             CreateSemaphoresAndCommandBuffers();
@@ -110,39 +116,72 @@ namespace VulkanCore.Samples
             Instance.Dispose();
         }
 
-        private void CreateInstanceAndSurface()
+        private void CreateInstanceAndSurface(bool debug)
         {
             // Specify standard validation layers.
-            Instance = new Instance(new InstanceCreateInfo(
-#if DEBUG
-                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
-#endif
-                enabledExtensionNames: new[] 
+            string surfaceExtension;
+            switch (Window.Platform)
+            {
+                case Platform.Android:
+                    surfaceExtension = Constant.InstanceExtension.KhrAndroidSurface;
+                    break;
+                case Platform.Win32:
+                    surfaceExtension = Constant.InstanceExtension.KhrWin32Surface;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            var layers = Instance.EnumerateLayerProperties();
+
+            var createInfo = new InstanceCreateInfo();
+            if (debug)
+            {
+                createInfo.EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation };
+                createInfo.EnabledExtensionNames = new[]
                 {
                     Constant.InstanceExtension.KhrSurface,
-                    Constant.InstanceExtension.KhrWin32Surface,
-#if DEBUG
+                    surfaceExtension,
                     Constant.InstanceExtension.ExtDebugReport
-#endif
-                }
-            ));
-
-#if DEBUG
-            // Attach debug callback.
-            var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
-                DebugReportFlagsExt.All,
-                args =>
+                };
+            }
+            else
+            {
+                createInfo.EnabledExtensionNames = new[]
                 {
-                    Trace.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
-                    return args.Flags.HasFlag(DebugReportFlagsExt.Error);
-                }
-            );
-            _debugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
-#endif
+                    Constant.InstanceExtension.KhrSurface,
+                    surfaceExtension,
+                };
+            }
+
+            Instance = new Instance(createInfo);
+
+            // Attach debug callback.
+            if (debug)
+            {
+                var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
+                    DebugReportFlagsExt.All,
+                    args =>
+                    {
+                        Debug.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
+                        return args.Flags.HasFlag(DebugReportFlagsExt.Error);
+                    }
+                );
+                _debugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
+            }
 
             // Create surface.
-            Surface = Instance.CreateWin32SurfaceKhr( // TODO: x-plat
-                new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
+            switch (Window.Platform)
+            {
+                case Platform.Android:
+                    Surface = Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Window.Handle));
+                    break;
+                case Platform.Win32:
+                    Surface = Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         private void CreateDeviceAndGetQueues()
@@ -160,7 +199,7 @@ namespace VulkanCore.Samples
                         if (graphicsQueueFamilyIndex == -1) graphicsQueueFamilyIndex = i;
 
                         if (physicalDevice.GetSurfaceSupportKhr(i, Surface) &&
-                            physicalDevice.GetWin32PresentationSupportKhr(i)) // TODO: x-plat
+                            GetPresentationSupport(physicalDevice, i))
                         {
                             presentQueueFamilyIndex = i;
                             PhysicalDevice = physicalDevice;
@@ -172,7 +211,7 @@ namespace VulkanCore.Samples
             }
 
             if (PhysicalDevice == null)
-                throw new ApplicationException("No suitable physical device found.");
+                throw new InvalidOperationException("No suitable physical device found.");
 
             // Store memory properties of the physical device.
             PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
@@ -194,6 +233,19 @@ namespace VulkanCore.Samples
             PresentQueue = presentQueueFamilyIndex == graphicsQueueFamilyIndex 
                 ? GraphicsQueue 
                 : Device.GetQueue(presentQueueFamilyIndex);
+
+            bool GetPresentationSupport(PhysicalDevice physicalDevice, int i)
+            {
+                switch (Window.Platform)
+                {
+                    case Platform.Android:
+                        return true;
+                    case Platform.Win32:
+                        return physicalDevice.GetWin32PresentationSupportKhr(i);
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
         }
 
         private void CreateSwapchain()
@@ -269,7 +321,7 @@ namespace VulkanCore.Samples
                 }
 
                 cmdBuffer.End();
-            }
+            } 
         }
         
         protected abstract void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex);

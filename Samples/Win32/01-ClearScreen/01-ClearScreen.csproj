@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9E71727D-E08B-4C81-B185-7738A845C0CC}</ProjectGuid>
+    <ProjectGuid>{48EBB243-DCD5-4D2C-B19E-1C4574A78DCE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>VulkanCore.Samples.ClearScreen</RootNamespace>
     <AssemblyName>ClearScreen</AssemblyName>
@@ -34,9 +34,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClearScreenApp.cs" />
+    <Compile Include="..\..\Shared\01-ClearScreen\ClearScreenApp.cs">
+      <Link>ClearScreenApp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shared\Win32Window.cs">
+      <Link>Win32Window.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -63,13 +70,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\VulkanCore.csproj">
+    <ProjectReference Include="..\..\..\Src\VulkanCore.csproj">
       <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
       <Name>VulkanCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{64c3b246-f0f9-46b0-b382-e0e27d1aeffd}</Project>
-      <Name>Common</Name>
+    <ProjectReference Include="..\..\MiniFramework\MiniFramework.csproj">
+      <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
+      <Name>MiniFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

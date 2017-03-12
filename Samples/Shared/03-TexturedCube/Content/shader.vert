@@ -21,5 +21,4 @@ out gl_PerVertex
 void main() {
     out_TexCoord = in_TexCoord;
     gl_Position = Projection * View * World * vec4(in_Position.xyz, 1.0);
-    //gl_Position.y = -gl_Position.y;
 }

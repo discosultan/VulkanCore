@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{64C3B246-F0F9-46B0-B382-E0E27D1AEFFD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VulkanCore.Samples</RootNamespace>
-    <AssemblyName>Common</AssemblyName>
+    <ProjectGuid>{7519173C-D98E-4DDB-9F8A-D1051616C61E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>VulkanCore.Samples.ColoredTriangle</RootNamespace>
+    <AssemblyName>ColoredTriangle</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -20,8 +21,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,23 +32,49 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IWindow.cs" />
+    <Compile Include="..\..\Shared\02-ColoredTriangle\TriangleApp.cs">
+      <Link>TriangleApp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shared\Win32Window.cs">
+      <Link>Win32Window.cs</Link>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Timer.cs" />
-    <Compile Include="VulkanApp.cs" />
-    <Compile Include="Win32Window.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\VulkanCore.csproj">
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.frag">
+      <Link>Content\shader.frag</Link>
+    </None>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.frag.spv">
+      <Link>Content\shader.frag.spv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.vert">
+      <Link>Content\shader.vert</Link>
+    </None>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.vert.spv">
+      <Link>Content\shader.vert.spv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Src\VulkanCore.csproj">
       <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
       <Name>VulkanCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MiniFramework\MiniFramework.csproj">
+      <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
+      <Name>MiniFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

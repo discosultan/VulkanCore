@@ -28,6 +28,7 @@ namespace VulkanCore.Samples
         public IntPtr Handle => _form.Handle;
         public int Width { get; private set; } = 1280;
         public int Height { get; private set; } = 720;
+        public Platform Platform => Platform.Win32;
 
         public void Initialize(Action onResized)
         {
