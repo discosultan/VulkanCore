@@ -5,11 +5,14 @@ namespace VulkanCore
 {
     internal class VulkanLibrary
     {
-        private static readonly VulkanLibrary _finalizer = new VulkanLibrary();
+        private static VulkanLibrary _finalizer;
         private static IntPtr _handle;
 
-        private VulkanLibrary()
+        private VulkanLibrary() { }
+
+        static VulkanLibrary()
         {
+            _finalizer = new VulkanLibrary();
             string name = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? "vulkan-1.dll"
                 : "libvulkan.so.1";

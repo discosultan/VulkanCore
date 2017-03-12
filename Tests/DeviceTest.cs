@@ -198,7 +198,7 @@ namespace VulkanCore.Tests
         [Fact]
         public void CreateShaderModule()
         {
-            var createInfo = new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.vert.spv"));
+            var createInfo = new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Shaders", "shader.vert.spv")));
             using (Device.CreateShaderModule(createInfo)) { }
             using (Device.CreateShaderModule(createInfo, CustomAllocator)) { }
         }
@@ -223,9 +223,9 @@ namespace VulkanCore.Tests
             using (PipelineCache cache = Device.CreatePipelineCache())
             using (RenderPass renderPass = Device.CreateRenderPass(createInfo))
             using (ShaderModule vertexShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.vert.spv"))))
+                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Shaders", "shader.vert.spv")))))
             using (ShaderModule fragmentShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.frag.spv"))))
+                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Shaders", "shader.frag.spv")))))
             {
                 var shaderStageCreateInfos = new[]
                 {
@@ -307,7 +307,7 @@ namespace VulkanCore.Tests
                 new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
             using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
-            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.comp.spv"))))
+            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Shaders", "shader.comp.spv")))))
             using (PipelineCache cache = Device.CreatePipelineCache())
             {
                 var pipelineCreateInfo = new ComputePipelineCreateInfo(

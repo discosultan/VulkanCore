@@ -202,7 +202,7 @@ namespace VulkanCore.Tests
                 new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
             using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
-            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes("Shaders\\shader.comp.spv"))))
+            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Shaders", "shader.comp.spv")))))
             {
                 var pipelineCreateInfo = new ComputePipelineCreateInfo(
                     new PipelineShaderStageCreateInfo(ShaderStages.Compute, shader, "main"),
