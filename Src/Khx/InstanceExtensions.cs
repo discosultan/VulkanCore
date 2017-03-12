@@ -3,18 +3,18 @@ using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khx
 {
-    // TODO: doc
+    /// <summary>
+    /// Provides experimental Khronos specific extension methods for the <see cref="Instance"/> class.
+    /// </summary>
     public static unsafe class InstanceExtensions
     {
         /// <summary>
         /// Enumerates groups of physical devices that can be used to create a single logical device.
         /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="handleType"></param>
-        /// <returns></returns>
+        /// <param name="instance">A handle to a previously created Vulkan instance.</param>
+        /// <returns>An array of <see cref="PhysicalDeviceGroupPropertiesKhx"/> structures.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static PhysicalDeviceGroupPropertiesKhx[] EnumeratePhysicalDeviceGroupsKhx(this Instance instance,
-            ExternalSemaphoreHandleTypesKhx handleType)
+        public static PhysicalDeviceGroupPropertiesKhx[] EnumeratePhysicalDeviceGroupsKhx(this Instance instance)
         {
             int count;
             Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
@@ -37,7 +37,7 @@ namespace VulkanCore.Khx
             return groupProperties;
         }
 
-        // TODO: Validate array usage.
+        // TODO: Remove array usage.
         private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native[] physicalDeviceGroupProperties);
         private static readonly vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
     }

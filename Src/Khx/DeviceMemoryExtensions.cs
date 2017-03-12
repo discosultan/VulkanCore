@@ -4,15 +4,17 @@ using VulkanCore.Khr;
 
 namespace VulkanCore.Khx
 {
-    // TODO: doc
+    /// <summary>
+    /// Provides experimental Khronos specific extension methods for the <see cref="DeviceMemory"/> class.
+    /// </summary>
     public static unsafe class DeviceMemoryExtensions
     {
         /// <summary>
         /// Get a Windows HANDLE for a memory object.
         /// </summary>
-        /// <param name="memory"></param>
-        /// <param name="handleType"></param>
-        /// <returns></returns>
+        /// <param name="memory">The memory object from which the handle will be exported.</param>
+        /// <param name="handleType">The type of handle requested.</param>
+        /// <returns>The Windows handle representing the underlying resources of the device memory object.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static IntPtr GetWin32HandleKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
         {
@@ -25,9 +27,9 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Get a POSIX file descriptor for a memory object.
         /// </summary>
-        /// <param name="memory"></param>
-        /// <param name="handleType"></param>
-        /// <returns></returns>
+        /// <param name="memory">The memory object from which the handle will be exported.</param>
+        /// <param name="handleType">The type of handle requested.</param>
+        /// <returns>A file descriptor representing the underlying resources of the device memory object.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static int GetFdKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
         {
@@ -44,7 +46,7 @@ namespace VulkanCore.Khx
         private static readonly vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX = VulkanLibrary.GetProc<vkGetMemoryFdKHXDelegate>(nameof(vkGetMemoryFdKHX));
     }
 
-
+    // TODO: doc
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryAllocateFlagsInfoKhx
     {

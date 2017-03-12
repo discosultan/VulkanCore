@@ -3,15 +3,16 @@ using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khx
 {
-    // TODO: doc
+    /// <summary>
+    /// Provides experimental Khronos specific extension methods for the <see cref="CommandBuffer"/> class.
+    /// </summary>
     public static class CommandBufferExtensions
     {
         /// <summary>
         /// Modify device mask of a command buffer.
         /// </summary>
-        /// <param name="commandBuffer"></param>
-        /// <param name="deviceMask"></param>
-        /// <returns></returns>
+        /// <param name="commandBuffer">Command buffer whose current device mask is modified.</param>
+        /// <param name="deviceMask">The new value of the current device mask.</param>
         public static void CmdSetDeviceMaskKhx(this CommandBuffer commandBuffer, int deviceMask)
         {
             vkCmdSetDeviceMaskKHX(commandBuffer.Handle, deviceMask);
@@ -20,13 +21,13 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Dispatch compute work items.
         /// </summary>
-        /// <param name="commandBuffer"></param>
-        /// <param name="baseGroupX"></param>
-        /// <param name="baseGroupY"></param>
-        /// <param name="baseGroupZ"></param>
-        /// <param name="groupCountX"></param>
-        /// <param name="groupCountY"></param>
-        /// <param name="groupCountZ"></param>
+        /// <param name="commandBuffer">The command buffer into which the command will be recorded.</param>
+        /// <param name="baseGroupX">The start value for the X component of <c>WorkgroupId</c>.</param>
+        /// <param name="baseGroupY">The start value for the Y component of <c>WorkgroupId</c>.</param>
+        /// <param name="baseGroupZ">The start value for the Z component of <c>WorkgroupId</c>.</param>
+        /// <param name="groupCountX">The number of local workgroups to dispatch in the X dimension.</param>
+        /// <param name="groupCountY">The number of local workgroups to dispatch in the Y dimension.</param>
+        /// <param name="groupCountZ">The number of local workgroups to dispatch in the Z dimension.</param>
         public static void CmdDispatchBaseKhx(this CommandBuffer commandBuffer,
             int baseGroupX, int baseGroupY, int baseGroupZ,
             int groupCountX, int groupCountY, int groupCountZ)
@@ -135,7 +136,13 @@ namespace VulkanCore.Khx
     [StructLayout(LayoutKind.Sequential)]
     public struct Win32KeyedMutexAcquireReleaseInfoKhx
     {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
         public StructureType Type;
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
         public IntPtr Next;
         /// <summary>
         /// the number of entries in the <see cref="AcquireSyncs"/>, <see cref="AcquireKeys"/>, and

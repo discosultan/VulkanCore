@@ -4,7 +4,6 @@ using VulkanCore.Khr;
 
 namespace VulkanCore.Mvk
 {
-    // TODO: doc
     /// <summary>
     /// Provides Brenwill Workshop specific extension methods for the <see cref="Instance"/> class.
     /// </summary>
@@ -13,10 +12,16 @@ namespace VulkanCore.Mvk
         /// <summary>
         /// Create a <see cref="SurfaceKhr"/> object for an iOS UIView.
         /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="createInfo"></param>
-        /// <param name="allocator"></param>
-        /// <returns></returns>
+        /// <param name="instance">The instance with which to associate the surface.</param>
+        /// <param name="createInfo">
+        /// Structure containing parameters affecting the creation of the surface object.
+        /// </param>
+        /// <param name="allocator">
+        /// The allocator used for host memory allocated for the surface object when there is no more
+        /// specific allocator available
+        /// </param>
+        /// <returns>The created surface object.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static SurfaceKhr CreateIOSSurfaceMvk(this Instance instance,
             IOSSurfaceCreateInfoMvk createInfo, AllocationCallbacks? allocator = null)
         {
@@ -40,10 +45,16 @@ namespace VulkanCore.Mvk
         /// <summary>
         /// Create a <see cref="SurfaceKhr"/> object for a macOS NSView.
         /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="createInfo"></param>
-        /// <param name="allocator"></param>
-        /// <returns></returns>
+        /// <param name="instance">The instance with which to associate the surface.</param>
+        /// <param name="createInfo">
+        /// Structure containing parameters affecting the creation of the surface object.
+        /// </param>
+        /// <param name="allocator">
+        /// The allocator used for host memory allocated for the surface object when there is no more
+        /// specific allocator available.
+        /// </param>
+        /// <returns>The created surface object.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static SurfaceKhr CreateMacOSSurfaceMvk(this Instance instance,
             MacOSSurfaceCreateInfoMvk createInfo, AllocationCallbacks? allocator = null)
         {

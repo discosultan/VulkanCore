@@ -547,28 +547,26 @@ namespace VulkanCore
         /// <summary>
         /// Are the maximum image dimensions.
         /// </summary>
-        public Extent3D MaxExtent; // TODO: doc
+        public Extent3D MaxExtent;
         /// <summary>
-        /// Is the maximum number of mipmap levels. Must either be equal to 1 (valid only if tiling
-        /// is <see cref="ImageTiling.Linear"/>) or be equal to [eq]#{lceil}log~2~(max(pname:width,
-        /// height, depth)){rceil} {plus} 1#. [eq]#pname:width#, [eq]#height#, and
-        /// [eq]#pname:depth# are taken from the corresponding members of <see cref="MaxExtent"/>.
+        /// The maximum number of mipmap levels. Must either be equal to 1 (valid only if tiling is
+        /// <see cref="ImageTiling.Linear"/>) or be equal to `ceil(log2(max(width, height, depth))) +
+        /// 1`. Width, height, and depth are taken from the corresponding members of <see cref="MaxExtent"/>.
         /// </summary>
         public int MaxMipLevels;
         /// <summary>
-        /// Is the maximum number of array layers. maxArrayLayers must either be equal to 1 or be
-        /// greater than or equal to the maxImageArrayLayers member of <see
-        /// cref="PhysicalDeviceLimits"/>. A value of 1 is valid only if tiling is <see
-        /// cref="ImageTiling.Linear"/> or if type is <see cref="ImageType.Image3D"/>.
+        /// The maximum number of array layers. Must either be equal to 1 or be greater than or equal
+        /// to the <see cref="PhysicalDeviceLimits.MaxImageArrayLayers"/> member. A value of 1 is
+        /// valid only if tiling is <see cref="ImageTiling.Linear"/> or if type is <see cref="ImageType.Image3D"/>.
         /// </summary>
         public int MaxArrayLayers;
         /// <summary>
-        /// Is a bitmask of <see cref="VulkanCore.SampleCounts"/> specifying all the supported sample counts
-        /// for this image as described ", below".
+        /// A bitmask of <see cref="VulkanCore.SampleCounts"/> specifying all the supported sample
+        /// counts for this image.
         /// </summary>
         public SampleCounts SampleCounts;
         /// <summary>
-        /// Is an upper bound on the total image size in bytes, inclusive of all image subresources.
+        /// An upper bound on the total image size in bytes, inclusive of all image subresources.
         /// Implementations may have an address space limit on total size of a resource, which is
         /// advertised by this property. Must be at least 2^31.
         /// </summary>

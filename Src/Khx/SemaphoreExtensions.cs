@@ -2,15 +2,17 @@
 
 namespace VulkanCore.Khx
 {
-    // TODO: doc
+    /// <summary>
+    /// Provides experimental Khronos specific extension methods for the <see cref="Semaphore"/> class.
+    /// </summary>
     public static unsafe class SemaphoreExtensions
     {
         /// <summary>
         /// Get a Windows HANDLE for a semaphore.
         /// </summary>
-        /// <param name="semaphore"></param>
-        /// <param name="handleType"></param>
-        /// <returns></returns>
+        /// <param name="semaphore">The semaphore from which state will be exported.</param>
+        /// <param name="handleType">The type of handle requested.</param>
+        /// <returns>The Windows handle representing the semaphore state.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static IntPtr GetWin32HandleKhx(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhx handleType)
         {
@@ -23,9 +25,9 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Get a POSIX file descriptor handle for a semaphore.
         /// </summary>
-        /// <param name="semaphore"></param>
-        /// <param name="handleType"></param>
-        /// <returns></returns>
+        /// <param name="semaphore">The semaphore from which state will be exported.</param>
+        /// <param name="handleType">The type of handle requested.</param>
+        /// <returns>The file descriptor representing the semaphore state.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static int GetFdKhx(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhx handleType)
         {

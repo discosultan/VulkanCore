@@ -5,9 +5,12 @@ using static VulkanCore.Constant;
 
 namespace VulkanCore.Khx
 {
-    // TODO: doc
+    /// <summary>
+    /// Provides experimental Khronos specific extension methods for the <see cref="PhysicalDevice"/> class.
+    /// </summary>
     public static unsafe class PhysicalDeviceExtensions
     {
+        // TODO: doc
         public static ExternalBufferPropertiesKhx GetExternalBufferPropertiesKhx(this PhysicalDevice physicalDevice,
             PhysicalDeviceExternalBufferInfoKhx info)
         {
@@ -18,24 +21,39 @@ namespace VulkanCore.Khx
 
         /// <summary>
         /// Function for querying external semaphore handle capabilities.
+        /// <para>Semaphores may support import and export of external semaphore handles.</para>
         /// </summary>
-        /// <param name="physicalDevice"></param>
-        /// <param name="info"></param>
-        /// <returns></returns>
+        /// <param name="physicalDevice">
+        /// The physical device from which to query the semaphore capabilities.
+        /// </param>
+        /// <param name="externalSemaphoreInfo">
+        /// Describes the parameters that would be consumed by <see cref="Device.CreateSemaphore"/>.
+        /// </param>
+        /// <returns>Structure in which capabilities are returned.</returns>
         public static ExternalSemaphorePropertiesKhx GetExternalSemaphorePropertiesKhx(this PhysicalDevice physicalDevice,
-            PhysicalDeviceExternalSemaphoreInfoKhx info)
+            PhysicalDeviceExternalSemaphoreInfoKhx externalSemaphoreInfo)
         {
             ExternalSemaphorePropertiesKhx properties;
-            vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice, &info, &properties);
+            vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice, &externalSemaphoreInfo, &properties);
             return properties;
         }
 
         /// <summary>
         /// Query present rectangles for a surface on a physical device.
+        /// <para>
+        /// When using <see
+        /// cref="DeviceGroupPresentModesKhx.DeviceGroupPresentModeLocalMultiDeviceKhx"/>, the
+        /// application may need to know which regions of the surface are used when presenting
+        /// locally on each physical device.
+        /// </para>
+        /// <para>
+        /// Presentation of swapchain images to this surface need only have valid contents in the
+        /// regions returned by this command.
+        /// </para>
         /// </summary>
-        /// <param name="physicalDevice"></param>
-        /// <param name="surface"></param>
-        /// <returns></returns>
+        /// <param name="physicalDevice">The physical device.</param>
+        /// <param name="surface">The surface.</param>
+        /// <returns>An array of <see cref="Rect2D"/> structures.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static Rect2D[] GetPresentRectanglesKhx(this PhysicalDevice physicalDevice, SurfaceKhr surface)
         {

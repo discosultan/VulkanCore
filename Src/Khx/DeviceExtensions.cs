@@ -4,16 +4,22 @@ using VulkanCore.Khr;
 
 namespace VulkanCore.Khx
 {
-    // TODO: doc
+    /// <summary>
+    /// Provides experimental Khronos specific extension methods for the <see cref="Device"/> class.
+    /// </summary>
     public static unsafe class DeviceExtensions
     {
         /// <summary>
         /// Get properties of external memory Win32 handles.
+        /// <para>
+        /// Windows memory handles compatible with Vulkan may also be created by non-Vulkan APIs
+        /// using methods beyond the scope of this specification.
+        /// </para>
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="handleType"></param>
-        /// <param name="handle"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device that will be importing <paramref name="handle"/>.</param>
+        /// <param name="handleType">The type of the handle <paramref name="handle"/>.</param>
+        /// <param name="handle">the handle which will be imported.</param>
+        /// <returns>Properties of <paramref name="handle"/>.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static MemoryWin32HandlePropertiesKhx GetMemoryWin32HandlePropertiesKhx(this Device device,
             ExternalMemoryHandleTypesKhx handleType, IntPtr handle)
@@ -26,11 +32,15 @@ namespace VulkanCore.Khx
 
         /// <summary>
         /// Get properties of external memory file descriptors.
+        /// <para>
+        /// POSIX file descriptor memory handles compatible with Vulkan may also be created by
+        /// non-Vulkan APIs using methods beyond the scope of this specification.
+        /// </para>
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="handleType"></param>
-        /// <param name="fd"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device that will be importing <paramref name="fd"/>.</param>
+        /// <param name="handleType">The type of the handle <paramref name="fd"/>.</param>
+        /// <param name="fd">The handle which will be imported.</param>
+        /// <returns>Properties of the handle <paramref name="fd"/>.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static MemoryFdPropertiesKhx GetMemoryFdPropertiesKhx(this Device device,
             ExternalMemoryHandleTypesKhx handleType, int fd)
@@ -44,8 +54,8 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Import a semaphore from a Windows HANDLE.
         /// </summary>
-        /// <param name="device"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device that created the semaphore.</param>
+        /// <returns>Structure specifying the semaphore and import parameters.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static ImportSemaphoreWin32HandleInfoKhx ImportSemaphoreWin32HandleKhx(this Device device)
         {
@@ -60,8 +70,8 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Import a semaphore from a POSIX file descriptor.
         /// </summary>
-        /// <param name="device"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device that created the semaphore.</param>
+        /// <returns>Structure specifying the semaphore and import parameters.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static ImportSemaphoreFdInfoKhx ImportSemaphoreFdKhx(this Device device)
         {
@@ -75,12 +85,24 @@ namespace VulkanCore.Khx
 
         /// <summary>
         /// Query supported peer memory features of a device.
+        /// <para>
+        /// Peer memory is memory that is allocated for a given physical device and then bound to a
+        /// resource and accessed by a different physical device, in a logical device that represents
+        /// multiple physical devices.
+        /// </para>
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="heapIndex"></param>
-        /// <param name="localDeviceIndex"></param>
-        /// <param name="remoteDeviceIndex"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device that owns the memory.</param>
+        /// <param name="heapIndex">The index of the memory heap from which the memory is allocated.</param>
+        /// <param name="localDeviceIndex">
+        /// The device index of the physical device that performs the memory access.
+        /// </param>
+        /// <param name="remoteDeviceIndex">
+        /// The device index of the physical device that the memory is allocated for.
+        /// </param>
+        /// <returns>
+        /// A bitmask indicating which types of memory accesses are supported for the combination of
+        /// heap, local, and remote devices.
+        /// </returns>
         public static PeerMemoryFeaturesKhx GetDeviceGroupPeerMemoryFeaturesKhx(this Device device,
             int heapIndex, int localDeviceIndex, int remoteDeviceIndex)
         {
@@ -92,8 +114,8 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Bind device memory to buffer objects.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="bindInfos"></param>
+        /// <param name="device">The logical device that owns the buffers and memory.</param>
+        /// <param name="bindInfos">Structures describing buffers and memory to bind.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void BindBufferMemory2Khx(this Device device, params BindBufferMemoryInfoKhx[] bindInfos)
         {
@@ -110,8 +132,8 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Bind device memory to image objects.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="bindInfos"></param>
+        /// <param name="device">The logical device that owns the images and memory.</param>
+        /// <param name="bindInfos">Structures describing images and memory to bind.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void BindImageMemory2Khx(this Device device, params BindImageMemoryInfoKhx[] bindInfos)
         {
@@ -127,9 +149,13 @@ namespace VulkanCore.Khx
 
         /// <summary>
         /// Query present capabilities from other physical devices.
+        /// <para>
+        /// A logical device that represents multiple physical devices may support presenting from
+        /// images on more than one physical device, or combining images from multiple physical devices.
+        /// </para>
         /// </summary>
-        /// <param name="device"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device.</param>
+        /// <returns>Structure that is filled with the logical device's capabilities.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static DeviceGroupPresentCapabilitiesKhx GetGroupPresentCapabilitiesKhx(this Device device)
         {
@@ -141,10 +167,13 @@ namespace VulkanCore.Khx
 
         /// <summary>
         /// Query present capabilities for a surface.
+        /// <para>Some surfaces may not be capable of using all the device group present modes.</para>
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="surface"></param>
-        /// <returns></returns>
+        /// <param name="device">The logical device.</param>
+        /// <param name="surface">The surface.</param>
+        /// <returns>
+        /// A value that is filled with the supported device group present modes for the surface.
+        /// </returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static DeviceGroupPresentModesKhx GetGroupSurfacePresentModesKhx(this Device device, SurfaceKhr surface)
         {
@@ -157,9 +186,9 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Retrieve the index of the next available presentable image.
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="acquireInfo"></param>
-        /// <returns></returns>
+        /// <param name="device">The device associated with <see cref="AcquireNextImageInfoKhx.Swapchain"/>.</param>
+        /// <param name="acquireInfo">Structure containing parameters of the acquire.</param>
+        /// <returns>The index of the next image to use.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static int AcquireNextImage2Khx(this Device device, AcquireNextImageInfoKhx acquireInfo)
         {
