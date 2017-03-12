@@ -94,6 +94,12 @@ namespace VulkanCore.Samples.Cube
 
         public override void Dispose()
         {
+            Device.WaitIdle();
+
+            _textureView.Dispose();
+            _textureMemory.Dispose();
+            _texture.Dispose();
+            _sampler.Dispose();
             _uniformBufferMemory.Dispose();
             _uniformBuffer.Dispose();
             _descriptorPool.Dispose();
@@ -206,6 +212,7 @@ namespace VulkanCore.Samples.Cube
             fence.Wait();
 
             // Cleanup staging resources.
+            fence.Dispose();
             stagingMemory.Dispose();
             stagingBuffer.Dispose();
 
@@ -415,30 +422,19 @@ namespace VulkanCore.Samples.Cube
                     new PipelineShaderStageCreateInfo(ShaderStages.Fragment, fragmentShader, "main")
                 };
 
-                var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo
-                {
-                    VertexBindingDescriptions = new[]
-                    {
-                        new VertexInputBindingDescription(0, Interop.SizeOf<Vertex>(), VertexInputRate.Vertex)
-                    },
-                    VertexAttributeDescriptions = new[]
+                var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo(
+                    new[] { new VertexInputBindingDescription(0, Interop.SizeOf<Vertex>(), VertexInputRate.Vertex) },
+                    new[]
                     {
                         new VertexInputAttributeDescription(0, 0, Format.R32G32B32SFloat, 0),  // Position.
                         new VertexInputAttributeDescription(1, 0, Format.R32G32B32SFloat, 12), // Normal.
                         new VertexInputAttributeDescription(2, 0, Format.R32G32SFloat, 24)     // TexCoord.
                     }
-                };
-                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo
-                {
-                    Topology = PrimitiveTopology.TriangleList
-                };
-                var viewport = new Viewport(0, 0, Window.Width, Window.Height);
-                var scissor = new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height));
-                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo
-                {
-                    Viewports = new[] { viewport },
-                    Scissors = new[] { scissor }
-                };
+                );
+                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
+                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
+                    new Viewport(0, 0, Window.Width, Window.Height),
+                    new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)));
                 var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
                 {
                     PolygonMode = PolygonMode.Fill,

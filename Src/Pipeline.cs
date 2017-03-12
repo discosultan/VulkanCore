@@ -725,6 +725,23 @@ namespace VulkanCore
         /// The byte size of the specialization constant value within the supplied data buffer.
         /// </summary>
         public int Size;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpecializationMapEntry"/> structure.
+        /// </summary>
+        /// <param name="constantId">The id of the specialization constant in SPIR-V.</param>
+        /// <param name="offset">
+        /// The byte offset of the specialization constant value within the supplied data buffer.
+        /// </param>
+        /// <param name="size">
+        /// The byte size of the specialization constant value within the supplied data buffer.
+        /// </param>
+        public SpecializationMapEntry(int constantId, int offset, int size)
+        {
+            ConstantId = constantId;
+            Offset = offset;
+            Size = size;
+        }
     }
 
     /// <summary>
@@ -740,6 +757,23 @@ namespace VulkanCore
         /// An array of <see cref="VertexInputAttributeDescription"/> structures.
         /// </summary>
         public VertexInputAttributeDescription[] VertexAttributeDescriptions;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineVertexInputStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="vertexBindingDescriptions">
+        /// An array of <see cref="VertexInputBindingDescription"/> structures.
+        /// </param>
+        /// <param name="vertexAttributeDescriptions">
+        /// An array of <see cref="VertexInputAttributeDescription"/> structures.
+        /// </param>
+        public PipelineVertexInputStateCreateInfo(
+            VertexInputBindingDescription[] vertexBindingDescriptions,
+            VertexInputAttributeDescription[] vertexAttributeDescriptions)
+        {
+            VertexBindingDescriptions = vertexBindingDescriptions;
+            VertexAttributeDescriptions = vertexAttributeDescriptions;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
@@ -900,6 +934,29 @@ namespace VulkanCore
         /// </summary>
         public Bool PrimitiveRestartEnable;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineInputAssemblyStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="topology">Defines the primitive topology.</param>
+        /// <param name="primitiveRestartEnable">
+        /// Controls whether a special vertex index value is treated as restarting the assembly of
+        /// primitives. This enable only applies to indexed draws ( <see
+        /// cref="CommandBuffer.CmdDrawIndexed"/> and <see
+        /// cref="CommandBuffer.CmdDrawIndexedIndirect"/>), and the special index value is either
+        /// 0xFFFFFFFF when the index type parameter of <see
+        /// cref="CommandBuffer.CmdBindIndexBuffer"/> is equal to <see cref="IndexType.UInt32"/>, or
+        /// 0xFFFF when index type is equal to <see cref="IndexType.UInt16"/>. Primitive restart is
+        /// not allowed for "list" topologies.
+        /// </param>
+        public PipelineInputAssemblyStateCreateInfo(PrimitiveTopology topology, bool primitiveRestartEnable = false)
+        {
+            Type = StructureType.PipelineInputAssemblyStateCreateInfo;
+            Next = IntPtr.Zero;
+            Flags = 0;
+            Topology = topology;
+            PrimitiveRestartEnable = primitiveRestartEnable;
+        }
+
         internal void Prepare()
         {
             Type = StructureType.PipelineInputAssemblyStateCreateInfo;
@@ -987,6 +1044,39 @@ namespace VulkanCore
         /// scissor for the corresponding viewport. If the scissor state is dynamic, this member is ignored.
         /// </summary>
         public Rect2D[] Scissors;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineViewportStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="viewports">
+        /// An array of <see cref="Viewport"/> structures, defining the viewport transforms. If the
+        /// viewport state is dynamic, this member is ignored.
+        /// </param>
+        /// <param name="scissors">
+        /// An array of <see cref="Rect2D"/> structures which define the rectangular bounds of the
+        /// scissor for the corresponding viewport. If the scissor state is dynamic, this member is ignored.
+        /// </param>
+        public PipelineViewportStateCreateInfo(Viewport[] viewports, Rect2D[] scissors)
+        {
+            Viewports = viewports;
+            Scissors = scissors;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineViewportStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="viewport">
+        /// Defines the viewport transforms. If the viewport state is dynamic, this member is ignored.
+        /// </param>
+        /// <param name="scissor">
+        /// Defines the rectangular bounds of the scissor for the viewport. If the scissor state is
+        /// dynamic, this member is ignored.
+        /// </param>
+        public PipelineViewportStateCreateInfo(Viewport viewport, Rect2D scissor)
+        {
+            Viewports = new[] { viewport };
+            Scissors = new[] { scissor };
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
@@ -1097,7 +1187,7 @@ namespace VulkanCore
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
-        internal PipelineRasterizationStateCreateFlags Flags;        
+        internal PipelineRasterizationStateCreateFlags Flags;
         /// <summary>
         /// Controls whether to clamp the fragment's depth values instead of clipping primitives to
         /// the z planes of the frustum.
@@ -1249,7 +1339,7 @@ namespace VulkanCore
                 sampleMask = (int*)Interop.Alloc(sampleMaskCount * sizeof(int));
                 for (int i = 0; i < sampleMaskCount || i < SampleMask.Length; i++)
                     sampleMask[i] = SampleMask[i];
-            }            
+            }
 
             native->Type = StructureType.PipelineMultisampleStateCreateInfo;
             native->Next = IntPtr.Zero;
@@ -1259,7 +1349,7 @@ namespace VulkanCore
             native->MinSampleShading = MinSampleShading;
             native->SampleMask = sampleMask;
             native->AlphaToCoverageEnable = AlphaToCoverageEnable;
-            native->AlphaToOneEnable = AlphaToOneEnable;            
+            native->AlphaToOneEnable = AlphaToOneEnable;
         }
     }
 

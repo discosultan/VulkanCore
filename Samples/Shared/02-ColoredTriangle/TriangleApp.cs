@@ -107,17 +107,10 @@ namespace VulkanCore.Samples.Triangle
                 };
 
                 var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo();
-                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo
-                {
-                    Topology = PrimitiveTopology.TriangleList
-                };
-                var viewport = new Viewport(0, 0, Window.Width, Window.Height);
-                var scissor = new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height));
-                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo
-                {
-                    Viewports = new[] { viewport },
-                    Scissors = new[] { scissor }
-                };
+                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
+                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
+                    new Viewport(0, 0, Window.Width, Window.Height),
+                    new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)));
                 var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
                 {
                     PolygonMode = PolygonMode.Fill,
