@@ -52,7 +52,7 @@ namespace VulkanCore.Samples.Cube
             _cube.Initialize();
             CreateDepthStencil();
             CreateSampler();
-            LoadTexture("Content\\IndustryForgedDark512.ktx", Format.R5G5B5A1UNormPack16);
+            LoadTexture(Path.Combine("Content", "IndustryForgedDark512.ktx"), Format.R5G5B5A1UNormPack16);
             CreateRenderPass();
             CreateFramebuffers();
             CreateUniformBuffers();
@@ -405,9 +405,9 @@ namespace VulkanCore.Samples.Cube
             // graphics pipeline. But after the pipeline is created, we don't need these shader
             // modules anymore, so we dispose them.
             using (ShaderModule vertexShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes("Content\\shader.vert.spv"))))
-            using (ShaderModule fragmentShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes("Content\\shader.frag.spv"))))
+                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")))))
+            using (ShaderModule fragmentShader = Device.CreateShaderModule( 
+                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.frag.spv")))))
             {
                 var shaderStageCreateInfos = new[]
                 {

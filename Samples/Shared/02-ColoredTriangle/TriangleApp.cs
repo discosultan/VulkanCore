@@ -96,9 +96,9 @@ namespace VulkanCore.Samples.Triangle
             // graphics pipeline. But after the pipeline is created, we don't need these shader
             // modules anymore, so we dispose them.
             using (ShaderModule vertexShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes("Content\\shader.vert.spv"))))
+                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")))))
             using (ShaderModule fragmentShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes("Content\\shader.frag.spv"))))
+                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.frag.spv")))))
             {
                 var shaderStageCreateInfos = new[]
                 {
@@ -111,7 +111,7 @@ namespace VulkanCore.Samples.Triangle
                 {
                     Topology = PrimitiveTopology.TriangleList
                 };
-                var viewport = new Viewport(0, 0, Window.Width, Window.Height) ;
+                var viewport = new Viewport(0, 0, Window.Width, Window.Height);
                 var scissor = new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height));
                 var viewportStateCreateInfo = new PipelineViewportStateCreateInfo
                 {

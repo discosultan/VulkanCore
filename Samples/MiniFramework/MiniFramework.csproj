@@ -4,11 +4,6 @@
     <AssemblyName>MiniFramework</AssemblyName>
     <RootNamespace>VulkanCore.Samples</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_3</DefineConstants>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>True</DebugSymbols>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Src\VulkanCore.csproj" />
   </ItemGroup>
