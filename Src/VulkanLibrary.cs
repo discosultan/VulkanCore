@@ -5,8 +5,8 @@ namespace VulkanCore
 {
     internal class VulkanLibrary
     {
-        private static VulkanLibrary _finalizer;
-        private static IntPtr _handle;
+        private static readonly VulkanLibrary _finalizer;
+        private static readonly IntPtr _handle;
 
         private VulkanLibrary() { }
 
@@ -39,7 +39,7 @@ namespace VulkanCore
             else
             {
                 throw new NotImplementedException();
-            }            
+            }
             return handle == IntPtr.Zero
                 ? null
                 : Interop.GetDelegateForFunctionPointer<TDelegate>(handle);
