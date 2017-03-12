@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -170,16 +169,14 @@ namespace VulkanCore
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkQueueSubmit(IntPtr queue, 
-            int submitCount, SubmitInfo.Native* submits, long fence);
+        private delegate Result vkQueueSubmitDelegate(IntPtr queue, int submitCount, SubmitInfo.Native* submits, long fence);
+        private static readonly vkQueueSubmitDelegate vkQueueSubmit = VulkanLibrary.GetProc<vkQueueSubmitDelegate>(nameof(vkQueueSubmit));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkQueueWaitIdle(IntPtr queue);
+        private delegate Result vkQueueWaitIdleDelegate(IntPtr queue);
+        private static readonly vkQueueWaitIdleDelegate vkQueueWaitIdle = VulkanLibrary.GetProc<vkQueueWaitIdleDelegate>(nameof(vkQueueWaitIdle));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkQueueBindSparse(IntPtr queue, 
-            int bindInfoCount, BindSparseInfo.Native* bindInfo, long fence);
+        private delegate Result vkQueueBindSparseDelegate(IntPtr queue, int bindInfoCount, BindSparseInfo.Native* bindInfo, long fence);
+        private static readonly vkQueueBindSparseDelegate vkQueueBindSparse = VulkanLibrary.GetProc<vkQueueBindSparseDelegate>(nameof(vkQueueBindSparse));
     }
 
     /// <summary>

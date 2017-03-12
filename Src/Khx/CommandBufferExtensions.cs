@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khx
 {
@@ -37,13 +36,11 @@ namespace VulkanCore.Khx
                 groupCountX, groupCountY, groupCountZ);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdSetDeviceMaskKHX(IntPtr commandBuffer, int deviceMask);
+        private delegate void vkCmdSetDeviceMaskKHXDelegate(IntPtr commandBuffer, int deviceMask);
+        private static readonly vkCmdSetDeviceMaskKHXDelegate vkCmdSetDeviceMaskKHX = VulkanLibrary.GetProc<vkCmdSetDeviceMaskKHXDelegate>(nameof(vkCmdSetDeviceMaskKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdDispatchBaseKHX(IntPtr commandBuffer,
-            int baseGroupX, int baseGroupY, int baseGroupZ,
-            int groupCountX, int groupCountY, int groupCountZ);
+        private delegate void vkCmdDispatchBaseKHXDelegate(IntPtr commandBuffer, int baseGroupX, int baseGroupY, int baseGroupZ, int groupCountX, int groupCountY, int groupCountZ);
+        private static readonly vkCmdDispatchBaseKHXDelegate vkCmdDispatchBaseKHX = VulkanLibrary.GetProc<vkCmdDispatchBaseKHXDelegate>(nameof(vkCmdDispatchBaseKHX));
     }
 
     /// <summary>

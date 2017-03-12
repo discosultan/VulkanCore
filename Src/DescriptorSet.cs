@@ -92,17 +92,14 @@ namespace VulkanCore
                 nativeDescriptorWritesPtr[i].Free();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkAllocateDescriptorSets(IntPtr device,
-            DescriptorSetAllocateInfo.Native* allocateInfo, long* descriptorSets);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkFreeDescriptorSets(IntPtr device,
-            long descriptorPool, int descriptorSetCount, long* descriptorSets);
+        private delegate Result vkAllocateDescriptorSetsDelegate(IntPtr device, DescriptorSetAllocateInfo.Native* allocateInfo, long* descriptorSets);
+        private static readonly vkAllocateDescriptorSetsDelegate vkAllocateDescriptorSets = VulkanLibrary.GetProc<vkAllocateDescriptorSetsDelegate>(nameof(vkAllocateDescriptorSets));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkUpdateDescriptorSets(IntPtr device, int descriptorWriteCount,
-            WriteDescriptorSet.Native* descriptorWrites, int descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
+        private delegate Result vkFreeDescriptorSetsDelegate(IntPtr device, long descriptorPool, int descriptorSetCount, long* descriptorSets);
+        private static readonly vkFreeDescriptorSetsDelegate vkFreeDescriptorSets = VulkanLibrary.GetProc<vkFreeDescriptorSetsDelegate>(nameof(vkFreeDescriptorSets));
+
+        private delegate void vkUpdateDescriptorSetsDelegate(IntPtr device, int descriptorWriteCount, WriteDescriptorSet.Native* descriptorWrites, int descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
+        private static readonly vkUpdateDescriptorSetsDelegate vkUpdateDescriptorSets = VulkanLibrary.GetProc<vkUpdateDescriptorSetsDelegate>(nameof(vkUpdateDescriptorSets));
     }
 
     /// <summary>

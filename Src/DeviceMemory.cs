@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -62,8 +61,8 @@ namespace VulkanCore
         /// </summary>
         /// <param name="offset">A zero-based byte offset from the beginning of the memory object.</param>
         /// <param name="size">
-        /// The size of the memory range to map, or <see cref="WholeSize"/> to map from offset to the
-        /// end of the allocation.
+        /// The size of the memory range to map, or <see cref="Constant.WholeSize"/> to map from
+        /// offset to the end of the allocation.
         /// </param>
         /// <returns>
         /// A pointer in which is returned a host-accessible pointer to the beginning of the mapped
@@ -73,7 +72,7 @@ namespace VulkanCore
         public IntPtr Map(long offset, long size)
         {
             IntPtr ptr;
-            Result result = vkMapMemory(Parent, this, offset, size, MemoryMapFlags.None, &ptr);
+            Result result = vkMapMemory(Parent, this, offset, size, 0, &ptr);
             VulkanException.ThrowForInvalidResult(result);
             return ptr;
         }
@@ -126,21 +125,20 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkAllocateMemory(IntPtr device, 
-            MemoryAllocateInfo* allocateInfo, AllocationCallbacks.Native* allocator, long* memory);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkFreeMemory(IntPtr device, long memory, AllocationCallbacks.Native* Allocator);
-                
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkMapMemory(IntPtr device, long memory, long offset, long size, MemoryMapFlags flags, IntPtr* data);
+        private delegate Result vkAllocateMemoryDelegate(IntPtr device, MemoryAllocateInfo* allocateInfo, AllocationCallbacks.Native* allocator, long* memory);
+        private static readonly vkAllocateMemoryDelegate vkAllocateMemory = VulkanLibrary.GetProc<vkAllocateMemoryDelegate>(nameof(vkAllocateMemory));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkUnmapMemory(IntPtr device, long memory);
+        private delegate void vkFreeMemoryDelegate(IntPtr device, long memory, AllocationCallbacks.Native* allocator);
+        private static readonly vkFreeMemoryDelegate vkFreeMemory = VulkanLibrary.GetProc<vkFreeMemoryDelegate>(nameof(vkFreeMemory));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetDeviceMemoryCommitment(IntPtr device, long memory, long* committedMemoryInBytes);
+        private delegate Result vkMapMemoryDelegate(IntPtr device, long memory, long offset, long size, MemoryMapFlags flags, IntPtr* data);
+        private static readonly vkMapMemoryDelegate vkMapMemory = VulkanLibrary.GetProc<vkMapMemoryDelegate>(nameof(vkMapMemory));
+
+        private delegate void vkUnmapMemoryDelegate(IntPtr device, long memory);
+        private static readonly vkUnmapMemoryDelegate vkUnmapMemory = VulkanLibrary.GetProc<vkUnmapMemoryDelegate>(nameof(vkUnmapMemory));
+
+        private delegate void vkGetDeviceMemoryCommitmentDelegate(IntPtr device, long memory, long* committedMemoryInBytes);
+        private static readonly vkGetDeviceMemoryCommitmentDelegate vkGetDeviceMemoryCommitment = VulkanLibrary.GetProc<vkGetDeviceMemoryCommitmentDelegate>(nameof(vkGetDeviceMemoryCommitment));
     }
 
     /// <summary>

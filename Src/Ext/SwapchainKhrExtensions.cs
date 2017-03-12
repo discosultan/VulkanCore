@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {
@@ -29,7 +27,7 @@ namespace VulkanCore.Ext
             return counterValue;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetSwapchainCounterEXT(IntPtr device, long swapchain, SurfaceCountersExt counter, long* counterValue);
+        private delegate Result vkGetSwapchainCounterEXTDelegate(IntPtr device, long swapchain, SurfaceCountersExt counter, long* counterValue);
+        private static readonly vkGetSwapchainCounterEXTDelegate vkGetSwapchainCounterEXT = VulkanLibrary.GetProc<vkGetSwapchainCounterEXTDelegate>(nameof(vkGetSwapchainCounterEXT));
     }
 }

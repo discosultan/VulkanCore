@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Mvk
 {
@@ -65,13 +64,11 @@ namespace VulkanCore.Mvk
             return new SurfaceKhr(instance, ref allocator, handle);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateIOSSurfaceMVK(IntPtr instance,
-            IOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateIOSSurfaceMVKDelegate(IntPtr instance, IOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateIOSSurfaceMVKDelegate vkCreateIOSSurfaceMVK = VulkanLibrary.GetProc<vkCreateIOSSurfaceMVKDelegate>(nameof(vkCreateIOSSurfaceMVK));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateMacOSSurfaceMVK(IntPtr instance,
-            MacOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateMacOSSurfaceMVKDelegate(IntPtr instance, MacOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateMacOSSurfaceMVKDelegate vkCreateMacOSSurfaceMVK = VulkanLibrary.GetProc<vkCreateMacOSSurfaceMVKDelegate>(nameof(vkCreateMacOSSurfaceMVK));
     }
 
     /// <summary>

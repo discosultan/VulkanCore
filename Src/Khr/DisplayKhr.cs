@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -39,8 +37,7 @@ namespace VulkanCore.Khr
             return properties;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetDisplayModePropertiesKHR(
-            IntPtr physicalDevice, long display, int* propertyCount, DisplayModePropertiesKhr* properties);
+        private delegate Result vkGetDisplayModePropertiesKHRDelegate(IntPtr physicalDevice, long display, int* propertyCount, DisplayModePropertiesKhr* properties);
+        private static readonly vkGetDisplayModePropertiesKHRDelegate vkGetDisplayModePropertiesKHR = VulkanLibrary.GetProc<vkGetDisplayModePropertiesKHRDelegate>(nameof(vkGetDisplayModePropertiesKHR));
     }
 }

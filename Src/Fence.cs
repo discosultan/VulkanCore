@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -135,21 +134,20 @@ namespace VulkanCore
             }
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateFence(
-            IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private delegate Result vkCreateFenceDelegate(IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private static readonly vkCreateFenceDelegate vkCreateFence = VulkanLibrary.GetProc<vkCreateFenceDelegate>(nameof(vkCreateFence));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyFence(IntPtr device, long fence, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyFenceDelegate(IntPtr device, long fence, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyFenceDelegate vkDestroyFence = VulkanLibrary.GetProc<vkDestroyFenceDelegate>(nameof(vkDestroyFence));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkResetFences(IntPtr device, int fenceCount, long* fences);
+        private delegate Result vkResetFencesDelegate(IntPtr device, int fenceCount, long* fences);
+        private static readonly vkResetFencesDelegate vkResetFences = VulkanLibrary.GetProc<vkResetFencesDelegate>(nameof(vkResetFences));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetFenceStatus(IntPtr device, long fence);
+        private delegate Result vkWaitForFencesDelegate(IntPtr device, int fenceCount, long* fences, Bool waitAll, long timeout);
+        private static readonly vkWaitForFencesDelegate vkWaitForFences = VulkanLibrary.GetProc<vkWaitForFencesDelegate>(nameof(vkWaitForFences));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkWaitForFences(IntPtr device, int fenceCount, long* fences, Bool waitAll, long timeout);
+        private delegate Result vkGetFenceStatusDelegate(IntPtr device, long fence);
+        private static readonly vkGetFenceStatusDelegate vkGetFenceStatus = VulkanLibrary.GetProc<vkGetFenceStatusDelegate>(nameof(vkGetFenceStatus));
     }
 
     /// <summary>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.NN
 {
@@ -53,9 +52,8 @@ namespace VulkanCore.NN
             return new SurfaceKhr(instance, ref allocator, handle);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateViSurfaceNN(Instance instance, VISurfaceCreateInfoNN* createInfo, 
-            AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateViSurfaceNNDelegate(IntPtr instance, VISurfaceCreateInfoNN* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateViSurfaceNNDelegate vkCreateViSurfaceNN = VulkanLibrary.GetProc<vkCreateViSurfaceNNDelegate>(nameof(vkCreateViSurfaceNN));
     }
 
     /// <summary>

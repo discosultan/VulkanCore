@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {
     /// <summary>
     /// Provides extension methods for the <see cref="DisplayKhr"/> class.
     /// </summary>
-    public static class DisplayKhrExtensions
+    public static unsafe class DisplayKhrExtensions
     {
         /// <summary>
         /// Acquire access to a DisplayKhr using Xlib.
@@ -36,7 +34,7 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void AcquireXlibDisplayExt(this DisplayKhr display, IntPtr dpy)
         {
-            Result result = vkAcquireXlibDisplayEXT(display.Parent, dpy, display);
+            Result result = vkAcquireXlibDisplayEXT(display.Parent, &dpy, display);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -51,10 +49,10 @@ namespace VulkanCore.Ext
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkAcquireXlibDisplayEXT(IntPtr physicalDevice, IntPtr dpy, long display);
+        private delegate Result vkAcquireXlibDisplayEXTDelegate(IntPtr physicalDevice, IntPtr* dpy, long display);
+        private static readonly vkAcquireXlibDisplayEXTDelegate vkAcquireXlibDisplayEXT = VulkanLibrary.GetProc<vkAcquireXlibDisplayEXTDelegate>(nameof(vkAcquireXlibDisplayEXT));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkReleaseDisplayEXT(IntPtr physicalDevice, long display);        
+        private delegate Result vkReleaseDisplayEXTDelegate(IntPtr physicalDevice, long display);
+        private static readonly vkReleaseDisplayEXTDelegate vkReleaseDisplayEXT = VulkanLibrary.GetProc<vkReleaseDisplayEXTDelegate>(nameof(vkReleaseDisplayEXT));       
     }
 }

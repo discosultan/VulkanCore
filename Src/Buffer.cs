@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -89,18 +88,17 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateBuffer(IntPtr device, 
-            BufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* buffer);
+        private delegate Result vkCreateBufferDelegate(IntPtr device, BufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* buffer);
+        private static readonly vkCreateBufferDelegate vkCreateBuffer = VulkanLibrary.GetProc<vkCreateBufferDelegate>(nameof(vkCreateBuffer));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyBuffer(IntPtr device, long buffer, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyBufferDelegate(IntPtr device, long buffer, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyBufferDelegate vkDestroyBuffer = VulkanLibrary.GetProc<vkDestroyBufferDelegate>(nameof(vkDestroyBuffer));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkBindBufferMemory(IntPtr device, long buffer, long memory, long memoryOffset);
+        private delegate Result vkBindBufferMemoryDelegate(IntPtr device, long buffer, long memory, long memoryOffset);
+        private static readonly vkBindBufferMemoryDelegate vkBindBufferMemory = VulkanLibrary.GetProc<vkBindBufferMemoryDelegate>(nameof(vkBindBufferMemory));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetBufferMemoryRequirements(IntPtr device, long buffer, MemoryRequirements* memoryRequirements);
+        private delegate void vkGetBufferMemoryRequirementsDelegate(IntPtr device, long buffer, MemoryRequirements* memoryRequirements);
+        private static readonly vkGetBufferMemoryRequirementsDelegate vkGetBufferMemoryRequirements = VulkanLibrary.GetProc<vkGetBufferMemoryRequirementsDelegate>(nameof(vkGetBufferMemoryRequirements));
     }
 
     /// <summary>

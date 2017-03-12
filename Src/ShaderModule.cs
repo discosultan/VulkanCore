@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -44,12 +43,11 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateShaderModule(IntPtr device, ShaderModuleCreateInfo.Native* createInfo, 
-            AllocationCallbacks.Native* allocator, long* shaderModule);
+        private delegate Result vkCreateShaderModuleDelegate(IntPtr device, ShaderModuleCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* shaderModule);
+        private static readonly vkCreateShaderModuleDelegate vkCreateShaderModule = VulkanLibrary.GetProc<vkCreateShaderModuleDelegate>(nameof(vkCreateShaderModule));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyShaderModule(IntPtr device, long shaderModule, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyShaderModuleDelegate(IntPtr device, long shaderModule, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyShaderModuleDelegate vkDestroyShaderModule = VulkanLibrary.GetProc<vkDestroyShaderModuleDelegate>(nameof(vkDestroyShaderModule));
     }
 
     /// <summary>

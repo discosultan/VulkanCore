@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -44,14 +43,11 @@ namespace VulkanCore.Khr
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateDescriptorUpdateTemplateKHR(IntPtr device,
-            DescriptorUpdateTemplateCreateInfoKhr.Native* createInfo, AllocationCallbacks.Native* allocator,
-            long* descriptorUpdateTemplate);
+        private delegate Result vkCreateDescriptorUpdateTemplateKHRDelegate(IntPtr device, DescriptorUpdateTemplateCreateInfoKhr.Native* createInfo, AllocationCallbacks.Native* allocator, long* descriptorUpdateTemplate);
+        private static readonly vkCreateDescriptorUpdateTemplateKHRDelegate vkCreateDescriptorUpdateTemplateKHR = VulkanLibrary.GetProc<vkCreateDescriptorUpdateTemplateKHRDelegate>(nameof(vkCreateDescriptorUpdateTemplateKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyDescriptorUpdateTemplateKHR(IntPtr device,
-            long descriptorUpdateTemplate, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyDescriptorUpdateTemplateKHRDelegate(IntPtr device, long descriptorUpdateTemplate, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyDescriptorUpdateTemplateKHRDelegate vkDestroyDescriptorUpdateTemplateKHR = VulkanLibrary.GetProc<vkDestroyDescriptorUpdateTemplateKHRDelegate>(nameof(vkDestroyDescriptorUpdateTemplateKHR));
     }
 
     /// <summary>

@@ -176,26 +176,23 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateInstance(
-            InstanceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* instance);
+        private delegate Result vkCreateInstanceDelegate(InstanceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* instance);
+        private static readonly vkCreateInstanceDelegate vkCreateInstance = VulkanLibrary.GetProc<vkCreateInstanceDelegate>(nameof(vkCreateInstance));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern IntPtr vkDestroyInstance(IntPtr instance, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyInstanceDelegate(IntPtr instance, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyInstanceDelegate vkDestroyInstance = VulkanLibrary.GetProc<vkDestroyInstanceDelegate>(nameof(vkDestroyInstance));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkEnumeratePhysicalDevices(
-            IntPtr instance, int* physicalDeviceCount, IntPtr* physicalDevices);
+        private delegate Result vkEnumeratePhysicalDevicesDelegate(IntPtr instance, int* physicalDeviceCount, IntPtr* physicalDevices);
+        private static readonly vkEnumeratePhysicalDevicesDelegate vkEnumeratePhysicalDevices = VulkanLibrary.GetProc<vkEnumeratePhysicalDevicesDelegate>(nameof(vkEnumeratePhysicalDevices));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern IntPtr vkGetInstanceProcAddr(IntPtr instance, byte* name);
+        private delegate IntPtr vkGetInstanceProcAddrDelegate(IntPtr instance, byte* name);
+        private static readonly vkGetInstanceProcAddrDelegate vkGetInstanceProcAddr = VulkanLibrary.GetProc<vkGetInstanceProcAddrDelegate>(nameof(vkGetInstanceProcAddr));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkEnumerateInstanceLayerProperties(int* propertyCount, LayerProperties.Native* properties);
+        private delegate Result vkEnumerateInstanceLayerPropertiesDelegate(int* propertyCount, LayerProperties.Native* properties);
+        private static readonly vkEnumerateInstanceLayerPropertiesDelegate vkEnumerateInstanceLayerProperties = VulkanLibrary.GetProc<vkEnumerateInstanceLayerPropertiesDelegate>(nameof(vkEnumerateInstanceLayerProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkEnumerateInstanceExtensionProperties(
-            byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);        
+        private delegate Result vkEnumerateInstanceExtensionPropertiesDelegate(byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
+        private static readonly vkEnumerateInstanceExtensionPropertiesDelegate vkEnumerateInstanceExtensionProperties = VulkanLibrary.GetProc<vkEnumerateInstanceExtensionPropertiesDelegate>(nameof(vkEnumerateInstanceExtensionProperties));
     }
 
     /// <summary>

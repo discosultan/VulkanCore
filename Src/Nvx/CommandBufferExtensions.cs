@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Nvx
 {
@@ -53,11 +52,11 @@ namespace VulkanCore.Nvx
             vkCmdReserveSpaceForCommandsNVX(commandBuffer, &reserveSpaceInfo);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdProcessCommandsNVX(IntPtr commandBuffer, CmdProcessCommandsInfoNvx.Native* processCommandsInfo);
+        private delegate void vkCmdProcessCommandsNVXDelegate(IntPtr commandBuffer, CmdProcessCommandsInfoNvx.Native* processCommandsInfo);
+        private static readonly vkCmdProcessCommandsNVXDelegate vkCmdProcessCommandsNVX = VulkanLibrary.GetProc<vkCmdProcessCommandsNVXDelegate>(nameof(vkCmdProcessCommandsNVX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdReserveSpaceForCommandsNVX(IntPtr commandBuffer, CmdReserveSpaceForCommandsInfoNvx* reserveSpaceInfo);
+        private delegate void vkCmdReserveSpaceForCommandsNVXDelegate(IntPtr commandBuffer, CmdReserveSpaceForCommandsInfoNvx* reserveSpaceInfo);
+        private static readonly vkCmdReserveSpaceForCommandsNVXDelegate vkCmdReserveSpaceForCommandsNVX = VulkanLibrary.GetProc<vkCmdReserveSpaceForCommandsNVXDelegate>(nameof(vkCmdReserveSpaceForCommandsNVX));
     }
 
     /// <summary>

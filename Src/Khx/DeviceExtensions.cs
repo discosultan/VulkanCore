@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khx
 {
@@ -33,10 +32,10 @@ namespace VulkanCore.Khx
         /// <param name="fd"></param>
         /// <returns></returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static MemoryFdPropertiesKHX GetMemoryFdPropertiesKhx(this Device device,
+        public static MemoryFdPropertiesKhx GetMemoryFdPropertiesKhx(this Device device,
             ExternalMemoryHandleTypesKhx handleType, int fd)
         {
-            MemoryFdPropertiesKHX properties;
+            MemoryFdPropertiesKhx properties;
             Result result = vkGetMemoryFdPropertiesKHX(device, handleType, fd, &properties);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
@@ -171,42 +170,35 @@ namespace VulkanCore.Khx
             return index;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetMemoryWin32HandlePropertiesKHX(IntPtr device, 
-            ExternalMemoryHandleTypesKhx handleType, IntPtr handle, MemoryWin32HandlePropertiesKhx* memoryWin32HandleProperties);
+        private delegate Result vkGetMemoryWin32HandlePropertiesKHXDelegate(IntPtr device, ExternalMemoryHandleTypesKhx handleType, IntPtr handle, MemoryWin32HandlePropertiesKhx* memoryWin32HandleProperties);
+        private static readonly vkGetMemoryWin32HandlePropertiesKHXDelegate vkGetMemoryWin32HandlePropertiesKHX = VulkanLibrary.GetProc<vkGetMemoryWin32HandlePropertiesKHXDelegate>(nameof(vkGetMemoryWin32HandlePropertiesKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetMemoryFdPropertiesKHX(IntPtr device,
-            ExternalMemoryHandleTypesKhx handleType, int fd, MemoryFdPropertiesKHX* memoryFdProperties);
+        private delegate Result vkGetMemoryFdPropertiesKHXDelegate(IntPtr device, ExternalMemoryHandleTypesKhx handleType, int fd, MemoryFdPropertiesKhx* memoryFdProperties);
+        private static readonly vkGetMemoryFdPropertiesKHXDelegate vkGetMemoryFdPropertiesKHX = VulkanLibrary.GetProc<vkGetMemoryFdPropertiesKHXDelegate>(nameof(vkGetMemoryFdPropertiesKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkImportSemaphoreWin32HandleKHX(IntPtr device,
-            ImportSemaphoreWin32HandleInfoKhx.Native* importSemaphoreWin32HandleInfo);
+        private delegate Result vkImportSemaphoreWin32HandleKHXDelegate(IntPtr device, ImportSemaphoreWin32HandleInfoKhx.Native* importSemaphoreWin32HandleInfo);
+        private static readonly vkImportSemaphoreWin32HandleKHXDelegate vkImportSemaphoreWin32HandleKHX = VulkanLibrary.GetProc<vkImportSemaphoreWin32HandleKHXDelegate>(nameof(vkImportSemaphoreWin32HandleKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkImportSemaphoreFdKHX(IntPtr device, 
-            ImportSemaphoreFdInfoKhx.Native* importSemaphoreFdInfo);
+        private delegate Result vkImportSemaphoreFdKHXDelegate(IntPtr device, ImportSemaphoreFdInfoKhx.Native* importSemaphoreFdInfo);
+        private static readonly vkImportSemaphoreFdKHXDelegate vkImportSemaphoreFdKHX = VulkanLibrary.GetProc<vkImportSemaphoreFdKHXDelegate>(nameof(vkImportSemaphoreFdKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetDeviceGroupPeerMemoryFeaturesKHX(IntPtr device, int heapIndex, 
-            int localDeviceIndex, int remoteDeviceIndex, PeerMemoryFeaturesKhx* peerMemoryFeatures);
+        private delegate void vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate(IntPtr device, int heapIndex, int localDeviceIndex, int remoteDeviceIndex, PeerMemoryFeaturesKhx* peerMemoryFeatures);
+        private static readonly vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate vkGetDeviceGroupPeerMemoryFeaturesKHX = VulkanLibrary.GetProc<vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate>(nameof(vkGetDeviceGroupPeerMemoryFeaturesKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkBindBufferMemory2KHX(IntPtr device, int bindInfoCount, BindBufferMemoryInfoKhx.Native* bindInfos);
+        private delegate Result vkBindBufferMemory2KHXDelegate(IntPtr device, int bindInfoCount, BindBufferMemoryInfoKhx.Native* bindInfos);
+        private static readonly vkBindBufferMemory2KHXDelegate vkBindBufferMemory2KHX = VulkanLibrary.GetProc<vkBindBufferMemory2KHXDelegate>(nameof(vkBindBufferMemory2KHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkBindImageMemory2KHX(IntPtr device, int bindInfoCount, BindImageMemoryInfoKhx.Native* bindInfos);
+        private delegate Result vkBindImageMemory2KHXDelegate(IntPtr device, int bindInfoCount, BindImageMemoryInfoKhx.Native* bindInfos);
+        private static readonly vkBindImageMemory2KHXDelegate vkBindImageMemory2KHX = VulkanLibrary.GetProc<vkBindImageMemory2KHXDelegate>(nameof(vkBindImageMemory2KHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetDeviceGroupPresentCapabilitiesKHX(IntPtr device,
-            DeviceGroupPresentCapabilitiesKhx* deviceGroupPresentCapabilities);
+        private delegate Result vkGetDeviceGroupPresentCapabilitiesKHXDelegate(IntPtr device, DeviceGroupPresentCapabilitiesKhx* deviceGroupPresentCapabilities);
+        private static readonly vkGetDeviceGroupPresentCapabilitiesKHXDelegate vkGetDeviceGroupPresentCapabilitiesKHX = VulkanLibrary.GetProc<vkGetDeviceGroupPresentCapabilitiesKHXDelegate>(nameof(vkGetDeviceGroupPresentCapabilitiesKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetDeviceGroupSurfacePresentModesKHX(IntPtr device,
-            SurfaceKhr surface, DeviceGroupPresentModesKhx* modes);
+        private delegate Result vkAcquireNextImage2KHXDelegate(IntPtr device, AcquireNextImageInfoKhx* acquireInfo, int* imageIndex);
+        private static readonly vkAcquireNextImage2KHXDelegate vkAcquireNextImage2KHX = VulkanLibrary.GetProc<vkAcquireNextImage2KHXDelegate>(nameof(vkAcquireNextImage2KHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkAcquireNextImage2KHX(IntPtr device, AcquireNextImageInfoKhx* acquireInfo, int* imageIndex);
+        private delegate Result vkGetDeviceGroupSurfacePresentModesKHXDelegate(IntPtr device, long surface, DeviceGroupPresentModesKhx* modes);
+        private static readonly vkGetDeviceGroupSurfacePresentModesKHXDelegate vkGetDeviceGroupSurfacePresentModesKHX = VulkanLibrary.GetProc<vkGetDeviceGroupSurfacePresentModesKHXDelegate>(nameof(vkGetDeviceGroupSurfacePresentModesKHX));
     }
 
     /// <summary>
@@ -247,7 +239,7 @@ namespace VulkanCore.Khx
     /// Properties of external memory file descriptors.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MemoryFdPropertiesKHX
+    public struct MemoryFdPropertiesKhx
     {
         internal StructureType Type;
 

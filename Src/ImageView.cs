@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -42,12 +41,11 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateImageView(IntPtr device, 
-            ImageViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
+        private delegate Result vkCreateImageViewDelegate(IntPtr device, ImageViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
+        private static readonly vkCreateImageViewDelegate vkCreateImageView = VulkanLibrary.GetProc<vkCreateImageViewDelegate>(nameof(vkCreateImageView));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyImageView(IntPtr device, long imageView, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyImageViewDelegate(IntPtr device, long imageView, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyImageViewDelegate vkDestroyImageView = VulkanLibrary.GetProc<vkDestroyImageViewDelegate>(nameof(vkDestroyImageView));
     }
 
     /// <summary>

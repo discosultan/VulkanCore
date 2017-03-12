@@ -121,38 +121,30 @@ namespace VulkanCore.Khr
             if (!Disposed) vkDestroySurfaceKHR(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateAndroidSurfaceKHR(IntPtr instance, 
-            AndroidSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateMirSurfaceKHR(Instance instance, 
-            MirSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateAndroidSurfaceKHRDelegate(IntPtr instance, AndroidSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateAndroidSurfaceKHRDelegate vkCreateAndroidSurfaceKHR = VulkanLibrary.GetProc<vkCreateAndroidSurfaceKHRDelegate>(nameof(vkCreateAndroidSurfaceKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateWaylandSurfaceKHR(Instance instance, 
-            WaylandSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateDisplayPlaneSurfaceKHRDelegate(IntPtr instance, DisplaySurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateDisplayPlaneSurfaceKHRDelegate vkCreateDisplayPlaneSurfaceKHR = VulkanLibrary.GetProc<vkCreateDisplayPlaneSurfaceKHRDelegate>(nameof(vkCreateDisplayPlaneSurfaceKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateWin32SurfaceKHR(IntPtr instance,
-            Win32SurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateMirSurfaceKHRDelegate(IntPtr instance, MirSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateMirSurfaceKHRDelegate vkCreateMirSurfaceKHR = VulkanLibrary.GetProc<vkCreateMirSurfaceKHRDelegate>(nameof(vkCreateMirSurfaceKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateXlibSurfaceKHR(IntPtr instance,
-            XlibSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateWaylandSurfaceKHRDelegate(IntPtr instance, WaylandSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateWaylandSurfaceKHRDelegate vkCreateWaylandSurfaceKHR = VulkanLibrary.GetProc<vkCreateWaylandSurfaceKHRDelegate>(nameof(vkCreateWaylandSurfaceKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateDisplayPlaneSurfaceKHR(IntPtr instance,
-            DisplaySurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateWin32SurfaceKHRDelegate(IntPtr instance, Win32SurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateWin32SurfaceKHRDelegate vkCreateWin32SurfaceKHR = VulkanLibrary.GetProc<vkCreateWin32SurfaceKHRDelegate>(nameof(vkCreateWin32SurfaceKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateXcbSurfaceKHR(IntPtr instance,
-            XcbSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private delegate Result vkCreateXlibSurfaceKHRDelegate(IntPtr instance, XlibSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateXlibSurfaceKHRDelegate vkCreateXlibSurfaceKHR = VulkanLibrary.GetProc<vkCreateXlibSurfaceKHRDelegate>(nameof(vkCreateXlibSurfaceKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern IntPtr vkDestroySurfaceKHR(
-            IntPtr instance, long surface, AllocationCallbacks.Native* allocator);
+        private delegate Result vkCreateXcbSurfaceKHRDelegate(IntPtr instance, XcbSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
+        private static readonly vkCreateXcbSurfaceKHRDelegate vkCreateXcbSurfaceKHR = VulkanLibrary.GetProc<vkCreateXcbSurfaceKHRDelegate>(nameof(vkCreateXcbSurfaceKHR));
+
+        private delegate void vkDestroySurfaceKHRDelegate(IntPtr instance, long surface, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroySurfaceKHRDelegate vkDestroySurfaceKHR = VulkanLibrary.GetProc<vkDestroySurfaceKHRDelegate>(nameof(vkDestroySurfaceKHR));
     }
 
     /// <summary>

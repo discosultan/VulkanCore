@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -64,8 +63,8 @@ namespace VulkanCore.Khr
             VulkanException.ThrowForInvalidResult(result);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkQueuePresentKHR(IntPtr queue, PresentInfoKhr.Native* presentInfo);
+        private delegate Result vkQueuePresentKHRDelegate(IntPtr queue, PresentInfoKhr.Native* presentInfo);
+        private static readonly vkQueuePresentKHRDelegate vkQueuePresentKHR = VulkanLibrary.GetProc<vkQueuePresentKHRDelegate>(nameof(vkQueuePresentKHR));
     }
 
     /// <summary>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khx
 {
@@ -38,11 +37,11 @@ namespace VulkanCore.Khx
             return fd;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetMemoryWin32HandleKHX(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
+        private delegate Result vkGetMemoryWin32HandleKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
+        private static readonly vkGetMemoryWin32HandleKHXDelegate vkGetMemoryWin32HandleKHX = VulkanLibrary.GetProc<vkGetMemoryWin32HandleKHXDelegate>(nameof(vkGetMemoryWin32HandleKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetMemoryFdKHX(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
+        private delegate Result vkGetMemoryFdKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
+        private static readonly vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX = VulkanLibrary.GetProc<vkGetMemoryFdKHXDelegate>(nameof(vkGetMemoryFdKHX));
     }
 
 

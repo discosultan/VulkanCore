@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
@@ -595,28 +596,27 @@ namespace VulkanCore
             if (!Disposed) vkDestroyDevice(this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateDevice(IntPtr physicalDevice, 
-            DeviceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* device);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyDevice(IntPtr device, AllocationCallbacks.Native* allocator);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern IntPtr vkGetDeviceProcAddr(IntPtr device, byte* name);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetDeviceQueue(IntPtr device, int queueFamilyIndex, int queueIndex, IntPtr* queue);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkDeviceWaitIdle(IntPtr device);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkFlushMappedMemoryRanges(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkInvalidateMappedMemoryRanges(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
+        private delegate Result vkCreateDeviceDelegate(IntPtr physicalDevice, DeviceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* device);
+        private static readonly vkCreateDeviceDelegate vkCreateDevice = VulkanLibrary.GetProc<vkCreateDeviceDelegate>(nameof(vkCreateDevice));
+
+        private delegate void vkDestroyDeviceDelegate(IntPtr device, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyDeviceDelegate vkDestroyDevice = VulkanLibrary.GetProc<vkDestroyDeviceDelegate>(nameof(vkDestroyDevice));
+
+        private delegate IntPtr vkGetDeviceProcAddrDelegate(IntPtr device, byte* name);
+        private static readonly vkGetDeviceProcAddrDelegate vkGetDeviceProcAddr = VulkanLibrary.GetProc<vkGetDeviceProcAddrDelegate>(nameof(vkGetDeviceProcAddr));
+
+        private delegate void vkGetDeviceQueueDelegate(IntPtr device, int queueFamilyIndex, int queueIndex, IntPtr* queue);
+        private static readonly vkGetDeviceQueueDelegate vkGetDeviceQueue = VulkanLibrary.GetProc<vkGetDeviceQueueDelegate>(nameof(vkGetDeviceQueue));
+
+        private delegate Result vkDeviceWaitIdleDelegate(IntPtr device);
+        private static readonly vkDeviceWaitIdleDelegate vkDeviceWaitIdle = VulkanLibrary.GetProc<vkDeviceWaitIdleDelegate>(nameof(vkDeviceWaitIdle));
+
+        private delegate Result vkFlushMappedMemoryRangesDelegate(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
+        private static readonly vkFlushMappedMemoryRangesDelegate vkFlushMappedMemoryRanges = VulkanLibrary.GetProc<vkFlushMappedMemoryRangesDelegate>(nameof(vkFlushMappedMemoryRanges));
+
+        private delegate Result vkInvalidateMappedMemoryRangesDelegate(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
+        private static readonly vkInvalidateMappedMemoryRangesDelegate vkInvalidateMappedMemoryRanges = VulkanLibrary.GetProc<vkInvalidateMappedMemoryRangesDelegate>(nameof(vkInvalidateMappedMemoryRanges));
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.NV
 {
@@ -24,9 +23,8 @@ namespace VulkanCore.NV
                 vkCmdSetViewportWScalingNV(commandBuffer, firstViewport, viewportWScalings?.Length ?? 0, viewportWScalingsPtr);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdSetViewportWScalingNV(IntPtr commandBuffer,
-            int firstViewport, int viewportCount, ViewportWScalingNV* viewportWScalings);
+        private delegate void vkCmdSetViewportWScalingNVDelegate(IntPtr commandBuffer, int firstViewport, int viewportCount, ViewportWScalingNV* viewportWScalings);
+        private static readonly vkCmdSetViewportWScalingNVDelegate vkCmdSetViewportWScalingNV = VulkanLibrary.GetProc<vkCmdSetViewportWScalingNVDelegate>(nameof(vkCmdSetViewportWScalingNV));
     }
 
     /// <summary>

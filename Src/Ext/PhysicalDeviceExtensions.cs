@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {
@@ -44,17 +43,16 @@ namespace VulkanCore.Ext
             IntPtr rrOutput)
         {
             long handle;
-            Result result = vkGetRandROutputDisplayEXT(physicalDevice, dpy, rrOutput, &handle);
+            Result result = vkGetRandROutputDisplayEXT(physicalDevice, &dpy, rrOutput, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return new DisplayKhr(physicalDevice, handle);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceSurfaceCapabilities2EXT(IntPtr physicalDevice,
-            long surface, SurfaceCapabilities2Ext* surfaceCapabilities);
+        private delegate Result vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate(IntPtr physicalDevice, long surface, SurfaceCapabilities2Ext* surfaceCapabilities);
+        private static readonly vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate vkGetPhysicalDeviceSurfaceCapabilities2EXT = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate>(nameof(vkGetPhysicalDeviceSurfaceCapabilities2EXT));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetRandROutputDisplayEXT(IntPtr physicalDevice, IntPtr dpy, IntPtr rrOutput, long* display);
+        private delegate Result vkGetRandROutputDisplayEXTDelegate(IntPtr physicalDevice, IntPtr* dpy, IntPtr rrOutput, long* display);
+        private static readonly vkGetRandROutputDisplayEXTDelegate vkGetRandROutputDisplayEXT = VulkanLibrary.GetProc<vkGetRandROutputDisplayEXTDelegate>(nameof(vkGetRandROutputDisplayEXT));
     }
 
     /// <summary>

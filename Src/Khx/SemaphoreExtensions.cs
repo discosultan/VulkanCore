@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khx
 {
@@ -37,12 +35,10 @@ namespace VulkanCore.Khx
             return fd;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetSemaphoreWin32HandleKHX(IntPtr device, 
-            long semaphore, ExternalSemaphoreHandleTypesKhx handleType, IntPtr* handle);
+        private delegate Result vkGetSemaphoreWin32HandleKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhx handleType, IntPtr* handle);
+        private static readonly vkGetSemaphoreWin32HandleKHXDelegate vkGetSemaphoreWin32HandleKHX = VulkanLibrary.GetProc<vkGetSemaphoreWin32HandleKHXDelegate>(nameof(vkGetSemaphoreWin32HandleKHX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetSemaphoreFdKHX(IntPtr device, 
-            long semaphore, ExternalSemaphoreHandleTypesKhx handleType, int* fd);
+        private delegate Result vkGetSemaphoreFdKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhx handleType, int* fd);
+        private static readonly vkGetSemaphoreFdKHXDelegate vkGetSemaphoreFdKHX = VulkanLibrary.GetProc<vkGetSemaphoreFdKHXDelegate>(nameof(vkGetSemaphoreFdKHX));
     }
 }

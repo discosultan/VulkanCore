@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Nvx
 {
@@ -71,20 +70,17 @@ namespace VulkanCore.Nvx
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateObjectTableNVX(IntPtr device, 
-            ObjectTableCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* objectTable);
+        private delegate Result vkCreateObjectTableNVXDelegate(IntPtr device, ObjectTableCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* objectTable);
+        private static readonly vkCreateObjectTableNVXDelegate vkCreateObjectTableNVX = VulkanLibrary.GetProc<vkCreateObjectTableNVXDelegate>(nameof(vkCreateObjectTableNVX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyObjectTableNVX(IntPtr device, long objectTable, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyObjectTableNVXDelegate(IntPtr device, long objectTable, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyObjectTableNVXDelegate vkDestroyObjectTableNVX = VulkanLibrary.GetProc<vkDestroyObjectTableNVXDelegate>(nameof(vkDestroyObjectTableNVX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkRegisterObjectsNVX(IntPtr device, long objectTable, 
-            int objectCount, ObjectTableEntryNvx** objectTableEntries, int* objectIndices);
+        private delegate Result vkRegisterObjectsNVXDelegate(IntPtr device, long objectTable, int objectCount, ObjectTableEntryNvx** ppObjectTableEntries, int* objectIndices);
+        private static readonly vkRegisterObjectsNVXDelegate vkRegisterObjectsNVX = VulkanLibrary.GetProc<vkRegisterObjectsNVXDelegate>(nameof(vkRegisterObjectsNVX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkUnregisterObjectsNVX(IntPtr device, long objectTable, 
-            int objectCount, ObjectEntryTypeNvx* objectEntryTypes, int* objectIndices);
+        private delegate Result vkUnregisterObjectsNVXDelegate(IntPtr device, long objectTable, int objectCount, ObjectEntryTypeNvx* objectEntryTypes, int* objectIndices);
+        private static readonly vkUnregisterObjectsNVXDelegate vkUnregisterObjectsNVX = VulkanLibrary.GetProc<vkUnregisterObjectsNVXDelegate>(nameof(vkUnregisterObjectsNVX));
     }
 
     /// <summary>

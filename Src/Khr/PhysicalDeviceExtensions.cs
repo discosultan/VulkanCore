@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Ext;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -397,81 +396,65 @@ namespace VulkanCore.Khr
             return properties;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceSurfaceSupportKHR(IntPtr physicalDevice, 
-            int queueFamilyIndex, long surface, Bool* supported);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceSurfaceCapabilitiesKHR(IntPtr physicalDevice, 
-            long surface, SurfaceCapabilitiesKhr* surfaceCapabilities);
+        private delegate Result vkGetPhysicalDeviceSurfaceSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, long surface, Bool* supported);
+        private static readonly vkGetPhysicalDeviceSurfaceSupportKHRDelegate vkGetPhysicalDeviceSurfaceSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceSupportKHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceSupportKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceSurfaceFormatsKHR(IntPtr physicalDevice, 
-            long surface, int* surfaceFormatCount, SurfaceFormatKhr* surfaceFormats);
+        private delegate Bool vkGetPhysicalDeviceWaylandPresentationSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, IntPtr* display);
+        private static readonly vkGetPhysicalDeviceWaylandPresentationSupportKHRDelegate vkGetPhysicalDeviceWaylandPresentationSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceWaylandPresentationSupportKHRDelegate>(nameof(vkGetPhysicalDeviceWaylandPresentationSupportKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceSurfacePresentModesKHR(IntPtr physicalDevice,
-            long surface, int* presentModeCount, PresentModeKhr* presentModes);
+        private delegate Bool vkGetPhysicalDeviceWin32PresentationSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex);
+        private static readonly vkGetPhysicalDeviceWin32PresentationSupportKHRDelegate vkGetPhysicalDeviceWin32PresentationSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceWin32PresentationSupportKHRDelegate>(nameof(vkGetPhysicalDeviceWin32PresentationSupportKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceDisplayPropertiesKHR(IntPtr physicalDevice, 
-            int* propertyCount, DisplayPropertiesKhr.Native* properties);
+        private delegate Bool vkGetPhysicalDeviceXlibPresentationSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, IntPtr* dpy, IntPtr visualId);
+        private static readonly vkGetPhysicalDeviceXlibPresentationSupportKHRDelegate vkGetPhysicalDeviceXlibPresentationSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceXlibPresentationSupportKHRDelegate>(nameof(vkGetPhysicalDeviceXlibPresentationSupportKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR(
-            IntPtr physicalDevice, int* propertyCount, DisplayPlanePropertiesKhr* properties);
+        private delegate Bool vkGetPhysicalDeviceXcbPresentationSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, IntPtr* connection, IntPtr visual_id);
+        private static readonly vkGetPhysicalDeviceXcbPresentationSupportKHRDelegate vkGetPhysicalDeviceXcbPresentationSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceXcbPresentationSupportKHRDelegate>(nameof(vkGetPhysicalDeviceXcbPresentationSupportKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetDisplayPlaneSupportedDisplaysKHR(
-            IntPtr physicalDevice, int planeIndex, int* displayCount, long* displays);
+        private delegate Result vkGetPhysicalDeviceSurfaceCapabilitiesKHRDelegate(IntPtr physicalDevice, long surface, SurfaceCapabilitiesKhr* surfaceCapabilities);
+        private static readonly vkGetPhysicalDeviceSurfaceCapabilitiesKHRDelegate vkGetPhysicalDeviceSurfaceCapabilitiesKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceCapabilitiesKHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceCapabilitiesKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetDisplayPlaneCapabilitiesKHR(
-            IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
+        private delegate Result vkGetPhysicalDeviceSurfaceFormatsKHRDelegate(IntPtr physicalDevice, long surface, int* surfaceFormatCount, SurfaceFormatKhr* surfaceFormats);
+        private static readonly vkGetPhysicalDeviceSurfaceFormatsKHRDelegate vkGetPhysicalDeviceSurfaceFormatsKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceFormatsKHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceFormatsKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Bool vkGetPhysicalDeviceMirPresentationSupportKHR(
-            IntPtr physicalDevice, int queueFamilyIndex, IntPtr* connection);
+        private delegate Result vkGetPhysicalDeviceSurfacePresentModesKHRDelegate(IntPtr physicalDevice, long surface, int* presentModeCount, PresentModeKhr* presentModes);
+        private static readonly vkGetPhysicalDeviceSurfacePresentModesKHRDelegate vkGetPhysicalDeviceSurfacePresentModesKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfacePresentModesKHRDelegate>(nameof(vkGetPhysicalDeviceSurfacePresentModesKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Bool vkGetPhysicalDeviceWaylandPresentationSupportKHR(
-            IntPtr physicalDevice, int queueFamilyIndex, IntPtr* display);
+        private delegate Result vkGetPhysicalDeviceDisplayPropertiesKHRDelegate(IntPtr physicalDevice, int* propertyCount, DisplayPropertiesKhr.Native* properties);
+        private static readonly vkGetPhysicalDeviceDisplayPropertiesKHRDelegate vkGetPhysicalDeviceDisplayPropertiesKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceDisplayPropertiesKHRDelegate>(nameof(vkGetPhysicalDeviceDisplayPropertiesKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Bool vkGetPhysicalDeviceXcbPresentationSupportKHR(
-            IntPtr physicalDevice, int queueFamilyIndex, IntPtr* connection, IntPtr visualId);
+        private delegate Result vkGetPhysicalDeviceDisplayPlanePropertiesKHRDelegate(IntPtr physicalDevice, int* propertyCount, DisplayPlanePropertiesKhr* properties);
+        private static readonly vkGetPhysicalDeviceDisplayPlanePropertiesKHRDelegate vkGetPhysicalDeviceDisplayPlanePropertiesKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceDisplayPlanePropertiesKHRDelegate>(nameof(vkGetPhysicalDeviceDisplayPlanePropertiesKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Bool vkGetPhysicalDeviceWin32PresentationSupportKHR(IntPtr physicalDevice, int queueFamilyIndex);
+        private delegate Result vkGetDisplayPlaneSupportedDisplaysKHRDelegate(IntPtr physicalDevice, int planeIndex, int* displayCount, long* displays);
+        private static readonly vkGetDisplayPlaneSupportedDisplaysKHRDelegate vkGetDisplayPlaneSupportedDisplaysKHR = VulkanLibrary.GetProc<vkGetDisplayPlaneSupportedDisplaysKHRDelegate>(nameof(vkGetDisplayPlaneSupportedDisplaysKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Bool vkGetPhysicalDeviceXlibPresentationSupportKHR(
-            IntPtr physicalDevice, int queueFamilyIndex, IntPtr* dpy, IntPtr visualId);
+        private delegate Bool vkGetPhysicalDeviceMirPresentationSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, IntPtr* connection);
+        private static readonly vkGetPhysicalDeviceMirPresentationSupportKHRDelegate vkGetPhysicalDeviceMirPresentationSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceMirPresentationSupportKHRDelegate>(nameof(vkGetPhysicalDeviceMirPresentationSupportKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceFeatures2KHR(IntPtr physicalDevice, PhysicalDeviceFeatures2Khr* features);
+        private delegate Result vkGetDisplayPlaneCapabilitiesKHRDelegate(IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
+        private static readonly vkGetDisplayPlaneCapabilitiesKHRDelegate vkGetDisplayPlaneCapabilitiesKHR = VulkanLibrary.GetProc<vkGetDisplayPlaneCapabilitiesKHRDelegate>(nameof(vkGetDisplayPlaneCapabilitiesKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceProperties2KHR(IntPtr physicalDevice, PhysicalDeviceProperties2Khr.Native* properties);
+        private delegate void vkGetPhysicalDeviceFeatures2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceFeatures2Khr* features);
+        private static readonly vkGetPhysicalDeviceFeatures2KHRDelegate vkGetPhysicalDeviceFeatures2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceFeatures2KHRDelegate>(nameof(vkGetPhysicalDeviceFeatures2KHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceFormatProperties2KHR(IntPtr physicalDevice, Format format, FormatProperties2Khr* formatProperties);
+        private delegate void vkGetPhysicalDeviceProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceProperties2Khr.Native* properties);
+        private static readonly vkGetPhysicalDeviceProperties2KHRDelegate vkGetPhysicalDeviceProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceProperties2KHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceImageFormatProperties2KHR(IntPtr physicalDevice,
-            PhysicalDeviceImageFormatInfo2Khr* imageFormatInfo, ImageFormatProperties2Khr* imageFormatProperties);
+        private delegate void vkGetPhysicalDeviceFormatProperties2KHRDelegate(IntPtr physicalDevice, Format format, FormatProperties2Khr* formatProperties);
+        private static readonly vkGetPhysicalDeviceFormatProperties2KHRDelegate vkGetPhysicalDeviceFormatProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceFormatProperties2KHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceQueueFamilyProperties2KHR(IntPtr physicalDevice,
-            int* queueFamilyPropertyCount, QueueFamilyProperties2Khr* queueFamilyProperties);
+        private delegate Result vkGetPhysicalDeviceImageFormatProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceImageFormatInfo2Khr* imageFormatInfo, ImageFormatProperties2Khr* imageFormatProperties);
+        private static readonly vkGetPhysicalDeviceImageFormatProperties2KHRDelegate vkGetPhysicalDeviceImageFormatProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceImageFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceImageFormatProperties2KHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceMemoryProperties2KHR(
-            IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties2Khr.Native memoryProperties);
+        private delegate void vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate(IntPtr physicalDevice, int* queueFamilyPropertyCount, QueueFamilyProperties2Khr* queueFamilyProperties);
+        private static readonly vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate vkGetPhysicalDeviceQueueFamilyProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceQueueFamilyProperties2KHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceSparseImageFormatProperties2KHR(IntPtr physicalDevice,
-            PhysicalDeviceSparseImageFormatInfo2Khr* formatInfo, int* propertyCount, SparseImageFormatProperties2Khr* properties);
+        private delegate void vkGetPhysicalDeviceMemoryProperties2KHRDelegate(IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties2Khr.Native memoryProperties);
+        private static readonly vkGetPhysicalDeviceMemoryProperties2KHRDelegate vkGetPhysicalDeviceMemoryProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceMemoryProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceMemoryProperties2KHR));
+
+        private delegate void vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSparseImageFormatInfo2Khr* formatInfo, int* propertyCount, SparseImageFormatProperties2Khr* properties);
+        private static readonly vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate vkGetPhysicalDeviceSparseImageFormatProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceSparseImageFormatProperties2KHR));
     }
 
     /// <summary>
@@ -880,7 +863,7 @@ namespace VulkanCore.Khr
     /// <summary>
     /// Structure specifying physical device memory properties.
     /// </summary>
-    public unsafe struct PhysicalDeviceMemoryProperties2Khr
+    public struct PhysicalDeviceMemoryProperties2Khr
     {
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {
@@ -90,9 +89,8 @@ namespace VulkanCore.Ext
 
         private delegate void CmdDebugMarkerInsertExtDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdSetDiscardRectangleEXT(IntPtr commandBuffer,
-            int firstDiscardRectangle, int discardRectangleCount, Rect2D* discardRectangles);
+        private delegate void vkCmdSetDiscardRectangleEXTDelegate(IntPtr commandBuffer, int firstDiscardRectangle, int discardRectangleCount, Rect2D* discardRectangles);
+        private static readonly vkCmdSetDiscardRectangleEXTDelegate vkCmdSetDiscardRectangleEXT = VulkanLibrary.GetProc<vkCmdSetDiscardRectangleEXTDelegate>(nameof(vkCmdSetDiscardRectangleEXT));
     }
 
     /// <summary>

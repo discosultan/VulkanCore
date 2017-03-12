@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Google
 {
@@ -60,13 +59,11 @@ namespace VulkanCore.Google
             return timings;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetRefreshCycleDurationGOOGLE(
-            IntPtr device, long swapchain, RefreshCycleDurationGoogle* displayTimingProperties);
+        private delegate Result vkGetRefreshCycleDurationGOOGLEDelegate(IntPtr device, long swapchain, RefreshCycleDurationGoogle* displayTimingProperties);
+        private static readonly vkGetRefreshCycleDurationGOOGLEDelegate vkGetRefreshCycleDurationGOOGLE = VulkanLibrary.GetProc<vkGetRefreshCycleDurationGOOGLEDelegate>(nameof(vkGetRefreshCycleDurationGOOGLE));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPastPresentationTimingGOOGLE(
-            IntPtr device, long swapchain, int* presentationTimingCount, PastPresentationTimingGoogle* presentationTimings);
+        private delegate Result vkGetPastPresentationTimingGOOGLEDelegate(IntPtr device, long swapchain, int* presentationTimingCount, PastPresentationTimingGoogle* presentationTimings);
+        private static readonly vkGetPastPresentationTimingGOOGLEDelegate vkGetPastPresentationTimingGOOGLE = VulkanLibrary.GetProc<vkGetPastPresentationTimingGOOGLEDelegate>(nameof(vkGetPastPresentationTimingGOOGLE));
     }
 
     /// <summary>

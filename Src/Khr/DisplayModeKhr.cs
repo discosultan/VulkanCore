@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -47,13 +46,11 @@ namespace VulkanCore.Khr
             return capabilities;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateDisplayModeKHR(IntPtr physicalDevice, long display, 
-            DisplayModeCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* mode);
+        private delegate Result vkCreateDisplayModeKHRDelegate(IntPtr physicalDevice, long display, DisplayModeCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* mode);
+        private static readonly vkCreateDisplayModeKHRDelegate vkCreateDisplayModeKHR = VulkanLibrary.GetProc<vkCreateDisplayModeKHRDelegate>(nameof(vkCreateDisplayModeKHR));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetDisplayPlaneCapabilitiesKHR(
-            IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
+        private delegate Result vkGetDisplayPlaneCapabilitiesKHRDelegate(IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
+        private static readonly vkGetDisplayPlaneCapabilitiesKHRDelegate vkGetDisplayPlaneCapabilitiesKHR = VulkanLibrary.GetProc<vkGetDisplayPlaneCapabilitiesKHRDelegate>(nameof(vkGetDisplayPlaneCapabilitiesKHR));
     }
 
     /// <summary>

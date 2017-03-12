@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -48,13 +47,12 @@ namespace VulkanCore
             if (!Disposed) vkDestroyFramebuffer(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateFramebuffer(IntPtr device, 
-            FramebufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* framebuffer);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyFramebuffer(IntPtr device, long framebuffer, AllocationCallbacks.Native* allocator);
+        private delegate Result vkCreateFramebufferDelegate(IntPtr device, FramebufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* framebuffer);
+        private static readonly vkCreateFramebufferDelegate vkCreateFramebuffer = VulkanLibrary.GetProc<vkCreateFramebufferDelegate>(nameof(vkCreateFramebuffer));
+
+        private delegate void vkDestroyFramebufferDelegate(IntPtr device, long framebuffer, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyFramebufferDelegate vkDestroyFramebuffer = VulkanLibrary.GetProc<vkDestroyFramebufferDelegate>(nameof(vkDestroyFramebuffer));
     }
 
     /// <summary>

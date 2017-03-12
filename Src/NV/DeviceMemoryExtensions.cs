@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.NV
 {
@@ -26,10 +25,9 @@ namespace VulkanCore.NV
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetMemoryWin32HandleNV(IntPtr device, 
-            long memory, ExternalMemoryHandleTypesNV handleType, IntPtr* handle);
+
+        private delegate Result vkGetMemoryWin32HandleNVDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesNV handleType, IntPtr* handle);
+        private static readonly vkGetMemoryWin32HandleNVDelegate vkGetMemoryWin32HandleNV = VulkanLibrary.GetProc<vkGetMemoryWin32HandleNVDelegate>(nameof(vkGetMemoryWin32HandleNV));
     }
 
     /// <summary>

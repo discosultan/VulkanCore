@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khx
 {
@@ -37,10 +36,10 @@ namespace VulkanCore.Khx
 
             return groupProperties;
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkEnumeratePhysicalDeviceGroupsKHX(IntPtr instance,
-            int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native[] physicalDeviceGroupProperties);
+
+        // TODO: Validate array usage.
+        private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native[] physicalDeviceGroupProperties);
+        private static readonly vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
     }
 
     /// <summary>

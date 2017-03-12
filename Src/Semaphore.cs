@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -50,12 +49,11 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateSemaphore(IntPtr device,
-            SemaphoreCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* semaphore);
+        private delegate Result vkCreateSemaphoreDelegate(IntPtr device, SemaphoreCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* semaphore);
+        private static readonly vkCreateSemaphoreDelegate vkCreateSemaphore = VulkanLibrary.GetProc<vkCreateSemaphoreDelegate>(nameof(vkCreateSemaphore));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroySemaphore(IntPtr device, long semaphore, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroySemaphoreDelegate(IntPtr device, long semaphore, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroySemaphoreDelegate vkDestroySemaphore = VulkanLibrary.GetProc<vkDestroySemaphoreDelegate>(nameof(vkDestroySemaphore));
     }
 
     /// <summary>

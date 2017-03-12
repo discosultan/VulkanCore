@@ -196,42 +196,32 @@ namespace VulkanCore
             return properties;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceProperties(
-            IntPtr physicalDevice, PhysicalDeviceProperties.Native* properties);
+        private delegate void vkGetPhysicalDevicePropertiesDelegate(IntPtr physicalDevice, PhysicalDeviceProperties.Native* properties);
+        private static readonly vkGetPhysicalDevicePropertiesDelegate vkGetPhysicalDeviceProperties = VulkanLibrary.GetProc<vkGetPhysicalDevicePropertiesDelegate>(nameof(vkGetPhysicalDeviceProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceQueueFamilyProperties(
-            IntPtr physicalDevice, int* queueFamilyPropertyCount, QueueFamilyProperties* queueFamilyProperties);
+        private delegate void vkGetPhysicalDeviceQueueFamilyPropertiesDelegate(IntPtr physicalDevice, int* queueFamilyPropertyCount, QueueFamilyProperties* queueFamilyProperties);
+        private static readonly vkGetPhysicalDeviceQueueFamilyPropertiesDelegate vkGetPhysicalDeviceQueueFamilyProperties = VulkanLibrary.GetProc<vkGetPhysicalDeviceQueueFamilyPropertiesDelegate>(nameof(vkGetPhysicalDeviceQueueFamilyProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceMemoryProperties(
-            IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties.Native memoryProperties);
+        private delegate void vkGetPhysicalDeviceMemoryPropertiesDelegate(IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties.Native memoryProperties);
+        private static readonly vkGetPhysicalDeviceMemoryPropertiesDelegate vkGetPhysicalDeviceMemoryProperties = VulkanLibrary.GetProc<vkGetPhysicalDeviceMemoryPropertiesDelegate>(nameof(vkGetPhysicalDeviceMemoryProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceFeatures(IntPtr physicalDevice, PhysicalDeviceFeatures* features);
+        private delegate void vkGetPhysicalDeviceFeaturesDelegate(IntPtr physicalDevice, PhysicalDeviceFeatures* features);
+        private static readonly vkGetPhysicalDeviceFeaturesDelegate vkGetPhysicalDeviceFeatures = VulkanLibrary.GetProc<vkGetPhysicalDeviceFeaturesDelegate>(nameof(vkGetPhysicalDeviceFeatures));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceFormatProperties(
-            IntPtr physicalDevice, Format format, FormatProperties* formatProperties);
+        private delegate void vkGetPhysicalDeviceFormatPropertiesDelegate(IntPtr physicalDevice, Format format, FormatProperties* formatProperties);
+        private static readonly vkGetPhysicalDeviceFormatPropertiesDelegate vkGetPhysicalDeviceFormatProperties = VulkanLibrary.GetProc<vkGetPhysicalDeviceFormatPropertiesDelegate>(nameof(vkGetPhysicalDeviceFormatProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceImageFormatProperties(IntPtr physicalDevice, 
-            Format format, ImageType type, ImageTiling tiling, ImageUsages usages, ImageCreateFlags flags, 
-            ImageFormatProperties* imageFormatProperties);
+        private delegate Result vkGetPhysicalDeviceImageFormatPropertiesDelegate(IntPtr physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsages usage, ImageCreateFlags flags, ImageFormatProperties* imageFormatProperties);
+        private static readonly vkGetPhysicalDeviceImageFormatPropertiesDelegate vkGetPhysicalDeviceImageFormatProperties = VulkanLibrary.GetProc<vkGetPhysicalDeviceImageFormatPropertiesDelegate>(nameof(vkGetPhysicalDeviceImageFormatProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkEnumerateDeviceLayerProperties(
-            IntPtr physicalDevice, int* propertyCount, LayerProperties.Native* properties);
+        private delegate Result vkEnumerateDeviceLayerPropertiesDelegate(IntPtr physicalDevice, int* propertyCount, LayerProperties.Native* properties);
+        private static readonly vkEnumerateDeviceLayerPropertiesDelegate vkEnumerateDeviceLayerProperties = VulkanLibrary.GetProc<vkEnumerateDeviceLayerPropertiesDelegate>(nameof(vkEnumerateDeviceLayerProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkEnumerateDeviceExtensionProperties(
-            IntPtr physicalDevice, byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
+        private delegate Result vkEnumerateDeviceExtensionPropertiesDelegate(IntPtr physicalDevice, byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
+        private static readonly vkEnumerateDeviceExtensionPropertiesDelegate vkEnumerateDeviceExtensionProperties = VulkanLibrary.GetProc<vkEnumerateDeviceExtensionPropertiesDelegate>(nameof(vkEnumerateDeviceExtensionProperties));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceSparseImageFormatProperties(IntPtr physicalDevice, 
-            Format format, ImageType type, SampleCounts samples, ImageUsages usage, ImageTiling tiling, 
-            int* propertyCount, SparseImageFormatProperties* properties);
+        private delegate void vkGetPhysicalDeviceSparseImageFormatPropertiesDelegate(IntPtr physicalDevice, Format format, ImageType type, SampleCounts samples, ImageUsages usage, ImageTiling tiling, int* propertyCount, SparseImageFormatProperties* properties);
+        private static readonly vkGetPhysicalDeviceSparseImageFormatPropertiesDelegate vkGetPhysicalDeviceSparseImageFormatProperties = VulkanLibrary.GetProc<vkGetPhysicalDeviceSparseImageFormatPropertiesDelegate>(nameof(vkGetPhysicalDeviceSparseImageFormatProperties));
     }
 
     /// <summary>

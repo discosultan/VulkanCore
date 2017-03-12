@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -35,13 +34,12 @@ namespace VulkanCore
             if (!Disposed) vkDestroySampler(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateSampler(IntPtr device, 
-            SamplerCreateInfo* CreateInfo, AllocationCallbacks.Native* allocator, long* sampler);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern IntPtr vkDestroySampler(IntPtr device, long sampler, AllocationCallbacks.Native* allocator);
+        private delegate Result vkCreateSamplerDelegate(IntPtr device, SamplerCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* sampler);
+        private static readonly vkCreateSamplerDelegate vkCreateSampler = VulkanLibrary.GetProc<vkCreateSamplerDelegate>(nameof(vkCreateSampler));
+
+        private delegate void vkDestroySamplerDelegate(IntPtr device, long sampler, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroySamplerDelegate vkDestroySampler = VulkanLibrary.GetProc<vkDestroySamplerDelegate>(nameof(vkDestroySampler));
     }
 
     /// <summary>

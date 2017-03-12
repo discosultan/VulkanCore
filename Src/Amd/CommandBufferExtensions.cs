@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Amd
 {
@@ -77,13 +76,11 @@ namespace VulkanCore.Amd
             vkCmdDrawIndexedIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdDrawIndirectCountAMD(IntPtr commandBuffer, 
-            long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
+        private delegate void vkCmdDrawIndirectCountAMDDelegate(IntPtr commandBuffer, long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
+        private static readonly vkCmdDrawIndirectCountAMDDelegate vkCmdDrawIndirectCountAMD = VulkanLibrary.GetProc<vkCmdDrawIndirectCountAMDDelegate>(nameof(vkCmdDrawIndirectCountAMD));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkCmdDrawIndexedIndirectCountAMD(IntPtr commandBuffer, 
-            long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
+        private delegate void vkCmdDrawIndexedIndirectCountAMDDelegate(IntPtr commandBuffer, long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
+        private static readonly vkCmdDrawIndexedIndirectCountAMDDelegate vkCmdDrawIndexedIndirectCountAMD = VulkanLibrary.GetProc<vkCmdDrawIndexedIndirectCountAMDDelegate>(nameof(vkCmdDrawIndexedIndirectCountAMD));
     }
 
     [StructLayout(LayoutKind.Sequential)]

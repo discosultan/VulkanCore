@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -40,7 +39,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public void Reset()
         {
-            Result result = vkResetDescriptorPool(Parent, this, VkDescriptorPoolResetFlags.None);
+            Result result = vkResetDescriptorPool(Parent, this, 0);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -119,16 +118,15 @@ namespace VulkanCore
             if (!Disposed) vkDestroyDescriptorPool(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateDescriptorPool(IntPtr device, 
-            DescriptorPoolCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* descriptorPool);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyDescriptorPool(IntPtr device, long descriptorPool, AllocationCallbacks.Native* allocator);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkResetDescriptorPool(IntPtr device, long descriptorPool, VkDescriptorPoolResetFlags flags);
+        private delegate Result vkCreateDescriptorPoolDelegate(IntPtr device, DescriptorPoolCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* descriptorPool);
+        private static readonly vkCreateDescriptorPoolDelegate vkCreateDescriptorPool = VulkanLibrary.GetProc<vkCreateDescriptorPoolDelegate>(nameof(vkCreateDescriptorPool));
+
+        private delegate void vkDestroyDescriptorPoolDelegate(IntPtr device, long descriptorPool, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyDescriptorPoolDelegate vkDestroyDescriptorPool = VulkanLibrary.GetProc<vkDestroyDescriptorPoolDelegate>(nameof(vkDestroyDescriptorPool));
+
+        private delegate Result vkResetDescriptorPoolDelegate(IntPtr device, long descriptorPool, VkDescriptorPoolResetFlags flags);
+        private static readonly vkResetDescriptorPoolDelegate vkResetDescriptorPool = VulkanLibrary.GetProc<vkResetDescriptorPoolDelegate>(nameof(vkResetDescriptorPool));
     }
 
     // Is reserved for future use.

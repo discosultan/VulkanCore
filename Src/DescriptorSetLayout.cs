@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -44,12 +43,11 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateDescriptorSetLayout(IntPtr device, 
-            DescriptorSetLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* setLayout);
+        private delegate Result vkCreateDescriptorSetLayoutDelegate(IntPtr device, DescriptorSetLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* setLayout);
+        private static readonly vkCreateDescriptorSetLayoutDelegate vkCreateDescriptorSetLayout = VulkanLibrary.GetProc<vkCreateDescriptorSetLayoutDelegate>(nameof(vkCreateDescriptorSetLayout));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyDescriptorSetLayout(IntPtr device, long descriptorSetLayout, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyDescriptorSetLayoutDelegate(IntPtr device, long descriptorSetLayout, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyDescriptorSetLayoutDelegate vkDestroyDescriptorSetLayout = VulkanLibrary.GetProc<vkDestroyDescriptorSetLayoutDelegate>(nameof(vkDestroyDescriptorSetLayout));
     }
 
     /// <summary>

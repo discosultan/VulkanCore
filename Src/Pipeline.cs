@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -127,17 +126,15 @@ namespace VulkanCore
                 pipelines[i] = new Pipeline(parent, cache, pipelineHandles[i], ref allocator);
             return pipelines;
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateGraphicsPipelines(IntPtr device, long pipelineCache,
-            int createInfoCount, GraphicsPipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateComputePipelines(IntPtr device, long pipelineCache,
-            int createInfoCount, ComputePipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyPipeline(IntPtr device, long pipeline, AllocationCallbacks.Native* allocator);
+
+        private delegate Result vkCreateGraphicsPipelinesDelegate(IntPtr device, long pipelineCache, int createInfoCount, GraphicsPipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
+        private static readonly vkCreateGraphicsPipelinesDelegate vkCreateGraphicsPipelines = VulkanLibrary.GetProc<vkCreateGraphicsPipelinesDelegate>(nameof(vkCreateGraphicsPipelines));
+
+        private delegate Result vkCreateComputePipelinesDelegate(IntPtr device, long pipelineCache, int createInfoCount, ComputePipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
+        private static readonly vkCreateComputePipelinesDelegate vkCreateComputePipelines = VulkanLibrary.GetProc<vkCreateComputePipelinesDelegate>(nameof(vkCreateComputePipelines));
+
+        private delegate void vkDestroyPipelineDelegate(IntPtr device, long pipeline, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyPipelineDelegate vkDestroyPipeline = VulkanLibrary.GetProc<vkDestroyPipelineDelegate>(nameof(vkDestroyPipeline));
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Nvx
 {
@@ -42,13 +41,11 @@ namespace VulkanCore.Nvx
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateIndirectCommandsLayoutNVX(IntPtr device, 
-            IndirectCommandsLayoutCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* indirectCommandsLayout);
+        private delegate Result vkCreateIndirectCommandsLayoutNVXDelegate(IntPtr device, IndirectCommandsLayoutCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* indirectCommandsLayout);
+        private static readonly vkCreateIndirectCommandsLayoutNVXDelegate vkCreateIndirectCommandsLayoutNVX = VulkanLibrary.GetProc<vkCreateIndirectCommandsLayoutNVXDelegate>(nameof(vkCreateIndirectCommandsLayoutNVX));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyIndirectCommandsLayoutNVX(
-            IntPtr device, long indirectCommandsLayout, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyIndirectCommandsLayoutNVXDelegate(IntPtr device, long indirectCommandsLayout, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyIndirectCommandsLayoutNVXDelegate vkDestroyIndirectCommandsLayoutNVX = VulkanLibrary.GetProc<vkDestroyIndirectCommandsLayoutNVXDelegate>(nameof(vkDestroyIndirectCommandsLayoutNVX));
     }
 
     /// <summary>

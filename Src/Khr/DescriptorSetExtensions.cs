@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -19,7 +17,7 @@ namespace VulkanCore.Khr
             vkUpdateDescriptorSetWithTemplateKHR(descriptorSet.Parent.Parent, descriptorSet, descriptorUpdateTemplate, data);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkUpdateDescriptorSetWithTemplateKHR(IntPtr device, long descriptorSet, long descriptorUpdateTemplate, IntPtr data);
+        private delegate void vkUpdateDescriptorSetWithTemplateKHRDelegate(IntPtr device, long descriptorSet, long descriptorUpdateTemplate, IntPtr data);
+        private static readonly vkUpdateDescriptorSetWithTemplateKHRDelegate vkUpdateDescriptorSetWithTemplateKHR = VulkanLibrary.GetProc<vkUpdateDescriptorSetWithTemplateKHRDelegate>(nameof(vkUpdateDescriptorSetWithTemplateKHR));
     }
 }

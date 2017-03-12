@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -123,26 +122,23 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateImage(IntPtr device, 
-            ImageCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* image);
+        private delegate Result vkCreateImageDelegate(IntPtr device, ImageCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* image);
+        private static readonly vkCreateImageDelegate vkCreateImage = VulkanLibrary.GetProc<vkCreateImageDelegate>(nameof(vkCreateImage));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyImage(IntPtr device, long image, AllocationCallbacks.Native* allocator);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetImageMemoryRequirements(IntPtr device, long image, MemoryRequirements* memoryRequirements);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetImageSparseMemoryRequirements(IntPtr device, 
-            long image, int* sparseMemoryRequirementCount, SparseImageMemoryRequirements* sparseMemoryRequirements);
+        private delegate void vkGetImageMemoryRequirementsDelegate(IntPtr device, long image, MemoryRequirements* memoryRequirements);
+        private static readonly vkGetImageMemoryRequirementsDelegate vkGetImageMemoryRequirements = VulkanLibrary.GetProc<vkGetImageMemoryRequirementsDelegate>(nameof(vkGetImageMemoryRequirements));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkBindImageMemory(IntPtr device, long image, long memory, long memoryOffset);
+        private delegate void vkGetImageSparseMemoryRequirementsDelegate(IntPtr device, long image, int* sparseMemoryRequirementCount, SparseImageMemoryRequirements* sparseMemoryRequirements);
+        private static readonly vkGetImageSparseMemoryRequirementsDelegate vkGetImageSparseMemoryRequirements = VulkanLibrary.GetProc<vkGetImageSparseMemoryRequirementsDelegate>(nameof(vkGetImageSparseMemoryRequirements));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetImageSubresourceLayout(IntPtr device,
-            long image, ImageSubresource* subresource, SubresourceLayout* layout);
+        private delegate void vkDestroyImageDelegate(IntPtr device, long image, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyImageDelegate vkDestroyImage = VulkanLibrary.GetProc<vkDestroyImageDelegate>(nameof(vkDestroyImage));
+
+        private delegate void vkGetImageSubresourceLayoutDelegate(IntPtr device, long image, ImageSubresource* subresource, SubresourceLayout* layout);
+        private static readonly vkGetImageSubresourceLayoutDelegate vkGetImageSubresourceLayout = VulkanLibrary.GetProc<vkGetImageSubresourceLayoutDelegate>(nameof(vkGetImageSubresourceLayout));
+
+        private delegate Result vkBindImageMemoryDelegate(IntPtr device, long image, long memory, long memoryOffset);
+        private static readonly vkBindImageMemoryDelegate vkBindImageMemory = VulkanLibrary.GetProc<vkBindImageMemoryDelegate>(nameof(vkBindImageMemory));
     }
 
     /// <summary>
@@ -551,11 +547,11 @@ namespace VulkanCore
         /// <summary>
         /// Are the maximum image dimensions.
         /// </summary>
-        public Extent3D MaxExtent;
+        public Extent3D MaxExtent; // TODO: doc
         /// <summary>
         /// Is the maximum number of mipmap levels. Must either be equal to 1 (valid only if tiling
         /// is <see cref="ImageTiling.Linear"/>) or be equal to [eq]#{lceil}log~2~(max(pname:width,
-        /// height, depth)){rceil} {plus} 1#. TODO: convert [eq]#pname:width#, [eq]#height#, and
+        /// height, depth)){rceil} {plus} 1#. [eq]#pname:width#, [eq]#height#, and
         /// [eq]#pname:depth# are taken from the corresponding members of <see cref="MaxExtent"/>.
         /// </summary>
         public int MaxMipLevels;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.NV
 {
@@ -36,10 +35,8 @@ namespace VulkanCore.NV
             return properties;
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPhysicalDeviceExternalImageFormatPropertiesNV(IntPtr physicalDevice, 
-            Format format, ImageType type, ImageTiling tiling, ImageUsages usage, ImageCreateFlags flags, 
-            ExternalMemoryHandleTypesNV externalHandleType, ExternalImageFormatPropertiesNV* externalImageFormatProperties);
+        private delegate Result vkGetPhysicalDeviceExternalImageFormatPropertiesNVDelegate(IntPtr physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsages usage, ImageCreateFlags flags, ExternalMemoryHandleTypesNV externalHandleType, ExternalImageFormatPropertiesNV* externalImageFormatProperties);
+        private static readonly vkGetPhysicalDeviceExternalImageFormatPropertiesNVDelegate vkGetPhysicalDeviceExternalImageFormatPropertiesNV = VulkanLibrary.GetProc<vkGetPhysicalDeviceExternalImageFormatPropertiesNVDelegate>(nameof(vkGetPhysicalDeviceExternalImageFormatPropertiesNV));
     }
 
     /// <summary>

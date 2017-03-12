@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -70,15 +69,14 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateRenderPass(IntPtr device, 
-            RenderPassCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* renderPass);
+        private delegate Result vkCreateRenderPassDelegate(IntPtr device, RenderPassCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* renderPass);
+        private static readonly vkCreateRenderPassDelegate vkCreateRenderPass = VulkanLibrary.GetProc<vkCreateRenderPassDelegate>(nameof(vkCreateRenderPass));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyRenderPass(IntPtr device, long renderPass, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyRenderPassDelegate(IntPtr device, long renderPass, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyRenderPassDelegate vkDestroyRenderPass = VulkanLibrary.GetProc<vkDestroyRenderPassDelegate>(nameof(vkDestroyRenderPass));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetRenderAreaGranularity(IntPtr device, long renderPass, Extent2D* granularity);
+        private delegate void vkGetRenderAreaGranularityDelegate(IntPtr device, long renderPass, Extent2D* granularity);
+        private static readonly vkGetRenderAreaGranularityDelegate vkGetRenderAreaGranularity = VulkanLibrary.GetProc<vkGetRenderAreaGranularityDelegate>(nameof(vkGetRenderAreaGranularity));
     }
 
     /// <summary>
@@ -200,16 +198,17 @@ namespace VulkanCore
         /// is defined for each attachment. At the end of each subpass, multisample resolve
         /// operations read the subpass's color attachments, and resolve the samples for each pixel
         /// to the same pixel location in the corresponding resolve attachments, unless the resolve
-        /// attachment index is <see cref="AttachmentUnused"/>. If the first use of an attachment in
-        /// a render pass is as a resolve attachment, then the <see cref="AttachmentLoadOp"/> is
-        /// effectively ignored as the resolve is guaranteed to overwrite all pixels in the render area.
+        /// attachment index is <see cref="Constant.AttachmentUnused"/>. If the first use of an
+        /// attachment in a render pass is as a resolve attachment, then the <see
+        /// cref="AttachmentLoadOp"/> is effectively ignored as the resolve is guaranteed to
+        /// overwrite all pixels in the render area.
         /// </summary>
         public AttachmentReference[] ResolveAttachments;
         /// <summary>
         /// Specifies which attachment will be used for depth/stencil data and the layout it will be
-        /// in during the subpass. Setting the attachment index to <see cref="AttachmentUnused"/> or
-        /// leaving this as <c>null</c> indicates that no depth/stencil attachment will be used in
-        /// the subpass.
+        /// in during the subpass. Setting the attachment index to <see
+        /// cref="Constant.AttachmentUnused"/> or leaving this as <c>null</c> indicates that no
+        /// depth/stencil attachment will be used in the subpass.
         /// </summary>
         public AttachmentReference? DepthStencilAttachment;
         /// <summary>
@@ -247,15 +246,16 @@ namespace VulkanCore
         /// is defined for each attachment. At the end of each subpass, multisample resolve
         /// operations read the subpass's color attachments, and resolve the samples for each pixel
         /// to the same pixel location in the corresponding resolve attachments, unless the resolve
-        /// attachment index is <see cref="AttachmentUnused"/>. If the first use of an attachment in
-        /// a render pass is as a resolve attachment, then the <see cref="AttachmentLoadOp"/> is
-        /// effectively ignored as the resolve is guaranteed to overwrite all pixels in the render area.
+        /// attachment index is <see cref="Constant.AttachmentUnused"/>. If the first use of an
+        /// attachment in a render pass is as a resolve attachment, then the <see
+        /// cref="AttachmentLoadOp"/> is effectively ignored as the resolve is guaranteed to
+        /// overwrite all pixels in the render area.
         /// </param>
         /// <param name="depthStencilAttachment">
         /// Specifies which attachment will be used for depth/stencil data and the layout it will be
-        /// in during the subpass. Setting the attachment index to <see cref="AttachmentUnused"/> or
-        /// leaving this as <c>null</c> indicates that no depth/stencil attachment will be used in
-        /// the subpass.
+        /// in during the subpass. Setting the attachment index to <see
+        /// cref="Constant.AttachmentUnused"/> or leaving this as <c>null</c> indicates that no
+        /// depth/stencil attachment will be used in the subpass.
         /// </param>
         /// <param name="preserveAttachments">
         /// Render pass attachment indices describing the attachments that are not used by a subpass,
@@ -289,9 +289,9 @@ namespace VulkanCore
         /// </param>
         /// <param name="depthStencilAttachment">
         /// Specifies which attachment will be used for depth/stencil data and the layout it will be
-        /// in during the subpass. Setting the attachment index to <see cref="AttachmentUnused"/> or
-        /// leaving this as <c>null</c> indicates that no depth/stencil attachment will be used in
-        /// the subpass.
+        /// in during the subpass. Setting the attachment index to <see
+        /// cref="Constant.AttachmentUnused"/> or leaving this as <c>null</c> indicates that no
+        /// depth/stencil attachment will be used in the subpass.
         /// </param>
         public SubpassDescription(
             AttachmentReference[] colorAttachments,
@@ -377,8 +377,8 @@ namespace VulkanCore
         /// <summary>
         /// The index of the attachment of the render pass, and corresponds to the index of the
         /// corresponding element in the <see cref="RenderPassCreateInfo.Attachments"/> array. If any
-        /// color or depth/stencil attachments are <see cref="AttachmentUnused"/>, then no writes
-        /// occur for those attachments.
+        /// color or depth/stencil attachments are <see cref="Constant.AttachmentUnused"/>, then no
+        /// writes occur for those attachments.
         /// </summary>
         public int Attachment;
         /// <summary>
@@ -393,8 +393,8 @@ namespace VulkanCore
         /// <param name="attachment">
         /// The index of the attachment of the render pass, and corresponds to the index of the
         /// corresponding element in the <see cref="RenderPassCreateInfo.Attachments"/> array. If any
-        /// color or depth/stencil attachments are <see cref="AttachmentUnused"/>, then no writes
-        /// occur for those attachments.
+        /// color or depth/stencil attachments are <see cref="Constant.AttachmentUnused"/>, then no
+        /// writes occur for those attachments.
         /// </param>
         /// <param name="layout">Specifies the layout the attachment uses during the subpass.</param>
         public AttachmentReference(int attachment, ImageLayout layout)
@@ -411,11 +411,11 @@ namespace VulkanCore
     public struct SubpassDependency
     {
         /// <summary>
-        /// The subpass index of the first subpass in the dependency, or <see cref="SubpassExternal"/>.
+        /// The subpass index of the first subpass in the dependency, or <see cref="Constant.SubpassExternal"/>.
         /// </summary>
         public int SrcSubpass;
         /// <summary>
-        /// The subpass index of the second subpass in the dependency, or <see cref="SubpassExternal"/>.
+        /// The subpass index of the second subpass in the dependency, or <see cref="Constant.SubpassExternal"/>.
         /// </summary>
         public int DstSubpass;
         /// <summary>

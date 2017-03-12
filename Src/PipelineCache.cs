@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -93,18 +92,17 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreatePipelineCache(IntPtr device, 
-            PipelineCacheCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineCache);
+        private delegate Result vkCreatePipelineCacheDelegate(IntPtr device, PipelineCacheCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineCache);
+        private static readonly vkCreatePipelineCacheDelegate vkCreatePipelineCache = VulkanLibrary.GetProc<vkCreatePipelineCacheDelegate>(nameof(vkCreatePipelineCache));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyPipelineCache(IntPtr device, long pipelineCache, AllocationCallbacks.Native* allocator);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetPipelineCacheData(IntPtr device, long pipelineCache, int* dataSize, byte* data);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkMergePipelineCaches(IntPtr device, long dstCache, int srcCacheCount, long* srcCaches);
+        private delegate void vkDestroyPipelineCacheDelegate(IntPtr device, long pipelineCache, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyPipelineCacheDelegate vkDestroyPipelineCache = VulkanLibrary.GetProc<vkDestroyPipelineCacheDelegate>(nameof(vkDestroyPipelineCache));
+
+        private delegate Result vkGetPipelineCacheDataDelegate(IntPtr device, long pipelineCache, int* dataSize, byte* data);
+        private static readonly vkGetPipelineCacheDataDelegate vkGetPipelineCacheData = VulkanLibrary.GetProc<vkGetPipelineCacheDataDelegate>(nameof(vkGetPipelineCacheData));
+
+        private delegate Result vkMergePipelineCachesDelegate(IntPtr device, long dstCache, int srcCacheCount, long* srcCaches);
+        private static readonly vkMergePipelineCachesDelegate vkMergePipelineCaches = VulkanLibrary.GetProc<vkMergePipelineCachesDelegate>(nameof(vkMergePipelineCaches));
     }
 
     /// <summary>

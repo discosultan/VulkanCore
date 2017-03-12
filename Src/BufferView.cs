@@ -40,14 +40,12 @@ namespace VulkanCore
             if (!Disposed) vkDestroyBufferView(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateBufferView(IntPtr device, 
-            BufferViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyBufferView(IntPtr device, 
-            long bufferView, AllocationCallbacks.Native* allocator);
+
+        private delegate Result vkCreateBufferViewDelegate(IntPtr device, BufferViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
+        private static readonly vkCreateBufferViewDelegate vkCreateBufferView = VulkanLibrary.GetProc<vkCreateBufferViewDelegate>(nameof(vkCreateBufferView));
+
+        private delegate void vkDestroyBufferViewDelegate(IntPtr device, long bufferView, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyBufferViewDelegate vkDestroyBufferView = VulkanLibrary.GetProc<vkDestroyBufferViewDelegate>(nameof(vkDestroyBufferView));
     }
 
     /// <summary>

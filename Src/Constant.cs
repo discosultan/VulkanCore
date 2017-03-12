@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace VulkanCore
+﻿namespace VulkanCore
 {
     // https://www.khronos.org/registry/vulkan/
 
@@ -9,10 +7,6 @@ namespace VulkanCore
     /// </summary>
     public static class Constant
     {
-        // The dll is forwarded to 'vulkan.so' on Linux based systems running under Mono.
-        internal const string VulkanDll = "vulkan-1.dll";
-        internal const CallingConvention CallConv = CallingConvention.Winapi;
-
         public const int MaxPhysicalDeviceNameSize = 256;
         public const int UuidSize = 16;
         public const int LuidSizeKhx = 8;

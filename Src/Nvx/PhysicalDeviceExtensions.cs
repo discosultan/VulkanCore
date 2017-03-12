@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Nvx
 {
@@ -25,9 +24,8 @@ namespace VulkanCore.Nvx
             return (features, limits);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX(IntPtr physicalDevice, 
-            DeviceGeneratedCommandsFeaturesNvx* features, DeviceGeneratedCommandsLimitsNvx* limits);
+        private delegate void vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate(IntPtr physicalDevice, DeviceGeneratedCommandsFeaturesNvx* features, DeviceGeneratedCommandsLimitsNvx* limits);
+        private static readonly vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX = VulkanLibrary.GetProc<vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate>(nameof(vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX));
     }
 
     /// <summary>

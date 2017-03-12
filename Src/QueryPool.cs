@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -60,16 +59,14 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreateQueryPool(IntPtr device, 
-            QueryPoolCreateInfo* CreateInfo, AllocationCallbacks.Native* allocator, long* queryPool);
+        private delegate Result vkCreateQueryPoolDelegate(IntPtr device, QueryPoolCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* queryPool);
+        private static readonly vkCreateQueryPoolDelegate vkCreateQueryPool = VulkanLibrary.GetProc<vkCreateQueryPoolDelegate>(nameof(vkCreateQueryPool));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern IntPtr vkDestroyQueryPool(IntPtr device, long queryPool, AllocationCallbacks.Native* allocator);
+        private delegate void vkDestroyQueryPoolDelegate(IntPtr device, long queryPool, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyQueryPoolDelegate vkDestroyQueryPool = VulkanLibrary.GetProc<vkDestroyQueryPoolDelegate>(nameof(vkDestroyQueryPool));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkGetQueryPoolResults(IntPtr device, 
-            long queryPool, int firstQuery, int queryCount, int dataSize, IntPtr data, long stride, QueryResults flags);
+        private delegate Result vkGetQueryPoolResultsDelegate(IntPtr device, long queryPool, int firstQuery, int queryCount, int dataSize, IntPtr data, long stride, QueryResults flags);
+        private static readonly vkGetQueryPoolResultsDelegate vkGetQueryPoolResults = VulkanLibrary.GetProc<vkGetQueryPoolResultsDelegate>(nameof(vkGetQueryPoolResults));
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -53,13 +52,12 @@ namespace VulkanCore
             if (!Disposed) vkDestroyPipelineLayout(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkCreatePipelineLayout(IntPtr device, 
-            PipelineLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineLayout);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkDestroyPipelineLayout(IntPtr device, long pipelineLayout, AllocationCallbacks.Native* allocator);
+        private delegate Result vkCreatePipelineLayoutDelegate(IntPtr device, PipelineLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineLayout);
+        private static readonly vkCreatePipelineLayoutDelegate vkCreatePipelineLayout = VulkanLibrary.GetProc<vkCreatePipelineLayoutDelegate>(nameof(vkCreatePipelineLayout));
+
+        private delegate void vkDestroyPipelineLayoutDelegate(IntPtr device, long pipelineLayout, AllocationCallbacks.Native* allocator);
+        private static readonly vkDestroyPipelineLayoutDelegate vkDestroyPipelineLayout = VulkanLibrary.GetProc<vkDestroyPipelineLayoutDelegate>(nameof(vkDestroyPipelineLayout));
     }
 
     /// <summary>

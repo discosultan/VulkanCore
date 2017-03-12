@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 using static VulkanCore.Ext.DeviceExtensions;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Ext
 {
@@ -161,20 +160,17 @@ namespace VulkanCore.Ext
 
         private delegate Result DebugMarkerSetObjectTagExtDelegate(IntPtr device, DebugMarkerObjectTagInfoExt.Native* tagInfo);
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkDisplayPowerControlEXT(IntPtr device, long display, DisplayPowerInfoExt* displayPowerInfo);
+        private delegate Result vkDisplayPowerControlEXTDelegate(IntPtr device, long display, DisplayPowerInfoExt* displayPowerInfo);
+        private static readonly vkDisplayPowerControlEXTDelegate vkDisplayPowerControlEXT = VulkanLibrary.GetProc<vkDisplayPowerControlEXTDelegate>(nameof(vkDisplayPowerControlEXT));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkRegisterDeviceEventEXT(IntPtr device, 
-            DeviceEventInfoExt* deviceEventInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private delegate Result vkRegisterDisplayEventEXTDelegate(IntPtr device, long display, DisplayEventInfoExt* displayEventInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private static readonly vkRegisterDisplayEventEXTDelegate vkRegisterDisplayEventEXT = VulkanLibrary.GetProc<vkRegisterDisplayEventEXTDelegate>(nameof(vkRegisterDisplayEventEXT));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern Result vkRegisterDisplayEventEXT(IntPtr device, long display, 
-            DisplayEventInfoExt* displayEventInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private delegate Result vkRegisterDeviceEventEXTDelegate(IntPtr device, DeviceEventInfoExt* deviceEventInfo, AllocationCallbacks.Native* allocator, long* fence);
+        private static readonly vkRegisterDeviceEventEXTDelegate vkRegisterDeviceEventEXT = VulkanLibrary.GetProc<vkRegisterDeviceEventEXTDelegate>(nameof(vkRegisterDeviceEventEXT));
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkSetHdrMetadataEXT(IntPtr device, 
-            int swapchainCount, long* swapchains, HdrMetadataExt* metadata);
+        private delegate void vkSetHdrMetadataEXTDelegate(IntPtr device, int swapchainCount, long* swapchains, HdrMetadataExt* metadata);
+        private static readonly vkSetHdrMetadataEXTDelegate vkSetHdrMetadataEXT = VulkanLibrary.GetProc<vkSetHdrMetadataEXTDelegate>(nameof(vkSetHdrMetadataEXT));
     }
 
     /// <summary>

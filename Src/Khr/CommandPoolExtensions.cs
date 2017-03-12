@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -19,11 +17,11 @@ namespace VulkanCore.Khr
         /// <param name="commandPool">The command pool to trim.</param>
         public static void TrimKhr(this CommandPool commandPool)
         {
-            vkTrimCommandPoolKHR(commandPool.Parent, commandPool, CommandPoolTrimFlags.None);
+            vkTrimCommandPoolKHR(commandPool.Parent, commandPool, 0);
         }
 
-        [DllImport(VulkanDll, CallingConvention = CallConv)]
-        private static extern void vkTrimCommandPoolKHR(IntPtr device, long commandPool, CommandPoolTrimFlags flags);
+        private delegate void vkTrimCommandPoolKHRDelegate(IntPtr device, long commandPool, CommandPoolTrimFlags flags);
+        private static readonly vkTrimCommandPoolKHRDelegate vkTrimCommandPoolKHR = VulkanLibrary.GetProc<vkTrimCommandPoolKHRDelegate>(nameof(vkTrimCommandPoolKHR));
     }
 
     // Is reserved for future use.
