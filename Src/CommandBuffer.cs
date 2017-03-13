@@ -2096,6 +2096,30 @@ namespace VulkanCore
         /// </summary>
         public long Size;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BufferMemoryBarrier"/> structure.
+        /// </summary>
+        public BufferMemoryBarrier(Buffer buffer, Accesses sourceAccesMask, Accesses destinationAccessMask, long offset = 0, long size = WholeSize)
+            : this(buffer, sourceAccesMask, destinationAccessMask, QueueFamilyIgnored, QueueFamilyIgnored, offset, size)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BufferMemoryBarrier"/> structure.
+        /// </summary>
+        public BufferMemoryBarrier(Buffer buffer, Accesses sourceAccesMask, Accesses destinationAccessMask, int sourceQueueFamilyIndex, int destinationQueueFamilyIndex, long offset = 0, long size = WholeSize)
+        {
+            Type = StructureType.BufferMemoryBarrier;
+            Next = IntPtr.Zero;
+            Buffer = buffer;
+            Offset = offset;
+            Size = size;
+            SrcAccessMask = sourceAccesMask;
+            DstAccessMask = destinationAccessMask;
+            SrcQueueFamilyIndex = sourceQueueFamilyIndex;
+            DstQueueFamilyIndex = destinationQueueFamilyIndex;
+        }
+
         internal void Prepare()
         {
             Type = StructureType.BufferMemoryBarrier;
