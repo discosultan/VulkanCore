@@ -13,9 +13,7 @@ namespace VulkanCore
         static VulkanLibrary()
         {
             _finalizer = new VulkanLibrary();
-            string name = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? "vulkan-1.dll"
-                : "libvulkan.so.1";
+            string name = GetVulkanLibraryName();
             _handle = LoadLibrary(name);
         }
 
@@ -30,11 +28,11 @@ namespace VulkanCore
             IntPtr handle;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                handle = Kernel32.GetProcAddress(_handle, procName);
+                handle = Kernel32GetProcAddress(_handle, procName);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                handle = LibDL.dlsym(_handle, procName);
+                handle = LibDLGetProcAddress(_handle, procName);
             }
             else
             {
@@ -50,11 +48,11 @@ namespace VulkanCore
             IntPtr handle;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                handle = Kernel32.LoadLibrary(fileName);
+                handle = Kernel32LoadLibrary(fileName);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                handle = LibDL.dlopen(fileName, LibDL.RtldNow);
+                handle = LibDLLoadLibrary(fileName, LibDLRtldNow);
             }
             else
             {
@@ -68,11 +66,11 @@ namespace VulkanCore
             int returnCode;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                returnCode = Kernel32.FreeLibrary(module);
+                returnCode = Kernel32FreeLibrary(module);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                returnCode = LibDL.dlclose(module);
+                returnCode = LibDLFreeLibrary(module);
             }
             else
             {
@@ -81,33 +79,46 @@ namespace VulkanCore
             return returnCode;
         }
 
-        private static class Kernel32
+        private static string GetVulkanLibraryName()
         {
-            [DllImport("kernel32")]
-            public static extern IntPtr LoadLibrary(string fileName);
-
-            [DllImport("kernel32")]
-            public static extern IntPtr GetProcAddress(IntPtr module, string procName);
-
-            [DllImport("kernel32")]
-            public static extern int FreeLibrary(IntPtr module);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "vulkan-1.dll";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // Ubuntu OS description starts with "linux".
+                if (RuntimeInformation.OSDescription.StartsWith("linux", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "libvulkan.so.1";
+                }
+                // Android OS description starts with "unix".
+                else if (RuntimeInformation.OSDescription.StartsWith("unix", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "vulkan.so";
+                }
+            }
+            throw new NotImplementedException();
         }
 
-        private static class LibDL
-        {
-            [DllImport("libdl.so")]
-            public static extern IntPtr dlopen(string fileName, int flags);
+        [DllImport("kernel32", EntryPoint = "LoadLibrary")]
+        private static extern IntPtr Kernel32LoadLibrary(string fileName);
 
-            [DllImport("libdl.so")]
-            public static extern IntPtr dlsym(IntPtr handle, string name);
+        [DllImport("kernel32", EntryPoint = "GetProcAddress")]
+        private static extern IntPtr Kernel32GetProcAddress(IntPtr module, string procName);
 
-            [DllImport("libdl.so")]
-            public static extern int dlclose(IntPtr handle);
+        [DllImport("kernel32", EntryPoint = "FreeLibrary")]
+        private static extern int Kernel32FreeLibrary(IntPtr module);
 
-            [DllImport("libdl.so")]
-            public static extern string dlerror();
+        [DllImport("libdl.so", EntryPoint = "dlopen")]
+        private static extern IntPtr LibDLLoadLibrary(string fileName, int flags);
 
-            public const int RtldNow = 0x002;
-        }
+        [DllImport("libdl.so", EntryPoint = "dlsym")]
+        private static extern IntPtr LibDLGetProcAddress(IntPtr handle, string name);
+
+        [DllImport("libdl.so", EntryPoint = "dlclose")]
+        private static extern int LibDLFreeLibrary(IntPtr handle);
+
+        private const int LibDLRtldNow = 0x002;
     }
 }
