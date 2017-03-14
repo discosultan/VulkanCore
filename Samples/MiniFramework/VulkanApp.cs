@@ -131,13 +131,14 @@ namespace VulkanCore.Samples
                 default:
                     throw new NotImplementedException();
             }
-
-            var layers = Instance.EnumerateLayerProperties();
-
+            
             var createInfo = new InstanceCreateInfo();
             if (debug)
             {
-                createInfo.EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation };
+                var availableLayers = Instance.EnumerateLayerProperties();
+                createInfo.EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation }
+                    .Where(availableLayers.Contains)
+                    .ToArray();
                 createInfo.EnabledExtensionNames = new[]
                 {
                     Constant.InstanceExtension.KhrSurface,
@@ -234,14 +235,14 @@ namespace VulkanCore.Samples
                 ? GraphicsQueue 
                 : Device.GetQueue(presentQueueFamilyIndex);
 
-            bool GetPresentationSupport(PhysicalDevice physicalDevice, int i)
+            bool GetPresentationSupport(PhysicalDevice physicalDevice, int queueFamilyIndex)
             {
                 switch (Window.Platform)
                 {
                     case Platform.Android:
                         return true;
                     case Platform.Win32:
-                        return physicalDevice.GetWin32PresentationSupportKhr(i);
+                        return physicalDevice.GetWin32PresentationSupportKhr(queueFamilyIndex);
                     default:
                         throw new NotImplementedException();
                 }

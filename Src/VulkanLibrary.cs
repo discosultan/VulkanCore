@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -13,8 +15,11 @@ namespace VulkanCore
         static VulkanLibrary()
         {
             _finalizer = new VulkanLibrary();
-            string name = GetVulkanLibraryName();
-            _handle = LoadLibrary(name);
+            _handle = GetVulkanLibraryNameCandidates()
+                .Select(name => LoadLibrary(name))
+                .FirstOrDefault(handle => handle != IntPtr.Zero);
+            if (_handle == IntPtr.Zero)
+                throw new NotImplementedException("Vulkan native library was not found.");
         }
 
         ~VulkanLibrary()
@@ -79,24 +84,16 @@ namespace VulkanCore
             return returnCode;
         }
 
-        private static string GetVulkanLibraryName()
+        private static IEnumerable<string> GetVulkanLibraryNameCandidates()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return "vulkan-1.dll";
+                yield return "vulkan-1.dll";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                // Ubuntu OS description starts with "linux".
-                if (RuntimeInformation.OSDescription.StartsWith("linux", StringComparison.OrdinalIgnoreCase))
-                {
-                    return "libvulkan.so.1";
-                }
-                // Android OS description starts with "unix".
-                else if (RuntimeInformation.OSDescription.StartsWith("unix", StringComparison.OrdinalIgnoreCase))
-                {
-                    return "libvulkan.so";
-                }
+                yield return "libvulkan.so.1"; // Known to be present on Ubuntu 16.
+                yield return "libvulkan.so";   // Known to be present on Android 7.
             }
             throw new NotImplementedException();
         }

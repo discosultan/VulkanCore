@@ -1,4 +1,8 @@
-﻿namespace VulkanCore
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace VulkanCore
 {
     /// <summary>
     /// Provides helper methods for various types.
@@ -19,9 +23,14 @@
         /// </param>
         /// <param name="properties">A bitmask of properties to request.</param>
         /// <returns>Index of the requested <see cref="MemoryType"/> or <c>-1</c> if not found.</returns>
-        public static int IndexOf(this MemoryType[] memoryTypes, int memoryTypeBits, MemoryProperties properties)
+        /// ///
+        /// <exception cref="ArgumentNullException"><paramref name="memoryTypes"/> is <c>null</c>.</exception>
+        public static int IndexOf(this IList<MemoryType> memoryTypes, int memoryTypeBits, MemoryProperties properties)
         {
-            int count = memoryTypes?.Length ?? 0;
+            if (memoryTypes == null)
+                throw new ArgumentNullException(nameof(memoryTypes));
+
+            int count = memoryTypes?.Count ?? 0;
             for (int i = 0; i < count; i++)
             {
                 if ((memoryTypeBits & 1) == 1 &&
@@ -32,6 +41,42 @@
                 memoryTypeBits >>= 1;
             }
             return -1;
+        }
+
+        /// <summary>
+        /// Determines whether a sequence of <see cref="LayerProperties"/> contains a layer with
+        /// specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="layers">A sequence in which to locate a layer name.</param>
+        /// <param name="name">The layer name to locate in the sequence.</param>
+        /// <returns>
+        /// <c>true</c> if the source sequence contains an element that has the specified value;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="layers"/> is <c>null</c>.</exception>
+        public static bool Contains(this IEnumerable<LayerProperties> layers, string name)
+        {
+            return layers
+                .Select(layer => layer.LayerName)
+                .Contains(name, StringComparer.Ordinal);
+        }
+
+        /// <summary>
+        /// Determines whether a sequence of <see cref="ExtensionProperties"/> contains a layer with
+        /// specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="extensions">A sequence in which to locate an extension name.</param>
+        /// <param name="name">The layer name to locate in the sequence.</param>
+        /// <returns>
+        /// <c>true</c> if the source sequence contains an element that has the specified value;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="extensions"/> is <c>null</c>.</exception>
+        public static bool Contains(this IEnumerable<ExtensionProperties> extensions, string name)
+        {
+            return extensions
+                .Select(extension => extension.ExtensionName)
+                .Contains(name, StringComparer.Ordinal);
         }
     }
 }
