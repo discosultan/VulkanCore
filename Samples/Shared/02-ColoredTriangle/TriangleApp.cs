@@ -76,7 +76,7 @@ namespace VulkanCore.Samples.Triangle
             {
                 _imageViews[i] = SwapchainImages[i].CreateView(new ImageViewCreateInfo(
                     Swapchain.Format,
-                    new ImageSubresourceRange(ImageAspects.Color)));
+                    new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1)));
                 _framebuffers[i] = _renderPass.CreateFramebuffer(new FramebufferCreateInfo(
                     new[] { _imageViews[i] }, 
                     Window.Width, 

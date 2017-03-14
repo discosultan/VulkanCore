@@ -270,7 +270,7 @@ namespace VulkanCore.Samples.Cube
             _depthStencilMemory = Device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, heapIndex));
             _depthStencil.BindMemory(_depthStencilMemory);
             _depthStencilView = _depthStencil.CreateView(new ImageViewCreateInfo(_depthStencilFormat,
-                new ImageSubresourceRange(ImageAspects.Depth | ImageAspects.Stencil)));
+                new ImageSubresourceRange(ImageAspects.Depth | ImageAspects.Stencil, 0, 1, 0, 1)));
         }
 
         private void CreateUniformBuffers()
@@ -398,7 +398,7 @@ namespace VulkanCore.Samples.Cube
             {
                 _imageViews[i] = SwapchainImages[i].CreateView(new ImageViewCreateInfo(
                     Swapchain.Format,
-                    new ImageSubresourceRange(ImageAspects.Color)));
+                    new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1)));
                 _framebuffers[i] = _renderPass.CreateFramebuffer(new FramebufferCreateInfo(
                     new[] { _imageViews[i], _depthStencilView },
                     Window.Width,

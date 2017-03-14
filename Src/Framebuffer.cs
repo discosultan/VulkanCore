@@ -100,7 +100,7 @@ namespace VulkanCore
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FramebufferCreateInfo"/> structure.
-        /// </summary>        
+        /// </summary>
         /// <param name="attachments">
         /// An array of <see cref="ImageView"/> handles, each of which will be used as the
         /// corresponding attachment in a render pass instance.

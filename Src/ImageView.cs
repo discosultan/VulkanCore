@@ -233,7 +233,7 @@ namespace VulkanCore
     public struct ImageSubresourceRange
     {
         /// <summary>
-        /// A bitmask indicating which aspect(s) of the image are included in the view. See <see cref="ImageAspects"/>.
+        /// A bitmask indicating which aspect(s) of the image are included in the view.
         /// </summary>
         public ImageAspects AspectMask;
         /// <summary>
@@ -267,8 +267,9 @@ namespace VulkanCore
         /// <param name="layerCount">
         /// The number of array layers (starting from <see cref="BaseArrayLayer"/>) accessible to the view.
         /// </param>
-        public ImageSubresourceRange(ImageAspects aspectMask, int baseMipLevel = 0, int levelCount = RemainingArrayLevels,
-             int baseArrayLayer = 0, int layerCount = RemainingMipLevels)
+        public ImageSubresourceRange(ImageAspects aspectMask,
+            int baseMipLevel = 0, int levelCount = RemainingArrayLevels,
+            int baseArrayLayer = 0, int layerCount = RemainingMipLevels)
         {
             AspectMask = aspectMask;
             BaseMipLevel = baseMipLevel;
