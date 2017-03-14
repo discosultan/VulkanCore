@@ -86,7 +86,7 @@ namespace VulkanCore.Ext
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>The resulting fence object.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static Fence RegisterDeviceEventExt(this Device device, DeviceEventInfoExt deviceEventInfo, 
+        public static Fence RegisterDeviceEventExt(this Device device, DeviceEventInfoExt deviceEventInfo,
             AllocationCallbacks? allocator = null)
         {
             deviceEventInfo.Prepare();
@@ -187,7 +187,7 @@ namespace VulkanCore.Ext
         /// </summary>
         public long Object;
         /// <summary>
-        /// A unicode string specifying the name to apply to object. 
+        /// A unicode string specifying the name to apply to object.
         /// </summary>
         public string ObjectName;
 
@@ -236,7 +236,7 @@ namespace VulkanCore.Ext
     }
 
     /// <summary>
-    /// Specify parameters of a tag to attach to an object. 
+    /// Specify parameters of a tag to attach to an object.
     /// </summary>
     public unsafe struct DebugMarkerObjectTagInfoExt
     {
@@ -245,11 +245,11 @@ namespace VulkanCore.Ext
         /// </summary>
         public DebugReportObjectTypeExt ObjectType;
         /// <summary>
-        /// The object to be tagged. 
+        /// The object to be tagged.
         /// </summary>
         public long Object;
         /// <summary>
-        /// A numerical identifier of the tag. 
+        /// A numerical identifier of the tag.
         /// </summary>
         public long TagName;
         /// <summary>

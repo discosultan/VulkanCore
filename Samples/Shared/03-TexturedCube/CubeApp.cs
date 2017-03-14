@@ -182,7 +182,7 @@ namespace VulkanCore.Samples.Cube
             _textureMemory = Device.AllocateMemory(new MemoryAllocateInfo(imageMemReq.Size, imageHeapIndex));
             _texture.BindMemory(_textureMemory);
 
-            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color, levelCount: tex2D.Mipmaps.Length);
+            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, tex2D.Mipmaps.Length, 0, 1);
 
             // Copy the data from staging buffers to device local buffers.
             CommandBuffer cmdBuffer = CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];

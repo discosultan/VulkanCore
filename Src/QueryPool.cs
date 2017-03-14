@@ -70,7 +70,7 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Structure specifying parameters of a newly created query pool. 
+    /// Structure specifying parameters of a newly created query pool.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct QueryPoolCreateInfo
@@ -102,7 +102,7 @@ namespace VulkanCore
         /// A bitmask indicating which counters will be returned in queries on the new pool. Ignored
         /// if <see cref="QueryType"/> is not <see cref="VulkanCore.QueryType.PipelineStatistics"/>
         /// </param>
-        public QueryPoolCreateInfo(QueryType queryType, int queryCount, 
+        public QueryPoolCreateInfo(QueryType queryType, int queryCount,
             QueryPipelineStatistics pipelineStatistics = QueryPipelineStatistics.None)
         {
             Type = StructureType.QueryPoolCreateInfo;

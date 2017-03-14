@@ -117,7 +117,7 @@ namespace VulkanCore.Khr
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </param>
-        public PresentInfoKhr(Semaphore[] waitSemaphores, SwapchainKhr[] swapchains, int[] imageIndices, 
+        public PresentInfoKhr(Semaphore[] waitSemaphores, SwapchainKhr[] swapchains, int[] imageIndices,
             Result[] results = null, IntPtr next = default(IntPtr))
         {
             Next = next;
@@ -140,7 +140,7 @@ namespace VulkanCore.Khr
             public Result* Results;
         }
 
-        internal void ToNative(out Native native, 
+        internal void ToNative(out Native native,
             long* waitSemaphores, long* swapchains, int* imageIndices, Result* results)
         {
             native.Type = StructureType.PresentInfoKhr;

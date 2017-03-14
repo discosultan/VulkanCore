@@ -302,7 +302,7 @@ namespace VulkanCore
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>Resulting pipeline cache.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public PipelineCache CreatePipelineCache(PipelineCacheCreateInfo createInfo = default(PipelineCacheCreateInfo), 
+        public PipelineCache CreatePipelineCache(PipelineCacheCreateInfo createInfo = default(PipelineCacheCreateInfo),
             AllocationCallbacks? allocator = null)
         {
             return new PipelineCache(this, ref createInfo, ref allocator);
@@ -349,7 +349,7 @@ namespace VulkanCore
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>An array in which the resulting compute pipeline objects are returned.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public Pipeline[] CreateComputePipelines(ComputePipelineCreateInfo[] createInfos, 
+        public Pipeline[] CreateComputePipelines(ComputePipelineCreateInfo[] createInfos,
             PipelineCache cache = null, AllocationCallbacks? allocator = null)
         {
             return Pipeline.CreateComputePipelines(this, cache, createInfos, ref allocator);
@@ -396,7 +396,7 @@ namespace VulkanCore
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>An array in which the resulting graphics pipeline objects are returned.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public Pipeline[] CreateGraphicsPipelines(GraphicsPipelineCreateInfo[] createInfos, 
+        public Pipeline[] CreateGraphicsPipelines(GraphicsPipelineCreateInfo[] createInfos,
             PipelineCache cache = null, AllocationCallbacks? allocator = null)
         {
             return Pipeline.CreateGraphicsPipelines(this, cache, createInfos, ref allocator);
@@ -412,7 +412,7 @@ namespace VulkanCore
         /// <returns>Handle in which the resulting pipeline layout object is returned.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public PipelineLayout CreatePipelineLayout(
-            PipelineLayoutCreateInfo createInfo = default(PipelineLayoutCreateInfo), 
+            PipelineLayoutCreateInfo createInfo = default(PipelineLayoutCreateInfo),
             AllocationCallbacks? allocator = null)
         {
             return new PipelineLayout(this, ref createInfo, ref allocator);
@@ -504,7 +504,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <returns>The resulting fence object.</returns>
-        public Fence CreateFence(FenceCreateInfo createInfo = default(FenceCreateInfo), 
+        public Fence CreateFence(FenceCreateInfo createInfo = default(FenceCreateInfo),
             AllocationCallbacks? allocator = null)
         {
             return new Fence(this, &createInfo, ref allocator);

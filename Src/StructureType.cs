@@ -1,7 +1,7 @@
 ﻿namespace VulkanCore
 {
     /// <summary>
-    /// Structure type enumerant. 
+    /// Structure type enumerant.
     /// </summary>
     public enum StructureType
     {

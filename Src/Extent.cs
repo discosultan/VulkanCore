@@ -6,7 +6,7 @@ using System.Text;
 namespace VulkanCore
 {
     /// <summary>
-    /// Structure specifying a two-dimensional extent. 
+    /// Structure specifying a two-dimensional extent.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Extent2D
@@ -68,7 +68,7 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Structure specifying a three-dimensional extent. 
+    /// Structure specifying a three-dimensional extent.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Extent3D

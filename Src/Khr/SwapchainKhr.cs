@@ -203,15 +203,15 @@ namespace VulkanCore.Khr
         /// </param>
         /// <param name="oldSwapchain">Existing swapchain to replace, if any.</param>
         public SwapchainCreateInfoKhr(
-            SurfaceKhr surface, 
+            SurfaceKhr surface,
             Format imageFormat,
-            Extent2D imageExtent, 
+            Extent2D imageExtent,
             SurfaceTransformsKhr preTransform,
             PresentModeKhr presentMode,
             SwapchainCreateFlagsKhr flags = 0,
             int minImageCount = 2,
-            ImageUsages imageUsage = ImageUsages.ColorAttachment | ImageUsages.TransferDst, 
-            CompositeAlphasKhr compositeAlpha = CompositeAlphasKhr.Opaque, 
+            ImageUsages imageUsage = ImageUsages.ColorAttachment | ImageUsages.TransferDst,
+            CompositeAlphasKhr compositeAlpha = CompositeAlphasKhr.Opaque,
             int imageArrayLayers = 1,
             bool clipped = true,
             SwapchainKhr oldSwapchain = null)

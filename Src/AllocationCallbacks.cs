@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace VulkanCore
 {
     /// <summary>
-    /// Structure containing callback functions for memory allocation. 
+    /// Structure containing callback functions for memory allocation.
     /// </summary>
     public unsafe struct AllocationCallbacks
     {
@@ -34,7 +34,7 @@ namespace VulkanCore
         /// </para>
         /// </param>
         public AllocationCallbacks(AllocationFunction alloc, ReallocationFunction realloc, FreeFunction free,
-            InternalAllocationNotification internalAlloc = null, InternalFreeNotification internalFree = null, 
+            InternalAllocationNotification internalAlloc = null, InternalFreeNotification internalFree = null,
             IntPtr userData = default(IntPtr))
         {
             Allocation = alloc;
@@ -97,11 +97,11 @@ namespace VulkanCore
             native->Allocation = Interop.GetFunctionPointerForDelegate(Allocation);
             native->Reallocation = Interop.GetFunctionPointerForDelegate(Reallocation);
             native->Free = Interop.GetFunctionPointerForDelegate(Free);
-            native->InternalAllocation = InternalAllocation == null 
-                ? IntPtr.Zero 
+            native->InternalAllocation = InternalAllocation == null
+                ? IntPtr.Zero
                 : Interop.GetFunctionPointerForDelegate(InternalAllocation);
-            native->InternalFree = InternalFree == null 
-                ? IntPtr.Zero 
+            native->InternalFree = InternalFree == null
+                ? IntPtr.Zero
                 : Interop.GetFunctionPointerForDelegate(InternalFree);
         }
 
@@ -244,41 +244,41 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Allocation scope. 
+    /// Allocation scope.
     /// </summary>
     public enum SystemAllocationScope
     {
         /// <summary>
-        /// The allocation is scoped to the duration of the Vulkan command. 
+        /// The allocation is scoped to the duration of the Vulkan command.
         /// </summary>
         Command = 0,
         /// <summary>
         /// The allocation is scoped to the lifetime of the Vulkan object that is being
-        /// created or used. 
+        /// created or used.
         /// </summary>
         Object = 1,
         /// <summary>
         /// The allocation is scoped to the lifetime of a <see cref="PipelineCache"/>
-        /// object. 
+        /// object.
         /// </summary>
         Cache = 2,
         /// <summary>
-        /// The allocation is scoped to the lifetime of the Vulkan device. 
+        /// The allocation is scoped to the lifetime of the Vulkan device.
         /// </summary>
         Device = 3,
         /// <summary>
-        /// The allocation is scoped to the lifetime of the Vulkan instance. 
+        /// The allocation is scoped to the lifetime of the Vulkan instance.
         /// </summary>
         Instance = 4
     }
 
     /// <summary>
-    /// Allocation type. 
+    /// Allocation type.
     /// </summary>
     public enum InternalAllocationType
     {
         /// <summary>
-        /// The allocation is intended for execution by the host. 
+        /// The allocation is intended for execution by the host.
         /// </summary>
         Executable = 0
     }

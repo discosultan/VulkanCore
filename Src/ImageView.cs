@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -100,9 +99,9 @@ namespace VulkanCore
         /// <param name="viewType">The type of the image view.</param>
         /// <param name="components">Specifies a remapping of color components.</param>
         public ImageViewCreateInfo(
-            Format format, 
-            ImageSubresourceRange subresourceRange, 
-            ImageViewType viewType = ImageViewType.Image2D, 
+            Format format,
+            ImageSubresourceRange subresourceRange,
+            ImageViewType viewType = ImageViewType.Image2D,
             ComponentMapping components = default(ComponentMapping))
         {
             Type = StructureType.ImageViewCreateInfo;
@@ -245,7 +244,7 @@ namespace VulkanCore
         /// </summary>
         public int LevelCount;
         /// <summary>
-        /// The first array layer accessible to the view. 
+        /// The first array layer accessible to the view.
         /// </summary>
         public int BaseArrayLayer;
         /// <summary>
@@ -268,8 +267,8 @@ namespace VulkanCore
         /// The number of array layers (starting from <see cref="BaseArrayLayer"/>) accessible to the view.
         /// </param>
         public ImageSubresourceRange(ImageAspects aspectMask,
-            int baseMipLevel = 0, int levelCount = RemainingArrayLevels,
-            int baseArrayLayer = 0, int layerCount = RemainingMipLevels)
+            int baseMipLevel, int levelCount,
+            int baseArrayLayer, int layerCount)
         {
             AspectMask = aspectMask;
             BaseMipLevel = baseMipLevel;

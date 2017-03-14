@@ -100,7 +100,7 @@ namespace VulkanCore
         /// </param>
         /// <returns>Image format capabilities of a physical device</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public ImageFormatProperties GetImageFormatProperties(Format format, ImageType type, 
+        public ImageFormatProperties GetImageFormatProperties(Format format, ImageType type,
             ImageTiling tiling, ImageUsages usages, ImageCreateFlags flags = 0)
         {
             ImageFormatProperties properties;
@@ -150,7 +150,7 @@ namespace VulkanCore
             int count;
             Result result = vkEnumerateDeviceLayerProperties(this, &count, null);
             VulkanException.ThrowForInvalidResult(result);
-            
+
             var nativePropertiesPtr = stackalloc LayerProperties.Native[count];
             result = vkEnumerateDeviceLayerProperties(this, &count, nativePropertiesPtr);
             VulkanException.ThrowForInvalidResult(result);

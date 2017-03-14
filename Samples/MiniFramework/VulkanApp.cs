@@ -285,7 +285,7 @@ namespace VulkanCore.Samples
 
         private void RecordCommandBuffers()
         {
-            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color);
+            var subresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1);
             for (int i = 0; i < CommandBuffers.Length; i++)
             {
                 CommandBuffer cmdBuffer = CommandBuffers[i];

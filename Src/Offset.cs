@@ -70,12 +70,10 @@ namespace VulkanCore
         /// The X component of the offset.
         /// </summary>
         public int X;
-
         /// <summary>
         /// The Y component of the offset.
         /// </summary>
         public int Y;
-
         /// <summary>
         /// The Z component of the offset.
         /// </summary>

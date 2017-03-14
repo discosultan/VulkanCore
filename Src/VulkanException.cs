@@ -15,7 +15,7 @@ namespace VulkanCore
         /// </summary>
         /// <param name="result">The result returned by Vulkan.</param>
         /// <param name="message">The message that describes the error.</param>
-        public VulkanException(Result result, string message = DefaultMessage) 
+        public VulkanException(Result result, string message = DefaultMessage)
             : base($"[{(int)result}] {result} - {message}")
         {
             Result = result;

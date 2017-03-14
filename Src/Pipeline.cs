@@ -67,7 +67,7 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        internal static Pipeline[] CreateGraphicsPipelines(Device parent, PipelineCache cache, 
+        internal static Pipeline[] CreateGraphicsPipelines(Device parent, PipelineCache cache,
             GraphicsPipelineCreateInfo[] createInfos, ref AllocationCallbacks? allocator)
         {
             int pipelineCount = createInfos?.Length ?? 0;
@@ -97,7 +97,7 @@ namespace VulkanCore
             return pipelines;
         }
 
-        internal static Pipeline[] CreateComputePipelines(Device parent, PipelineCache cache, 
+        internal static Pipeline[] CreateComputePipelines(Device parent, PipelineCache cache,
             ComputePipelineCreateInfo[] createInfos, ref AllocationCallbacks? allocator)
         {
             int pipelineCount = createInfos?.Length ?? 0;
@@ -110,9 +110,9 @@ namespace VulkanCore
 
             var pipelineHandles = stackalloc long[pipelineCount];
             Result result = vkCreateComputePipelines(
-                parent, 
+                parent,
                 cache,
-                pipelineCount, 
+                pipelineCount,
                 nativeCreateInfos,
                 allocator.HasValue ? &nativeAllocator : null,
                 pipelineHandles);
@@ -282,8 +282,8 @@ namespace VulkanCore
         /// An index into the <see cref="Pipeline.CreateGraphicsPipelines"/> create infos parameter
         /// to use as a pipeline to derive from.
         /// </param>
-        public GraphicsPipelineCreateInfo(PipelineLayout layout, RenderPass renderPass, int subpass, 
-            PipelineShaderStageCreateInfo[] stages, PipelineInputAssemblyStateCreateInfo inputAssemblyState, 
+        public GraphicsPipelineCreateInfo(PipelineLayout layout, RenderPass renderPass, int subpass,
+            PipelineShaderStageCreateInfo[] stages, PipelineInputAssemblyStateCreateInfo inputAssemblyState,
             PipelineVertexInputStateCreateInfo vertexInputState, PipelineRasterizationStateCreateInfo rasterizationState,
             PipelineTessellationStateCreateInfo? tessellationState = null, PipelineViewportStateCreateInfo? viewportState = null,
             PipelineMultisampleStateCreateInfo? multisampleState = null, PipelineDepthStencilStateCreateInfo? depthStencilState = null,
@@ -404,7 +404,7 @@ namespace VulkanCore
                 dynamicState = (PipelineDynamicStateCreateInfo.Native*)Interop.Alloc<PipelineDynamicStateCreateInfo.Native>();
                 DynamicState.Value.ToNative(dynamicState);
             }
-            
+
             native->Type = StructureType.GraphicsPipelineCreateInfo;
             native->Next = IntPtr.Zero;
             native->Flags = Flags;
@@ -506,7 +506,7 @@ namespace VulkanCore
         /// An index into the <see cref="Pipeline.CreateComputePipelines"/> create infos parameter to
         /// use as a pipeline to derive from.
         /// </param>
-        public ComputePipelineCreateInfo(PipelineShaderStageCreateInfo stage, PipelineLayout layout, 
+        public ComputePipelineCreateInfo(PipelineShaderStageCreateInfo stage, PipelineLayout layout,
             PipelineCreateFlags flags = 0, Pipeline basePipelineHandle = null, int basePipelineIndex = -1)
         {
             Flags = flags;
@@ -1468,7 +1468,7 @@ namespace VulkanCore
         /// the blend factor.
         /// </param>
         public PipelineColorBlendStateCreateInfo(
-            PipelineColorBlendAttachmentState[] attachments, 
+            PipelineColorBlendAttachmentState[] attachments,
             bool logicOpEnable = false,
             LogicOp logicOp = LogicOp.NoOp,
             ColorF4 blendConstants = default(ColorF4))

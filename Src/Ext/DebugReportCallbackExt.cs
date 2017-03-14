@@ -11,7 +11,7 @@ namespace VulkanCore.Ext
         // We need to keep the callback alive since it is being called from unmanaged code.
         private DebugReportCallback _callback;
 
-        internal DebugReportCallbackExt(Instance parent, 
+        internal DebugReportCallbackExt(Instance parent,
             ref DebugReportCallbackCreateInfoExt createInfo, ref AllocationCallbacks? allocator)
         {
             Parent = parent;
@@ -107,11 +107,11 @@ namespace VulkanCore.Ext
         /// </summary>
         public DebugReportFlagsExt Flags;
         /// <summary>
-        /// The callback function. 
+        /// The callback function.
         /// </summary>
         public Func<DebugReportCallbackInfo, bool> Callback;
         /// <summary>
-        /// <see cref="IntPtr.Zero"/> or a handle to user data provided to callback function. 
+        /// <see cref="IntPtr.Zero"/> or a handle to user data provided to callback function.
         /// </summary>
         public IntPtr UserData;
 

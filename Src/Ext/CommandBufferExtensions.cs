@@ -19,7 +19,7 @@ namespace VulkanCore.Ext
         /// <para>
         /// The marker commands <see cref="CmdDebugMarkerBeginExt"/> and <see cref="CmdDebugMarkerEndExt"/>
         /// define regions of a series of commands that are grouped together, and they can be nested
-        /// to create a hierarchy. 
+        /// to create a hierarchy.
         /// </para>
         /// </summary>
         /// <param name="commandBuffer">The command buffer into which the command is recorded.</param>
@@ -37,7 +37,7 @@ namespace VulkanCore.Ext
         }
 
         /// <summary>
-        /// Close a command buffer marker region. 
+        /// Close a command buffer marker region.
         /// <para>
         /// Typical Vulkan applications will submit many command buffers in each frame, with each
         /// command buffer containing a large number of individual commands. Being able to logically
@@ -47,7 +47,7 @@ namespace VulkanCore.Ext
         /// <para>
         /// The marker commands <see cref="CmdDebugMarkerBeginExt"/> and <see cref="CmdDebugMarkerEndExt"/>
         /// define regions of a series of commands that are grouped together, and they can be nested
-        /// to create a hierarchy. 
+        /// to create a hierarchy.
         /// </para>
         /// </summary>
         /// <param name="commandBuffer">The command buffer into which the command is recorded.</param>

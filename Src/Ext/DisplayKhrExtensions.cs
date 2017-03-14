@@ -53,6 +53,6 @@ namespace VulkanCore.Ext
         private static readonly vkAcquireXlibDisplayEXTDelegate vkAcquireXlibDisplayEXT = VulkanLibrary.GetProc<vkAcquireXlibDisplayEXTDelegate>(nameof(vkAcquireXlibDisplayEXT));
 
         private delegate Result vkReleaseDisplayEXTDelegate(IntPtr physicalDevice, long display);
-        private static readonly vkReleaseDisplayEXTDelegate vkReleaseDisplayEXT = VulkanLibrary.GetProc<vkReleaseDisplayEXTDelegate>(nameof(vkReleaseDisplayEXT));       
+        private static readonly vkReleaseDisplayEXTDelegate vkReleaseDisplayEXT = VulkanLibrary.GetProc<vkReleaseDisplayEXTDelegate>(nameof(vkReleaseDisplayEXT));
     }
 }

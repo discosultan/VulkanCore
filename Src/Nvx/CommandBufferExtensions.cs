@@ -150,8 +150,8 @@ namespace VulkanCore.Nvx
         /// The byte offset into <see cref="SequencesIndexBuffer"/> where the index values start.
         /// </param>
         public CmdProcessCommandsInfoNvx(ObjectTableNvx objectTable, IndirectCommandsLayoutNvx indirectCommandsLayout,
-            IndirectCommandsTokenNvx[] indirectCommandsTokens, int maxSequencesCount = 0, CommandBuffer targetCommandBuffer = null, 
-            Buffer sequencesCountBuffer = null, long sequencesCountOffset = 0, 
+            IndirectCommandsTokenNvx[] indirectCommandsTokens, int maxSequencesCount = 0, CommandBuffer targetCommandBuffer = null,
+            Buffer sequencesCountBuffer = null, long sequencesCountOffset = 0,
             Buffer sequencesIndexBuffer = null, long sequencesIndexOffset = 0)
         {
             ObjectTable = objectTable;

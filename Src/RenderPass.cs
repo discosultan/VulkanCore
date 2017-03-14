@@ -106,8 +106,8 @@ namespace VulkanCore
         /// Structures describing dependencies between pairs of subpasses, or <c>null</c>.
         /// </param>
         public RenderPassCreateInfo(
-            SubpassDescription[] subpasses, 
-            AttachmentDescription[] attachments = null, 
+            SubpassDescription[] subpasses,
+            AttachmentDescription[] attachments = null,
             SubpassDependency[] dependencies = null)
         {
             Attachments = attachments;

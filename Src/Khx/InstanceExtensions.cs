@@ -58,7 +58,7 @@ namespace VulkanCore.Khx
         public PhysicalDevice[] PhysicalDevices;
         /// <summary>
         /// Indicates whether logical devices created from the group support allocating
-        /// device memory on a subset of devices, via the <c>deviceMask</c> member of the 
+        /// device memory on a subset of devices, via the <c>deviceMask</c> member of the
         /// <c>VkMemoryAllocateFlagsInfoKHX</c>. If this is <c>false</c>, then all device memory
         /// allocations are made across all physical devices in the group. If
         /// physicalDeviceCount is 1, then <see cref="SubsetAllocation"/> must be <c>false</c>.

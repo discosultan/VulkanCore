@@ -130,7 +130,7 @@ namespace VulkanCore.Ext
         /// A bitmask of <see cref="ImageUsages"/> representing the ways the
         /// application can use the presentable images of a swapchain created for the
         /// surface on the specified device. <see cref="ImageUsages.ColorAttachment"/>
-        /// must be included in the set but implementations may support additional usages. 
+        /// must be included in the set but implementations may support additional usages.
         /// </summary>
         public ImageUsages SupportedUsageFlags;
         /// <summary>

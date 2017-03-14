@@ -11,7 +11,7 @@ namespace VulkanCore.Samples.ClearScreen
 
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
-            var imageSubresourceRange = new ImageSubresourceRange(ImageAspects.Color);
+            var imageSubresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1);
 
             var barrierFromPresentToClear = new ImageMemoryBarrier(
                 SwapchainImages[imageIndex], imageSubresourceRange,

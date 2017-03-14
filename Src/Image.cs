@@ -53,7 +53,7 @@ namespace VulkanCore
         /// from <paramref name="memoryOffset"/> bytes, will be bound to the specified image.
         /// </param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public void BindMemory(DeviceMemory memory, long memoryOffset = 0) 
+        public void BindMemory(DeviceMemory memory, long memoryOffset = 0)
         {
             Result result = vkBindImageMemory(Parent, this, memory, memoryOffset);
             VulkanException.ThrowForInvalidResult(result);
@@ -733,37 +733,37 @@ namespace VulkanCore
 
     /// <summary>
     /// Bitmask specifying sample counts supported for an image used for storage
-    /// operations. 
+    /// operations.
     /// </summary>
     [Flags]
     public enum SampleCounts
     {
         /// <summary>
-        /// Sample count 1 supported. 
+        /// Sample count 1 supported.
         /// </summary>
         Count1 = 1 << 0,
         /// <summary>
-        /// Sample count 2 supported. 
+        /// Sample count 2 supported.
         /// </summary>
         Count2 = 1 << 1,
         /// <summary>
-        /// Sample count 4 supported. 
+        /// Sample count 4 supported.
         /// </summary>
         Count4 = 1 << 2,
         /// <summary>
-        /// Sample count 8 supported. 
+        /// Sample count 8 supported.
         /// </summary>
         Count8 = 1 << 3,
         /// <summary>
-        /// Sample count 16 supported. 
+        /// Sample count 16 supported.
         /// </summary>
         Count16 = 1 << 4,
         /// <summary>
-        /// Sample count 32 supported. 
+        /// Sample count 32 supported.
         /// </summary>
         Count32 = 1 << 5,
         /// <summary>
-        /// Sample count 64 supported. 
+        /// Sample count 64 supported.
         /// </summary>
         Count64 = 1 << 6
     }

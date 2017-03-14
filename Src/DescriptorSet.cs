@@ -66,7 +66,7 @@ namespace VulkanCore
             }
         }
 
-        internal static void Update(DescriptorPool parent, 
+        internal static void Update(DescriptorPool parent,
             WriteDescriptorSet[] descriptorWrites, CopyDescriptorSet[] descriptorCopies)
         {
             int descriptorWriteCount = descriptorWrites?.Length ?? 0;
@@ -272,7 +272,7 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Specifies the type of a descriptor in a descriptor set. 
+    /// Specifies the type of a descriptor in a descriptor set.
     /// </summary>
     public enum DescriptorType
     {
@@ -473,7 +473,7 @@ namespace VulkanCore
         /// The number of descriptors to copy from the source to destination.
         /// </param>
         public CopyDescriptorSet(
-            DescriptorSet srcSet, int srcBinding, int srcArrayElement, 
+            DescriptorSet srcSet, int srcBinding, int srcArrayElement,
             DescriptorSet dstSet, int dstBinding, int dstArrayElement,
             int descriptorCount)
         {

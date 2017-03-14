@@ -23,9 +23,9 @@ namespace VulkanCore
                 createInfo.ToNative(out BufferCreateInfo.Native nativeCreateInfo, queueFamilies);
                 long handle;
                 Result result = vkCreateBuffer(
-                    parent, 
+                    parent,
                     &nativeCreateInfo,
-                    NativeAllocator, 
+                    NativeAllocator,
                     &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
@@ -149,7 +149,7 @@ namespace VulkanCore
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </param>
         public BufferCreateInfo(
-            long size, 
+            long size,
             BufferUsages usages,
             BufferCreateFlags flags = 0,
             SharingMode sharingMode = SharingMode.Exclusive,
@@ -300,18 +300,18 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Buffer and image sharing modes. 
+    /// Buffer and image sharing modes.
     /// </summary>
     public enum SharingMode
     {
         /// <summary>
         /// Specifies that access to any range or image subresource of the object will be
-        /// exclusive to a single queue family at a time. 
+        /// exclusive to a single queue family at a time.
         /// </summary>
         Exclusive = 0,
         /// <summary>
         /// Specifies that concurrent access to any range or image subresource of the
-        /// object from multiple queue families is supported. 
+        /// object from multiple queue families is supported.
         /// </summary>
         Concurrent = 1
     }

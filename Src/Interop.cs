@@ -104,7 +104,7 @@ namespace VulkanCore
         /// A value that can be passed to unmanaged code, which, in turn, can use it to call the
         /// underlying managed delegate.
         /// </returns>
-        public static IntPtr GetFunctionPointerForDelegate<TDelegate>(TDelegate @delegate) 
+        public static IntPtr GetFunctionPointerForDelegate<TDelegate>(TDelegate @delegate)
             => Marshal.GetFunctionPointerForDelegate(@delegate);
 
         /// <summary>

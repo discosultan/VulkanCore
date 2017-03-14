@@ -159,7 +159,7 @@ namespace VulkanCore
 
             var nativeBindInfo = stackalloc BindSparseInfo.Native[count];
             for (int i = 0; i < count; i++)
-                bindInfo[i].ToNative(out nativeBindInfo[i]); 
+                bindInfo[i].ToNative(out nativeBindInfo[i]);
 
             Result result = vkQueueBindSparse(this, count, nativeBindInfo, fence);
 
@@ -485,7 +485,7 @@ namespace VulkanCore
         /// memory is 0, this value is ignored.
         /// </param>
         /// <param name="flags">A bitmask specifying usage of the binding operation.</param>
-        public SparseMemoryBind(long resourceOffset, long size, DeviceMemory memory = null, 
+        public SparseMemoryBind(long resourceOffset, long size, DeviceMemory memory = null,
             long memoryOffset = 0, SparseMemoryBindFlags flags = 0)
         {
             ResourceOffset = resourceOffset;

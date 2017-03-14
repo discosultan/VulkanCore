@@ -169,8 +169,8 @@ namespace VulkanCore
         /// </param>
         /// <param name="flags">Specifies certain supported operations on the pool.</param>
         public DescriptorPoolCreateInfo(
-            int maxSets, 
-            DescriptorPoolSize[] poolSizes, 
+            int maxSets,
+            DescriptorPoolSize[] poolSizes,
             DescriptorPoolCreateFlags flags = 0)
         {
             MaxSets = maxSets;

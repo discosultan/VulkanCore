@@ -27,8 +27,8 @@ namespace VulkanCore
                 layoutsPtr[i] = createInfo.SetLayouts[i];
 
             fixed (PushConstantRange* pushConstantRangesPtr = createInfo.PushConstantRanges)
-            {                
-                createInfo.ToNative(out PipelineLayoutCreateInfo.Native nativeCreateInfo, 
+            {
+                createInfo.ToNative(out PipelineLayoutCreateInfo.Native nativeCreateInfo,
                     layoutsPtr,
                     pushConstantRangesPtr);
 
@@ -90,7 +90,7 @@ namespace VulkanCore
         /// memory-backed resource updates.
         /// </param>
         public PipelineLayoutCreateInfo(
-            DescriptorSetLayout[] setLayouts = null, 
+            DescriptorSetLayout[] setLayouts = null,
             PushConstantRange[] pushConstantRanges = null)
         {
             SetLayouts = setLayouts?.ToHandleArray();

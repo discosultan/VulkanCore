@@ -185,7 +185,7 @@ namespace VulkanCore.Khr
         /// <param name="queueFamilyIndex">Index to a queue family.</param>
         /// <param name="connection">A pointer to a MirConnection.</param>
         /// <returns><c>true</c> if the physical device supports presentation to the Mir compositor.</returns>
-        public static bool GetMirPresentationSupportKhr(this PhysicalDevice device, 
+        public static bool GetMirPresentationSupportKhr(this PhysicalDevice device,
             int queueFamilyIndex, IntPtr connection)
         {
             return vkGetPhysicalDeviceMirPresentationSupportKHR(device, queueFamilyIndex, &connection);
@@ -204,7 +204,7 @@ namespace VulkanCore.Khr
         /// <returns>
         /// <c>true</c> if the physical device supports presentation to the Wayland compositor.
         /// </returns>
-        public static bool GetWaylandPresentationSupportKhr(this PhysicalDevice physicalDevice, 
+        public static bool GetWaylandPresentationSupportKhr(this PhysicalDevice physicalDevice,
             int queueFamilyIndex, IntPtr display)
         {
             return vkGetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex, &display);
@@ -287,7 +287,7 @@ namespace VulkanCore.Khr
             PhysicalDeviceProperties2Khr.Native nativeProperties;
             vkGetPhysicalDeviceProperties2KHR(physicalDevice, &nativeProperties);
             PhysicalDeviceProperties2Khr.FromNative(
-                ref nativeProperties, 
+                ref nativeProperties,
                 out PhysicalDeviceProperties2Khr properties);
             return properties;
         }
@@ -325,7 +325,7 @@ namespace VulkanCore.Khr
         /// </param>
         /// <returns>A structure in which capabilities are returned.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static ImageFormatProperties2Khr GetImageFormatProperties2Khr(this PhysicalDevice physicalDevice, 
+        public static ImageFormatProperties2Khr GetImageFormatProperties2Khr(this PhysicalDevice physicalDevice,
             PhysicalDeviceImageFormatInfo2Khr imageFormatInfo)
         {
             ImageFormatProperties2Khr properties;

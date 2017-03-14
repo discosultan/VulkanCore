@@ -12,7 +12,7 @@ namespace VulkanCore
     /// </summary>
     public unsafe class Framebuffer : DisposableHandle<long>
     {
-        internal Framebuffer(Device parent, RenderPass renderPass, ref FramebufferCreateInfo createInfo, 
+        internal Framebuffer(Device parent, RenderPass renderPass, ref FramebufferCreateInfo createInfo,
             ref AllocationCallbacks? allocator)
         {
             Parent = parent;

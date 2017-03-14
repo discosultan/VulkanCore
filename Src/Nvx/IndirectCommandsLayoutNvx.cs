@@ -80,7 +80,7 @@ namespace VulkanCore.Nvx
         /// cref="IndirectCommandsTokenTypeNvx"/> and <see cref="IndirectCommandsLayoutTokenNvx"/>
         /// for details.
         /// </param>
-        public IndirectCommandsLayoutCreateInfoNvx(PipelineBindPoint pipelineBindPoint, IndirectCommandsLayoutUsagesNvx flags, 
+        public IndirectCommandsLayoutCreateInfoNvx(PipelineBindPoint pipelineBindPoint, IndirectCommandsLayoutUsagesNvx flags,
             params IndirectCommandsLayoutTokenNvx[] tokens)
         {
             PipelineBindPoint = pipelineBindPoint;

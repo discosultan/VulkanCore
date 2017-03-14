@@ -20,6 +20,8 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="Rect2D"/> structure.
         /// </summary>
+        /// <param name="offset">The offset component of the rectangle.</param>
+        /// <param name="extent">The extent component of the rectangle.</param>
         public Rect2D(Offset2D offset, Extent2D extent)
         {
             Offset = offset;
@@ -29,10 +31,13 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="Rect2D"/> structure.
         /// </summary>
+        /// <param name="x">The X component of the offset.</param>
+        /// <param name="y">The Y component of the offset.</param>
+        /// <param name="width">The width component of the extent.</param>
+        /// <param name="height">The height component of the extent.</param>
         public Rect2D(int x, int y, int width, int height)
+            : this(new Offset2D(x, y), new Extent2D(width, height))
         {
-            Offset = new Offset2D(x, y);
-            Extent = new Extent2D(width, height);
         }
     }
 
@@ -54,10 +59,26 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="Rect3D"/> structure.
         /// </summary>
+        /// <param name="offset">The offset component of the rectangle.</param>
+        /// <param name="extent">The extent component of the rectangle.</param>
         public Rect3D(Offset3D offset, Extent3D extent)
         {
             Offset = offset;
             Extent = extent;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Rect2D"/> structure.
+        /// </summary>
+        /// <param name="x">The X component of the offset.</param>
+        /// <param name="y">The Y component of the offset.</param>
+        /// <param name="z">The Z component of the offset.</param>
+        /// <param name="width">The width component of the extent.</param>
+        /// <param name="height">The height component of the extent.</param>
+        /// <param name="depth">The depth component of the extent.</param>
+        public Rect3D(int x, int y, int z, int width, int height, int depth)
+            : this(new Offset3D(x, y, z), new Extent3D(width, height, depth))
+        {
         }
     }
 
@@ -71,12 +92,10 @@ namespace VulkanCore
         /// The two-dimensional region to be cleared.
         /// </summary>
         public Rect2D Rect;
-
         /// <summary>
         /// The first layer to be cleared.
         /// </summary>
         public int BaseArrayLayer;
-
         /// <summary>
         /// The number of layers to clear.
         /// </summary>

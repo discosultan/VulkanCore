@@ -109,7 +109,7 @@ namespace VulkanCore
             if (!Disposed) vkDestroyFence(Parent, this, NativeAllocator);
             base.Dispose();
         }
-        
+
         internal static void Reset(Device parent, Fence[] fences)
         {
             if (fences != null && fences.Length > 0)
@@ -191,7 +191,13 @@ namespace VulkanCore
     [Flags]
     public enum FenceCreateFlags
     {
+        /// <summary>
+        /// The fence object is created in the unsignaled state.
+        /// </summary>
         None = 0,
+        /// <summary>
+        /// The fence object is created in the signaled state.
+        /// </summary>
         Signaled = 1 << 0
     }
 }

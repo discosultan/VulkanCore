@@ -14,7 +14,7 @@ namespace VulkanCore
     /// </summary>
     public unsafe class DescriptorSetLayout : DisposableHandle<long>
     {
-        internal DescriptorSetLayout(Device parent, 
+        internal DescriptorSetLayout(Device parent,
             ref DescriptorSetLayoutCreateInfo createInfo,
             ref AllocationCallbacks? allocator)
         {

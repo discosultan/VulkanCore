@@ -17,7 +17,7 @@
         /// </param>
         /// <returns>The resulting surface object handle.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static SurfaceKhr CreateAndroidSurfaceKhr(this Instance instance, 
+        public static SurfaceKhr CreateAndroidSurfaceKhr(this Instance instance,
             AndroidSurfaceCreateInfoKhr createInfo, AllocationCallbacks? allocator = null)
         {
             return new SurfaceKhr(instance, &createInfo, ref allocator);

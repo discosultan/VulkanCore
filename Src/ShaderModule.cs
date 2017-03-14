@@ -51,14 +51,14 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Structure specifying parameters of a newly created shader module. 
+    /// Structure specifying parameters of a newly created shader module.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct ShaderModuleCreateInfo
     {
         /// <summary>
         /// The code that is used to create the shader module. The type and format of the code is
-        /// determined from the content of the code.        
+        /// determined from the content of the code.
         /// <para>
         /// Length must be a multiple of 4. If the "VK_NV_glsl_shader" extension is enabled and code
         /// references GLSL code, it can be a multiple of 1.

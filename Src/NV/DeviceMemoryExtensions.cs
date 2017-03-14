@@ -17,7 +17,7 @@ namespace VulkanCore.NV
         /// </param>
         /// <returns>A Windows HANDLE.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static IntPtr GetWin32HandleNV(this DeviceMemory deviceMemory, 
+        public static IntPtr GetWin32HandleNV(this DeviceMemory deviceMemory,
             ExternalMemoryHandleTypesNV handleType)
         {
             IntPtr handle;
@@ -31,7 +31,7 @@ namespace VulkanCore.NV
     }
 
     /// <summary>
-    /// Bitmask specifying memory handle types. 
+    /// Bitmask specifying memory handle types.
     /// </summary>
     [Flags]
     public enum ExternalMemoryHandleTypesNV

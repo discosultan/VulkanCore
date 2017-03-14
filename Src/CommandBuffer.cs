@@ -666,7 +666,7 @@ namespace VulkanCore
         /// Structures that describe a range of mipmap levels, array layers, and aspects to be
         /// cleared. The aspect mask of all image subresource ranges must only include <see cref="ImageAspects.Color"/>.
         /// </param>
-        public void CmdClearColorImage(Image image, ImageLayout imageLayout, 
+        public void CmdClearColorImage(Image image, ImageLayout imageLayout,
             ClearColorValue color, params ImageSubresourceRange[] ranges)
         {
             fixed (ImageSubresourceRange* rangesPtr = ranges)
@@ -818,8 +818,8 @@ namespace VulkanCore
             fixed (BufferMemoryBarrier* bufferMemoryBarriersPtr = bufferMemoryBarriers)
             fixed (ImageMemoryBarrier* imageMemoryBarriersPtr = imageMemoryBarriers)
             {
-                vkCmdWaitEvents(this, eventCount, eventsHandles, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0, 
-                    memoryBarriersPtr, bufferMemoryBarriers?.Length ?? 0, bufferMemoryBarriersPtr, 
+                vkCmdWaitEvents(this, eventCount, eventsHandles, srcStageMask, dstStageMask, memoryBarriers?.Length ?? 0,
+                    memoryBarriersPtr, bufferMemoryBarriers?.Length ?? 0, bufferMemoryBarriersPtr,
                     imageMemoryBarriers?.Length ?? 0, imageMemoryBarriersPtr);
             }
         }
@@ -1387,7 +1387,7 @@ namespace VulkanCore
         /// </summary>
         /// <param name="flags">A bitmask indicating usage behavior for the command buffer.</param>
         /// <param name="inheritanceInfo">The inheritance info for secondary command buffers.</param>
-        public CommandBufferBeginInfo(CommandBufferUsages flags = 0, 
+        public CommandBufferBeginInfo(CommandBufferUsages flags = 0,
             CommandBufferInheritanceInfo? inheritanceInfo = null)
         {
             Flags = flags;
@@ -1418,7 +1418,7 @@ namespace VulkanCore
             native.Next = IntPtr.Zero;
             native.Flags = Flags;
             native.InheritanceInfo = inheritanceInfo;
-        }        
+        }
     }
 
     /// <summary>
@@ -2082,7 +2082,7 @@ namespace VulkanCore
         /// </summary>
         public int DstQueueFamilyIndex;
         /// <summary>
-        /// A <see cref="Buffer"/> handle to the buffer whose backing memory is affected by the barrier.
+        /// A <see cref="VulkanCore.Buffer"/> handle to the buffer whose backing memory is affected by the barrier.
         /// </summary>
         public long Buffer;
         /// <summary>
@@ -2099,25 +2099,60 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferMemoryBarrier"/> structure.
         /// </summary>
-        public BufferMemoryBarrier(Buffer buffer, Accesses sourceAccessMask, Accesses destinationAccessMask, long offset = 0, long size = WholeSize)
-            : this(buffer, sourceAccessMask, destinationAccessMask, QueueFamilyIgnored, QueueFamilyIgnored, offset, size)
+        /// <param name="buffer">
+        /// A <see cref="VulkanCore.Buffer"/> handle to the buffer whose backing memory is affected
+        /// by the barrier.
+        /// </param>
+        /// <param name="srcAccessMask">Defines a source access mask.</param>
+        /// <param name="dstAccessMask">Defines a destination access mask.</param>
+        /// <param name="offset">
+        /// An offset in bytes into the backing memory for buffer; this is relative to the base
+        /// offset as bound to the buffer.
+        /// </param>
+        /// <param name="size">
+        /// A size in bytes of the affected area of backing memory for buffer, or <see
+        /// cref="WholeSize"/> to use the range from offset to the end of the buffer.
+        /// </param>
+        public BufferMemoryBarrier(Buffer buffer, Accesses srcAccessMask, Accesses dstAccessMask, long offset = 0, long size = WholeSize)
+            : this(buffer, srcAccessMask, dstAccessMask, QueueFamilyIgnored, QueueFamilyIgnored, offset, size)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferMemoryBarrier"/> structure.
         /// </summary>
-        public BufferMemoryBarrier(Buffer buffer, Accesses sourceAccessMask, Accesses destinationAccessMask, int sourceQueueFamilyIndex, int destinationQueueFamilyIndex, long offset = 0, long size = WholeSize)
+        /// <param name="buffer">
+        /// A <see cref="VulkanCore.Buffer"/> handle to the buffer whose backing memory is affected
+        /// by the barrier.
+        /// </param>
+        /// <param name="srcAccessMask">Defines a source access mask.</param>
+        /// <param name="dstAccessMask">Defines a destination access mask.</param>
+        /// <param name="srcQueueFamilyIndex">
+        /// The source queue family for a queue family ownership transfer.
+        /// </param>
+        /// <param name="dstQueueFamilyIndex">
+        /// The destination queue family for a queue family ownership transfer.
+        /// </param>
+        /// <param name="offset">
+        /// An offset in bytes into the backing memory for buffer; this is relative to the base
+        /// offset as bound to the buffer.
+        /// </param>
+        /// <param name="size">
+        /// A size in bytes of the affected area of backing memory for buffer, or <see
+        /// cref="WholeSize"/> to use the range from offset to the end of the buffer.
+        /// </param>
+        public BufferMemoryBarrier(Buffer buffer, Accesses srcAccessMask, Accesses dstAccessMask,
+            int srcQueueFamilyIndex, int dstQueueFamilyIndex, long offset = 0, long size = WholeSize)
         {
             Type = StructureType.BufferMemoryBarrier;
             Next = IntPtr.Zero;
             Buffer = buffer;
             Offset = offset;
             Size = size;
-            SrcAccessMask = sourceAccessMask;
-            DstAccessMask = destinationAccessMask;
-            SrcQueueFamilyIndex = sourceQueueFamilyIndex;
-            DstQueueFamilyIndex = destinationQueueFamilyIndex;
+            SrcAccessMask = srcAccessMask;
+            DstAccessMask = dstAccessMask;
+            SrcQueueFamilyIndex = srcQueueFamilyIndex;
+            DstQueueFamilyIndex = dstQueueFamilyIndex;
         }
 
         internal void Prepare()
@@ -2326,7 +2361,7 @@ namespace VulkanCore
     public unsafe struct RenderPassBeginInfo
     {
         /// <summary>
-        /// The <see cref="VulkanCore.RenderPass"/> to begin an instance of. 
+        /// The <see cref="VulkanCore.RenderPass"/> to begin an instance of.
         /// </summary>
         public long RenderPass;
         /// <summary>

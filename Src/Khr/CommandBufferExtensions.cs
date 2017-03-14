@@ -25,7 +25,7 @@ namespace VulkanCore.Khr
         /// The set number of the descriptor set in the pipeline layout that will be updated.
         /// </param>
         /// <param name="descriptorWrites">Structures describing the descriptors to be updated.</param>
-        public static void CmdPushDescriptorSetKhr(this CommandBuffer commandBuffer, 
+        public static void CmdPushDescriptorSetKhr(this CommandBuffer commandBuffer,
             PipelineBindPoint pipelineBindPoint, PipelineLayout layout, int set, WriteDescriptorSet[] descriptorWrites)
         {
             int count = descriptorWrites?.Length ?? 0;

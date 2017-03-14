@@ -13,7 +13,7 @@ namespace VulkanCore.Khr
     /// </summary>
     public unsafe class DescriptorUpdateTemplateKhr : DisposableHandle<long>
     {
-        internal DescriptorUpdateTemplateKhr(Device parent, 
+        internal DescriptorUpdateTemplateKhr(Device parent,
             ref DescriptorUpdateTemplateCreateInfoKhr createInfo, ref AllocationCallbacks? allocator)
         {
             Parent = parent;
@@ -107,7 +107,7 @@ namespace VulkanCore.Khr
             public int Set;
         }
 
-        internal void ToNative(out Native native, 
+        internal void ToNative(out Native native,
             DescriptorUpdateTemplateEntryKhr* nativeDescriptorUpdateEntries)
         {
             native.Type = StructureType.DescriptorUpdateTemplateCreateInfoKhr;

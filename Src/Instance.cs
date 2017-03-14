@@ -15,7 +15,7 @@ namespace VulkanCore
     /// </summary>
     public unsafe class Instance : DisposableHandle<IntPtr>
     {
-        private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache 
+        private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache
             = new ConcurrentDictionary<string, IntPtr>(StringComparer.Ordinal);
 
         private readonly ConcurrentDictionary<string, object> _procCache
@@ -29,7 +29,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="allocator">Controls host memory allocation.</param>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public Instance(InstanceCreateInfo createInfo = default(InstanceCreateInfo), 
+        public Instance(InstanceCreateInfo createInfo = default(InstanceCreateInfo),
             AllocationCallbacks? allocator = null)
         {
             Allocator = allocator;
@@ -117,7 +117,7 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Returns global extension properties. 
+        /// Returns global extension properties.
         /// </summary>
         /// <param name="layerName">
         /// Is either <c>null</c> or a unicode string naming the layer to retrieve extensions from.
@@ -147,7 +147,7 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Returns global layer properties. 
+        /// Returns global layer properties.
         /// </summary>
         /// <returns>Properties of available layers.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
