@@ -240,7 +240,6 @@ namespace VulkanCore
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(Offset3D left, Offset3D right) => left.Equals(ref right);
 
-
         /// <summary>
         /// Implements the operator !=.
         /// </summary>
