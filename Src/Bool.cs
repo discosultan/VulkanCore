@@ -1,4 +1,7 @@
-﻿namespace VulkanCore
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace VulkanCore
 {
     /// <summary>
     /// Vulkan boolean type.
@@ -7,7 +10,8 @@
     /// (integer 0) value.
     /// </para>
     /// </summary>
-    public struct Bool
+    [StructLayout(LayoutKind.Sequential, Size = 4)]
+    public struct Bool : IEquatable<Bool>
     {
         private readonly int _value;
 
@@ -49,5 +53,42 @@
         /// </summary>
         /// <param name="value">The value to convert.</param>
         public static implicit operator int(Bool value) => value._value == Constant.True ? 1 : 0;
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns>true if <paramref name="other" /> and this instance are the same type and represent the same value; otherwise, false.</returns>
+        public bool Equals(Bool other)
+        {
+            return _value == other._value;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is Bool && Equals((Bool)obj);
+        }
+
+        /// <summary>
+        /// Implements the ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(Bool left, Bool right) => left.Equals(right);
+
+        /// <summary>
+        /// Implements the !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(Bool left, Bool right) => !left.Equals(right);
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => _value;
     }
 }
