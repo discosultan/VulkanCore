@@ -95,7 +95,7 @@ namespace VulkanCore
                 // Android OS description starts with "unix".
                 else if (RuntimeInformation.OSDescription.StartsWith("unix", StringComparison.OrdinalIgnoreCase))
                 {
-                    return "vulkan.so";
+                    return "libvulkan.so";
                 }
             }
             throw new NotImplementedException();
@@ -119,6 +119,6 @@ namespace VulkanCore
         [DllImport("libdl.so", EntryPoint = "dlclose")]
         private static extern int LibDLFreeLibrary(IntPtr handle);
 
-        private const int LibDLRtldNow = 0x002;
+        private const int LibDLRtldNow = 2;
     }
 }
