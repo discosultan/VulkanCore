@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -9,16 +11,23 @@ namespace VulkanCore
     /// Structure specifying a two-dimensional offset.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Offset2D
+    [DebuggerDisplay(@"{X:{X} Y:{Y}}")]
+    public struct Offset2D : IEquatable<Offset2D>
     {
         /// <summary>
         /// The X component of the offset.
         /// </summary>
         public int X;
+
         /// <summary>
         /// The Y component of the offset.
         /// </summary>
         public int Y;
+
+        /// <summary>
+		/// A <see cref="Offset2D"/> with (0,0) coordinates.
+		/// </summary>
+		public static readonly Offset2D Zero = new Offset2D(0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Offset2D"/> structure.
@@ -55,16 +64,79 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Gets an <see cref="Offset2D"/> with all of its components set to zero.
+		/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+		/// </summary>
+		/// <param name="other">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns>
+		///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+		/// </returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(ref Offset2D other)
+        {
+            return other.X == X && other.Y == Y;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
-        public static Offset2D Zero => new Offset2D(0, 0);
+        /// <param name="other">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(Offset2D other) => Equals(ref other);
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Offset2D))
+                return false;
+
+            var strongValue = (Offset2D)obj;
+            return Equals(ref strongValue);
+        }
+
+        /// <summary>
+		/// Implements the operator ==.
+		/// </summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>
+		/// The result of the operator.
+		/// </returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(Offset2D left, Offset2D right) => left.Equals(ref right);
+
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(Offset2D left, Offset2D right) => !left.Equals(ref right);
+
+        /// <summary>
+		/// /Gets the hash code for this object.
+		/// </summary>
+		/// <returns></returns>
+		public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X * 397) ^ Y;
+            }
+        }
     }
 
     /// <summary>
     /// Structure specifying a three-dimensional offset.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Offset3D
+    public struct Offset3D : IEquatable<Offset3D>
     {
         /// <summary>
         /// The X component of the offset.
@@ -80,6 +152,11 @@ namespace VulkanCore
         /// The Z component of the offset.
         /// </summary>
         public int Z;
+
+        /// <summary>
+        /// Gets an <see cref="Offset3D"/> with all of its components set to zero.
+        /// </summary>
+        public static readonly Offset3D Zero = new Offset3D(0, 0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Offset3D"/> structure.
@@ -120,8 +197,73 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Gets an <see cref="Offset3D"/> with all of its components set to zero.
+		/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+		/// </summary>
+		/// <param name="other">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns>
+		///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+		/// </returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(ref Offset3D other)
+        {
+            return other.X == X && other.Y == Y && Z == other.Z;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
-        public static Offset3D Zero => new Offset3D(0, 0, 0);
+        /// <param name="other">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(Offset3D other) => Equals(ref other);
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Offset3D))
+                return false;
+
+            var strongValue = (Offset3D)obj;
+            return Equals(ref strongValue);
+        }
+
+        /// <summary>
+		/// Implements the operator ==.
+		/// </summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>
+		/// The result of the operator.
+		/// </returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(Offset3D left, Offset3D right) => left.Equals(ref right);
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(Offset3D left, Offset3D right) => !left.Equals(ref right);
+
+        /// <summary>
+		/// /Gets the hash code for this object.
+		/// </summary>
+		/// <returns></returns>
+		public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

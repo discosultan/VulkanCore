@@ -19,7 +19,7 @@ namespace VulkanCore
         /// A pointer to the newly allocated memory. This memory must be released using the <see
         /// cref="Free(IntPtr)"/> method.
         /// </returns>
-        public static IntPtr Alloc(Size byteCount)
+        public static IntPtr Alloc(PointerSize byteCount)
         {
             if (byteCount == 0) return IntPtr.Zero;
 
@@ -49,7 +49,7 @@ namespace VulkanCore
         /// <returns>
         /// A pointer to the reallocated memory. This memory must be released using <see cref="Free(IntPtr)"/>.
         /// </returns>
-        public static IntPtr ReAlloc(IntPtr original, Size size) =>
+        public static IntPtr ReAlloc(IntPtr original, PointerSize size) =>
             Marshal.ReAllocHGlobal(original, size);
 
         /// <summary>

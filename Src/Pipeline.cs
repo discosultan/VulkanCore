@@ -662,7 +662,7 @@ namespace VulkanCore
         /// <summary>
         /// The byte size of the <see cref="Data"/> buffer.
         /// </summary>
-        public Size DataSize;
+        public PointerSize DataSize;
         /// <summary>
         /// Contains the actual constant values to specialize with.
         /// </summary>
@@ -677,7 +677,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="dataSize">The byte size of the <see cref="Data"/> buffer.</param>
         /// <param name="data">Contains the actual constant values to specialize with.</param>
-        public SpecializationInfo(SpecializationMapEntry[] mapEntries, Size dataSize, IntPtr data)
+        public SpecializationInfo(SpecializationMapEntry[] mapEntries, PointerSize dataSize, IntPtr data)
         {
             MapEntries = mapEntries;
             DataSize = dataSize;
@@ -689,7 +689,7 @@ namespace VulkanCore
         {
             public int MapEntryCount;
             public IntPtr MapEntries;
-            public Size DataSize;
+            public PointerSize DataSize;
             public IntPtr Data;
 
             public void Free()

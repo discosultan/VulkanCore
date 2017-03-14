@@ -87,7 +87,7 @@ namespace VulkanCore
             public StructureType Type;
             public IntPtr Next;
             public ShaderModuleCreateFlags Flags;
-            public Size CodeSize;
+            public PointerSize CodeSize;
             public byte* Code;
         }
 
