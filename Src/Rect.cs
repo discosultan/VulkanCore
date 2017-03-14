@@ -25,6 +25,15 @@ namespace VulkanCore
             Offset = offset;
             Extent = extent;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Rect2D"/> structure.
+        /// </summary>
+        public Rect2D(int x, int y, int width, int height)
+        {
+            Offset = new Offset2D(x, y);
+            Extent = new Extent2D(width, height);
+        }
     }
 
     /// <summary>
@@ -62,10 +71,12 @@ namespace VulkanCore
         /// The two-dimensional region to be cleared.
         /// </summary>
         public Rect2D Rect;
+
         /// <summary>
         /// The first layer to be cleared.
         /// </summary>
         public int BaseArrayLayer;
+
         /// <summary>
         /// The number of layers to clear.
         /// </summary>

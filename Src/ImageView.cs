@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static VulkanCore.Constant;
 
 namespace VulkanCore
 {
@@ -266,8 +267,8 @@ namespace VulkanCore
         /// <param name="layerCount">
         /// The number of array layers (starting from <see cref="BaseArrayLayer"/>) accessible to the view.
         /// </param>
-        public ImageSubresourceRange(ImageAspects aspectMask, int baseMipLevel = 0, int levelCount = 1,
-             int baseArrayLayer = 0, int layerCount = 1)
+        public ImageSubresourceRange(ImageAspects aspectMask, int baseMipLevel = 0, int levelCount = RemainingArrayLevels,
+             int baseArrayLayer = 0, int layerCount = RemainingMipLevels)
         {
             AspectMask = aspectMask;
             BaseMipLevel = baseMipLevel;
