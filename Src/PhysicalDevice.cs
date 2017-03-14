@@ -929,7 +929,7 @@ namespace VulkanCore
         /// host address space. When mapping a memory allocation with vkMapMemory, subtracting offset
         /// bytes from the returned pointer will always produce an integer multiple of this limit.
         /// </summary>
-        public Size MinMemoryMapAlignment;
+        public PointerSize MinMemoryMapAlignment;
         /// <summary>
         /// The minimum required alignment, in bytes, for the <see
         /// cref="BufferViewCreateInfo.Offset"/> member for texel buffers. When a buffer view is

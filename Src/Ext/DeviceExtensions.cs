@@ -293,7 +293,7 @@ namespace VulkanCore.Ext
             public DebugReportObjectTypeExt ObjectType;
             public long Object;
             public long TagName;
-            public Size TagSize;
+            public PointerSize TagSize;
             public byte* Tag;
         }
 

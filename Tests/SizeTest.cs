@@ -12,9 +12,9 @@ namespace VulkanCore.Tests
             const long longVal = 2;
             var intPtrVal = new IntPtr(3);
 
-            Size intSize = intVal;
-            Size longSize = longVal;
-            Size intPtrSize = intPtrVal;
+            PointerSize intSize = intVal;
+            PointerSize longSize = longVal;
+            PointerSize intPtrSize = intPtrVal;
 
             Assert.Equal(intVal, (int)intSize);
             Assert.Equal(longVal, (long)longSize);
@@ -25,7 +25,7 @@ namespace VulkanCore.Tests
         public void ConvertToString()
         {
             IntPtr intPtrVal = new IntPtr(1);
-            Size sizeVal = intPtrVal;
+            PointerSize sizeVal = intPtrVal;
             Assert.Equal(intPtrVal.ToString(), sizeVal.ToString());
         }
     }

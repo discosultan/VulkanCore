@@ -145,7 +145,7 @@ namespace VulkanCore
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
         public delegate IntPtr AllocationFunction(
-            IntPtr userData, Size size, Size alignment, SystemAllocationScope allocationScope);
+            IntPtr userData, PointerSize size, PointerSize alignment, SystemAllocationScope allocationScope);
 
         /// <summary>
         /// Application-defined memory reallocation function.
@@ -193,7 +193,7 @@ namespace VulkanCore
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
         public delegate IntPtr ReallocationFunction(
-            IntPtr userData, IntPtr original, Size size, Size alignment, SystemAllocationScope allocationScope);
+            IntPtr userData, IntPtr original, PointerSize size, PointerSize alignment, SystemAllocationScope allocationScope);
 
         /// <summary>
         /// Application-defined memory free function.
@@ -225,7 +225,7 @@ namespace VulkanCore
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
         public delegate void InternalAllocationNotification(
-            IntPtr userData, Size size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
+            IntPtr userData, PointerSize size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
 
         /// <summary>
         /// Application-defined memory free notification function.
@@ -240,7 +240,7 @@ namespace VulkanCore
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
         public delegate void InternalFreeNotification(
-            IntPtr userData, Size size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
+            IntPtr userData, PointerSize size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
     }
 
     /// <summary>
