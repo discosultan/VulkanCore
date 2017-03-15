@@ -5,6 +5,10 @@ namespace VulkanCore
 {
     /// <summary>
     /// Opaque handle to a sampler object.
+    /// <para>
+    /// <see cref="Sampler"/> objects represent the state of an image sampler which is used by the
+    /// implementation to read image data and apply filtering and other transformations for the shader.
+    /// </para>
     /// </summary>
     public unsafe class Sampler : DisposableHandle<long>
     {

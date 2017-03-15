@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using VulkanCore.Ext;
@@ -8,9 +9,10 @@ namespace VulkanCore.Samples
 {
     public abstract class VulkanApp : IDisposable
     {
+        private readonly Stack<IDisposable> _toDisposePermanent = new Stack<IDisposable>();
+        private readonly Stack<IDisposable> _toDisposeFrame = new Stack<IDisposable>();
         private readonly IntPtr _hInstance;
-
-        private DebugReportCallbackExt _debugCallback;
+        private bool _initializingPermanent;
 
         protected VulkanApp(IntPtr hInstance, IWindow window)
         {
@@ -18,62 +20,90 @@ namespace VulkanCore.Samples
             Window = window;
         }
 
-        protected IWindow Window { get; }
+        public IWindow Window { get; }
 
         public Instance Instance { get; private set; }
-        public PhysicalDevice PhysicalDevice { get; private set; }
-        public PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties { get; private set; }
-        public Device Device { get; private set; }
+        protected DebugReportCallbackExt DebugReportCallback { get; private set; }
+        // Encapsulates physical and logical device.
+        public GraphicsDevice Device { get; private set; }
+        public ContentManager Content { get; private set; }
 
         protected SurfaceKhr Surface { get; private set; }
         protected SwapchainKhr Swapchain { get; private set; }
         protected Image[] SwapchainImages { get; private set; }
-
-        public Queue GraphicsQueue { get; private set; }
-        public Queue PresentQueue { get; private set; }
-        public CommandPool CommandPool { get; private set; }
         protected CommandBuffer[] CommandBuffers { get; private set; }
+
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
 
         public void Initialize()
         {
+            // Initialize the host window.
             Window.Initialize(Rezize);
 
+            // Initialize necessary Vulkan resources for application.
+            InitializePermanent();
+            InitializeFrame();
+
+            // Record commands for execution by Vulkan.
+            RecordCommandBuffers();
+        }
+
+        /// <summary>
+        /// Initializes resources the will stay alive for the duration of the application.
+        /// </summary>
+        protected virtual void InitializePermanent()
+        {
 #if DEBUG
             bool debug = true;
 #else
             bool debug = false;
 #endif
+            _initializingPermanent = true;
 
-            CreateInstanceAndSurface(debug);
-            CreateDeviceAndGetQueues();
-            CreateSwapchain();
-            CreateSemaphoresAndCommandBuffers();
-
-            OnInitialized();
-
-            RecordCommandBuffers();
+            // Calling ToDispose in this method registers the resource to be automatically disposed on exit.
+            Instance =                   ToDispose(CreateInstance(debug));
+            DebugReportCallback =        ToDispose(CreateDebugReportCallback(debug));
+            Surface =                    ToDispose(CreateSurface());
+            Device =                     ToDispose(new GraphicsDevice(Instance, Surface, Window.Platform));
+            Content =                    ToDispose(new ContentManager("Content"));
+            ImageAvailableSemaphore =    ToDispose(Device.Logical.CreateSemaphore());
+            RenderingFinishedSemaphore = ToDispose(Device.Logical.CreateSemaphore());
         }
 
-        protected virtual void OnInitialized()
+        /// <summary>
+        /// Initializes resources that need to be recreated on events such as window resize.
+        /// </summary>
+        protected virtual void InitializeFrame()
         {
+            _initializingPermanent = false;
+
+            // Calling ToDispose in this method registers the resource to be automatically disposed
+            // on events such as window resize.
+            Swapchain = ToDispose(CreateSwapchain());
+
+            // Acquire underlying images of the freshly created swapchain.
+            SwapchainImages = Swapchain.GetImages();
+
+            // Create a command buffer for each swapchain image.
+            CommandBuffers = Device.CommandPool.AllocateBuffers(
+                new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
         }
 
         private void Rezize()
         {
-            Device.WaitIdle();
-            Swapchain.Dispose();
-            CreateSwapchain();
+            Device.Logical.WaitIdle();
 
-            OnResized();
+            // Dispose all frame dependent resources.
+            while (_toDisposeFrame.Count > 0)
+                _toDisposeFrame.Pop().Dispose();
 
-            CommandPool.Reset(); // Resets all the command buffers allocated from the pool.
+            // Reinitialize frame dependent resources.
+            InitializeFrame();
+
+            // Reset all the command buffers allocated from the pool and re-record them.
+            Device.CommandPool.Reset();
             RecordCommandBuffers();
-        }
-
-        protected virtual void OnResized()
-        {
         }
 
         public virtual void Run() => Window.Run(Tick);
@@ -92,7 +122,7 @@ namespace VulkanCore.Samples
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
             // Submit recorded commands to graphics queue for execution.
-            GraphicsQueue.Submit(
+            Device.GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.ColorAttachmentOutput,
                 CommandBuffers[imageIndex],
@@ -100,23 +130,19 @@ namespace VulkanCore.Samples
             );
 
             // Present the color output to screen.
-            PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
+            Device.PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         public virtual void Dispose()
         {
-            Device.WaitIdle();
-            ImageAvailableSemaphore.Dispose();
-            RenderingFinishedSemaphore.Dispose();
-            CommandPool.Dispose();
-            Swapchain.Dispose();
-            Device.Dispose();
-            Surface.Dispose();
-            _debugCallback?.Dispose();
-            Instance.Dispose();
+            Device.Logical.WaitIdle();
+            while (_toDisposeFrame.Count > 0)
+                _toDisposeFrame.Pop().Dispose();
+            while (_toDisposePermanent.Count > 0)
+                _toDisposePermanent.Pop().Dispose();
         }
 
-        private void CreateInstanceAndSurface(bool debug)
+        private Instance CreateInstance(bool debug)
         {
             // Specify standard validation layers.
             string surfaceExtension;
@@ -131,7 +157,7 @@ namespace VulkanCore.Samples
                 default:
                     throw new NotImplementedException();
             }
-            
+
             var createInfo = new InstanceCreateInfo();
             if (debug)
             {
@@ -154,106 +180,44 @@ namespace VulkanCore.Samples
                     surfaceExtension,
                 };
             }
+            return new Instance(createInfo);
+        }
 
-            Instance = new Instance(createInfo);
+        private DebugReportCallbackExt CreateDebugReportCallback(bool debug)
+        {
+            if (!debug) return null;
 
             // Attach debug callback.
-            if (debug)
-            {
-                var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
-                    DebugReportFlagsExt.All,
-                    args =>
-                    {
-                        Debug.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
-                        return args.Flags.HasFlag(DebugReportFlagsExt.Error);
-                    }
-                );
-                _debugCallback = Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
-            }
+            var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
+                DebugReportFlagsExt.All,
+                args =>
+                {
+                    Debug.WriteLine($"[{args.Flags}][{args.LayerPrefix}] {args.Message}");
+                    return args.Flags.HasFlag(DebugReportFlagsExt.Error);
+                }
+            );
+            return Instance.CreateDebugReportCallbackExt(debugReportCreateInfo);
+        }
 
+        private SurfaceKhr CreateSurface()
+        {
             // Create surface.
             switch (Window.Platform)
             {
                 case Platform.Android:
-                    Surface = Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Window.Handle));
-                    break;
+                    return Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Window.Handle));
                 case Platform.Win32:
-                    Surface = Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
-                    break;
+                    return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        private void CreateDeviceAndGetQueues()
+        private SwapchainKhr CreateSwapchain()
         {
-            // Get physical device.
-            int graphicsQueueFamilyIndex = -1;
-            int presentQueueFamilyIndex = -1;
-            foreach (PhysicalDevice physicalDevice in Instance.EnumeratePhysicalDevices())
-            {
-                QueueFamilyProperties[] queueFamilyProperties = physicalDevice.GetQueueFamilyProperties();
-                for (int i = 0; i < queueFamilyProperties.Length; i++)
-                {
-                    if (queueFamilyProperties[i].QueueFlags.HasFlag(Queues.Graphics))
-                    {
-                        if (graphicsQueueFamilyIndex == -1) graphicsQueueFamilyIndex = i;
-
-                        if (physicalDevice.GetSurfaceSupportKhr(i, Surface) &&
-                            GetPresentationSupport(physicalDevice, i))
-                        {
-                            presentQueueFamilyIndex = i;
-                            PhysicalDevice = physicalDevice;
-                            break;
-                        }
-                    }
-                }
-                if (PhysicalDevice != null) break;
-            }
-
-            if (PhysicalDevice == null)
-                throw new InvalidOperationException("No suitable physical device found.");
-
-            // Store memory properties of the physical device.
-            PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
-
-            // Create device.
-            bool sameGraphicsAndPresent = graphicsQueueFamilyIndex == presentQueueFamilyIndex;
-            var queueCreateInfos = new DeviceQueueCreateInfo[sameGraphicsAndPresent ? 1 : 2];
-            queueCreateInfos[0] = new DeviceQueueCreateInfo(graphicsQueueFamilyIndex, 1, 1.0f);
-            if (!sameGraphicsAndPresent)
-                queueCreateInfos[1] = new DeviceQueueCreateInfo(presentQueueFamilyIndex, 1, 1.0f);
-
-            var deviceCreateInfo = new DeviceCreateInfo(
-                queueCreateInfos,
-                new[] { Constant.DeviceExtension.KhrSwapchain });
-            Device = PhysicalDevice.CreateDevice(deviceCreateInfo);
-
-            // Get queue.
-            GraphicsQueue = Device.GetQueue(graphicsQueueFamilyIndex);
-            PresentQueue = presentQueueFamilyIndex == graphicsQueueFamilyIndex 
-                ? GraphicsQueue 
-                : Device.GetQueue(presentQueueFamilyIndex);
-
-            bool GetPresentationSupport(PhysicalDevice physicalDevice, int queueFamilyIndex)
-            {
-                switch (Window.Platform)
-                {
-                    case Platform.Android:
-                        return true;
-                    case Platform.Win32:
-                        return physicalDevice.GetWin32PresentationSupportKhr(queueFamilyIndex);
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-        }
-
-        private void CreateSwapchain()
-        {
-            SurfaceCapabilitiesKhr capabilities = PhysicalDevice.GetSurfaceCapabilitiesKhr(Surface);
-            SurfaceFormatKhr[] formats = PhysicalDevice.GetSurfaceFormatsKhr(Surface);
-            PresentModeKhr[] presentModes = PhysicalDevice.GetSurfacePresentModesKhr(Surface);
+            SurfaceCapabilitiesKhr capabilities = Device.Physical.GetSurfaceCapabilitiesKhr(Surface);
+            SurfaceFormatKhr[] formats = Device.Physical.GetSurfaceFormatsKhr(Surface);
+            PresentModeKhr[] presentModes = Device.Physical.GetSurfacePresentModesKhr(Surface);
             Format format = formats.Length == 1 && formats[0].Format == Format.Undefined
                 ? Format.B8G8R8A8UNorm
                 : formats[0].Format;
@@ -263,24 +227,12 @@ namespace VulkanCore.Samples
                 presentModes.Contains(PresentModeKhr.Fifo) ? PresentModeKhr.Fifo :
                 PresentModeKhr.Immediate;
 
-            Swapchain = Device.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
+            return Device.Logical.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
                 Surface,
                 format,
                 capabilities.CurrentExtent,
                 capabilities.CurrentTransform,
                 presentMode));
-            SwapchainImages = Swapchain.GetImages();
-        }
-
-        private void CreateSemaphoresAndCommandBuffers()
-        {
-            // Create semaphores.
-            ImageAvailableSemaphore = Device.CreateSemaphore();
-            RenderingFinishedSemaphore = Device.CreateSemaphore();
-
-            // Create command buffers.
-            CommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(GraphicsQueue.FamilyIndex));
-            CommandBuffers = CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
         }
 
         private void RecordCommandBuffers()
@@ -291,13 +243,13 @@ namespace VulkanCore.Samples
                 CommandBuffer cmdBuffer = CommandBuffers[i];
                 cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.SimultaneousUse));
 
-                if (PresentQueue != GraphicsQueue)
+                if (Device.PresentQueue != Device.GraphicsQueue)
                 {
                     var barrierFromPresentToDraw = new ImageMemoryBarrier(
                         SwapchainImages[i], subresourceRange,
                         Accesses.MemoryRead, Accesses.ColorAttachmentWrite,
                         ImageLayout.Undefined, ImageLayout.PresentSrcKhr,
-                        PresentQueue.FamilyIndex, GraphicsQueue.FamilyIndex);
+                        Device.PresentQueue.FamilyIndex, Device.GraphicsQueue.FamilyIndex);
 
                     cmdBuffer.CmdPipelineBarrier(
                         PipelineStages.ColorAttachmentOutput,
@@ -307,13 +259,13 @@ namespace VulkanCore.Samples
 
                 RecordCommandBuffer(cmdBuffer, i);
 
-                if (PresentQueue != GraphicsQueue)
+                if (Device.PresentQueue != Device.GraphicsQueue)
                 {
                     var barrierFromDrawToPresent = new ImageMemoryBarrier(
                         SwapchainImages[i], subresourceRange,
                         Accesses.ColorAttachmentWrite, Accesses.MemoryRead,
                         ImageLayout.PresentSrcKhr, ImageLayout.PresentSrcKhr,
-                        GraphicsQueue.FamilyIndex, PresentQueue.FamilyIndex);
+                        Device.GraphicsQueue.FamilyIndex, Device.PresentQueue.FamilyIndex);
 
                     cmdBuffer.CmdPipelineBarrier(
                         PipelineStages.ColorAttachmentOutput,
@@ -326,5 +278,20 @@ namespace VulkanCore.Samples
         }
         
         protected abstract void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex);
+
+        protected T ToDispose<T>(T disposable) where T : IDisposable
+        {
+            var toDispose = _initializingPermanent ? _toDisposePermanent : _toDisposeFrame;
+            toDispose.Push(disposable);
+            return disposable;
+        }
+
+        protected T[] ToDispose<T>(T[] disposables) where T : IDisposable
+        {
+            var toDispose = _initializingPermanent ? _toDisposePermanent : _toDisposeFrame;
+            foreach (T disposable in disposables)
+                toDispose.Push(disposable);
+            return disposables;
+        }
     }
 }

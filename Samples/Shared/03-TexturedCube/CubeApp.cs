@@ -94,7 +94,7 @@ namespace VulkanCore.Samples.Cube
 
         public override void Dispose()
         {
-            Device.WaitIdle();
+            VulkanCore.Device.WaitIdle();
 
             _textureView.Dispose();
             _textureMemory.Dispose();
@@ -118,7 +118,7 @@ namespace VulkanCore.Samples.Cube
 
         private void CreateSampler()
         {
-            _sampler = Device.CreateSampler(new SamplerCreateInfo
+            _sampler = VulkanCore.Device.CreateSampler(new SamplerCreateInfo
             {
                 MagFilter = Filter.Linear,
                 MinFilter = Filter.Linear,
@@ -132,12 +132,12 @@ namespace VulkanCore.Samples.Cube
 
             KtxTextureData tex2D = KtxLoader.Load(path);
 
-            Buffer stagingBuffer = Device.CreateBuffer(
+            Buffer stagingBuffer = VulkanCore.Device.CreateBuffer(
                 new BufferCreateInfo(tex2D.Mipmaps[0].Size, BufferUsages.TransferSrc));
             MemoryRequirements stagingMemReq = stagingBuffer.GetMemoryRequirements();
             int heapIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 stagingMemReq.MemoryTypeBits, MemoryProperties.HostVisible);
-            DeviceMemory stagingMemory = Device.AllocateMemory(
+            DeviceMemory stagingMemory = VulkanCore.Device.AllocateMemory(
                 new MemoryAllocateInfo(stagingMemReq.Size, heapIndex));
             stagingBuffer.BindMemory(stagingMemory);
 
@@ -163,7 +163,7 @@ namespace VulkanCore.Samples.Cube
             }
 
             // Create optimal tiled target image.
-            _texture = Device.CreateImage(new ImageCreateInfo
+            _texture = VulkanCore.Device.CreateImage(new ImageCreateInfo
             {
                 ImageType = ImageType.Image2D,
                 Format = format,
@@ -179,7 +179,7 @@ namespace VulkanCore.Samples.Cube
             MemoryRequirements imageMemReq = _texture.GetMemoryRequirements();
             int imageHeapIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 imageMemReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
-            _textureMemory = Device.AllocateMemory(new MemoryAllocateInfo(imageMemReq.Size, imageHeapIndex));
+            _textureMemory = VulkanCore.Device.AllocateMemory(new MemoryAllocateInfo(imageMemReq.Size, imageHeapIndex));
             _texture.BindMemory(_textureMemory);
 
             var subresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, tex2D.Mipmaps.Length, 0, 1);
@@ -207,7 +207,7 @@ namespace VulkanCore.Samples.Cube
             cmdBuffer.End();
 
             // Submit.
-            Fence fence = Device.CreateFence();
+            Fence fence = VulkanCore.Device.CreateFence();
             GraphicsQueue.Submit(new SubmitInfo(commandBuffers: new[] { cmdBuffer }), fence);
             fence.Wait();
 
@@ -253,7 +253,7 @@ namespace VulkanCore.Samples.Cube
 
             _depthStencilFormat = potentialFormat.Value;
 
-            _depthStencil = Device.CreateImage(new ImageCreateInfo
+            _depthStencil = VulkanCore.Device.CreateImage(new ImageCreateInfo
             {
                 ImageType = ImageType.Image2D,
                 Format = _depthStencilFormat,
@@ -267,7 +267,7 @@ namespace VulkanCore.Samples.Cube
             MemoryRequirements memReq = _depthStencil.GetMemoryRequirements();
             int heapIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 memReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
-            _depthStencilMemory = Device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, heapIndex));
+            _depthStencilMemory = VulkanCore.Device.AllocateMemory(new MemoryAllocateInfo(memReq.Size, heapIndex));
             _depthStencil.BindMemory(_depthStencilMemory);
             _depthStencilView = _depthStencil.CreateView(new ImageViewCreateInfo(_depthStencilFormat,
                 new ImageSubresourceRange(ImageAspects.Depth | ImageAspects.Stencil, 0, 1, 0, 1)));
@@ -275,14 +275,14 @@ namespace VulkanCore.Samples.Cube
 
         private void CreateUniformBuffers()
         {
-            _uniformBuffer = Device.CreateBuffer(new BufferCreateInfo(Interop.SizeOf<WorldViewProjection>(), BufferUsages.UniformBuffer));
+            _uniformBuffer = VulkanCore.Device.CreateBuffer(new BufferCreateInfo(Interop.SizeOf<WorldViewProjection>(), BufferUsages.UniformBuffer));
             MemoryRequirements memoryRequirements = _uniformBuffer.GetMemoryRequirements();
             // We require host visible memory so we can map it and write to it directly.
             // We require host coherent memory so that writes are visible to the GPU right after unmapping it.
             int memoryTypeIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(
                 memoryRequirements.MemoryTypeBits,
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
-            _uniformBufferMemory = Device.AllocateMemory(new MemoryAllocateInfo(memoryRequirements.Size, memoryTypeIndex));
+            _uniformBufferMemory = VulkanCore.Device.AllocateMemory(new MemoryAllocateInfo(memoryRequirements.Size, memoryTypeIndex));
             _uniformBuffer.BindMemory(_uniformBufferMemory);
         }
 
@@ -300,7 +300,7 @@ namespace VulkanCore.Samples.Cube
                 new DescriptorPoolSize(DescriptorType.UniformBuffer, 1),
                 new DescriptorPoolSize(DescriptorType.CombinedImageSampler, 1)
             };
-            _descriptorPool = Device.CreateDescriptorPool(
+            _descriptorPool = VulkanCore.Device.CreateDescriptorPool(
                 new DescriptorPoolCreateInfo(descriptorPoolSizes.Length, descriptorPoolSizes));
 
             _descriptorSet = _descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, _descriptorSetLayout))[0];
@@ -318,12 +318,12 @@ namespace VulkanCore.Samples.Cube
 
         private void CreateDescriptorSetAndPipelineLayouts()
         {
-            _descriptorSetLayout = Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
+            _descriptorSetLayout = VulkanCore.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.UniformBuffer, 1, ShaderStages.Vertex),
                 new DescriptorSetLayoutBinding(1, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment)));
 
             var layoutCreateInfo = new PipelineLayoutCreateInfo(new[] { _descriptorSetLayout });
-            _pipelineLayout = Device.CreatePipelineLayout(layoutCreateInfo);
+            _pipelineLayout = VulkanCore.Device.CreatePipelineLayout(layoutCreateInfo);
         }
 
         private void CreateRenderPass()
@@ -386,7 +386,7 @@ namespace VulkanCore.Samples.Cube
             };
 
             var createInfo = new RenderPassCreateInfo(subpasses, attachments, dependencies);
-            _renderPass = Device.CreateRenderPass(createInfo);
+            _renderPass = VulkanCore.Device.CreateRenderPass(createInfo);
         }
 
         private void CreateFramebuffers()
@@ -411,9 +411,9 @@ namespace VulkanCore.Samples.Cube
             // Create shader modules. Shader modules are one of the objects required to create the
             // graphics pipeline. But after the pipeline is created, we don't need these shader
             // modules anymore, so we dispose them.
-            using (ShaderModule vertexShader = Device.CreateShaderModule(
+            using (ShaderModule vertexShader = VulkanCore.Device.CreateShaderModule(
                 new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")))))
-            using (ShaderModule fragmentShader = Device.CreateShaderModule( 
+            using (ShaderModule fragmentShader = VulkanCore.Device.CreateShaderModule( 
                 new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.frag.spv")))))
             {
                 var shaderStageCreateInfos = new[]
@@ -488,7 +488,7 @@ namespace VulkanCore.Samples.Cube
                     multisampleState: multisampleStateCreateInfo,
                     depthStencilState: depthStencilCreateInfo,
                     colorBlendState: colorBlendStateCreateInfo);
-                _pipeline = Device.CreateGraphicsPipeline(pipelineCreateInfo);
+                _pipeline = VulkanCore.Device.CreateGraphicsPipeline(pipelineCreateInfo);
             }
         }
 

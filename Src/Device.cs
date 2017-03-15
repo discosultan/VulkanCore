@@ -8,10 +8,6 @@ namespace VulkanCore
 {
     /// <summary>
     /// Opaque handle to a device object.
-    /// <para>
-    /// Sampler objects represent the state of an image sampler which is used by the implementation
-    /// to read image data and apply filtering and other transformations for the shader.
-    /// </para>
     /// </summary>
     public unsafe class Device : DisposableHandle<IntPtr>
     {

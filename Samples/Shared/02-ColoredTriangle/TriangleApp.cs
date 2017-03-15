@@ -15,34 +15,22 @@ namespace VulkanCore.Samples.Triangle
         {
         }
 
-        protected override void OnInitialized()
+        protected override void InitializePermanent()
         {
-            CreateRenderPass();
-            CreateFramebuffers();
-            CreatePipelineLayout();
-            CreateGraphicsPipeline();
+            base.InitializePermanent();
+            _renderPass =     ToDispose(CreateRenderPass());
+            _pipelineLayout = ToDispose(CreatePipelineLayout());
         }
 
-        protected override void OnResized()
+        protected override void InitializeFrame()
         {
-            _pipeline.Dispose();
-            Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
-            Array.ForEach(_imageViews, imageView => imageView.Dispose());
-            CreateFramebuffers();
-            CreateGraphicsPipeline();
+            base.InitializeFrame();
+            _imageViews =   ToDispose(CreateImageViews());
+            _framebuffers = ToDispose(CreateFramebuffers());
+            _pipeline =     ToDispose(CreateGraphicsPipeline());
         }
 
-        public override void Dispose()
-        {
-            _pipeline.Dispose();
-            _pipelineLayout.Dispose();
-            Array.ForEach(_framebuffers, framebuffer => framebuffer.Dispose());
-            Array.ForEach(_imageViews, imageView => imageView.Dispose());
-            _renderPass.Dispose();
-            base.Dispose();
-        }
-
-        private void CreateRenderPass()
+        private RenderPass CreateRenderPass()
         {
             var subpasses = new[]
             {
@@ -64,40 +52,48 @@ namespace VulkanCore.Samples.Triangle
             };
 
             var createInfo = new RenderPassCreateInfo(subpasses, attachments);
-            _renderPass = Device.CreateRenderPass(createInfo);
+            return Device.Logical.CreateRenderPass(createInfo);
         }
 
-        private void CreateFramebuffers()
+        private ImageView[] CreateImageViews()
         {
-            _imageViews = new ImageView[SwapchainImages.Length];
-            _framebuffers = new Framebuffer[SwapchainImages.Length];
-
+            var imageViews = new ImageView[SwapchainImages.Length];
             for (int i = 0; i < SwapchainImages.Length; i++)
             {
-                _imageViews[i] = SwapchainImages[i].CreateView(new ImageViewCreateInfo(
+                imageViews[i] = SwapchainImages[i].CreateView(new ImageViewCreateInfo(
                     Swapchain.Format,
                     new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1)));
-                _framebuffers[i] = _renderPass.CreateFramebuffer(new FramebufferCreateInfo(
+            }
+            return imageViews;
+        }
+
+        private Framebuffer[] CreateFramebuffers()
+        {
+            var framebuffers = new Framebuffer[SwapchainImages.Length];
+            for (int i = 0; i < SwapchainImages.Length; i++)
+            {
+                framebuffers[i] = _renderPass.CreateFramebuffer(new FramebufferCreateInfo(
                     new[] { _imageViews[i] }, 
                     Window.Width, 
                     Window.Height));
             }
+            return framebuffers;
         }
 
-        private void CreatePipelineLayout()
+        private PipelineLayout CreatePipelineLayout()
         {
             var layoutCreateInfo = new PipelineLayoutCreateInfo();
-            _pipelineLayout = Device.CreatePipelineLayout(layoutCreateInfo);
+            return Device.Logical.CreatePipelineLayout(layoutCreateInfo);
         }
 
-        private void CreateGraphicsPipeline()
+        private Pipeline CreateGraphicsPipeline()
         {
             // Create shader modules. Shader modules are one of the objects required to create the
             // graphics pipeline. But after the pipeline is created, we don't need these shader
             // modules anymore, so we dispose them.
-            using (ShaderModule vertexShader = Device.CreateShaderModule(
+            using (ShaderModule vertexShader = Device.Logical.CreateShaderModule(
                 new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")))))
-            using (ShaderModule fragmentShader = Device.CreateShaderModule(
+            using (ShaderModule fragmentShader = Device.Logical.CreateShaderModule(
                 new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.frag.spv")))))
             {
                 var shaderStageCreateInfos = new[]
@@ -145,7 +141,7 @@ namespace VulkanCore.Samples.Triangle
                     viewportState: viewportStateCreateInfo,
                     multisampleState: multisampleStateCreateInfo,
                     colorBlendState: colorBlendStateCreateInfo);
-                _pipeline = Device.CreateGraphicsPipeline(pipelineCreateInfo);
+                return Device.Logical.CreateGraphicsPipeline(pipelineCreateInfo);
             }
         }
 
