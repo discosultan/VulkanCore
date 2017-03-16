@@ -7,7 +7,7 @@ Vulkan 1.0 bindings for .NET Standard 1.3
 - [Introduction](#introduction)
 - [Building](#building)
 - [Samples](#samples-)
-- [Tests](#tests-)
+- [Tests](#tests--)
 - [Related Work](#related-work)
 
 ## Introduction
