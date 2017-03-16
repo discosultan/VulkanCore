@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Threading.Tasks;
 
 namespace VulkanCore.Samples.Triangle
 {
@@ -15,19 +15,17 @@ namespace VulkanCore.Samples.Triangle
         {
         }
 
-        protected override void InitializePermanent()
+        protected override async Task InitializePermanentAsync()
         {
-            base.InitializePermanent();
             _renderPass =     ToDispose(CreateRenderPass());
             _pipelineLayout = ToDispose(CreatePipelineLayout());
         }
 
-        protected override void InitializeFrame()
+        protected override async Task InitializeFrameAsync()
         {
-            base.InitializeFrame();
             _imageViews =   ToDispose(CreateImageViews());
             _framebuffers = ToDispose(CreateFramebuffers());
-            _pipeline =     ToDispose(CreateGraphicsPipeline());
+            _pipeline =     ToDispose(await CreateGraphicsPipelineAsync());
         }
 
         private RenderPass CreateRenderPass()
@@ -86,63 +84,56 @@ namespace VulkanCore.Samples.Triangle
             return Device.Logical.CreatePipelineLayout(layoutCreateInfo);
         }
 
-        private Pipeline CreateGraphicsPipeline()
+        private async Task<Pipeline> CreateGraphicsPipelineAsync()
         {
-            // Create shader modules. Shader modules are one of the objects required to create the
-            // graphics pipeline. But after the pipeline is created, we don't need these shader
-            // modules anymore, so we dispose them.
-            using (ShaderModule vertexShader = Device.Logical.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")))))
-            using (ShaderModule fragmentShader = Device.Logical.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.frag.spv")))))
+            ShaderModule vertexShader =   await Content.LoadAsync<ShaderModule>("shader.vert.spv");
+            ShaderModule fragmentShader = await Content.LoadAsync<ShaderModule>("shader.frag.spv");
+            var shaderStageCreateInfos = new[]
             {
-                var shaderStageCreateInfos = new[]
-                {
-                    new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),
-                    new PipelineShaderStageCreateInfo(ShaderStages.Fragment, fragmentShader, "main")
-                };
+                new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),
+                new PipelineShaderStageCreateInfo(ShaderStages.Fragment, fragmentShader, "main")
+            };
 
-                var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo();
-                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
-                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
-                    new Viewport(0, 0, Window.Width, Window.Height),
-                    new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)));
-                var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
-                {
-                    PolygonMode = PolygonMode.Fill,
-                    CullMode = CullModes.Back,
-                    FrontFace = FrontFace.CounterClockwise,
-                    LineWidth = 1.0f
-                };
-                var multisampleStateCreateInfo = new PipelineMultisampleStateCreateInfo
-                {
-                    RasterizationSamples = SampleCounts.Count1,
-                    MinSampleShading = 1.0f
-                };
-                var colorBlendAttachmentState = new PipelineColorBlendAttachmentState
-                {
-                    SrcColorBlendFactor = BlendFactor.One,
-                    DstColorBlendFactor = BlendFactor.Zero,
-                    ColorBlendOp = BlendOp.Add,
-                    SrcAlphaBlendFactor = BlendFactor.One,
-                    DstAlphaBlendFactor = BlendFactor.Zero,
-                    AlphaBlendOp = BlendOp.Add,
-                    ColorWriteMask = ColorComponents.All
-                };
-                var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
-                    new[] { colorBlendAttachmentState });
+            var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo();
+            var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
+            var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
+                new Viewport(0, 0, Window.Width, Window.Height),
+                new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)));
+            var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
+            {
+                PolygonMode = PolygonMode.Fill,
+                CullMode = CullModes.Back,
+                FrontFace = FrontFace.CounterClockwise,
+                LineWidth = 1.0f
+            };
+            var multisampleStateCreateInfo = new PipelineMultisampleStateCreateInfo
+            {
+                RasterizationSamples = SampleCounts.Count1,
+                MinSampleShading = 1.0f
+            };
+            var colorBlendAttachmentState = new PipelineColorBlendAttachmentState
+            {
+                SrcColorBlendFactor = BlendFactor.One,
+                DstColorBlendFactor = BlendFactor.Zero,
+                ColorBlendOp = BlendOp.Add,
+                SrcAlphaBlendFactor = BlendFactor.One,
+                DstAlphaBlendFactor = BlendFactor.Zero,
+                AlphaBlendOp = BlendOp.Add,
+                ColorWriteMask = ColorComponents.All
+            };
+            var colorBlendStateCreateInfo = new PipelineColorBlendStateCreateInfo(
+                new[] { colorBlendAttachmentState });
 
-                var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
-                    _pipelineLayout, _renderPass, 0,
-                    shaderStageCreateInfos,
-                    inputAssemblyStateCreateInfo,
-                    vertexInputStateCreateInfo,
-                    rasterizationStateCreateInfo,
-                    viewportState: viewportStateCreateInfo,
-                    multisampleState: multisampleStateCreateInfo,
-                    colorBlendState: colorBlendStateCreateInfo);
-                return Device.Logical.CreateGraphicsPipeline(pipelineCreateInfo);
-            }
+            var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
+                _pipelineLayout, _renderPass, 0,
+                shaderStageCreateInfos,
+                inputAssemblyStateCreateInfo,
+                vertexInputStateCreateInfo,
+                rasterizationStateCreateInfo,
+                viewportState: viewportStateCreateInfo,
+                multisampleState: multisampleStateCreateInfo,
+                colorBlendState: colorBlendStateCreateInfo);
+            return Device.Logical.CreateGraphicsPipeline(pipelineCreateInfo);
         }
 
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)

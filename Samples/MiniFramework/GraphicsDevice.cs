@@ -3,6 +3,10 @@ using VulkanCore.Khr;
 
 namespace VulkanCore.Samples
 {
+    /// <summary>
+    /// Encapsulates Vulkan <see cref="PhysicalDevice"/> and <see cref="Device"/> and exposes queues
+    /// and a command pool for rendering tasks.
+    /// </summary>
     public class GraphicsDevice : IDisposable
     {
         public GraphicsDevice(Instance instance, SurfaceKhr surface, Platform platform)

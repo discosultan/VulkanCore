@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using VulkanCore.Ext;
 using VulkanCore.Khr;
 
@@ -24,7 +25,6 @@ namespace VulkanCore.Samples
 
         public Instance Instance { get; private set; }
         protected DebugReportCallbackExt DebugReportCallback { get; private set; }
-        // Encapsulates physical and logical device.
         public GraphicsDevice Device { get; private set; }
         public ContentManager Content { get; private set; }
 
@@ -36,61 +36,58 @@ namespace VulkanCore.Samples
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
 
-        public void Initialize()
+        public async Task InitializeAsync()
         {
             // Initialize the host window.
             Window.Initialize(Rezize);
-
-            // Initialize necessary Vulkan resources for application.
-            InitializePermanent();
-            InitializeFrame();
-
-            // Record commands for execution by Vulkan.
-            RecordCommandBuffers();
-        }
-
-        /// <summary>
-        /// Initializes resources the will stay alive for the duration of the application.
-        /// </summary>
-        protected virtual void InitializePermanent()
-        {
 #if DEBUG
             bool debug = true;
 #else
             bool debug = false;
 #endif
             _initializingPermanent = true;
-
-            // Calling ToDispose in this method registers the resource to be automatically disposed on exit.
+            // Calling ToDispose here registers the resource to be automatically disposed on exit.
             Instance =                   ToDispose(CreateInstance(debug));
             DebugReportCallback =        ToDispose(CreateDebugReportCallback(debug));
             Surface =                    ToDispose(CreateSurface());
             Device =                     ToDispose(new GraphicsDevice(Instance, Surface, Window.Platform));
-            Content =                    ToDispose(new ContentManager("Content"));
+            Content =                    ToDispose(new ContentManager(Device, "Content"));
             ImageAvailableSemaphore =    ToDispose(Device.Logical.CreateSemaphore());
             RenderingFinishedSemaphore = ToDispose(Device.Logical.CreateSemaphore());
-        }
 
-        /// <summary>
-        /// Initializes resources that need to be recreated on events such as window resize.
-        /// </summary>
-        protected virtual void InitializeFrame()
-        {
             _initializingPermanent = false;
-
-            // Calling ToDispose in this method registers the resource to be automatically disposed
-            // on events such as window resize.
+            // Calling ToDispose here registers the resource to be automatically disposed on events
+            // such as window resize.
             Swapchain = ToDispose(CreateSwapchain());
-
             // Acquire underlying images of the freshly created swapchain.
             SwapchainImages = Swapchain.GetImages();
-
             // Create a command buffer for each swapchain image.
             CommandBuffers = Device.CommandPool.AllocateBuffers(
                 new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
+
+            // Allow concrete samples to initialize their resources.
+            _initializingPermanent = true;
+            await InitializePermanentAsync();
+            _initializingPermanent = false;
+            await InitializeFrameAsync();
+
+            // Record commands for execution by Vulkan.
+            RecordCommandBuffers();
         }
 
-        private void Rezize()
+        /// <summary>
+        /// Allows derived classes to initializes resources the will stay alive for the duration of
+        /// the application.
+        /// </summary>
+        protected virtual async Task InitializePermanentAsync() { }
+        
+        /// <summary>
+        /// Allows derived classes to initializes resources that need to be recreated on events such
+        /// as window resize.
+        /// </summary>
+        protected virtual async Task InitializeFrameAsync() { }
+
+        private async void Rezize()
         {
             Device.Logical.WaitIdle();
 
@@ -99,7 +96,9 @@ namespace VulkanCore.Samples
                 _toDisposeFrame.Pop().Dispose();
 
             // Reinitialize frame dependent resources.
-            InitializeFrame();
+            Swapchain = ToDispose(CreateSwapchain());
+            SwapchainImages = Swapchain.GetImages();
+            await InitializeFrameAsync();
 
             // Reset all the command buffers allocated from the pool and re-record them.
             Device.CommandPool.Reset();
@@ -279,19 +278,20 @@ namespace VulkanCore.Samples
         
         protected abstract void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex);
 
-        protected T ToDispose<T>(T disposable) where T : IDisposable
+        protected T ToDispose<T>(T disposable)
         {
             var toDispose = _initializingPermanent ? _toDisposePermanent : _toDisposeFrame;
-            toDispose.Push(disposable);
+            switch (disposable)
+            {
+                case IEnumerable<IDisposable> sequence:
+                    foreach (var element in sequence)
+                        toDispose.Push(element);
+                    break;
+                case IDisposable element:
+                    toDispose.Push(element);
+                    break;
+            }
             return disposable;
-        }
-
-        protected T[] ToDispose<T>(T[] disposables) where T : IDisposable
-        {
-            var toDispose = _initializingPermanent ? _toDisposePermanent : _toDisposeFrame;
-            foreach (T disposable in disposables)
-                toDispose.Push(disposable);
-            return disposables;
         }
     }
 }
