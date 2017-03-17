@@ -8,20 +8,27 @@ using VulkanCore.Khr;
 
 namespace VulkanCore.Samples
 {
+    public enum Platform
+    {
+        Android, Win32
+    }
+
+    public interface IVulkanAppHost : IDisposable
+    {
+        IntPtr WindowHandle { get; }
+        IntPtr InstanceHandle { get; }
+        int Width { get; }
+        int Height { get; }
+        Platform Platform { get; }
+    }
+
     public abstract class VulkanApp : IDisposable
     {
         private readonly Stack<IDisposable> _toDisposePermanent = new Stack<IDisposable>();
         private readonly Stack<IDisposable> _toDisposeFrame = new Stack<IDisposable>();
-        private readonly IntPtr _hInstance;
         private bool _initializingPermanent;
 
-        protected VulkanApp(IntPtr hInstance, IWindow window)
-        {
-            _hInstance = hInstance;
-            Window = window;
-        }
-
-        public IWindow Window { get; }
+        public IVulkanAppHost Host { get; private set; }
 
         public Instance Instance { get; private set; }
         protected DebugReportCallbackExt DebugReportCallback { get; private set; }
@@ -36,10 +43,9 @@ namespace VulkanCore.Samples
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(IVulkanAppHost host)
         {
-            // Initialize the host window.
-            Window.Initialize(Rezize);
+            Host = host;
 #if DEBUG
             bool debug = true;
 #else
@@ -47,12 +53,12 @@ namespace VulkanCore.Samples
 #endif
             _initializingPermanent = true;
             // Calling ToDispose here registers the resource to be automatically disposed on exit.
-            Instance =                   ToDispose(CreateInstance(debug));
-            DebugReportCallback =        ToDispose(CreateDebugReportCallback(debug));
-            Surface =                    ToDispose(CreateSurface());
-            Device =                     ToDispose(new GraphicsDevice(Instance, Surface, Window.Platform));
-            Content =                    ToDispose(new ContentManager(Device, "Content"));
-            ImageAvailableSemaphore =    ToDispose(Device.Logical.CreateSemaphore());
+            Instance                   = ToDispose(CreateInstance(debug));
+            DebugReportCallback        = ToDispose(CreateDebugReportCallback(debug));
+            Surface                    = ToDispose(CreateSurface());
+            Device                     = ToDispose(new GraphicsDevice(Instance, Surface, Host.Platform));
+            Content                    = ToDispose(new ContentManager(Device, "Content"));
+            ImageAvailableSemaphore    = ToDispose(Device.Logical.CreateSemaphore());
             RenderingFinishedSemaphore = ToDispose(Device.Logical.CreateSemaphore());
 
             _initializingPermanent = false;
@@ -87,7 +93,7 @@ namespace VulkanCore.Samples
         /// </summary>
         protected virtual async Task InitializeFrameAsync() { }
 
-        private async void Rezize()
+        public async Task ResizeAsync()
         {
             Device.Logical.WaitIdle();
 
@@ -105,9 +111,7 @@ namespace VulkanCore.Samples
             RecordCommandBuffers();
         }
 
-        public virtual void Run() => Window.Run(Tick);
-
-        private void Tick(Timer timer)
+        public void Tick(Timer timer)
         {
             Update(timer);
             Draw(timer);
@@ -145,7 +149,7 @@ namespace VulkanCore.Samples
         {
             // Specify standard validation layers.
             string surfaceExtension;
-            switch (Window.Platform)
+            switch (Host.Platform)
             {
                 case Platform.Android:
                     surfaceExtension = Constant.InstanceExtension.KhrAndroidSurface;
@@ -201,12 +205,12 @@ namespace VulkanCore.Samples
         private SurfaceKhr CreateSurface()
         {
             // Create surface.
-            switch (Window.Platform)
+            switch (Host.Platform)
             {
                 case Platform.Android:
-                    return Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Window.Handle));
+                    return Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Host.WindowHandle));
                 case Platform.Win32:
-                    return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(_hInstance, Window.Handle));
+                    return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(Host.InstanceHandle, Host.WindowHandle));
                 default:
                     throw new NotImplementedException();
             }

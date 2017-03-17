@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26304.0
+VisualStudioVersion = 15.0.26315.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VulkanCore", "Src\VulkanCore.csproj", "{1772437F-982D-4EDF-80E8-11B826219041}"
 EndProject
@@ -21,7 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03-TexturedCube", "Samples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{C2878702-A59D-4F67-A80B-DFF83FFAE414}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01-ClearScreen (WIP)", "Samples\Android\01-ClearScreen\01-ClearScreen (WIP).csproj", "{ACF7B532-2575-458F-B80A-B0CA69694485}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01-ClearScreen", "Samples\Android\01-ClearScreen\01-ClearScreen.csproj", "{ACF7B532-2575-458F-B80A-B0CA69694485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02-ColoredTriangle", "Samples\Android\02-ColoredTriangle\02-ColoredTriangle.csproj", "{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,12 @@ Global
 		{ACF7B532-2575-458F-B80A-B0CA69694485}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACF7B532-2575-458F-B80A-B0CA69694485}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ACF7B532-2575-458F-B80A-B0CA69694485}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +79,6 @@ Global
 		{3FC89C99-98A7-4275-BC4E-43335EE47C93} = {197DE740-FF8A-4551-9A7F-78B8D2170510}
 		{C2878702-A59D-4F67-A80B-DFF83FFAE414} = {FD183F84-E801-4231-BF14-805910F54F80}
 		{ACF7B532-2575-458F-B80A-B0CA69694485} = {C2878702-A59D-4F67-A80B-DFF83FFAE414}
+		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90} = {C2878702-A59D-4F67-A80B-DFF83FFAE414}
 	EndGlobalSection
 EndGlobal

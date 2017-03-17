@@ -41,8 +41,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\02-ColoredTriangle\TriangleApp.cs">
-      <Link>TriangleApp.cs</Link>
+    <Compile Include="..\..\Shared\02-ColoredTriangle\ColoredTriangleApp.cs">
+      <Link>ColoredTriangleApp.cs</Link>
     </Compile>
     <Compile Include="..\..\Shared\Win32Window.cs">
       <Link>Win32Window.cs</Link>

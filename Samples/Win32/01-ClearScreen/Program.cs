@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -15,12 +14,12 @@ namespace VulkanCore.Samples.ClearScreen
 
         private static async Task MainAsync()
         {
-            using (var clearScreenApp = new ClearScreenApp(
-                Process.GetCurrentProcess().Handle,
-                new Win32Window(Assembly.GetExecutingAssembly().GetName().Name)))
+            using (var window = new Win32Window(
+                Assembly.GetExecutingAssembly().GetName().Name,
+                new ClearScreenApp()))
             {
-                await clearScreenApp.InitializeAsync();
-                clearScreenApp.Run();
+                window.Initialize();
+                window.Run();
             }
         }
     }

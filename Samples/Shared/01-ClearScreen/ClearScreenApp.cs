@@ -1,14 +1,9 @@
-﻿using System;
-using VulkanCore.Khr;
+﻿using VulkanCore.Khr;
 
 namespace VulkanCore.Samples.ClearScreen
 {
     public class ClearScreenApp : VulkanApp
     {
-        public ClearScreenApp(IntPtr hInstance, IWindow window) : base(hInstance, window)
-        {
-        }
-
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
             var imageSubresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1);

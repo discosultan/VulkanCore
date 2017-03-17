@@ -43,14 +43,11 @@
     <Compile Include="..\..\Shared\03-TexturedCube\Cube.cs">
       <Link>Cube.cs</Link>
     </Compile>
-    <Compile Include="..\..\Shared\03-TexturedCube\CubeApp.cs">
-      <Link>CubeApp.cs</Link>
-    </Compile>
     <Compile Include="..\..\Shared\03-TexturedCube\GeometricPrimitive.cs">
       <Link>GeometricPrimitive.cs</Link>
     </Compile>
-    <Compile Include="..\..\Shared\03-TexturedCube\KtxLoader.cs">
-      <Link>KtxLoader.cs</Link>
+    <Compile Include="..\..\Shared\03-TexturedCube\TexturedCubeApp.cs">
+      <Link>TexturedCubeApp.cs</Link>
     </Compile>
     <Compile Include="..\..\Shared\Win32Window.cs">
       <Link>Win32Window.cs</Link>

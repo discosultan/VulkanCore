@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace VulkanCore.Samples.Triangle
+namespace VulkanCore.Samples.ColoredTriangle
 {
-    public class TriangleApp : VulkanApp
+    public class ColoredTriangleApp : VulkanApp
     {
         private RenderPass _renderPass;
         private ImageView[] _imageViews;
@@ -11,21 +10,17 @@ namespace VulkanCore.Samples.Triangle
         private PipelineLayout _pipelineLayout;
         private Pipeline _pipeline;
 
-        public TriangleApp(IntPtr hInstance, IWindow window) : base(hInstance, window)
-        {
-        }
-
         protected override async Task InitializePermanentAsync()
         {
-            _renderPass =     ToDispose(CreateRenderPass());
+            _renderPass     = ToDispose(CreateRenderPass());
             _pipelineLayout = ToDispose(CreatePipelineLayout());
         }
 
         protected override async Task InitializeFrameAsync()
         {
-            _imageViews =   ToDispose(CreateImageViews());
+            _imageViews   = ToDispose(CreateImageViews());
             _framebuffers = ToDispose(CreateFramebuffers());
-            _pipeline =     ToDispose(await CreateGraphicsPipelineAsync());
+            _pipeline     = ToDispose(await CreateGraphicsPipelineAsync());
         }
 
         private RenderPass CreateRenderPass()
@@ -72,8 +67,8 @@ namespace VulkanCore.Samples.Triangle
             {
                 framebuffers[i] = _renderPass.CreateFramebuffer(new FramebufferCreateInfo(
                     new[] { _imageViews[i] }, 
-                    Window.Width, 
-                    Window.Height));
+                    Host.Width, 
+                    Host.Height));
             }
             return framebuffers;
         }
@@ -97,8 +92,8 @@ namespace VulkanCore.Samples.Triangle
             var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo();
             var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
             var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
-                new Viewport(0, 0, Window.Width, Window.Height),
-                new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)));
+                new Viewport(0, 0, Host.Width, Host.Height),
+                new Rect2D(Offset2D.Zero, new Extent2D(Host.Width, Host.Height)));
             var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
             {
                 PolygonMode = PolygonMode.Fill,
@@ -140,7 +135,7 @@ namespace VulkanCore.Samples.Triangle
         {
             var renderPassBeginInfo = new RenderPassBeginInfo(
                 _framebuffers[imageIndex],
-                new Rect2D(Offset2D.Zero, new Extent2D(Window.Width, Window.Height)),
+                new Rect2D(Offset2D.Zero, new Extent2D(Host.Width, Host.Height)),
                 new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)));
 
             cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);

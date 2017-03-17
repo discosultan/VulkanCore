@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VulkanCore.Samples.Cube
+namespace VulkanCore.Samples.TexturedCube
 {
     public class Cube : IDisposable
     {
@@ -14,12 +14,12 @@ namespace VulkanCore.Samples.Cube
         private Buffer _indexBuffer;
         private DeviceMemory _indexBufferMemory;
 
-        public Cube(VulkanApp app)
+        public Cube(GraphicsDevice device)
         {
-            _device = app.Device;
-            _cmdPool = app.CommandPool;
-            _queue = app.GraphicsQueue;
-            _memoryProperties = app.PhysicalDeviceMemoryProperties;
+            _device = device.Logical;
+            _cmdPool = device.CommandPool;
+            _queue = device.GraphicsQueue;
+            _memoryProperties = device.MemoryProperties;
         }
 
         public Buffer VertexBuffer => _vertexBuffer;

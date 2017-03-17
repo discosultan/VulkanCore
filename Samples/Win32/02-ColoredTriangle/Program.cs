@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace VulkanCore.Samples.Triangle
+namespace VulkanCore.Samples.ColoredTriangle
 {
     public class Program
     {
@@ -15,12 +14,12 @@ namespace VulkanCore.Samples.Triangle
 
         private static async Task MainAsync()
         {
-            using (var triangleApp = new TriangleApp(
-                Process.GetCurrentProcess().Handle, 
-                new Win32Window(Assembly.GetExecutingAssembly().GetName().Name)))
+            using (var window = new Win32Window(
+                Assembly.GetExecutingAssembly().GetName().Name,
+                new ColoredTriangleApp()))
             {
-                await triangleApp.InitializeAsync();
-                triangleApp.Run();
+                window.Initialize();
+                window.Run();
             }
         }
     }

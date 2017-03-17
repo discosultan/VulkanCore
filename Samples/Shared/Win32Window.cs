@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace VulkanCore.Samples
 {
-    public class Win32Window : IWindow
+    public class Win32Window : IVulkanAppHost
     {
         private readonly string _title;
         private readonly Timer _timer = new Timer();
         private Form _form;
+        private VulkanApp _app;
 
         private bool _appPaused;            // Is the application paused?
         private bool _minimized;            // Is the application minimized?
@@ -20,17 +22,19 @@ namespace VulkanCore.Samples
         private int _frameCount;
         private float _timeElapsed;
 
-        public Win32Window(string title)
+        public Win32Window(string title, VulkanApp app)
         {
             _title = title;
+            _app = app;
         }
 
-        public IntPtr Handle => _form.Handle;
+        public IntPtr WindowHandle => _form.Handle;
+        public IntPtr InstanceHandle => Process.GetCurrentProcess().Handle;
         public int Width { get; private set; } = 1280;
         public int Height { get; private set; } = 720;
         public Platform Platform => Platform.Win32;
 
-        public void Initialize(Action onResized)
+        public void Initialize()
         {
             _form = new Form
             {
@@ -51,7 +55,7 @@ namespace VulkanCore.Samples
                 _appPaused = false;
                 _resizing = false;
                 _timer.Start();
-                onResized();
+                _app.ResizeAsync().Wait();
             };
             _form.Activated += (sender, e) =>
             {
@@ -77,7 +81,7 @@ namespace VulkanCore.Samples
                         _appPaused = false;
                         _minimized = false;
                         _maximized = true;
-                        onResized();
+                        _app.ResizeAsync().Wait();
                     }
                     else if (_form.WindowState == FormWindowState.Minimized)
                     {
@@ -91,13 +95,13 @@ namespace VulkanCore.Samples
                         {
                             _appPaused = false;
                             _minimized = false;
-                            onResized();
+                            _app.ResizeAsync().Wait();
                         }
                         else if (_maximized) // Restoring from maximized state?
                         {
                             _appPaused = false;
                             _maximized = false;
-                            onResized();
+                            _app.ResizeAsync().Wait();
                         }
                         else if (_resizing)
                         {
@@ -112,18 +116,19 @@ namespace VulkanCore.Samples
                         }
                         else // API call such as SetWindowPos or setting fullscreen state.
                         {
-                            onResized();
+                            _app.ResizeAsync().Wait();
                         }
                     }
                 }
                 else if (!_resizing) // Resize due to snapping.
                 {
-                    onResized();
+                    _app.ResizeAsync().Wait();
                 }
             };
+            _app.InitializeAsync(this).Wait();
         }
 
-        public void Run(Action<Timer> tick)
+        public void Run()
         {
             _running = true;
             _form.Show();
@@ -136,13 +141,18 @@ namespace VulkanCore.Samples
                 if (!_appPaused)
                 {
                     CalculateFrameRateStats();
-                    tick(_timer);
+                    _app.Tick(_timer);
                 }
                 else
                 {
                     Thread.Sleep(100);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _app.Dispose();
         }
 
         private void CalculateFrameRateStats()

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace VulkanCore.Samples.Cube
+namespace VulkanCore.Samples.TexturedCube
 {
     public class Program
     {
@@ -15,12 +14,12 @@ namespace VulkanCore.Samples.Cube
 
         private static async Task MainAsync()
         {
-            using (var cubeApp = new CubeApp(
-                Process.GetCurrentProcess().Handle, 
-                new Win32Window(Assembly.GetExecutingAssembly().GetName().Name)))
+            using (var window = new Win32Window(
+                Assembly.GetExecutingAssembly().GetName().Name,
+                new TexturedCubeApp()))
             {
-                await cubeApp.InitializeAsync();
-                cubeApp.Run();
+                window.Initialize();
+                window.Run();
             }
         }
     }
