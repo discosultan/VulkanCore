@@ -926,8 +926,9 @@ namespace VulkanCore
         public int ViewportSubPixelBits;
         /// <summary>
         /// The minimum required alignment, in bytes, of host visible memory allocations within the
-        /// host address space. When mapping a memory allocation with vkMapMemory, subtracting offset
-        /// bytes from the returned pointer will always produce an integer multiple of this limit.
+        /// host address space. When mapping a memory allocation with <see cref="DeviceMemory.Map"/>,
+        /// subtracting offset bytes from the returned pointer will always produce an integer
+        /// multiple of this limit.
         /// </summary>
         public Size MinMemoryMapAlignment;
         /// <summary>

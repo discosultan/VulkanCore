@@ -178,8 +178,7 @@ namespace VulkanCore
         /// <para>This function must follow the same rules for return values as <see cref="AllocationFunction"/>.</para>
         /// </summary>
         /// <param name="userData">
-        /// Value specified for <see cref="AllocationCallbacks.UserData"/> in the allocator specified
-        /// by the application.
+        /// Value specified for <see cref="UserData"/> in the allocator specified by the application.
         /// </param>
         /// <param name="original">
         /// Must be either <see cref="IntPtr.Zero"/> or a pointer previously returned by <see
@@ -205,7 +204,7 @@ namespace VulkanCore
         /// </para>
         /// </summary>
         /// <param name="userData">
-        /// Value specified for <see cref="AllocationCallbacks.UserData"/> in the allocator specified
+        /// Value specified for <see cref="UserData"/> in the allocator specified
         /// by the application.
         /// </param>
         /// <param name="memory">Allocation to be freed.</param>
@@ -216,8 +215,7 @@ namespace VulkanCore
         /// <para>This is a purely informational callback.</para>
         /// </summary>
         /// <param name="userData">
-        /// Value specified for <see cref="AllocationCallbacks.UserData"/> in the allocator specified
-        /// by the application.
+        /// Value specified for <see cref="UserData"/> in the allocator specified by the application.
         /// </param>
         /// <param name="size">Size in bytes of the requested allocation.</param>
         /// <param name="allocationType">Requested type of an allocation.</param>
@@ -231,8 +229,7 @@ namespace VulkanCore
         /// Application-defined memory free notification function.
         /// </summary>
         /// <param name="userData">
-        /// Value specified for <see cref="AllocationCallbacks.UserData"/> in the allocator specified
-        /// by the application.
+        /// Value specified for <see cref="UserData"/> in the allocator specified by the application.
         /// </param>
         /// <param name="size">Size in bytes of the requested allocation.</param>
         /// <param name="allocationType">Requested type of an allocation.</param>

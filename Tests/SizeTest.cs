@@ -28,5 +28,31 @@ namespace VulkanCore.Tests
             Size sizeVal = intPtrVal;
             Assert.Equal(intPtrVal.ToString(), sizeVal.ToString());
         }
+
+        [Fact]
+        public void Equals()
+        {
+            var val1 = new Size(0);
+            var val2 = new Size(1);
+
+            Assert.True(val1.Equals(val1));
+            Assert.False(val1.Equals(val2));
+            Assert.True(val1 == val1);
+            Assert.False(val1 == val2);
+            Assert.False(val1 != val1);
+            Assert.True(val1 != val2);
+            Assert.NotEqual(val1.GetHashCode(), val2.GetHashCode());
+        }
+
+        [Fact]
+        public void CompareTo()
+        {
+            var val1 = new Size(0);
+            var val2 = new Size(1);
+
+            Assert.Equal(-1, val1.CompareTo(val2));
+            Assert.Equal(0, val1.CompareTo(val1));
+            Assert.Equal(1, val2.CompareTo(val1));
+        }
     }
 }

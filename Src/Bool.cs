@@ -25,6 +25,12 @@ namespace VulkanCore
         }
 
         /// <summary>
+        /// Returns a string representing this <see cref="Bool"/> instance.
+        /// </summary>
+        /// <returns>The string representation.</returns>
+        public override string ToString() => ((bool)this).ToString();
+
+        /// <summary>
         /// Returns a boolean indicating whether the given <see cref="Bool"/> is equal to this <see
         /// cref="Bool"/> instance.
         /// </summary>
@@ -49,12 +55,6 @@ namespace VulkanCore
         /// </summary>
         /// <returns>The hash code.</returns>
         public override int GetHashCode() => _value.GetHashCode();
-
-        /// <summary>
-        /// Returns a string representing this <see cref="Bool"/> instance.
-        /// </summary>
-        /// <returns>The string representation.</returns>
-        public override string ToString() => ((bool)this).ToString();
 
         /// <summary>
         /// Returns a boolean indicating whether the two given booleans are equal.
