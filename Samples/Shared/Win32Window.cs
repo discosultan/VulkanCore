@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -34,6 +35,8 @@ namespace VulkanCore.Samples
         public int Height { get; private set; } = 720;
         public Platform Platform => Platform.Win32;
 
+        public Stream Load(string path) => new FileStream(path, FileMode.Open, FileAccess.Read);
+
         public void Initialize()
         {
             _form = new Form
@@ -42,7 +45,8 @@ namespace VulkanCore.Samples
                 FormBorderStyle = FormBorderStyle.Sizable,
                 ClientSize = new System.Drawing.Size(Width, Height),
                 StartPosition = FormStartPosition.CenterScreen,
-                MinimumSize = new System.Drawing.Size(200, 200)
+                MinimumSize = new System.Drawing.Size(200, 200),
+                Visible = false
             };
             _form.ResizeBegin += (sender, e) =>
             {
@@ -55,7 +59,7 @@ namespace VulkanCore.Samples
                 _appPaused = false;
                 _resizing = false;
                 _timer.Start();
-                _app.ResizeAsync().Wait();
+                _app.Resize();
             };
             _form.Activated += (sender, e) =>
             {
@@ -81,7 +85,7 @@ namespace VulkanCore.Samples
                         _appPaused = false;
                         _minimized = false;
                         _maximized = true;
-                        _app.ResizeAsync().Wait();
+                        _app.Resize();
                     }
                     else if (_form.WindowState == FormWindowState.Minimized)
                     {
@@ -95,13 +99,13 @@ namespace VulkanCore.Samples
                         {
                             _appPaused = false;
                             _minimized = false;
-                            _app.ResizeAsync().Wait();
+                            _app.Resize();
                         }
                         else if (_maximized) // Restoring from maximized state?
                         {
                             _appPaused = false;
                             _maximized = false;
-                            _app.ResizeAsync().Wait();
+                            _app.Resize();
                         }
                         else if (_resizing)
                         {
@@ -116,16 +120,16 @@ namespace VulkanCore.Samples
                         }
                         else // API call such as SetWindowPos or setting fullscreen state.
                         {
-                            _app.ResizeAsync().Wait();
+                            _app.Resize();
                         }
                     }
                 }
                 else if (!_resizing) // Resize due to snapping.
                 {
-                    _app.ResizeAsync().Wait();
+                    _app.Resize();
                 }
             };
-            _app.InitializeAsync(this).Wait();
+            _app.Initialize(this);
         }
 
         public void Run()

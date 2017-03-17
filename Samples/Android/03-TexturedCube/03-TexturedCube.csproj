@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}</ProjectGuid>
+    <ProjectGuid>{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VulkanCore.Samples.ColoredTriangle</RootNamespace>
-    <AssemblyName>ColoredTriangle</AssemblyName>
+    <RootNamespace>VulkanCore.Samples.TexturedCube</RootNamespace>
+    <AssemblyName>TexturedCube</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
@@ -50,8 +50,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\02-ColoredTriangle\ColoredTriangleApp.cs">
-      <Link>ColoredTriangleApp.cs</Link>
+    <Compile Include="..\..\Shared\03-TexturedCube\Cube.cs">
+      <Link>Cube.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shared\03-TexturedCube\GeometricPrimitive.cs">
+      <Link>GeometricPrimitive.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shared\03-TexturedCube\TexturedCubeApp.cs">
+      <Link>TexturedCubeApp.cs</Link>
     </Compile>
     <Compile Include="..\..\Shared\VulkanSurfaceView.cs">
       <Link>VulkanSurfaceView.cs</Link>
@@ -61,16 +67,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.frag">
+	<AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\IndustryForgedDark512.ktx">
+      <Link>Assets\Content\IndustryForgedDark512.ktx</Link>
+    </AndroidAsset>
+    <None Include="..\..\Shared\03-TexturedCube\Content\shader.frag">
       <Link>Assets\Content\shader.frag</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\02-ColoredTriangle\Content\shader.frag.spv">
+    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\shader.frag.spv">
       <Link>Assets\Content\shader.frag.spv</Link>
     </AndroidAsset>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.vert">
+    <None Include="..\..\Shared\03-TexturedCube\Content\shader.vert">
       <Link>Assets\Content\shader.vert</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\02-ColoredTriangle\Content\shader.vert.spv">
+    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\shader.vert.spv">
       <Link>Assets\Content\shader.vert.spv</Link>
     </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
@@ -101,11 +110,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple">
+    <PackageReference Include="System.Numerics.Vectors">
       <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

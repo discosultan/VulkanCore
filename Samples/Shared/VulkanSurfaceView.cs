@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Graphics;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VulkanCore.Samples
 {
@@ -24,27 +25,47 @@ namespace VulkanCore.Samples
 
         public Platform Platform => Platform.Android;
 
-        public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Android.Graphics.Format format, int width, int height)
-        {
-            _app.ResizeAsync().Wait();
-        }
+        public Stream Load(string path) => Context.Assets.Open(path);
+
+
+        #region ISurfaceHolderCallback implementation
 
         public void SurfaceCreated(ISurfaceHolder holder)
         {
-            WindowHandle = ANativeWindow_fromSurface(JNIEnv.Handle, holder.Surface.Handle);
-            _app.InitializeAsync(this).Wait();
+            if (WindowHandle == IntPtr.Zero)
+                WindowHandle = ANativeWindow_fromSurface(JNIEnv.Handle, holder.Surface.Handle);
+
+            if (!_app.Initialized)
+                _app.Initialize(this);
+            else
+                _app.Resize();
+
+            _timer.Start();
+        }
+
+        public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Android.Graphics.Format format, int width, int height)
+        {
         }
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
         {
-            _app.Dispose();
-            ANativeWindow_release(WindowHandle);
+            _timer.Stop();
         }
+
+        #endregion
+
 
         protected override void OnDraw(Canvas canvas)
         {
             _timer.Tick();
             _app.Tick(_timer);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (WindowHandle != IntPtr.Zero)
+                ANativeWindow_release(WindowHandle);
+            base.Dispose(disposing);
         }
 
         [DllImport("android")]

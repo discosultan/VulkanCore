@@ -1,12 +1,12 @@
 ﻿using Android.App;
-using Android.Content.PM;
 using Android.OS;
+using Android.Content.PM;
 
-namespace VulkanCore.Samples.ColoredTriangle
+namespace VulkanCore.Samples.TexturedCube
 {
     [Activity(
-        Label = "ColoredTriangle",
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, 
+        Label = "TexturedCube",
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
         MainLauncher = true,
         Icon = "@drawable/icon")]
     public class MainActivity : Activity
@@ -14,7 +14,7 @@ namespace VulkanCore.Samples.ColoredTriangle
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            var surfaceView = new VulkanSurfaceView(this, new ColoredTriangleApp());
+            var surfaceView = new VulkanSurfaceView(this, new TexturedCubeApp());
             SetContentView(surfaceView);
         }
     }

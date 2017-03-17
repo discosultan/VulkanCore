@@ -10,17 +10,17 @@ namespace VulkanCore.Samples.ColoredTriangle
         private PipelineLayout _pipelineLayout;
         private Pipeline _pipeline;
 
-        protected override async Task InitializePermanentAsync()
+        protected override void InitializePermanent()
         {
             _renderPass     = ToDispose(CreateRenderPass());
             _pipelineLayout = ToDispose(CreatePipelineLayout());
         }
 
-        protected override async Task InitializeFrameAsync()
+        protected override void InitializeFrame()
         {
             _imageViews   = ToDispose(CreateImageViews());
             _framebuffers = ToDispose(CreateFramebuffers());
-            _pipeline     = ToDispose(await CreateGraphicsPipelineAsync());
+            _pipeline     = ToDispose(CreateGraphicsPipeline());
         }
 
         private RenderPass CreateRenderPass()
@@ -79,10 +79,10 @@ namespace VulkanCore.Samples.ColoredTriangle
             return Device.Logical.CreatePipelineLayout(layoutCreateInfo);
         }
 
-        private async Task<Pipeline> CreateGraphicsPipelineAsync()
+        private Pipeline CreateGraphicsPipeline()
         {
-            ShaderModule vertexShader =   await Content.LoadAsync<ShaderModule>("shader.vert.spv");
-            ShaderModule fragmentShader = await Content.LoadAsync<ShaderModule>("shader.frag.spv");
+            ShaderModule vertexShader   = Content.Load<ShaderModule>("shader.vert.spv");
+            ShaderModule fragmentShader = Content.Load<ShaderModule>("shader.frag.spv");
             var shaderStageCreateInfos = new[]
             {
                 new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),

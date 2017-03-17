@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01-ClearScreen", "Samples\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02-ColoredTriangle", "Samples\Android\02-ColoredTriangle\02-ColoredTriangle.csproj", "{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03-TexturedCube", "Samples\Android\03-TexturedCube\03-TexturedCube.csproj", "{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,12 @@ Global
 		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +88,6 @@ Global
 		{C2878702-A59D-4F67-A80B-DFF83FFAE414} = {FD183F84-E801-4231-BF14-805910F54F80}
 		{ACF7B532-2575-458F-B80A-B0CA69694485} = {C2878702-A59D-4F67-A80B-DFF83FFAE414}
 		{54D5EFD9-799C-4846-9E55-C8BF7BA11E90} = {C2878702-A59D-4F67-A80B-DFF83FFAE414}
+		{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15} = {C2878702-A59D-4F67-A80B-DFF83FFAE414}
 	EndGlobalSection
 EndGlobal

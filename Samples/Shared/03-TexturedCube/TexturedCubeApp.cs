@@ -33,9 +33,9 @@ namespace VulkanCore.Samples.TexturedCube
         private Cube _cube;
         private WorldViewProjection _wvp;
 
-        protected override async Task InitializePermanentAsync()
+        protected override void InitializePermanent()
         {
-            _cubeTexture = await Content.LoadAsync<Texture>("IndustryForgedDark512.ktx");
+            _cubeTexture = Content.Load<Texture>("IndustryForgedDark512.ktx");
             _cube = new Cube(Device);
             _cube.Initialize();
             _sampler             = ToDispose(CreateSampler());
@@ -46,13 +46,13 @@ namespace VulkanCore.Samples.TexturedCube
             _descriptorSet       = CreateDescriptorSet(); // Will be freed when pool is destroyed.
         }
 
-        protected override async Task InitializeFrameAsync()
+        protected override void InitializeFrame()
         {
             _depthStencilBuffer = ToDispose(new DepthStencilBuffer(Device, Host.Width, Host.Height));
             _renderPass         = ToDispose(CreateRenderPass());
             _imageViews         = ToDispose(CreateImageViews());
             _framebuffers       = ToDispose(CreateFramebuffers());
-            _pipeline           = ToDispose(await CreateGraphicsPipelineAsync());
+            _pipeline           = ToDispose(CreateGraphicsPipeline());
             SetViewProjection();
         }
 
@@ -225,13 +225,13 @@ namespace VulkanCore.Samples.TexturedCube
             return framebuffers;
         }
 
-        private async Task<Pipeline> CreateGraphicsPipelineAsync()
+        private Pipeline CreateGraphicsPipeline()
         {
             // Create shader modules. Shader modules are one of the objects required to create the
             // graphics pipeline. But after the pipeline is created, we don't need these shader
             // modules anymore, so we dispose them.
-            ShaderModule vertexShader = await Content.LoadAsync<ShaderModule>("shader.vert.spv");
-            ShaderModule fragmentShader = await Content.LoadAsync<ShaderModule>("shader.frag.spv");
+            ShaderModule vertexShader   = Content.Load<ShaderModule>("shader.vert.spv");
+            ShaderModule fragmentShader = Content.Load<ShaderModule>("shader.frag.spv");
             var shaderStageCreateInfos = new[]
             {
                 new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),

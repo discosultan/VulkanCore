@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using VulkanCore.Ext;
 using VulkanCore.Khr;
 
@@ -20,6 +20,8 @@ namespace VulkanCore.Samples
         int Width { get; }
         int Height { get; }
         Platform Platform { get; }
+
+        Stream Load(string path);
     }
 
     public abstract class VulkanApp : IDisposable
@@ -29,6 +31,7 @@ namespace VulkanCore.Samples
         private bool _initializingPermanent;
 
         public IVulkanAppHost Host { get; private set; }
+        public bool Initialized { get; private set; }
 
         public Instance Instance { get; private set; }
         protected DebugReportCallbackExt DebugReportCallback { get; private set; }
@@ -43,7 +46,7 @@ namespace VulkanCore.Samples
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
 
-        public async Task InitializeAsync(IVulkanAppHost host)
+        public void Initialize(IVulkanAppHost host)
         {
             Host = host;
 #if DEBUG
@@ -57,7 +60,7 @@ namespace VulkanCore.Samples
             DebugReportCallback        = ToDispose(CreateDebugReportCallback(debug));
             Surface                    = ToDispose(CreateSurface());
             Device                     = ToDispose(new GraphicsDevice(Instance, Surface, Host.Platform));
-            Content                    = ToDispose(new ContentManager(Device, "Content"));
+            Content                    = ToDispose(new ContentManager(Host, Device, "Content"));
             ImageAvailableSemaphore    = ToDispose(Device.Logical.CreateSemaphore());
             RenderingFinishedSemaphore = ToDispose(Device.Logical.CreateSemaphore());
 
@@ -73,27 +76,29 @@ namespace VulkanCore.Samples
 
             // Allow concrete samples to initialize their resources.
             _initializingPermanent = true;
-            await InitializePermanentAsync();
+            InitializePermanent();
             _initializingPermanent = false;
-            await InitializeFrameAsync();
+            InitializeFrame();
 
             // Record commands for execution by Vulkan.
             RecordCommandBuffers();
+
+            Initialized = true;
         }
 
         /// <summary>
         /// Allows derived classes to initializes resources the will stay alive for the duration of
         /// the application.
         /// </summary>
-        protected virtual async Task InitializePermanentAsync() { }
+        protected virtual void InitializePermanent() { }
         
         /// <summary>
         /// Allows derived classes to initializes resources that need to be recreated on events such
         /// as window resize.
         /// </summary>
-        protected virtual async Task InitializeFrameAsync() { }
+        protected virtual void InitializeFrame() { }
 
-        public async Task ResizeAsync()
+        public void Resize()
         {
             Device.Logical.WaitIdle();
 
@@ -104,7 +109,7 @@ namespace VulkanCore.Samples
             // Reinitialize frame dependent resources.
             Swapchain = ToDispose(CreateSwapchain());
             SwapchainImages = Swapchain.GetImages();
-            await InitializeFrameAsync();
+            InitializeFrame();
 
             // Reset all the command buffers allocated from the pool and re-record them.
             Device.CommandPool.Reset();

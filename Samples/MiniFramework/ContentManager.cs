@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace VulkanCore.Samples
 {
     public class ContentManager : IDisposable
     {
+        private readonly IVulkanAppHost _host;
         private readonly GraphicsDevice _device;
         private readonly string _contentRoot;
         private readonly Dictionary<string, IDisposable> _cachedContent = new Dictionary<string, IDisposable>();
 
-        public ContentManager(GraphicsDevice device, string contentRoot)
+        public ContentManager(IVulkanAppHost host, GraphicsDevice device, string contentRoot)
         {
+            _host = host;
             _device = device;
             _contentRoot = contentRoot;
         }
 
-        public async Task<T> LoadAsync<T>(string contentName)
+        public T Load<T>(string contentName)
         {
             if (_cachedContent.TryGetValue(contentName, out IDisposable value))
                 return (T)value;
@@ -27,11 +28,11 @@ namespace VulkanCore.Samples
             Type type = typeof(T);
             if (type == typeof(ShaderModule))
             {
-                value = await LoadShaderAsync(path);
+                value = LoadShader(path);
             }
             else if (type == typeof(Texture))
             {
-                value = await LoadTextureAsync(path);
+                value = LoadTexture(path);
             }
 
             _cachedContent.Add(contentName, value);
@@ -45,30 +46,24 @@ namespace VulkanCore.Samples
             _cachedContent.Clear();
         }
 
-        private async Task<IDisposable> LoadShaderAsync(string path)
+        private IDisposable LoadShader(string path)
         {
-            const int bufferSize = 4096;
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, FileOptions.Asynchronous))
+            const int defaultBufferSize = 4096;
+            using (Stream stream = _host.Load(path))
+            using (var ms = new MemoryStream())
             {
-                var shaderBytecode = new byte[stream.Length];
-                var buffer = new byte[bufferSize];
-                int bytesRead = 0, totalBytes = 0;
-                while((bytesRead = await stream.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false)) > 0)
-                {
-                    System.Buffer.BlockCopy(buffer, 0, shaderBytecode, totalBytes, bytesRead);
-                    totalBytes += bytesRead;
-                }
-                return _device.Logical.CreateShaderModule(new ShaderModuleCreateInfo(shaderBytecode));
+                stream.CopyTo(ms, defaultBufferSize);
+                return _device.Logical.CreateShaderModule(new ShaderModuleCreateInfo(ms.ToArray()));
             }
         }
 
-        private async Task<IDisposable> LoadTextureAsync(string path)
+        private IDisposable LoadTexture(string path)
         {
             string contentExtension = Path.GetExtension(path);
             TextureData textureData;
             if (contentExtension.Equals(".ktx", StringComparison.OrdinalIgnoreCase))
             {
-                textureData = await ReadKtxTextureDataAsync(path);
+                textureData = ReadKtxTextureData(path);
             }
             else
             {
@@ -81,7 +76,7 @@ namespace VulkanCore.Samples
         {
             0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A
         };
-        private async Task<TextureData> ReadKtxTextureDataAsync(string path)
+        private TextureData ReadKtxTextureData(string path)
         {
             using (var reader = new BinaryReader(File.OpenRead(path)))
             {
