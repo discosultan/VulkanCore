@@ -21,7 +21,7 @@ namespace VulkanCore.Samples
         int Height { get; }
         Platform Platform { get; }
 
-        Stream Load(string path);
+        Stream Open(string path);
     }
 
     public abstract class VulkanApp : IDisposable

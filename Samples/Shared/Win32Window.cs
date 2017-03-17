@@ -35,7 +35,7 @@ namespace VulkanCore.Samples
         public int Height { get; private set; } = 720;
         public Platform Platform => Platform.Win32;
 
-        public Stream Load(string path) => new FileStream(path, FileMode.Open, FileAccess.Read);
+        public Stream Open(string path) => new FileStream(path, FileMode.Open, FileAccess.Read);
 
         public void Initialize()
         {

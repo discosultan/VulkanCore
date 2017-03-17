@@ -2,15 +2,18 @@
 using Android.Content;
 using Android.Runtime;
 using Android.Views;
-using Android.Graphics;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Threading;
 
 namespace VulkanCore.Samples
 {
     public class VulkanSurfaceView : SurfaceView, ISurfaceHolderCallback, IVulkanAppHost
     {
+        private static readonly int _renderDueTime = (int)Math.Ceiling(1000.0f / 60.0f);
+
         private readonly Timer _timer = new Timer();
+        private System.Threading.Timer _animationTimer;
         private readonly VulkanApp _app;
 
         public IntPtr WindowHandle { get; private set; }
@@ -25,47 +28,54 @@ namespace VulkanCore.Samples
 
         public Platform Platform => Platform.Android;
 
-        public Stream Load(string path) => Context.Assets.Open(path);
+        public Stream Open(string path) => Context.Assets.Open(path);
 
 
         #region ISurfaceHolderCallback implementation
 
         public void SurfaceCreated(ISurfaceHolder holder)
         {
-            if (WindowHandle == IntPtr.Zero)
-                WindowHandle = ANativeWindow_fromSurface(JNIEnv.Handle, holder.Surface.Handle);
+            WindowHandle = ANativeWindow_fromSurface(JNIEnv.Handle, holder.Surface.Handle);
 
-            if (!_app.Initialized)
-                _app.Initialize(this);
-            else
-                _app.Resize();
+            _app.Initialize(this);
+            _app.Resize();
 
             _timer.Start();
+            _animationTimer = new System.Threading.Timer(RequestAnimationFrameCallback, null, _renderDueTime, Timeout.Infinite);
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Android.Graphics.Format format, int width, int height)
         {
+            _app.Resize();
         }
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
         {
             _timer.Stop();
+            _animationTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _animationTimer.Dispose();
+            _app.Dispose();
+            ANativeWindow_release(WindowHandle);
         }
 
         #endregion
 
+        private void RequestAnimationFrameCallback(object state)
+        {
+            try
+            {
+                Android.App.Application.SynchronizationContext.Send(Tick, state);
+            }
+            finally
+            {
+                _animationTimer.Change(_renderDueTime, Timeout.Infinite);
+            }
+        }
 
-        protected override void OnDraw(Canvas canvas)
+        private void Tick(object state)
         {
             _timer.Tick();
             _app.Tick(_timer);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (WindowHandle != IntPtr.Zero)
-                ANativeWindow_release(WindowHandle);
-            base.Dispose(disposing);
         }
 
         [DllImport("android")]

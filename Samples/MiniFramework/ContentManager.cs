@@ -49,7 +49,7 @@ namespace VulkanCore.Samples
         private IDisposable LoadShader(string path)
         {
             const int defaultBufferSize = 4096;
-            using (Stream stream = _host.Load(path))
+            using (Stream stream = _host.Open(path))
             using (var ms = new MemoryStream())
             {
                 stream.CopyTo(ms, defaultBufferSize);
@@ -78,7 +78,7 @@ namespace VulkanCore.Samples
         };
         private TextureData ReadKtxTextureData(string path)
         {
-            using (var reader = new BinaryReader(File.OpenRead(path)))
+            using (var reader = new BinaryReader(_host.Open(path)))
             {
                 byte[] identifier = reader.ReadBytes(12);
 

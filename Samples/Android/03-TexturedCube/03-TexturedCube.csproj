@@ -48,6 +48,10 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\03-TexturedCube\Cube.cs">
@@ -67,7 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-	<AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\IndustryForgedDark512.ktx">
+    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\IndustryForgedDark512.ktx">
       <Link>Assets\Content\IndustryForgedDark512.ktx</Link>
     </AndroidAsset>
     <None Include="..\..\Shared\03-TexturedCube\Content\shader.frag">
@@ -110,9 +114,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Numerics.Vectors">
-      <Version>4.3.0</Version>
-    </PackageReference>
+    <Content Include="System.Numerics.Vectors.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
