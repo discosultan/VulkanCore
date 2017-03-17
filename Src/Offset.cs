@@ -12,6 +12,11 @@ namespace VulkanCore
     public struct Offset2D : IEquatable<Offset2D>
     {
         /// <summary>
+        /// An <see cref="Offset2D"/> with all of its components set to zero.
+        /// </summary>
+        public static readonly Offset2D Zero = new Offset2D(0, 0);
+
+        /// <summary>
         /// The X component of the offset.
         /// </summary>
         public int X;
@@ -29,38 +34,6 @@ namespace VulkanCore
         {
             X = x;
             Y = y;
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="Offset2D"/> is equal to this instance.
-        /// </summary>
-        /// <param name="other">The <see cref="Offset2D"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="Offset2D"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Equals(Offset2D other) => other.X == X && other.Y == Y;
-
-        /// <summary>
-        /// Determines whether the specified <see cref="object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj) => obj is Offset2D && Equals((Offset2D)obj);
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>The hash code.</returns>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                return hashCode;
-            }
         }
 
         /// <summary>
@@ -89,9 +62,45 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Gets an <see cref="Offset2D"/> with all of its components set to zero.
+        /// Determines whether the specified <see cref="Offset2D"/> is equal to this instance.
         /// </summary>
-        public static Offset2D Zero => new Offset2D(0, 0);
+        /// <param name="other">The <see cref="Offset2D"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Offset2D"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(ref Offset2D other) => other.X == X && other.Y == Y;
+
+        /// <summary>
+        /// Determines whether the specified <see cref="Offset2D"/> is equal to this instance.
+        /// </summary>
+        /// <param name="other">The <see cref="Offset2D"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Offset2D"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(Offset2D other) => Equals(ref other);
+
+        /// <summary>
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj) => obj is Offset2D && Equals((Offset2D)obj);
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                return hashCode;
+            }
+        }
 
         /// <summary>
         /// Returns a boolean indicating whether the two given offsets are equal.
@@ -99,7 +108,7 @@ namespace VulkanCore
         /// <param name="left">The first offset to compare.</param>
         /// <param name="right">The second offset to compare.</param>
         /// <returns><c>true</c> if the offsets are equal; <c>false</c> otherwise.</returns>
-        public static bool operator ==(Offset2D left, Offset2D right) => left.Equals(right);
+        public static bool operator ==(Offset2D left, Offset2D right) => left.Equals(ref right);
 
         /// <summary>
         /// Returns a boolean indicating whether the two given offsets are not equal.
@@ -109,7 +118,7 @@ namespace VulkanCore
         /// <returns>
         /// <c>true</c> if the offsets are not equal; <c>false</c> if they are equal.
         /// </returns>
-        public static bool operator !=(Offset2D left, Offset2D right) => !left.Equals(right);
+        public static bool operator !=(Offset2D left, Offset2D right) => !left.Equals(ref right);
     }
 
     /// <summary>
@@ -118,6 +127,11 @@ namespace VulkanCore
     [StructLayout(LayoutKind.Sequential)]
     public struct Offset3D : IEquatable<Offset3D>
     {
+        /// <summary>
+        /// An <see cref="Offset3D"/> with all of its components set to zero.
+        /// </summary>
+        public static readonly Offset3D Zero = new Offset3D(0, 0, 0);
+
         /// <summary>
         /// The X component of the offset.
         /// </summary>
@@ -142,39 +156,6 @@ namespace VulkanCore
             X = x;
             Y = y;
             Z = z;
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="Offset3D"/> is equal to this instance.
-        /// </summary>
-        /// <param name="other">The <see cref="Offset3D"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="Offset3D"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Equals(Offset3D other) => other.X == X && other.Y == Y && other.Z == Z;
-
-        /// <summary>
-        /// Determines whether the specified <see cref="object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj) => obj is Offset3D && Equals((Offset3D)obj);
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>The hash code.</returns>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ Z.GetHashCode();
-                return hashCode;
-            }
         }
 
         /// <summary>
@@ -206,9 +187,46 @@ namespace VulkanCore
         }
 
         /// <summary>
-        /// Gets an <see cref="Offset3D"/> with all of its components set to zero.
+        /// Determines whether the specified <see cref="Offset3D"/> is equal to this instance.
         /// </summary>
-        public static Offset3D Zero => new Offset3D(0, 0, 0);
+        /// <param name="other">The <see cref="Offset3D"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Offset3D"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(ref Offset3D other) => other.X == X && other.Y == Y && other.Z == Z;
+
+        /// <summary>
+        /// Determines whether the specified <see cref="Offset3D"/> is equal to this instance.
+        /// </summary>
+        /// <param name="other">The <see cref="Offset3D"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Offset3D"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(Offset3D other) => Equals(ref other);
+
+        /// <summary>
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj) => obj is Offset3D && Equals((Offset3D)obj);
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                return hashCode;
+            }
+        }
 
         /// <summary>
         /// Returns a boolean indicating whether the two given offsets are equal.
@@ -216,7 +234,7 @@ namespace VulkanCore
         /// <param name="left">The first offset to compare.</param>
         /// <param name="right">The second offset to compare.</param>
         /// <returns><c>true</c> if the offsets are equal; <c>false</c> otherwise.</returns>
-        public static bool operator ==(Offset3D left, Offset3D right) => left.Equals(right);
+        public static bool operator ==(Offset3D left, Offset3D right) => left.Equals(ref right);
 
         /// <summary>
         /// Returns a boolean indicating whether the two given offsets are not equal.
@@ -226,6 +244,6 @@ namespace VulkanCore
         /// <returns>
         /// <c>true</c> if the offsets are not equal; <c>false</c> if they are equal.
         /// </returns>
-        public static bool operator !=(Offset3D left, Offset3D right) => !left.Equals(right);
+        public static bool operator !=(Offset3D left, Offset3D right) => !left.Equals(ref right);
     }
 }
