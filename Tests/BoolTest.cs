@@ -20,6 +20,22 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
+        public void Equals()
+        {
+            Bool boolTrue = true;
+            Bool boolFalse = false;
+
+            Assert.True(boolTrue.Equals(boolTrue));
+            Assert.False(boolTrue.Equals(boolFalse));
+            Assert.True(boolTrue == boolTrue);
+            Assert.False(boolTrue == boolFalse);
+            Assert.False(boolTrue != boolTrue);
+            Assert.True(boolTrue != boolFalse);
+            Assert.Equal(true.GetHashCode(), boolTrue.GetHashCode());
+            Assert.Equal(false.GetHashCode(), boolFalse.GetHashCode());
+        }
+
+        [Fact]
         public void ConvertToString()
         {
             Bool boolTrue = true;
