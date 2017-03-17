@@ -6,8 +6,8 @@ Vulkan 1.0 bindings for .NET Standard 1.3
 
 - [Introduction](#introduction)
 - [Building](#building)
-- [Samples](#samples)
-- [Tests](#tests)
+- [Samples](#samples-)
+- [Tests](#tests--)
 - [Related Work](#related-work)
 
 ## Introduction
@@ -32,17 +32,17 @@ Cons:
 
 Vulkan-capable graphics hardware and drivers are required to run the samples. Currently only Win32 platform is supported but Ubuntu and Android are planned.
 
-## [01-ClearScreen](Samples/01-ClearScreen)
+## [01-ClearScreen](Samples/Shared/01-ClearScreen)
 <img src="Doc/ClearScreen.jpg" alt="ClearScreen" height="96px" align="right">
 Sets up a window and clears it to a solid color.
 <br><br>
 
-## [02-ColoredTriangle](Samples/02-ColoredTriangle)
+## [02-ColoredTriangle](Samples/Shared/02-ColoredTriangle)
 <img src="Doc/ColoredTriangle.jpg" alt="ColoredTriangle" height="96px" align="right">
 Renders a colored triangle defined in a shader.
 <br><br>
 
-## [03-TexturedCube](Samples/03-TexturedCube)
+## [03-TexturedCube](Samples/Shared/03-TexturedCube)
 <img src="Doc/TexturedCube.jpg" alt="TexturedCube" height="96px" align="right">
 Renders a textured cube.
 <br><br>
