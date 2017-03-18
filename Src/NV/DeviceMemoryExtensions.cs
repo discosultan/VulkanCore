@@ -46,7 +46,7 @@ namespace VulkanCore.NV
         /// </summary>
         OpaqueWin32Kmt = 1 << 1,
         /// <summary>
-        /// indicates a valid NT handle to memory returned by
+        /// Indicates a valid NT handle to memory returned by
         /// `IDXGIResource1::ftext:CreateSharedHandle()`, or a handle duplicated from such a handle
         /// using `DuplicateHandle()`.
         /// </summary>

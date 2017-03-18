@@ -115,7 +115,7 @@ namespace VulkanCore.Tests
             CommandBuffer.End();
         }
 
-        [Fact(Skip = "Resolve blend constants param")]
+        [Fact]
         public void SetBlendConstants()
         {
             CommandBuffer.Begin();

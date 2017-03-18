@@ -10,7 +10,6 @@ namespace VulkanCore.Khx
     /// </summary>
     public static unsafe class PhysicalDeviceExtensions
     {
-        // TODO: doc
         public static ExternalBufferPropertiesKhx GetExternalBufferPropertiesKhx(this PhysicalDevice physicalDevice,
             PhysicalDeviceExternalBufferInfoKhx info)
         {
@@ -252,7 +251,6 @@ namespace VulkanCore.Khx
         Importable = 1 << 1
     }
 
-    // TODO: Let Guids be marshalled directly?
     /// <summary>
     /// Structure specifying IDs related to the physical device.
     /// </summary>

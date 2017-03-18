@@ -847,13 +847,8 @@ namespace VulkanCore.Khx
     /// <summary>
     /// Mode and mask controlling which physical devices' images are presented.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DeviceGroupPresentInfoKhx // TODO: native
+    public unsafe struct DeviceGroupPresentInfoKhx
     {
-        /// <summary>
-        /// The type of this structure.
-        /// </summary>
-        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -874,19 +869,43 @@ namespace VulkanCore.Khx
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceGroupPresentInfoKhx"/> structure.
         /// </summary>
+        /// <param name="swapchainCount">Is zero or the number of elements in <see cref="DeviceMasks"/>.</param>
         /// <param name="deviceMasks">Device masks, one for each element of <see cref="PresentInfoKhr.Swapchains"/>.</param>
         /// <param name="mode">The device group present mode that will be used for this present.</param>
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </param>
-        public DeviceGroupPresentInfoKhx(int[] deviceMasks, DeviceGroupPresentModesKhx mode,
+        public DeviceGroupPresentInfoKhx(int swapchainCount, int[] deviceMasks, DeviceGroupPresentModesKhx mode,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupPresentInfoKhx;
             Next = next;
-            SwapchainCount = deviceMasks?.Length ?? 0;
+            SwapchainCount = swapchainCount;
             DeviceMasks = deviceMasks;
             Mode = mode;
+        }
+
+        /// <summary>
+        /// Converts the structure to a form passable to Vulkan.
+        /// </summary>
+        /// <param name="native">The native structure.</param>
+        /// <param name="deviceMasks">A pointer to a fixed <see cref="DeviceMasks"/> array.</param>
+        public void ToNative(out Native native, int* deviceMasks)
+        {
+            native.Type = StructureType.DeviceGroupPresentInfoKhx;
+            native.Next = Next;
+            native.SwapchainCount = SwapchainCount;
+            native.DeviceMasks = deviceMasks;
+            native.Mode = Mode;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Native
+        {
+            public StructureType Type;
+            public IntPtr Next;
+            public int SwapchainCount;
+            public int* DeviceMasks;
+            public DeviceGroupPresentModesKhx Mode;
         }
     }
 }

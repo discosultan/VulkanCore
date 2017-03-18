@@ -14,19 +14,9 @@ namespace VulkanCore
     public struct ColorF4
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorF4"/> structure.
+        /// Gets a <see cref="ColorF4"/> with all of its components set to zero.
         /// </summary>
-        /// <param name="r">The red component.</param>
-        /// <param name="g">The green component.</param>
-        /// <param name="b">The blue component.</param>
-        /// <param name="a">The alpha component.</param>
-        public ColorF4(float r, float g, float b, float a)
-        {
-            R = r;
-            G = g;
-            B = b;
-            A = a;
-        }
+        public static ColorF4 Zero => new ColorF4();
 
         /// <summary>
         /// The red component of the color.
@@ -44,6 +34,21 @@ namespace VulkanCore
         /// The alpha component of the color.
         /// </summary>
         public float A;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorF4"/> structure.
+        /// </summary>
+        /// <param name="r">The red component.</param>
+        /// <param name="g">The green component.</param>
+        /// <param name="b">The blue component.</param>
+        /// <param name="a">The alpha component.</param>
+        public ColorF4(float r, float g, float b, float a)
+        {
+            R = r;
+            G = g;
+            B = b;
+            A = a;
+        }
 
         /// <summary>
         /// Returns a string representing this <see cref="ColorF4"/> instance.
@@ -75,11 +80,6 @@ namespace VulkanCore
             sb.Append('>');
             return sb.ToString();
         }
-
-        /// <summary>
-        /// Gets a <see cref="ColorF4"/> with all of its components set to zero.
-        /// </summary>
-        public static ColorF4 Zero => new ColorF4();
     }
 
     /// <summary>
@@ -93,19 +93,9 @@ namespace VulkanCore
     public struct ColorI4
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorI4"/> structure.
+        /// Gets a <see cref="ColorI4"/> with all of its components set to zero.
         /// </summary>
-        /// <param name="r">The red component.</param>
-        /// <param name="g">The green component.</param>
-        /// <param name="b">The blue component.</param>
-        /// <param name="a">The alpha component.</param>
-        public ColorI4(int r, int g, int b, int a)
-        {
-            R = r;
-            G = g;
-            B = b;
-            A = a;
-        }
+        public static ColorI4 Zero => new ColorI4();
 
         /// <summary>
         /// The red component of the color.
@@ -123,6 +113,21 @@ namespace VulkanCore
         /// The alpha component of the color.
         /// </summary>
         public int A;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorI4"/> structure.
+        /// </summary>
+        /// <param name="r">The red component.</param>
+        /// <param name="g">The green component.</param>
+        /// <param name="b">The blue component.</param>
+        /// <param name="a">The alpha component.</param>
+        public ColorI4(int r, int g, int b, int a)
+        {
+            R = r;
+            G = g;
+            B = b;
+            A = a;
+        }
 
         /// <summary>
         /// Returns a string representing this <see cref="ColorI4"/> instance.
@@ -154,11 +159,6 @@ namespace VulkanCore
             sb.Append('>');
             return sb.ToString();
         }
-
-        /// <summary>
-        /// Gets a <see cref="ColorI4"/> with all of its components set to zero.
-        /// </summary>
-        public static ColorI4 Zero => new ColorI4();
     }
 
     /// <summary>
@@ -170,19 +170,9 @@ namespace VulkanCore
     public struct ColorU4
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorU4"/> structure.
+        /// Gets a <see cref="ColorU4"/> with all of its components set to zero.
         /// </summary>
-        /// <param name="r">The red component.</param>
-        /// <param name="g">The green component.</param>
-        /// <param name="b">The blue component.</param>
-        /// <param name="a">The alpha component.</param>
-        public ColorU4(uint r, uint g, uint b, uint a)
-        {
-            R = r;
-            G = g;
-            B = b;
-            A = a;
-        }
+        public static ColorU4 Zero => new ColorU4();
 
         /// <summary>
         /// The red component of the color.
@@ -200,6 +190,21 @@ namespace VulkanCore
         /// The alpha component of the color.
         /// </summary>
         public uint A;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorU4"/> structure.
+        /// </summary>
+        /// <param name="r">The red component.</param>
+        /// <param name="g">The green component.</param>
+        /// <param name="b">The blue component.</param>
+        /// <param name="a">The alpha component.</param>
+        public ColorU4(uint r, uint g, uint b, uint a)
+        {
+            R = r;
+            G = g;
+            B = b;
+            A = a;
+        }
 
         /// <summary>
         /// Returns a string representing this <see cref="ColorU4"/> instance.
@@ -231,10 +236,5 @@ namespace VulkanCore
             sb.Append('>');
             return sb.ToString();
         }
-
-        /// <summary>
-        /// Gets a <see cref="ColorU4"/> with all of its components set to zero.
-        /// </summary>
-        public static ColorU4 Zero => new ColorU4();
     }
 }
