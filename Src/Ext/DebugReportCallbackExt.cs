@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace VulkanCore.Ext
 {
     /// <summary>
-    /// Opaque handle to an application-defined debug report callback.
+    /// Opaque handle to a debug report callback object.
     /// </summary>
     public unsafe class DebugReportCallbackExt : DisposableHandle<long>
     {

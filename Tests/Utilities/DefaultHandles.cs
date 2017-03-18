@@ -27,7 +27,8 @@ namespace VulkanCore.Tests.Utilities
         public Queue SparseBindingQueue { get; private set; }
         public Queue TransferQueue { get; private set; }
 
-        public string[] AvailableDeviceExtensions { get; private set; }
+        public ExtensionProperties[] AvailableInstanceExtensions { get; private set; }
+        public ExtensionProperties[] AvailableDeviceExtensions { get; private set; }
 
         public virtual void Dispose()
         {
@@ -39,6 +40,8 @@ namespace VulkanCore.Tests.Utilities
 
         private void CreateInstance()
         {
+            AvailableInstanceExtensions = Instance.EnumerateExtensionProperties();
+
             // Specify standard validation layers.
             var createInfo = new InstanceCreateInfo
             {
@@ -73,6 +76,7 @@ namespace VulkanCore.Tests.Utilities
             PhysicalDevice = Instance.EnumeratePhysicalDevices()[0];
             PhysicalDeviceFeatures = PhysicalDevice.GetFeatures();
             PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
+            AvailableDeviceExtensions = PhysicalDevice.EnumerateExtensionProperties();
         }
 
         private void CreateDevice()
@@ -109,11 +113,8 @@ namespace VulkanCore.Tests.Utilities
                 transferFamilyIndex
             }.Distinct().Select(i => new DeviceQueueCreateInfo(i, 1, 1.0f)).ToArray();
 
-            AvailableDeviceExtensions = PhysicalDevice.EnumerateExtensionProperties()
-                .Select(x => x.ExtensionName)
-                .ToArray();
-            string[] selectExtensions = AvailableDeviceExtensions
-                .Where(x => x == Constant.DeviceExtension.ExtDebugMarker)
+            string[] selectExtensions = new[] { Constant.DeviceExtension.ExtDebugMarker }
+                .Where(extensionName => AvailableInstanceExtensions.Contains(extensionName))
                 .ToArray();
 
             var createInfo = new DeviceCreateInfo(queueInfos, selectExtensions, PhysicalDeviceFeatures);

@@ -46,7 +46,6 @@ namespace VulkanCore.Khx
         private static readonly vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX = VulkanLibrary.GetProc<vkGetMemoryFdKHXDelegate>(nameof(vkGetMemoryFdKHX));
     }
 
-    // TODO: doc
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryAllocateFlagsInfoKhx
     {

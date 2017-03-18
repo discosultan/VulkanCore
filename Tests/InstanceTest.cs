@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using VulkanCore.Ext;
+using VulkanCore.Khx;
 using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.Tests
 {
@@ -32,8 +34,8 @@ namespace VulkanCore.Tests
         public void ConstructorWithEnabledLayerAndExtension()
         {
             var createInfo = new InstanceCreateInfo(
-                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
-                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
+                enabledLayerNames: new[] { InstanceLayer.LunarGStandardValidation },
+                enabledExtensionNames: new[] { InstanceExtension.ExtDebugReport });
 
             using (new Instance(createInfo)) { }
         }
@@ -50,8 +52,8 @@ namespace VulkanCore.Tests
         public void CreateDebugReportCallbackExt()
         {
             var createInfo = new InstanceCreateInfo(
-                enabledLayerNames: new[] { Constant.InstanceLayer.LunarGStandardValidation },
-                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
+                enabledLayerNames: new[] { InstanceLayer.LunarGStandardValidation },
+                enabledExtensionNames: new[] { InstanceExtension.ExtDebugReport });
 
             using (var instance = new Instance(createInfo))
             {
@@ -82,6 +84,19 @@ namespace VulkanCore.Tests
             PhysicalDevice[] physicalDevices = Instance.EnumeratePhysicalDevices();
             Assert.True(physicalDevices.Length > 0);
             Assert.Equal(Instance, physicalDevices[0].Parent);
+        }
+
+        [Fact]
+        public void EnumeratePhysicalDeviceGroupsKhx()
+        {
+            if (!AvailableDeviceExtensions.Contains(InstanceExtension.KhxDeviceGroupCreation)) return;
+
+            var createInfo = new InstanceCreateInfo(
+                enabledExtensionNames: new[] { InstanceExtension.KhxDeviceGroupCreation });
+            using (var instance = new Instance(createInfo))
+            {
+                instance.EnumeratePhysicalDeviceGroupsKhx();
+            }
         }
 
         [Fact]
@@ -164,7 +179,7 @@ namespace VulkanCore.Tests
             bool visitedCallback = false;
 
             var instanceCreateInfo = new InstanceCreateInfo(
-                enabledExtensionNames: new[] { Constant.InstanceExtension.ExtDebugReport });
+                enabledExtensionNames: new[] { InstanceExtension.ExtDebugReport });
             using (var instance = new Instance(instanceCreateInfo))
             {
                 var debugReportCallbackCreateInfo = new DebugReportCallbackCreateInfoExt(

@@ -75,7 +75,6 @@ namespace VulkanCore.Ext
             proc(commandBuffer, &nativeMarkerInfo);
         }
 
-        // TODO: doc
         public static void CmdSetDiscardRectangleExt(this CommandBuffer commandBuffer,
             int firstDiscardRectangle, Rect2D[] discardRectangles)
         {

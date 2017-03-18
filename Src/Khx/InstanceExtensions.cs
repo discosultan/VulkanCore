@@ -20,7 +20,7 @@ namespace VulkanCore.Khx
             Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
-            var nativeProperties = new PhysicalDeviceGroupPropertiesKhx.Native[count];
+            var nativeProperties = stackalloc PhysicalDeviceGroupPropertiesKhx.Native[count];
             result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, nativeProperties);
             VulkanException.ThrowForInvalidResult(result);
 
@@ -37,23 +37,21 @@ namespace VulkanCore.Khx
             return groupProperties;
         }
 
-        // TODO: Remove array usage.
-        private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native[] physicalDeviceGroupProperties);
+        private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native* physicalDeviceGroupProperties);
         private static readonly vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
     }
 
     /// <summary>
     /// Structure specifying physical device group properties.
     /// </summary>
-    public struct PhysicalDeviceGroupPropertiesKhx
+    public unsafe struct PhysicalDeviceGroupPropertiesKhx
     {
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// An array of physical device handles representing all physical devices in the
-        /// group.
+        /// An array of physical device handles representing all physical devices in the group.
         /// </summary>
         public PhysicalDevice[] PhysicalDevices;
         /// <summary>
@@ -72,7 +70,7 @@ namespace VulkanCore.Khx
             public IntPtr Next;
             public int PhysicalDeviceCount;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-            public IntPtr[] PhysicalDevices;
+            public IntPtr* PhysicalDevices; // TODO: validate
             public Bool SubsetAllocation;
         }
 

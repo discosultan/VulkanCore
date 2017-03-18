@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using VulkanCore.Ext;
 using VulkanCore.Tests.Utilities;
 using Xunit;
@@ -198,7 +196,7 @@ namespace VulkanCore.Tests
         [Fact]
         public void CreateShaderModule()
         {
-            var createInfo = new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")));
+            var createInfo = new ShaderModuleCreateInfo(ReadAllBytes("shader.vert.spv"));
             using (Device.CreateShaderModule(createInfo)) { }
             using (Device.CreateShaderModule(createInfo, CustomAllocator)) { }
         }
@@ -222,29 +220,20 @@ namespace VulkanCore.Tests
 
             using (PipelineCache cache = Device.CreatePipelineCache())
             using (RenderPass renderPass = Device.CreateRenderPass(createInfo))
-            using (ShaderModule vertexShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.vert.spv")))))
-            using (ShaderModule fragmentShader = Device.CreateShaderModule(
-                new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.frag.spv")))))
+            using (PipelineLayout layout = Device.CreatePipelineLayout())
+            using (ShaderModule vertexShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.vert.spv"))))
+            using (ShaderModule fragmentShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.frag.spv"))))
             {
                 var shaderStageCreateInfos = new[]
                 {
                     new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),
                     new PipelineShaderStageCreateInfo(ShaderStages.Fragment, fragmentShader, "main")
                 };
-                
                 var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo();
-                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo
-                {
-                    Topology = PrimitiveTopology.TriangleList
-                };
+                var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
                 var viewport = new Viewport(0, 0, 32, 32);
                 var scissor = new Rect2D(Offset2D.Zero, new Extent2D(32, 32));
-                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo
-                {
-                    Viewports = new[] { viewport },
-                    Scissors = new[] { scissor }
-                };
+                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(viewport, scissor);
                 var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
                 {
                     PolygonMode = PolygonMode.Fill,
@@ -273,29 +262,26 @@ namespace VulkanCore.Tests
                     new[] { colorBlendAttachmentState });
                 var dynamicStateCreateInfo = new PipelineDynamicStateCreateInfo(DynamicState.LineWidth);
 
-                using (PipelineLayout layout = Device.CreatePipelineLayout())
-                {
-                    var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
-                        layout, renderPass, 0,
-                        shaderStageCreateInfos,
-                        inputAssemblyStateCreateInfo,
-                        vertexInputStateCreateInfo,
-                        rasterizationStateCreateInfo,
-                        tessellationStateCreateInfo,
-                        viewportStateCreateInfo,
-                        multisampleStateCreateInfo,
-                        depthStencilStateCreateInfo,
-                        colorBlendStateCreateInfo,
-                        dynamicStateCreateInfo);
-                    using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo })[0]) { }
-                    using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, cache)[0]) { }
-                    using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, allocator: CustomAllocator)[0]) { }
-                    using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, cache, CustomAllocator)[0]) { }
-                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo)) { }
-                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo, allocator: CustomAllocator)) { }
-                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache)) { }
-                    using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache, CustomAllocator)) { }
-                }
+                var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
+                    layout, renderPass, 0,
+                    shaderStageCreateInfos,
+                    inputAssemblyStateCreateInfo,
+                    vertexInputStateCreateInfo,
+                    rasterizationStateCreateInfo,
+                    tessellationStateCreateInfo,
+                    viewportStateCreateInfo,
+                    multisampleStateCreateInfo,
+                    depthStencilStateCreateInfo,
+                    colorBlendStateCreateInfo,
+                    dynamicStateCreateInfo);
+                using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo })[0]) { }
+                using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, cache)[0]) { }
+                using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, allocator: CustomAllocator)[0]) { }
+                using (Device.CreateGraphicsPipelines(new[] { pipelineCreateInfo }, cache, CustomAllocator)[0]) { }
+                using (Device.CreateGraphicsPipeline(pipelineCreateInfo)) { }
+                using (Device.CreateGraphicsPipeline(pipelineCreateInfo, allocator: CustomAllocator)) { }
+                using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache)) { }
+                using (Device.CreateGraphicsPipeline(pipelineCreateInfo, cache, CustomAllocator)) { }
             }
         }
 
@@ -307,7 +293,7 @@ namespace VulkanCore.Tests
                 new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
             using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
-            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.comp.spv")))))
+            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.comp.spv"))))
             using (PipelineCache cache = Device.CreatePipelineCache())
             {
                 var pipelineCreateInfo = new ComputePipelineCreateInfo(

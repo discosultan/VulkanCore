@@ -1,5 +1,4 @@
-﻿using System.IO;
-using VulkanCore.Tests.Utilities;
+﻿using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -15,7 +14,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BeginAndEndQuery()
+        public void CmdBeginAndEndQuery()
         {
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Occlusion, 1)))
             {
@@ -27,7 +26,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WriteTimestamp()
+        public void CmdWriteTimestamp()
         {
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Timestamp, 1)))
             {
@@ -38,7 +37,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void CopyQueryPoolResults()
+        public void CmdCopyQueryPoolResults()
         {
             const long bufferSize = 256L;
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Timestamp, 1)))
@@ -57,7 +56,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void ResetQueryPool()
+        public void CmdResetQueryPool()
         {
             using (QueryPool queryPool = Device.CreateQueryPool(new QueryPoolCreateInfo(QueryType.Timestamp, 1)))
             {
@@ -68,7 +67,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BeginEndRenderPass()
+        public void CmdBeginEndRenderPass()
         {
             using (RenderPass renderPass = Device.CreateRenderPass(new RenderPassCreateInfo(new[] { new SubpassDescription(null) })))
             using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo()))
@@ -81,7 +80,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetScissor()
+        public void CmdSetScissors()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetScissor(new Rect2D(Offset2D.Zero, new Extent2D(32, 32)));
@@ -90,7 +89,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetViewport()
+        public void CmdSetViewports()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetViewport(new Viewport(0, 0, 32, 32));
@@ -99,7 +98,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetLineWidth()
+        public void CmdSetLineWidth()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetLineWidth(1.0f);
@@ -107,7 +106,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetDepthParameters()
+        public void CmdSetDepthParameters()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetDepthBias(1.0f, 1.0f, 1.0f);
@@ -115,8 +114,8 @@ namespace VulkanCore.Tests
             CommandBuffer.End();
         }
 
-        [Fact(Skip = "Resolve blend constants param")]
-        public void SetBlendConstants()
+        [Fact]
+        public void CmdSetBlendConstants()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetBlendConstants(new ColorF4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -124,7 +123,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetStencilParameters()
+        public void CmdSetStencilParameters()
         {
             CommandBuffer.Begin();
             CommandBuffer.CmdSetStencilCompareMask(StencilFaces.Front, ~0);
@@ -134,7 +133,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BindDescriptorSet()
+        public void CmdBindDescriptorSet()
         {
             const int bufferSize = 256;
 
@@ -173,7 +172,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BindVertexAndIndexBuffer()
+        public void CmdBindVertexAndIndexBuffer()
         {
             const int bufferSize = 256;
             using (Buffer buffer = Device.CreateBuffer(new BufferCreateInfo(bufferSize, BufferUsages.VertexBuffer | BufferUsages.IndexBuffer)))
@@ -195,14 +194,14 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void BindPipeline()
+        public void CmdBindPipeline()
         {
             var descriptorSetLayoutCreateInfo = new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.Compute),
                 new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
             using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
-            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(File.ReadAllBytes(Path.Combine("Content", "shader.comp.spv")))))
+            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.comp.spv"))))
             {
                 var pipelineCreateInfo = new ComputePipelineCreateInfo(
                     new PipelineShaderStageCreateInfo(ShaderStages.Compute, shader, "main"),
@@ -218,7 +217,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void SetAndResetEvent()
+        public void CmdSetAndResetEvent()
         {
             using (Event evt = Device.CreateEvent())
             {
@@ -230,7 +229,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void WaitEvents()
+        public void CmdWaitEvents()
         {
             using (Event evt = Device.CreateEvent())
             {
@@ -238,6 +237,63 @@ namespace VulkanCore.Tests
                 CommandBuffer.CmdWaitEvent(evt, PipelineStages.AllCommands, PipelineStages.AllCommands);
                 CommandBuffer.CmdWaitEvents(new[] { evt }, PipelineStages.AllCommands, PipelineStages.AllCommands);
                 CommandBuffer.End();
+            }
+        }
+
+        [Fact]
+        public void CmdDraw()
+        {
+            var renderPassCreateInfo = new RenderPassCreateInfo(new[] { new SubpassDescription(
+                new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) }) },
+                new[] { new AttachmentDescription { Format = Format.B8G8R8A8UNorm, Samples = SampleCounts.Count1 } });
+            var imageCreateInfo = new ImageCreateInfo
+            {
+                Usage = ImageUsages.ColorAttachment,
+                Format = Format.B8G8R8A8UNorm,
+                Extent = new Extent3D(2, 2, 1),
+                ImageType = ImageType.Image2D,
+                MipLevels = 1,
+                ArrayLayers = 1,
+                Samples = SampleCounts.Count1
+            };
+            var imageViewCreateInfo = new ImageViewCreateInfo(
+                Format.B8G8R8A8UNorm, 
+                new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1));
+
+            using (ShaderModule vertexShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.vert.spv"))))
+            using (ShaderModule fragmentShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.frag.spv"))))
+            using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout())
+            using (RenderPass renderPass = Device.CreateRenderPass(renderPassCreateInfo))
+            using (Image image = Device.CreateImage(imageCreateInfo))
+            using (DeviceMemory imageMemory = Device.AllocateMemory(new MemoryAllocateInfo(1024, 0)))
+            {
+                image.GetMemoryRequirements(); // To keep the validation layer happy.
+                image.BindMemory(imageMemory);
+                using (ImageView imageView = image.CreateView(imageViewCreateInfo))
+                using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo(new[] { imageView }, 2, 2)))
+                {
+                    var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
+                        pipelineLayout,
+                        renderPass,
+                        0,
+                        new[]
+                        {
+                            new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),
+                            new PipelineShaderStageCreateInfo(ShaderStages.Fragment, fragmentShader, "main")
+                        },
+                        new PipelineInputAssemblyStateCreateInfo(),
+                        new PipelineVertexInputStateCreateInfo(),
+                        new PipelineRasterizationStateCreateInfo { RasterizerDiscardEnable = true });
+                    using (var pipeline = Device.CreateGraphicsPipeline(pipelineCreateInfo))
+                    {
+                        CommandBuffer.Begin();
+                        CommandBuffer.CmdBeginRenderPass(new RenderPassBeginInfo(framebuffer, new Rect2D(0, 0, 2, 2)));
+                        CommandBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, pipeline);
+                        CommandBuffer.CmdDraw(3);
+                        CommandBuffer.CmdEndRenderPass();
+                        CommandBuffer.End();
+                    }
+                }
             }
         }
 

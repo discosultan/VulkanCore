@@ -4,7 +4,10 @@ using System.Runtime.InteropServices;
 namespace VulkanCore.Khr
 {
     /// <summary>
-    /// Provides the ability to present rendering results to a surface.
+    /// Opaque handle to a swapchain object.
+    /// <para>
+    /// A swapchain object (a.k.a. swapchain) provides the ability to present rendering results to a surface.
+    /// </para>
     /// <para>
     /// A swapchain is an abstraction for an array of presentable images that are associated with a
     /// surface. The swapchain images are represented by <see cref="Image"/> objects created by the
