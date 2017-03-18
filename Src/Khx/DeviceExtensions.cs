@@ -848,7 +848,7 @@ namespace VulkanCore.Khx
     /// Mode and mask controlling which physical devices' images are presented.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct DeviceGroupPresentInfoKhx
+    public struct DeviceGroupPresentInfoKhx // TODO: native
     {
         /// <summary>
         /// The type of this structure.

@@ -31,14 +31,29 @@ namespace VulkanCore.NV
     }
 
     /// <summary>
-    /// Bitmask specifying memory handle types.
+    /// Bitmask specifying external memory handle types.
     /// </summary>
     [Flags]
     public enum ExternalMemoryHandleTypesNV
     {
+        /// <summary>
+        /// Indicates a to memory returned by <see cref="DeviceMemoryExtensions.GetWin32HandleNV"/>
+        /// or, one duplicated from such a handle using `DuplicateHandle()`..
+        /// </summary>
         OpaqueWin32 = 1 << 0,
+        /// <summary>
+        /// Indicates a handle to memory returned by <see cref="DeviceMemoryExtensions.GetWin32HandleNV"/>.
+        /// </summary>
         OpaqueWin32Kmt = 1 << 1,
+        /// <summary>
+        /// indicates a valid NT handle to memory returned by
+        /// `IDXGIResource1::ftext:CreateSharedHandle()`, or a handle duplicated from such a handle
+        /// using `DuplicateHandle()`.
+        /// </summary>
         D3D11Image = 1 << 2,
+        /// <summary>
+        /// Indicates a handle to memory returned by `IDXGIResource::GetSharedHandle()`.
+        /// </summary>
         D3D11ImageKmt = 1 << 3
     }
 

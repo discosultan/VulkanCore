@@ -132,7 +132,7 @@ namespace VulkanCore.Nvx
         public int DynamicCount;
         /// <summary>
         /// Defines the rate at which the input data buffers are accessed.
-        /// <para>Must be greater than 0 and power of two.</para>
+        /// <para>Must be greater than 0 and a power of two.</para>
         /// </summary>
         public int Divisor;
     }

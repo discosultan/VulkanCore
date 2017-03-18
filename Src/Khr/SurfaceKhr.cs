@@ -432,7 +432,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public DisplayPlaneAlphasKhr AlphaMode;
         /// <summary>
-        /// Size of the images to use with this surface.
+        /// The size of the presentable images to use with the surface.
         /// <para>
         /// The width and height members of imageExtent must be less than the <see
         /// cref="PhysicalDeviceLimits.MaxImageDimension3D"/> member.

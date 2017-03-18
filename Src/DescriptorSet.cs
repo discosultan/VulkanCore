@@ -308,10 +308,10 @@ namespace VulkanCore
         /// </summary>
         public long ImageView;
         /// <summary>
-        /// The layout that the image will be in at the time this descriptor is accessed. Is used in
-        /// descriptor updates for types <see cref="DescriptorType.SampledImage"/>, <see
-        /// cref="DescriptorType.StorageImage"/>, <see cref="DescriptorType.CombinedImageSampler"/>,
-        /// and <see cref="DescriptorType.InputAttachment"/>.
+        /// The layout that the image subresources accessible from <see cref="ImageView"/> will be in
+        /// at the time this descriptor is accessed. Is used in descriptor updates for types <see
+        /// cref="DescriptorType.SampledImage"/>, <see cref="DescriptorType.StorageImage"/>, <see
+        /// cref="DescriptorType.CombinedImageSampler"/>, and <see cref="DescriptorType.InputAttachment"/>.
         /// </summary>
         public ImageLayout ImageLayout;
 
