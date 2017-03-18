@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
 
-namespace VulkanCore.Samples.TexturedCube
+namespace VulkanCore.Samples
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Vertex

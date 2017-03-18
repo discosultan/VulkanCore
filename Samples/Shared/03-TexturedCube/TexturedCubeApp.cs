@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace VulkanCore.Samples.TexturedCube
 {
@@ -24,20 +23,24 @@ namespace VulkanCore.Samples.TexturedCube
         private DescriptorPool _descriptorPool;
         private DescriptorSet _descriptorSet;
 
-        private UniformBuffer _uniformBuffer;
         private DepthStencilBuffer _depthStencilBuffer;
 
-        private Texture _cubeTexture;
         private Sampler _sampler;
+        private Texture _cubeTexture;
 
-        private Cube _cube;
+        private VertexBuffer<Vertex> _cubeVertices;
+        private IndexBuffer _cubeIndices;
+
+        private UniformBuffer _uniformBuffer;
         private WorldViewProjection _wvp;
 
         protected override void InitializePermanent()
         {
-            _cubeTexture = Content.Load<Texture>("IndustryForgedDark512.ktx");
-            _cube = new Cube(Device);
-            _cube.Initialize();
+            var cube = GeometricPrimitive.Box(1.0f, 1.0f, 1.0f);
+
+            _cubeTexture         = Content.Load<Texture>("IndustryForgedDark512.ktx");
+            _cubeVertices        = ToDispose(new VertexBuffer<Vertex>(Device, cube.Vertices));
+            _cubeIndices         = ToDispose(new IndexBuffer(Device, cube.Indices));
             _sampler             = ToDispose(CreateSampler());
             _uniformBuffer       = ToDispose(new UniformBuffer(Device, Interop.SizeOf<WorldViewProjection>()));
             _descriptorSetLayout = ToDispose(CreateDescriptorSetLayout());
@@ -230,8 +233,8 @@ namespace VulkanCore.Samples.TexturedCube
             // Create shader modules. Shader modules are one of the objects required to create the
             // graphics pipeline. But after the pipeline is created, we don't need these shader
             // modules anymore, so we dispose them.
-            ShaderModule vertexShader   = Content.Load<ShaderModule>("shader.vert.spv");
-            ShaderModule fragmentShader = Content.Load<ShaderModule>("shader.frag.spv");
+            ShaderModule vertexShader   = Content.Load<ShaderModule>("Shader.vert.spv");
+            ShaderModule fragmentShader = Content.Load<ShaderModule>("Shader.frag.spv");
             var shaderStageCreateInfos = new[]
             {
                 new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),
@@ -250,7 +253,7 @@ namespace VulkanCore.Samples.TexturedCube
             var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
             var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
                 new Viewport(0, 0, Host.Width, Host.Height),
-                new Rect2D(Offset2D.Zero, new Extent2D(Host.Width, Host.Height)));
+                new Rect2D(0, 0, Host.Width, Host.Height));
             var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
             {
                 PolygonMode = PolygonMode.Fill,
@@ -318,9 +321,9 @@ namespace VulkanCore.Samples.TexturedCube
             cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
             cmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, _pipelineLayout, _descriptorSet);
             cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
-            cmdBuffer.CmdBindVertexBuffer(_cube.VertexBuffer);
-            cmdBuffer.CmdBindIndexBuffer(_cube.IndexBuffer);
-            cmdBuffer.CmdDrawIndexed(_cube.IndexCount);
+            cmdBuffer.CmdBindVertexBuffer(_cubeVertices);
+            cmdBuffer.CmdBindIndexBuffer(_cubeIndices);
+            cmdBuffer.CmdDrawIndexed(_cubeIndices.IndexCount);
             cmdBuffer.CmdEndRenderPass();
         }
     }

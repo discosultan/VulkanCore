@@ -17,7 +17,7 @@ namespace VulkanCore.Samples
 
     public class Texture : IDisposable
     {
-        private readonly Image _texture;
+        private readonly Image _image;
         private readonly DeviceMemory _memory;
 
         public ImageView View { get; }
@@ -57,7 +57,7 @@ namespace VulkanCore.Samples
             }
 
             // Create optimal tiled target image.
-            _texture = device.Logical.CreateImage(new ImageCreateInfo
+            _image = device.Logical.CreateImage(new ImageCreateInfo
             {
                 ImageType = ImageType.Image2D,
                 Format = tex2D.Format,
@@ -70,11 +70,11 @@ namespace VulkanCore.Samples
                 Extent = tex2D.Mipmaps[0].Extent,
                 Usage = ImageUsages.Sampled | ImageUsages.TransferDst
             });
-            MemoryRequirements imageMemReq = _texture.GetMemoryRequirements();
+            MemoryRequirements imageMemReq = _image.GetMemoryRequirements();
             int imageHeapIndex = device.MemoryProperties.MemoryTypes.IndexOf(
                 imageMemReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
             _memory = device.Logical.AllocateMemory(new MemoryAllocateInfo(imageMemReq.Size, imageHeapIndex));
-            _texture.BindMemory(_memory);
+            _image.BindMemory(_memory);
 
             var subresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, tex2D.Mipmaps.Length, 0, 1);
 
@@ -85,16 +85,16 @@ namespace VulkanCore.Samples
                 imageMemoryBarriers: new[]
                 {
                     new ImageMemoryBarrier(
-                        _texture, subresourceRange,
+                        _image, subresourceRange,
                         0, Accesses.TransferWrite,
                         ImageLayout.Undefined, ImageLayout.TransferDstOptimal)
                 });
-            cmdBuffer.CmdCopyBufferToImage(stagingBuffer, _texture, ImageLayout.TransferDstOptimal, bufferCopyRegions);
+            cmdBuffer.CmdCopyBufferToImage(stagingBuffer, _image, ImageLayout.TransferDstOptimal, bufferCopyRegions);
             cmdBuffer.CmdPipelineBarrier(PipelineStages.TopOfPipe, PipelineStages.TopOfPipe,
                 imageMemoryBarriers: new[]
                 {
                     new ImageMemoryBarrier(
-                        _texture, subresourceRange,
+                        _image, subresourceRange,
                         Accesses.TransferWrite, Accesses.ShaderRead,
                         ImageLayout.TransferDstOptimal, ImageLayout.ShaderReadOnlyOptimal)
                 });
@@ -111,14 +111,14 @@ namespace VulkanCore.Samples
             stagingBuffer.Dispose();
 
             // Create image view.
-            View = _texture.CreateView(new ImageViewCreateInfo(tex2D.Format, subresourceRange));
+            View = _image.CreateView(new ImageViewCreateInfo(tex2D.Format, subresourceRange));
         }
 
         public void Dispose()
         {
             View.Dispose();
             _memory.Dispose();
-            _texture.Dispose();
+            _image.Dispose();
         }
     }
 }

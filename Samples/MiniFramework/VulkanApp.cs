@@ -31,7 +31,6 @@ namespace VulkanCore.Samples
         private bool _initializingPermanent;
 
         public IVulkanAppHost Host { get; private set; }
-        public bool Initialized { get; private set; }
 
         public Instance Instance { get; private set; }
         protected DebugReportCallbackExt DebugReportCallback { get; private set; }
@@ -82,8 +81,6 @@ namespace VulkanCore.Samples
 
             // Record commands for execution by Vulkan.
             RecordCommandBuffers();
-
-            Initialized = true;
         }
 
         /// <summary>

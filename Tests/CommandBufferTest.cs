@@ -201,7 +201,7 @@ namespace VulkanCore.Tests
                 new DescriptorSetLayoutBinding(1, DescriptorType.StorageBuffer, 1, ShaderStages.Compute));
             using (DescriptorSetLayout descriptorSetLayout = Device.CreateDescriptorSetLayout(descriptorSetLayoutCreateInfo))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { descriptorSetLayout })))
-            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.comp.spv"))))
+            using (ShaderModule shader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("Shader.comp.spv"))))
             {
                 var pipelineCreateInfo = new ComputePipelineCreateInfo(
                     new PipelineShaderStageCreateInfo(ShaderStages.Compute, shader, "main"),
@@ -260,8 +260,8 @@ namespace VulkanCore.Tests
                 Format.B8G8R8A8UNorm, 
                 new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1));
 
-            using (ShaderModule vertexShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.vert.spv"))))
-            using (ShaderModule fragmentShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("shader.frag.spv"))))
+            using (ShaderModule vertexShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("Shader.vert.spv"))))
+            using (ShaderModule fragmentShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("Shader.frag.spv"))))
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout())
             using (RenderPass renderPass = Device.CreateRenderPass(renderPassCreateInfo))
             using (Image image = Device.CreateImage(imageCreateInfo))

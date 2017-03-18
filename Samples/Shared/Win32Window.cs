@@ -10,14 +10,14 @@ namespace VulkanCore.Samples
     {
         private readonly string _title;
         private readonly Timer _timer = new Timer();
+        private readonly VulkanApp _app;
         private Form _form;
-        private VulkanApp _app;
 
-        private bool _appPaused;            // Is the application paused?
-        private bool _minimized;            // Is the application minimized?
-        private bool _maximized;            // Is the application maximized?
-        private bool _resizing;             // Are the resize bars being dragged?
-        private bool _running;              // Is the application running?
+        private bool _appPaused; // Is the application paused?
+        private bool _minimized; // Is the application minimized?
+        private bool _maximized; // Is the application maximized?
+        private bool _resizing;  // Are the resize bars being dragged?
+        private bool _running;   // Is the application running?
         private FormWindowState _lastWindowState = FormWindowState.Normal;
 
         private int _frameCount;

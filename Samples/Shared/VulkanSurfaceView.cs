@@ -10,14 +10,15 @@ namespace VulkanCore.Samples
 {
     public class VulkanSurfaceView : SurfaceView, ISurfaceHolderCallback, IVulkanAppHost
     {
+        // Threading timer for render loop.
         private static readonly int _renderDueTime = (int)Math.Ceiling(1000.0f / 60.0f);
+        private System.Threading.Timer _tickTimer;
+        private bool _appPaused;
 
-        private readonly Timer _timer = new Timer();
-        private System.Threading.Timer _animationTimer;
+        // Game timer used by samples for elapsed/total duration.
+        private readonly Timer _gameTimer = new Timer();
+
         private readonly VulkanApp _app;
-
-        public IntPtr WindowHandle { get; private set; }
-        public IntPtr InstanceHandle => Handle;
 
         public VulkanSurfaceView(Context ctx, VulkanApp app) : base(ctx)
         {
@@ -26,10 +27,17 @@ namespace VulkanCore.Samples
             SetWillNotDraw(false);
         }
 
+        public IntPtr WindowHandle { get; private set; }
+        public IntPtr InstanceHandle => Handle;
         public Platform Platform => Platform.Android;
 
         public Stream Open(string path) => Context.Assets.Open(path);
 
+        private void Tick()
+        {
+            _gameTimer.Tick();
+            _app.Tick(_gameTimer);
+        }
 
         #region ISurfaceHolderCallback implementation
 
@@ -37,11 +45,16 @@ namespace VulkanCore.Samples
         {
             WindowHandle = ANativeWindow_fromSurface(JNIEnv.Handle, holder.Surface.Handle);
 
+            _appPaused = false;
             _app.Initialize(this);
             _app.Resize();
 
-            _timer.Start();
-            _animationTimer = new System.Threading.Timer(RequestAnimationFrameCallback, null, _renderDueTime, Timeout.Infinite);
+            _gameTimer.Start();
+            _tickTimer = new System.Threading.Timer(state =>
+            {
+                Android.App.Application.SynchronizationContext.Send(_ => { if (!_appPaused) Tick(); }, state);
+                _tickTimer.Change(_renderDueTime, Timeout.Infinite);
+            }, null, _renderDueTime, Timeout.Infinite);
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Android.Graphics.Format format, int width, int height)
@@ -51,32 +64,15 @@ namespace VulkanCore.Samples
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
         {
-            _timer.Stop();
-            _animationTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            _animationTimer.Dispose();
+            _gameTimer.Stop();
+            _tickTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _tickTimer.Dispose();
             _app.Dispose();
             ANativeWindow_release(WindowHandle);
+            _appPaused = true;
         }
 
         #endregion
-
-        private void RequestAnimationFrameCallback(object state)
-        {
-            try
-            {
-                Android.App.Application.SynchronizationContext.Send(Tick, state);
-            }
-            finally
-            {
-                _animationTimer.Change(_renderDueTime, Timeout.Infinite);
-            }
-        }
-
-        private void Tick(object state)
-        {
-            _timer.Tick();
-            _app.Tick(_timer);
-        }
 
         [DllImport("android")]
         private static extern IntPtr ANativeWindow_fromSurface(IntPtr jni, IntPtr surface);

@@ -6,7 +6,7 @@ namespace VulkanCore.Samples.TexturedCube
 {
     [Activity(
         Label = "TexturedCube",
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
+        ScreenOrientation = ScreenOrientation.SensorPortrait,
         MainLauncher = true,
         Icon = "@drawable/icon")]
     public class MainActivity : Activity

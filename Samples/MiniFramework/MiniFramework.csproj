@@ -5,6 +5,9 @@
     <RootNamespace>VulkanCore.Samples</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Src\VulkanCore.csproj" />
   </ItemGroup>
 </Project>

@@ -81,8 +81,8 @@ namespace VulkanCore.Samples.ColoredTriangle
 
         private Pipeline CreateGraphicsPipeline()
         {
-            ShaderModule vertexShader   = Content.Load<ShaderModule>("shader.vert.spv");
-            ShaderModule fragmentShader = Content.Load<ShaderModule>("shader.frag.spv");
+            ShaderModule vertexShader   = Content.Load<ShaderModule>("Shader.vert.spv");
+            ShaderModule fragmentShader = Content.Load<ShaderModule>("Shader.frag.spv");
             var shaderStageCreateInfos = new[]
             {
                 new PipelineShaderStageCreateInfo(ShaderStages.Vertex, vertexShader, "main"),
@@ -93,7 +93,7 @@ namespace VulkanCore.Samples.ColoredTriangle
             var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
             var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
                 new Viewport(0, 0, Host.Width, Host.Height),
-                new Rect2D(Offset2D.Zero, new Extent2D(Host.Width, Host.Height)));
+                new Rect2D(0, 0, Host.Width, Host.Height));
             var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
             {
                 PolygonMode = PolygonMode.Fill,

@@ -6,7 +6,7 @@ namespace VulkanCore.Samples.ClearScreen
 {
     [Activity(
         Label = "ClearScreen",
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize,
+        ScreenOrientation = ScreenOrientation.SensorPortrait,
         MainLauncher = true, 
         Icon = "@drawable/icon")]
     public class MainActivity : Activity

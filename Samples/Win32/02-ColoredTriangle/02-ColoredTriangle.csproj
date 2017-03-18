@@ -51,18 +51,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.frag">
-      <Link>Content\shader.frag</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag">
+      <Link>Content\Shader.frag</Link>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.frag.spv">
-      <Link>Content\shader.frag.spv</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag.spv">
+      <Link>Content\Shader.frag.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.vert">
-      <Link>Content\shader.vert</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.vert">
+      <Link>Content\Shader.vert</Link>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\shader.vert.spv">
-      <Link>Content\shader.vert.spv</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.vert.spv">
+      <Link>Content\Shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />

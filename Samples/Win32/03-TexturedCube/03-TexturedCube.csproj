@@ -40,12 +40,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\03-TexturedCube\Cube.cs">
-      <Link>Cube.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Shared\03-TexturedCube\GeometricPrimitive.cs">
-      <Link>GeometricPrimitive.cs</Link>
-    </Compile>
     <Compile Include="..\..\Shared\03-TexturedCube\TexturedCubeApp.cs">
       <Link>TexturedCubeApp.cs</Link>
     </Compile>
@@ -56,18 +50,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\03-TexturedCube\Content\shader.frag">
-      <Link>Content\shader.frag</Link>
+    <None Include="..\..\Shared\03-TexturedCube\Content\Shader.frag">
+      <Link>Content\Shader.frag</Link>
     </None>
-    <None Include="..\..\Shared\03-TexturedCube\Content\shader.frag.spv">
-      <Link>Content\shader.frag.spv</Link>
+    <None Include="..\..\Shared\03-TexturedCube\Content\Shader.frag.spv">
+      <Link>Content\Shader.frag.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Shared\03-TexturedCube\Content\shader.vert">
-      <Link>Content\shader.vert</Link>
+    <None Include="..\..\Shared\03-TexturedCube\Content\Shader.vert">
+      <Link>Content\Shader.vert</Link>
     </None>
-    <None Include="..\..\Shared\03-TexturedCube\Content\shader.vert.spv">
-      <Link>Content\shader.vert.spv</Link>
+    <None Include="..\..\Shared\03-TexturedCube\Content\Shader.vert.spv">
+      <Link>Content\Shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
