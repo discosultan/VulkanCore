@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -35,6 +37,12 @@ namespace VulkanCore.Tests.Utilities
         protected ExtensionProperties[] AvailableDeviceExtensions => _defaults.AvailableDeviceExtensions;
         protected PhysicalDeviceFeatures PhysicalDeviceFeatures => _defaults.PhysicalDeviceFeatures;
         protected PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties => _defaults.PhysicalDeviceMemoryProperties;
+
+        protected byte[] ReadAllBytes(string assetName)
+        {
+            string baseDirectory = AppContext.BaseDirectory;
+            return File.ReadAllBytes(Path.Combine(baseDirectory, Path.Combine("Content", assetName)));
+        }
 
         public virtual void Dispose()
         {
