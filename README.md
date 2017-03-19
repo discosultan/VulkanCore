@@ -17,16 +17,16 @@ VulkanCore is a thin cross-platform object-oriented wrapper around the Vulkan C 
 **Why yet another set of bindings?** While most of the alternatives use a generator-based approach, these bindings do not. This means:
 
 Pros:
-- Full control over the API including high quality code documentation.
-- Easier to contribute - no need to understand a generator.
+- Full control over the API including high quality code documentation
+- Easier to contribute - no need to understand a generator
 
 Cons:
-- Requires manual work after every change to the Vulkan API.
-- Difficult to modify the fundamentals. Impossible to simply regenerate everything.
+- Requires manual work to keep up to date with the Vulkan API registry
+- Cumbersome to modify the fundamentals - impossible to simply regenerate everything
 
 ## Building
 
-[Visual Studio 2017](https://www.visualstudio.com/vs/whatsnew/) or equivalent tooling is required to successfully compile the solution. The tooling must support the new *.csproj* format and C# 7 language features. Latest [Rider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/) or [MonoDevelop](http://www.monodevelop.com/) should all work but have not been tested.
+[Visual Studio 2017](https://www.visualstudio.com/vs/whatsnew/) or equivalent tooling is required to successfully compile the source. The tooling must support the *new .csproj format* and *C# 7* language features. Latest [Rider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/) or [MonoDevelop](http://www.monodevelop.com/) should all work but have not been tested.
 
 ## Samples <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Android64.png">
 
@@ -56,3 +56,4 @@ In order to provide a certain level of *functional correctness*, the project aim
 - [VulkanSharp](https://github.com/mono/VulkanSharp)
 - [SharpVulkan](https://github.com/jwollen/SharpVulkan)
 - [SharpVk](https://github.com/FacticiusVir/SharpVk)
+- [vk](https://github.com/mellinoe/vk)

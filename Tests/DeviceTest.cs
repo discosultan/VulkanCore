@@ -231,9 +231,9 @@ namespace VulkanCore.Tests
                 };
                 var vertexInputStateCreateInfo = new PipelineVertexInputStateCreateInfo();
                 var inputAssemblyStateCreateInfo = new PipelineInputAssemblyStateCreateInfo(PrimitiveTopology.TriangleList);
-                var viewport = new Viewport(0, 0, 32, 32);
-                var scissor = new Rect2D(Offset2D.Zero, new Extent2D(32, 32));
-                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(viewport, scissor);
+                var viewportStateCreateInfo = new PipelineViewportStateCreateInfo(
+                    new Viewport(0, 0, 32, 32),
+                    new Rect2D(0, 0, 32, 32));
                 var rasterizationStateCreateInfo = new PipelineRasterizationStateCreateInfo
                 {
                     PolygonMode = PolygonMode.Fill,

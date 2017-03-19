@@ -59,10 +59,6 @@ namespace VulkanCore
         /// <summary>
         /// The code that is used to create the shader module. The type and format of the code is
         /// determined from the content of the code.
-        /// <para>
-        /// Length must be a multiple of 4. If the "VK_NV_glsl_shader" extension is enabled and code
-        /// references GLSL code, it can be a multiple of 1.
-        /// </para>
         /// </summary>
         public byte[] Code;
 
@@ -72,10 +68,6 @@ namespace VulkanCore
         /// <param name="code">
         /// The code that is used to create the shader module. The type and format of the code is
         /// determined from the content of the code.
-        /// <para>
-        /// Length must be a multiple of 4. If the "VK_NV_glsl_shader" extension is enabled and code
-        /// references GLSL code, it can be a multiple of 1.
-        /// </para>
         /// </param>
         public ShaderModuleCreateInfo(byte[] code)
         {
