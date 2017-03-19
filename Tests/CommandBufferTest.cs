@@ -265,14 +265,15 @@ namespace VulkanCore.Tests
             using (PipelineLayout pipelineLayout = Device.CreatePipelineLayout())
             using (RenderPass renderPass = Device.CreateRenderPass(renderPassCreateInfo))
             using (Image image = Device.CreateImage(imageCreateInfo))
-            using (DeviceMemory imageMemory = Device.AllocateMemory(new MemoryAllocateInfo(1024, 0)))
             {
-                image.GetMemoryRequirements(); // To keep the validation layer happy.
-                image.BindMemory(imageMemory);
-                using (ImageView imageView = image.CreateView(imageViewCreateInfo))
-                using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo(new[] { imageView }, 2, 2)))
+                MemoryRequirements imageMemReq = image.GetMemoryRequirements();
+                int memTypeIndex = PhysicalDeviceMemoryProperties.MemoryTypes.IndexOf(imageMemReq.MemoryTypeBits, MemoryProperties.DeviceLocal);
+                using (DeviceMemory imageMemory = Device.AllocateMemory(new MemoryAllocateInfo(imageMemReq.Size, memTypeIndex)))
                 {
-                    var pipelineCreateInfo = new GraphicsPipelineCreateInfo(
+                    image.BindMemory(imageMemory);
+                    using (ImageView imageView = image.CreateView(imageViewCreateInfo))
+                    using (Framebuffer framebuffer = renderPass.CreateFramebuffer(new FramebufferCreateInfo(new[] { imageView }, 2, 2)))
+                    using (Pipeline pipeline = Device.CreateGraphicsPipeline(new GraphicsPipelineCreateInfo(
                         pipelineLayout,
                         renderPass,
                         0,
@@ -283,8 +284,7 @@ namespace VulkanCore.Tests
                         },
                         new PipelineInputAssemblyStateCreateInfo(),
                         new PipelineVertexInputStateCreateInfo(),
-                        new PipelineRasterizationStateCreateInfo { RasterizerDiscardEnable = true });
-                    using (var pipeline = Device.CreateGraphicsPipeline(pipelineCreateInfo))
+                        new PipelineRasterizationStateCreateInfo { RasterizerDiscardEnable = true, LineWidth = 1.0f })))
                     {
                         CommandBuffer.Begin();
                         CommandBuffer.CmdBeginRenderPass(new RenderPassBeginInfo(framebuffer, new Rect2D(0, 0, 2, 2)));
