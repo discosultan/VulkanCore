@@ -314,7 +314,7 @@ namespace VulkanCore.Samples.TexturedCube
         {
             var renderPassBeginInfo = new RenderPassBeginInfo(
                 _framebuffers[imageIndex],
-                new Rect2D(Offset2D.Zero, new Extent2D(Host.Width, Host.Height)),
+                new Rect2D(0, 0, Host.Width, Host.Height),
                 new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
                 new ClearDepthStencilValue(1.0f, 0));
 
