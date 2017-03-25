@@ -165,7 +165,6 @@ namespace VulkanCore
         public long DstSet;
         /// <summary>
         /// The descriptor binding within that set.
-        /// <para>Must be a binding with a non-zero descriptor count.</para>
         /// </summary>
         public int DstBinding;
         /// <summary>

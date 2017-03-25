@@ -279,7 +279,7 @@ namespace VulkanCore.Khr
         /// Returns properties of a physical device.
         /// </summary>
         /// <param name="physicalDevice">
-        /// the handle to the physical device whose properties will be queried.
+        /// The handle to the physical device whose properties will be queried.
         /// </param>
         /// <returns>The structure, that will be filled with returned information.</returns>
         public static PhysicalDeviceProperties2Khr GetProperties2Khr(this PhysicalDevice physicalDevice)
@@ -309,15 +309,6 @@ namespace VulkanCore.Khr
 
         /// <summary>
         /// Lists physical device's image format capabilities.
-        /// <para>
-        /// Behaves similarly to <see cref="PhysicalDevice.GetImageFormatProperties"/>, with the
-        /// ability to return extended information via chained output structures.
-        /// </para>
-        /// <para>
-        /// If the loader implementation emulates the command on a device that doesn't support the
-        /// extension, and the query involves a structure the loader does not support, the command
-        /// throws with <see cref="Result.ErrorFormatNotSupported"/>.
-        /// </para>
         /// </summary>
         /// <param name="physicalDevice">The physical device from which to query the image capabilities.</param>
         /// <param name="imageFormatInfo">
@@ -353,10 +344,6 @@ namespace VulkanCore.Khr
 
         /// <summary>
         /// Reports memory information for the specified physical device.
-        /// <para>
-        /// Behaves similarly to <see cref="PhysicalDevice.GetMemoryProperties"/>, with the ability
-        /// to return extended information via chained output structures.
-        /// </para>
         /// </summary>
         /// <param name="physicalDevice">The handle to the device to query.</param>
         /// <returns>The structure in which the properties are returned.</returns>
@@ -564,6 +551,7 @@ namespace VulkanCore.Khr
         /// <summary>
         /// A unicode string containing the name of the display. Generally, this will be the name
         /// provided by the display's EDID. It can be <c>null</c> if no suitable name is available.
+        /// If not <c>null</c>, the memory it points to must remain accessible as long as display is valid.
         /// </summary>
         public string DisplayName;
         /// <summary>

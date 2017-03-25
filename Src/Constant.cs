@@ -153,6 +153,10 @@
             /// </summary>
             public const string ExtDisplaySurfaceCounter = "VK_EXT_display_surface_counter";
             /// <summary>
+            /// This extension defines additional enums for <see cref="Khr.ColorSpaceKhr"/>.
+            /// </summary>
+            public const string ExtSwapchainColorspace = "VK_EXT_swapchain_colorspace";
+            /// <summary>
             /// This extension provides instance-level commands to enumerate groups of physical
             /// devices, and to create a logical device from a subset of one of those groups. Such a
             /// logical device can then be used with new features in the "VK_KHX_device_group" extension.
@@ -341,10 +345,6 @@
             /// and "VK_KHR_display_swapchain" extensions.
             /// </summary>
             public const string ExtDisplayControl = "VK_EXT_display_control";
-            /// <summary>
-            /// This extension defines additional enums for <see cref="Khr.ColorSpaceKhr"/>.
-            /// </summary>
-            public const string ExtSwapchainColorspace = "VK_EXT_swapchain_colorspace";
             /// <summary>
             /// This extension defines two new structures and a function to assign SMPTE (the Society
             /// of Motion Picture and Television Engineers) 2086 metadata and CTA (Consumer

@@ -55,8 +55,7 @@ namespace VulkanCore.NV
     }
 
     /// <summary>
-    /// Structure specifying parameters of a newly created pipeline viewport W scaling
-    /// state.
+    /// Structure specifying parameters of a newly created pipeline viewport W scaling state.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PipelineViewportWScalingStateCreateInfoNV

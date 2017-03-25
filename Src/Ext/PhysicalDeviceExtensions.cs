@@ -35,7 +35,7 @@ namespace VulkanCore.Ext
         /// </para>
         /// </summary>
         /// <param name="physicalDevice">The physical device to query the display handle on.</param>
-        /// <param name="dpy">A connection to the X11 server from which pname:rrOutput was queried.</param>
+        /// <param name="dpy">A connection to the X11 server from which <paramref name="rrOutput"/> was queried.</param>
         /// <param name="rrOutput">An X11 RandR output ID.</param>
         /// <returns>The corresponding <see cref="DisplayKhr"/> handle.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>

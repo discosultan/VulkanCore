@@ -441,48 +441,61 @@ namespace VulkanCore.Khr
         /// The presentation engine supports the sRGB color space.
         /// </summary>
         SRgbNonlinear = 0,
-        DisplayP3Linear = 1000104001,
-        DisplayP3Nonlinear = 1000104002,
         /// <summary>
-        /// Supports the scRGB color space and applies a linear OETF.
+        /// Supports the Display-P3 color space and applies an sRGB-like OETF.
         /// </summary>
-        ScRgbLinear = 1000104003,
+        DisplayP3NonlinearExt = 1000104001,
         /// <summary>
-        /// Supports the scRGB color space and applies the scRGB OETF.
+        /// Supports the extended sRGB color space and applies a linear OETF.
         /// </summary>
-        ScRgbNonlinear = 1000104004,
+        ExtendedSRgbLinearExt = 1000104002,
         /// <summary>
         /// Supports the DCI-P3 color space and applies a linear OETF.
         /// </summary>
-        DciP3Linear = 1000104005,
+        DciP3LinearExt = 1000104003,
         /// <summary>
         /// Supports the DCI-P3 color space and applies the Gamma 2.6 OETF.
         /// </summary>
-        DciP3Nonlinear = 1000104006,
+        DciP3NonlinearExt = 1000104004,
         /// <summary>
         /// Supports the BT709 color space and applies a linear OETF.
         /// </summary>
-        BT709Linear = 1000104007,
+        BT709LinearExt = 1000104005,
         /// <summary>
         /// Supports the BT709 color space and applies the SMPTE 170M OETF.
         /// </summary>
-        BT709Nonlinear = 1000104008,
+        BT709NonlinearExt = 1000104006,
         /// <summary>
         /// Supports the BT2020 color space and applies a linear OETF.
         /// </summary>
-        BT2020Linear = 1000104009,
+        BT2020LinearExt = 1000104007,
         /// <summary>
-        /// Supports the BT2020 color space and applies the SMPTE 170M OETF.
+        /// Supports HDR10 (BT2020 color) space and applies the SMPTE ST2084 Perceptual Quantizer
+        /// (PQ) OETF.
         /// </summary>
-        BT2020Nonlinear = 1000104010,
+        Hdr10ST2084Ext = 1000104008,
+        /// <summary>
+        /// Supports Dolby Vision (BT2020 color space), proprietary encoding, and applies the SMPTE
+        /// ST2084 OETF.
+        /// </summary>
+        DolbyVisionExt = 1000104009,
+        /// <summary>
+        /// Supports HDR10 (BT2020 color space) and applies the Hybrid Log Gamma (HLG) OETF.
+        /// </summary>
+        Hdr10HlgExt = 1000104010,
         /// <summary>
         /// Supports the AdobeRGB color space and applies a linear OETF.
         /// </summary>
-        AdobeRgbLinear = 1000104011,
+        AdobeRgbLinearExt = 1000104011,
         /// <summary>
         /// Supports the AdobeRGB color space and applies the Gamma 2.2 OETF.
         /// </summary>
-        AdobeRgbNonlinear = 1000104012,
+        AdobeRgbNonlinearExt = 1000104012,
+        /// <summary>
+        /// Color components used "as is". Intended to allow application to supply data for color
+        /// spaces not described here.
+        /// </summary>
+        PassThroughExt = 1000104013
     }
 
     /// <summary>
