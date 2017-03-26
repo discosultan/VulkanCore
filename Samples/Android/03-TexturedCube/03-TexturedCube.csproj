@@ -68,6 +68,9 @@
     <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\IndustryForgedDark512.ktx">
       <Link>Assets\Content\IndustryForgedDark512.ktx</Link>
     </AndroidAsset>
+    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\CompileShaders.bat">
+      <Link>Assets\Content\CompileShaders.bat</Link>
+    </AndroidAsset>
     <None Include="..\..\Shared\03-TexturedCube\Content\Shader.frag">
       <Link>Assets\Content\Shader.frag</Link>
     </None>

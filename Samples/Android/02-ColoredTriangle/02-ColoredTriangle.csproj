@@ -61,6 +61,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="..\..\Shared\02-ColoredTriangle\Content\CompileShaders.bat">
+      <Link>Assets\Content\CompileShaders.bat</Link>
+    </AndroidAsset>
     <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag">
       <Link>Assets\Content\Shader.frag</Link>
     </None>

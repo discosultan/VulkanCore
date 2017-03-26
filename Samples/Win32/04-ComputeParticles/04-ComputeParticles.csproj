@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7519173C-D98E-4DDB-9F8A-D1051616C61E}</ProjectGuid>
+    <ProjectGuid>{F0062F92-0F14-4A31-9E93-8E2EA099525D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>VulkanCore.Samples.ColoredTriangle</RootNamespace>
-    <AssemblyName>ColoredTriangle</AssemblyName>
+    <RootNamespace>VulkanCore.Samples.ComputeParticles</RootNamespace>
+    <AssemblyName>ComputeParticles</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,8 +40,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\02-ColoredTriangle\ColoredTriangleApp.cs">
-      <Link>ColoredTriangleApp.cs</Link>
+    <Compile Include="..\..\Shared\04-ComputeParticles\ComputeParticlesApp.cs">
+      <Link>ComputeParticlesApp.cs</Link>
     </Compile>
     <Compile Include="..\..\Shared\Win32Window.cs">
       <Link>Win32Window.cs</Link>
@@ -51,21 +50,28 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\CompileShaders.bat">
+    <None Include="..\..\Shared\04-ComputeParticles\Content\CompileShaders.bat">
       <Link>Content\CompileShaders.bat</Link>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag">
-      <Link>Content\Shader.frag</Link>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.comp">
+      <Link>Content\Shader.comp</Link>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag.spv">
-      <Link>Content\Shader.frag.spv</Link>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\shader.comp.spv">
+      <Link>Content\shader.comp.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.vert">
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.frag">
+      <Link>Content\Shader.frag</Link>
+    </None>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\shader.frag.spv">
+      <Link>Content\shader.frag.spv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.vert">
       <Link>Content\Shader.vert</Link>
     </None>
-    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.vert.spv">
-      <Link>Content\Shader.vert.spv</Link>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\shader.vert.spv">
+      <Link>Content\shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
@@ -80,10 +86,6 @@
       <Name>MiniFramework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>4.3.0</Version>
-    </PackageReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
