@@ -5,26 +5,29 @@ using System.Runtime.InteropServices;
 
 namespace VulkanCore
 {
-    internal class VulkanLibrary
+    internal static class VulkanLibrary
     {
-        private static readonly VulkanLibrary _finalizer;
         private static readonly IntPtr _handle;
 
-        private VulkanLibrary() { }
+        // Note that the loaded Vulkan module is never freed by this assembly because we have no way
+        // to guarantee that it's freed after the client application has finished using this
+        // assembly. This becomes a problem, for example, when the client application wants to
+        // dispose any types of this assmebly in a finalizer. In that case, we don't know in which
+        // order the finalizers are run.
+
+        // If for some reason, the client application wishes to unload Vulkan module when the process
+        // is still running, it may do so resorting to its platforms load and free library methods
+        // similar to what is done in this class. In order to successfully unload the module, it will
+        // need to get a handle to the module using LoadLibrary/dlopen. Note that this will increase
+        // the CLR ref count to 2 which means that the handle must be freed TWICE using FreeLibrary/dlclose.
 
         static VulkanLibrary()
         {
-            _finalizer = new VulkanLibrary();
             _handle = GetVulkanLibraryNameCandidates()
-                .Select(name => LoadLibrary(name))
+                .Select(LoadLibrary)
                 .FirstOrDefault(handle => handle != IntPtr.Zero);
             if (_handle == IntPtr.Zero)
                 throw new NotImplementedException("Vulkan native library was not found.");
-        }
-
-        ~VulkanLibrary()
-        {
-            FreeLibrary(_handle);
         }
 
         public static TDelegate GetProc<TDelegate>(string procName)
@@ -66,24 +69,6 @@ namespace VulkanCore
             return handle;
         }
 
-        private static int FreeLibrary(IntPtr module)
-        {
-            int returnCode;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                returnCode = Kernel32FreeLibrary(module);
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                returnCode = LibDLFreeLibrary(module);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-            return returnCode;
-        }
-
         private static IEnumerable<string> GetVulkanLibraryNameCandidates()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -104,17 +89,11 @@ namespace VulkanCore
         [DllImport("kernel32", EntryPoint = "GetProcAddress")]
         private static extern IntPtr Kernel32GetProcAddress(IntPtr module, string procName);
 
-        [DllImport("kernel32", EntryPoint = "FreeLibrary")]
-        private static extern int Kernel32FreeLibrary(IntPtr module);
-
         [DllImport("libdl.so", EntryPoint = "dlopen")]
         private static extern IntPtr LibDLLoadLibrary(string fileName, int flags);
 
         [DllImport("libdl.so", EntryPoint = "dlsym")]
         private static extern IntPtr LibDLGetProcAddress(IntPtr handle, string name);
-
-        [DllImport("libdl.so", EntryPoint = "dlclose")]
-        private static extern int LibDLFreeLibrary(IntPtr handle);
 
         private const int LibDLRtldNow = 2;
     }
