@@ -24,6 +24,16 @@ namespace VulkanCore.Tests
                 Device.ResetFences(fence);
         }
 
+        [Fact]
+        public void GetStatus()
+        {
+            using (Fence fence = Device.CreateFence(new FenceCreateInfo(FenceCreateFlags.Signaled)))
+            {
+                Result status = fence.GetStatus();
+                Assert.Equal(Result.Success, status);
+            }
+        }
+
         public FenceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
     }
 }

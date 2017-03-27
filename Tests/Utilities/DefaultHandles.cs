@@ -71,8 +71,7 @@ namespace VulkanCore.Tests.Utilities
 
         private void PickPhysicalDevice()
         {
-            // Currently simply picks the first physical device. We might want a
-            // smarter choice here.
+            // Currently simply picks the first physical device. We might want a smarter choice here.
             PhysicalDevice = Instance.EnumeratePhysicalDevices()[0];
             PhysicalDeviceFeatures = PhysicalDevice.GetFeatures();
             PhysicalDeviceMemoryProperties = PhysicalDevice.GetMemoryProperties();
@@ -81,8 +80,6 @@ namespace VulkanCore.Tests.Utilities
 
         private void CreateDevice()
         {
-            // TODO: Separation between graphics and present queue (for testing presentation).
-
             QueueFamilyProperties[] queueProps = PhysicalDevice.GetQueueFamilyProperties();
             int computeFamilyIndex = -1;
             int graphicsFamilyIndex = -1;
@@ -114,7 +111,7 @@ namespace VulkanCore.Tests.Utilities
             }.Distinct().Select(i => new DeviceQueueCreateInfo(i, 1, 1.0f)).ToArray();
 
             string[] selectExtensions = new[] { Constant.DeviceExtension.ExtDebugMarker }
-                .Where(extensionName => AvailableInstanceExtensions.Contains(extensionName))
+                .Where(AvailableInstanceExtensions.Contains)
                 .ToArray();
 
             var createInfo = new DeviceCreateInfo(queueInfos, selectExtensions, PhysicalDeviceFeatures);
