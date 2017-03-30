@@ -14,6 +14,7 @@ namespace VulkanCore.Samples
             // Find graphics and presentation capable physical device(s) that support
             // the provided surface for platform.
             int graphicsQueueFamilyIndex = -1;
+            int computeQueueFamilyIndex = -1;
             int presentQueueFamilyIndex = -1;
             foreach (PhysicalDevice physicalDevice in instance.EnumeratePhysicalDevices())
             {
@@ -23,11 +24,18 @@ namespace VulkanCore.Samples
                     if (queueFamilyProperties[i].QueueFlags.HasFlag(Queues.Graphics))
                     {
                         if (graphicsQueueFamilyIndex == -1) graphicsQueueFamilyIndex = i;
+                        if (computeQueueFamilyIndex == -1) computeQueueFamilyIndex = i;
 
                         if (physicalDevice.GetSurfaceSupportKhr(i, surface) &&
                             GetPresentationSupport(physicalDevice, i))
                         {
                             presentQueueFamilyIndex = i;
+                        }
+
+                        if (graphicsQueueFamilyIndex != -1 &&
+                            computeQueueFamilyIndex != -1 &&
+                            presentQueueFamilyIndex != -1)
+                        {
                             Physical = physicalDevice;
                             break;
                         }
@@ -69,6 +77,9 @@ namespace VulkanCore.Samples
 
             // Get queue(s).
             GraphicsQueue = Logical.GetQueue(graphicsQueueFamilyIndex);
+            ComputeQueue = computeQueueFamilyIndex == graphicsQueueFamilyIndex
+                ? GraphicsQueue
+                : Logical.GetQueue(computeQueueFamilyIndex);
             PresentQueue = presentQueueFamilyIndex == graphicsQueueFamilyIndex
                 ? GraphicsQueue
                 : Logical.GetQueue(presentQueueFamilyIndex);
@@ -81,6 +92,7 @@ namespace VulkanCore.Samples
         public Device Logical { get; private set; }
         public PhysicalDeviceMemoryProperties MemoryProperties { get; private set; }
         public Queue GraphicsQueue { get; private set; }
+        public Queue ComputeQueue { get; }
         public Queue PresentQueue { get; private set; }
         public CommandPool CommandPool { get; private set; }
 
