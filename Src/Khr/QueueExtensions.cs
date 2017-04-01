@@ -208,4 +208,91 @@ namespace VulkanCore.Khr
         /// </summary>
         public Bool Persistent;
     }
+
+    /// <summary>
+    /// Structure hint of rectangular regions changed by <see cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/>.
+    /// <para>
+    /// When the "VK_KHR_incremental_present" extension is enabled, additional fields can be
+    /// specified that allow an application to specify that only certain rectangular regions of the
+    /// presentable images of a swapchain are changed.
+    /// </para>
+    /// <para>
+    /// This is an optimization hint that a presentation engine may use to only update the region of
+    /// a surface that is actually changing. The application still must ensure that all pixels of a
+    /// presented image contain the desired values, in case the presentation engine ignores this hint.
+    /// </para>
+    /// <para>
+    /// An application can provide this hint by including the <see cref="PresentRegionsKhr"/>
+    /// structure in the <see cref="PresentInfoKhr.Next"/> chain.
+    /// </para>
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct PresentRegionsKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of swapchains being presented to by this command.
+        /// </summary>
+        public int SwapchainCount;
+        /// <summary>
+        /// Is <c>null</c> or a pointer to an array of <see cref="PresentRegionKhr"/> elements with
+        /// <see cref="SwapchainCount"/> entries. If not <c>null</c>, each element of <see
+        /// cref="Regions"/> contains the region that has changed since the last present to the
+        /// swapchain in the corresponding entry in the <see cref="PresentInfoKhr.Swapchains"/> array.
+        /// </summary>
+        public PresentRegionKhr* Regions;
+    }
+
+    /// <summary>
+    /// Structure containing rectangular region changed by <see
+    /// cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/> for a given <see cref="Image"/>.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct PresentRegionKhr
+    {
+        /// <summary>
+        /// The number of rectangles in <see cref="Rectangles"/>, or zero if the entire image has
+        /// changed and should be presented.
+        /// </summary>
+        public int RectangleCount;
+        /// <summary>
+        /// Is either <c>null</c> or a pointer to an array of <see cref="RectLayerKhr"/> structures.
+        /// <para>
+        /// The <see cref="RectLayerKhr"/> structure is the framebuffer coordinates, plus layer, of a
+        /// portion of a presentable image that has changed and must be presented. If non-
+        /// <c>null</c>, each entry in <see cref="Rectangles"/> is a rectangle of the given image
+        /// that has changed since the last image was presented to the given swapchain.
+        /// </para>
+        /// </summary>
+        public RectLayerKhr* Rectangles;
+    }
+
+    /// <summary>
+    /// Structure containing a rectangle, including layer, changed by <see
+    /// cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/> for a given <see cref="Image"/>.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RectLayerKhr
+    {
+        /// <summary>
+        /// The origin of the rectangle, in pixels.
+        /// </summary>
+        public Offset2D Offset;
+        /// <summary>
+        /// The size of the rectangle, in pixels.
+        /// </summary>
+        public Extent2D Extent;
+        /// <summary>
+        /// The layer of the image.
+        /// <para>For images with only one layer, the value of <see cref="Layer"/> must be 0.</para>
+        /// </summary>
+        public int Layer;
+    }
 }
