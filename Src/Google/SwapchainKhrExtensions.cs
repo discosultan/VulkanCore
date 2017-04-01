@@ -135,10 +135,10 @@ namespace VulkanCore.Google
         /// </summary>
         public int SwapchainCount;
         /// <summary>
-        /// Is <c>null</c> or a pointer to an array of <see cref="PresentTimeGoogle"/>
-        /// elements with <see cref="SwapchainCount"/> entries. If not <see cref="IntPtr.Zero"/>,
-        /// each element of <see cref="Times"/> contains the earliest time to present the image
-        /// corresponding to the entry in the <see cref="PresentInfoKhr.ImageIndices"/> array.
+        /// Is <c>null</c> or a pointer to an array of <see cref="PresentTimeGoogle"/> elements with
+        /// <see cref="SwapchainCount"/> entries. If not <c>null</c>, each element of <see
+        /// cref="Times"/> contains the earliest time to present the image corresponding to the entry
+        /// in the <see cref="PresentInfoKhr.ImageIndices"/> array.
         /// </summary>
         public PresentTimeGoogle* Times;
     }
