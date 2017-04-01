@@ -86,14 +86,14 @@ namespace VulkanCore.Google
     {
         /// <summary>
         /// An application-provided value that was given to a previous <see
-        /// cref="QueueExtensions.PresentKhr(Queue, Semaphore, SwapchainKhr, int)"/> command via <see
+        /// cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/> command via <see
         /// cref="PresentId"/> (see below). It can be used to uniquely identify a previous present
         /// with the flink:vkQueuePresentKHR command.
         /// </summary>
         public int PresentId;
         /// <summary>
         /// An application-provided value that was given to a previous <see
-        /// cref="QueueExtensions.PresentKhr(Queue, Semaphore, SwapchainKhr, int)"/> command via <see
+        /// cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/> command via <see
         /// cref="DesiredPresentTime"/>. If non-zero, it was used by the application to indicate that
         /// an image not be presented any sooner than <see cref="DesiredPresentTime"/>.
         /// </summary>
@@ -109,7 +109,7 @@ namespace VulkanCore.Google
         /// </summary>
         public long EarliestPresentTime;
         /// <summary>
-        /// An indication of how early the <see cref="QueueExtensions.PresentKhr(Queue, Semaphore, SwapchainKhr, int)"/>
+        /// An indication of how early the <see cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/>
         /// command was processed compared to how soon it needed to be processed, and still be
         /// presented at <see cref="EarliestPresentTime"/>.
         /// </summary>
@@ -120,7 +120,7 @@ namespace VulkanCore.Google
     /// The earliest time each image should be presented.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct PresentTimesInfoGoogle
+    public unsafe struct PresentTimesInfoGoogle
     {
         /// <summary>
         /// The type of this structure.
@@ -135,12 +135,12 @@ namespace VulkanCore.Google
         /// </summary>
         public int SwapchainCount;
         /// <summary>
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an array of <see cref="PresentTimeGoogle"/>
+        /// Is <c>null</c> or a pointer to an array of <see cref="PresentTimeGoogle"/>
         /// elements with <see cref="SwapchainCount"/> entries. If not <see cref="IntPtr.Zero"/>,
         /// each element of <see cref="Times"/> contains the earliest time to present the image
         /// corresponding to the entry in the <see cref="PresentInfoKhr.ImageIndices"/> array.
         /// </summary>
-        public IntPtr Times;
+        public PresentTimeGoogle* Times;
     }
 
     /// <summary>

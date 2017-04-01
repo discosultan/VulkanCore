@@ -248,6 +248,27 @@ namespace VulkanCore.Khr
         /// swapchain in the corresponding entry in the <see cref="PresentInfoKhr.Swapchains"/> array.
         /// </summary>
         public PresentRegionKhr* Regions;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresentRegionsKhr"/> structure.
+        /// </summary>
+        /// <param name="swapchainCount">The number of swapchains being presented to by this command.</param>
+        /// <param name="regions">
+        /// Is <c>null</c> or a pointer to an array of <see cref="PresentRegionKhr"/> elements with
+        /// <see cref="SwapchainCount"/> entries. If not <c>null</c>, each element of <see
+        /// cref="Regions"/> contains the region that has changed since the last present to the
+        /// swapchain in the corresponding entry in the <see cref="PresentInfoKhr.Swapchains"/> array.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public PresentRegionsKhr(int swapchainCount, PresentRegionKhr* regions, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PresentRegionsKhr;
+            Next = next;
+            SwapchainCount = swapchainCount;
+            Regions = regions;
+        }
     }
 
     /// <summary>
@@ -272,6 +293,28 @@ namespace VulkanCore.Khr
         /// </para>
         /// </summary>
         public RectLayerKhr* Rectangles;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresentRegionKhr"/> structure.
+        /// </summary>
+        /// <param name="rectangleCount">
+        /// The number of rectangles in <see cref="Rectangles"/>, or zero if the entire image has
+        /// changed and should be presented.
+        /// </param>
+        /// <param name="rectangles">
+        /// Is either <c>null</c> or a pointer to an array of <see cref="RectLayerKhr"/> structures.
+        /// <para>
+        /// The <see cref="RectLayerKhr"/> structure is the framebuffer coordinates, plus layer, of a
+        /// portion of a presentable image that has changed and must be presented. If non-
+        /// <c>null</c>, each entry in <see cref="Rectangles"/> is a rectangle of the given image
+        /// that has changed since the last image was presented to the given swapchain.
+        /// </para>
+        /// </param>
+        public PresentRegionKhr(int rectangleCount, RectLayerKhr* rectangles)
+        {
+            RectangleCount = rectangleCount;
+            Rectangles = rectangles;
+        }
     }
 
     /// <summary>
@@ -294,5 +337,21 @@ namespace VulkanCore.Khr
         /// <para>For images with only one layer, the value of <see cref="Layer"/> must be 0.</para>
         /// </summary>
         public int Layer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RectLayerKhr"/> structure.
+        /// </summary>
+        /// <param name="offset">The origin of the rectangle, in pixels.</param>
+        /// <param name="extent">The size of the rectangle, in pixels.</param>
+        /// <param name="layer">
+        /// The layer of the image.
+        /// <para>For images with only one layer, the value of <see cref="Layer"/> must be 0.</para>
+        /// </param>
+        public RectLayerKhr(Offset2D offset, Extent2D extent, int layer)
+        {
+            Offset = offset;
+            Extent = extent;
+            Layer = layer;
+        }
     }
 }
