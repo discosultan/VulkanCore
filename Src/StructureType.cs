@@ -132,6 +132,7 @@
         D3D12FenceSubmitInfoKhx = 1000078002,
         ImportSemaphoreFdInfoKhx = 1000079000,
         PhysicalDevicePushDescriptorPropertiesKhr = 1000080000,
+        PresentRegionsKhr = 1000084000,
         DescriptorUpdateTemplateCreateInfoKhr = 1000085000,
         ObjectTableCreateInfoNvx = 1000086000,
         IndirectCommandsLayoutCreateInfoNvx = 1000086001,

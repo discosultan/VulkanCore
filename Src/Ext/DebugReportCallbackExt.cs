@@ -354,20 +354,24 @@ namespace VulkanCore.Ext
         /// </summary>
         DebugReport = 28,
         /// <summary>
-        /// Is a <see cref="DisplayKhr"/>.
+        /// Is a <see cref="Khr.DisplayKhr"/>.
         /// </summary>
         DisplayKhr = 29,
         /// <summary>
-        /// Is a <see cref="DisplayModeKhr"/>.
+        /// Is a <see cref="Khr.DisplayModeKhr"/>.
         /// </summary>
         DisplayModeKhr = 30,
         /// <summary>
-        /// Is a <see cref="ObjectTableNvx"/>.
+        /// Is a <see cref="Nvx.ObjectTableNvx"/>.
         /// </summary>
         ObjectTableNvx = 31,
         /// <summary>
-        /// Is a <see cref="IndirectCommandsLayoutNvx"/>.
+        /// Is a <see cref="Nvx.IndirectCommandsLayoutNvx"/>.
         /// </summary>
-        IndirectCommandsLayoutNvx = 32
+        IndirectCommandsLayoutNvx = 32,
+        /// <summary>
+        /// Is a <see cref="Khr.DescriptorUpdateTemplateKhr"/>.
+        /// </summary>
+        DescriptorUpdateTemplateKhrExt = 1000085000
     }
 }
