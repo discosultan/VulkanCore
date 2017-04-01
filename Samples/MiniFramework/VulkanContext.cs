@@ -4,12 +4,12 @@ using VulkanCore.Khr;
 namespace VulkanCore.Samples
 {
     /// <summary>
-    /// Encapsulates Vulkan <see cref="PhysicalDevice"/> and <see cref="Device"/> and exposes queues
+    /// Encapsulates Vulkan <see cref="VulkanCore.PhysicalDevice"/> and <see cref="VulkanCore.Device"/> and exposes queues
     /// and a command pool for rendering tasks.
     /// </summary>
-    public class GraphicsDevice : IDisposable
+    public class VulkanContext : IDisposable
     {
-        public GraphicsDevice(Instance instance, SurfaceKhr surface, Platform platform)
+        public VulkanContext(Instance instance, SurfaceKhr surface, Platform platform)
         {
             // Find graphics and presentation capable physical device(s) that support
             // the provided surface for platform.
@@ -36,12 +36,12 @@ namespace VulkanCore.Samples
                             computeQueueFamilyIndex != -1 &&
                             presentQueueFamilyIndex != -1)
                         {
-                            Physical = physicalDevice;
+                            PhysicalDevice = physicalDevice;
                             break;
                         }
                     }
                 }
-                if (Physical != null) break;
+                if (PhysicalDevice != null) break;
             }
 
             bool GetPresentationSupport(PhysicalDevice physicalDevice, int queueFamilyIndex)
@@ -57,11 +57,11 @@ namespace VulkanCore.Samples
                 }
             }
 
-            if (Physical == null)
+            if (PhysicalDevice == null)
                 throw new InvalidOperationException("No suitable physical device found.");
 
             // Store memory properties of the physical device.
-            MemoryProperties = Physical.GetMemoryProperties();
+            MemoryProperties = PhysicalDevice.GetMemoryProperties();
 
             // Create a logical device.
             bool sameGraphicsAndPresent = graphicsQueueFamilyIndex == presentQueueFamilyIndex;
@@ -73,33 +73,33 @@ namespace VulkanCore.Samples
             var deviceCreateInfo = new DeviceCreateInfo(
                 queueCreateInfos,
                 new[] { Constant.DeviceExtension.KhrSwapchain });
-            Logical = Physical.CreateDevice(deviceCreateInfo);
+            Device = PhysicalDevice.CreateDevice(deviceCreateInfo);
 
             // Get queue(s).
-            GraphicsQueue = Logical.GetQueue(graphicsQueueFamilyIndex);
+            GraphicsQueue = Device.GetQueue(graphicsQueueFamilyIndex);
             ComputeQueue = computeQueueFamilyIndex == graphicsQueueFamilyIndex
                 ? GraphicsQueue
-                : Logical.GetQueue(computeQueueFamilyIndex);
+                : Device.GetQueue(computeQueueFamilyIndex);
             PresentQueue = presentQueueFamilyIndex == graphicsQueueFamilyIndex
                 ? GraphicsQueue
-                : Logical.GetQueue(presentQueueFamilyIndex);
+                : Device.GetQueue(presentQueueFamilyIndex);
 
             // Create a command pool.
-            CommandPool = Logical.CreateCommandPool(new CommandPoolCreateInfo(graphicsQueueFamilyIndex));
+            CommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(graphicsQueueFamilyIndex));
         }
 
-        public PhysicalDevice Physical { get; private set; }
-        public Device Logical { get; private set; }
-        public PhysicalDeviceMemoryProperties MemoryProperties { get; private set; }
-        public Queue GraphicsQueue { get; private set; }
+        public PhysicalDevice PhysicalDevice { get; }
+        public Device Device { get; }
+        public PhysicalDeviceMemoryProperties MemoryProperties { get; }
+        public Queue GraphicsQueue { get; }
         public Queue ComputeQueue { get; }
-        public Queue PresentQueue { get; private set; }
-        public CommandPool CommandPool { get; private set; }
+        public Queue PresentQueue { get; }
+        public CommandPool CommandPool { get; }
 
         public void Dispose()
         {
             CommandPool.Dispose();
-            Logical.Dispose();
+            Device.Dispose();
         }
     }
 }

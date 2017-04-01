@@ -34,7 +34,7 @@ namespace VulkanCore.Samples
 
         public Instance Instance { get; private set; }
         protected DebugReportCallbackExt DebugReportCallback { get; private set; }
-        public GraphicsDevice Device { get; private set; }
+        public VulkanContext Device { get; private set; }
         public ContentManager Content { get; private set; }
 
         protected SurfaceKhr Surface { get; private set; }
@@ -58,10 +58,10 @@ namespace VulkanCore.Samples
             Instance                   = ToDispose(CreateInstance(debug));
             DebugReportCallback        = ToDispose(CreateDebugReportCallback(debug));
             Surface                    = ToDispose(CreateSurface());
-            Device                     = ToDispose(new GraphicsDevice(Instance, Surface, Host.Platform));
+            Device                     = ToDispose(new VulkanContext(Instance, Surface, Host.Platform));
             Content                    = ToDispose(new ContentManager(Host, Device, "Content"));
-            ImageAvailableSemaphore    = ToDispose(Device.Logical.CreateSemaphore());
-            RenderingFinishedSemaphore = ToDispose(Device.Logical.CreateSemaphore());
+            ImageAvailableSemaphore    = ToDispose(Device.Device.CreateSemaphore());
+            RenderingFinishedSemaphore = ToDispose(Device.Device.CreateSemaphore());
 
             _initializingPermanent = false;
             // Calling ToDispose here registers the resource to be automatically disposed on events
@@ -97,7 +97,7 @@ namespace VulkanCore.Samples
 
         public void Resize()
         {
-            Device.Logical.WaitIdle();
+            Device.Device.WaitIdle();
 
             // Dispose all frame dependent resources.
             while (_toDisposeFrame.Count > 0)
@@ -140,7 +140,7 @@ namespace VulkanCore.Samples
 
         public virtual void Dispose()
         {
-            Device.Logical.WaitIdle();
+            Device.Device.WaitIdle();
             while (_toDisposeFrame.Count > 0)
                 _toDisposeFrame.Pop().Dispose();
             while (_toDisposePermanent.Count > 0)
@@ -220,9 +220,9 @@ namespace VulkanCore.Samples
 
         private SwapchainKhr CreateSwapchain()
         {
-            SurfaceCapabilitiesKhr capabilities = Device.Physical.GetSurfaceCapabilitiesKhr(Surface);
-            SurfaceFormatKhr[] formats = Device.Physical.GetSurfaceFormatsKhr(Surface);
-            PresentModeKhr[] presentModes = Device.Physical.GetSurfacePresentModesKhr(Surface);
+            SurfaceCapabilitiesKhr capabilities = Device.PhysicalDevice.GetSurfaceCapabilitiesKhr(Surface);
+            SurfaceFormatKhr[] formats = Device.PhysicalDevice.GetSurfaceFormatsKhr(Surface);
+            PresentModeKhr[] presentModes = Device.PhysicalDevice.GetSurfacePresentModesKhr(Surface);
             Format format = formats.Length == 1 && formats[0].Format == Format.Undefined
                 ? Format.B8G8R8A8UNorm
                 : formats[0].Format;
@@ -232,7 +232,7 @@ namespace VulkanCore.Samples
                 presentModes.Contains(PresentModeKhr.Fifo) ? PresentModeKhr.Fifo :
                 PresentModeKhr.Immediate;
 
-            return Device.Logical.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
+            return Device.Device.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
                 Surface,
                 format,
                 capabilities.CurrentExtent,

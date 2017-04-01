@@ -8,11 +8,11 @@ namespace VulkanCore.Samples
     public class ContentManager : IDisposable
     {
         private readonly IVulkanAppHost _host;
-        private readonly GraphicsDevice _device;
+        private readonly VulkanContext _device;
         private readonly string _contentRoot;
         private readonly Dictionary<string, IDisposable> _cachedContent = new Dictionary<string, IDisposable>();
 
-        public ContentManager(IVulkanAppHost host, GraphicsDevice device, string contentRoot)
+        public ContentManager(IVulkanAppHost host, VulkanContext device, string contentRoot)
         {
             _host = host;
             _device = device;
@@ -30,7 +30,7 @@ namespace VulkanCore.Samples
             {
                 value = LoadShader(path);
             }
-            else if (type == typeof(Texture))
+            else if (type == typeof(VulkanImage))
             {
                 value = LoadTexture(path);
             }
@@ -53,7 +53,7 @@ namespace VulkanCore.Samples
             using (var ms = new MemoryStream())
             {
                 stream.CopyTo(ms, defaultBufferSize);
-                return _device.Logical.CreateShaderModule(new ShaderModuleCreateInfo(ms.ToArray()));
+                return _device.Device.CreateShaderModule(new ShaderModuleCreateInfo(ms.ToArray()));
             }
         }
 
@@ -69,7 +69,7 @@ namespace VulkanCore.Samples
             {
                 throw new NotImplementedException();
             }
-            return new Texture(_device, textureData);
+            return VulkanImage.Texture2D(_device, textureData);
         }
 
         private static readonly byte[] KtxIdentifier =

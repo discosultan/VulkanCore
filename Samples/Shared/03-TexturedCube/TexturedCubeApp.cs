@@ -23,26 +23,26 @@ namespace VulkanCore.Samples.TexturedCube
         private DescriptorPool _descriptorPool;
         private DescriptorSet _descriptorSet;
 
-        private DepthStencilBuffer _depthStencilBuffer;
+        private VulkanImage _depthStencilBuffer;
 
         private Sampler _sampler;
-        private Texture _cubeTexture;
+        private VulkanImage _cubeTexture;
 
-        private VertexBuffer<Vertex> _cubeVertices;
-        private IndexBuffer _cubeIndices;
+        private VulkanBuffer _cubeVertices;
+        private VulkanBuffer _cubeIndices;
 
-        private UniformBuffer _uniformBuffer;
+        private VulkanBuffer _uniformBuffer;
         private WorldViewProjection _wvp;
 
         protected override void InitializePermanent()
         {
             var cube = GeometricPrimitive.Box(1.0f, 1.0f, 1.0f);
 
-            _cubeTexture         = Content.Load<Texture>("IndustryForgedDark512.ktx");
-            _cubeVertices        = ToDispose(new VertexBuffer<Vertex>(Device, cube.Vertices));
-            _cubeIndices         = ToDispose(new IndexBuffer(Device, cube.Indices));
+            _cubeTexture         = Content.Load<VulkanImage>("IndustryForgedDark512.ktx");
+            _cubeVertices        = ToDispose(VulkanBuffer.Vertex(Device, cube.Vertices));
+            _cubeIndices         = ToDispose(VulkanBuffer.Index(Device, cube.Indices));
             _sampler             = ToDispose(CreateSampler());
-            _uniformBuffer       = ToDispose(new UniformBuffer(Device, Interop.SizeOf<WorldViewProjection>()));
+            _uniformBuffer       = ToDispose(VulkanBuffer.Uniform<WorldViewProjection>(Device, 1));
             _descriptorSetLayout = ToDispose(CreateDescriptorSetLayout());
             _pipelineLayout      = ToDispose(CreatePipelineLayout());
             _descriptorPool      = ToDispose(CreateDescriptorPool());
@@ -51,7 +51,7 @@ namespace VulkanCore.Samples.TexturedCube
 
         protected override void InitializeFrame()
         {
-            _depthStencilBuffer = ToDispose(new DepthStencilBuffer(Device, Host.Width, Host.Height));
+            _depthStencilBuffer = ToDispose(VulkanImage.DepthStencil(Device, Host.Width, Host.Height));
             _renderPass         = ToDispose(CreateRenderPass());
             _imageViews         = ToDispose(CreateImageViews());
             _framebuffers       = ToDispose(CreateFramebuffers());
@@ -74,9 +74,26 @@ namespace VulkanCore.Samples.TexturedCube
             UpdateUniformBuffers();
         }
 
+        protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
+        {
+            var renderPassBeginInfo = new RenderPassBeginInfo(
+                _framebuffers[imageIndex],
+                new Rect2D(0, 0, Host.Width, Host.Height),
+                new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
+                new ClearDepthStencilValue(1.0f, 0));
+
+            cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
+            cmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, _pipelineLayout, _descriptorSet);
+            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
+            cmdBuffer.CmdBindVertexBuffer(_cubeVertices);
+            cmdBuffer.CmdBindIndexBuffer(_cubeIndices);
+            cmdBuffer.CmdDrawIndexed(_cubeIndices.Count);
+            cmdBuffer.CmdEndRenderPass();
+        }
+
         private Sampler CreateSampler()
         {
-            return Device.Logical.CreateSampler(new SamplerCreateInfo
+            return Device.Device.CreateSampler(new SamplerCreateInfo
             {
                 MagFilter = Filter.Linear,
                 MinFilter = Filter.Linear,
@@ -108,7 +125,7 @@ namespace VulkanCore.Samples.TexturedCube
                 new DescriptorPoolSize(DescriptorType.UniformBuffer, 1),
                 new DescriptorPoolSize(DescriptorType.CombinedImageSampler, 1)
             };
-            return Device.Logical.CreateDescriptorPool(
+            return Device.Device.CreateDescriptorPool(
                 new DescriptorPoolCreateInfo(descriptorPoolSizes.Length, descriptorPoolSizes));
         }
 
@@ -129,14 +146,14 @@ namespace VulkanCore.Samples.TexturedCube
 
         private DescriptorSetLayout CreateDescriptorSetLayout()
         {
-            return Device.Logical.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
+            return Device.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.UniformBuffer, 1, ShaderStages.Vertex),
                 new DescriptorSetLayoutBinding(1, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment)));
         }
 
         private PipelineLayout CreatePipelineLayout()
         {
-            return Device.Logical.CreatePipelineLayout(new PipelineLayoutCreateInfo(
+            return Device.Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(
                 new[] { _descriptorSetLayout }));
         }
 
@@ -200,7 +217,7 @@ namespace VulkanCore.Samples.TexturedCube
             };
 
             var createInfo = new RenderPassCreateInfo(subpasses, attachments, dependencies);
-            return Device.Logical.CreateRenderPass(createInfo);
+            return Device.Device.CreateRenderPass(createInfo);
         }
 
         private ImageView[] CreateImageViews()
@@ -307,24 +324,7 @@ namespace VulkanCore.Samples.TexturedCube
                 multisampleState: multisampleStateCreateInfo,
                 depthStencilState: depthStencilCreateInfo,
                 colorBlendState: colorBlendStateCreateInfo);
-            return Device.Logical.CreateGraphicsPipeline(pipelineCreateInfo);
-        }
-
-        protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
-        {
-            var renderPassBeginInfo = new RenderPassBeginInfo(
-                _framebuffers[imageIndex],
-                new Rect2D(0, 0, Host.Width, Host.Height),
-                new ClearColorValue(new ColorF4(0.39f, 0.58f, 0.93f, 1.0f)),
-                new ClearDepthStencilValue(1.0f, 0));
-
-            cmdBuffer.CmdBeginRenderPass(renderPassBeginInfo);
-            cmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, _pipelineLayout, _descriptorSet);
-            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _pipeline);
-            cmdBuffer.CmdBindVertexBuffer(_cubeVertices);
-            cmdBuffer.CmdBindIndexBuffer(_cubeIndices);
-            cmdBuffer.CmdDrawIndexed(_cubeIndices.IndexCount);
-            cmdBuffer.CmdEndRenderPass();
+            return Device.Device.CreateGraphicsPipeline(pipelineCreateInfo);
         }
     }
 }
