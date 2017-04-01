@@ -6,42 +6,72 @@
         private ImageView[] _imageViews;
         private Framebuffer[] _framebuffers;
         private DescriptorPool _descriptorPool;
-        private DescriptorSet _descriptorSet;
 
         private DepthStencilBuffer _depthStencilBuffer;
+
+        private Sampler _sampler;
+        private Texture _particleDiffuseMap;
 
         private DescriptorSetLayout _graphicsDescriptorSetLayout;
         private PipelineLayout _graphicsPipelineLayout;
         private Pipeline _graphicsPipeline;
+        private DescriptorSet _graphicsDescriptorSet;
 
         private DescriptorSetLayout _computeDescriptorSetLayout;
         private PipelineLayout _computePipelineLayout;
         private Pipeline _computePipeline;
+        private DescriptorSet _computeDescriptorSet;
 
         protected override void InitializePermanent()
         {
-            _graphicsDescriptorSetLayout = ToDispose(CreateGraphicsDescriptorSetLayout());
-            _graphicsPipelineLayout = ToDispose(CreateGraphicsPipelineLayout());
+            _descriptorPool =              ToDispose(CreateDescriptorPool());
+            _sampler =                     ToDispose(CreateSampler());
+            _particleDiffuseMap =          Content.Load<Texture>("ParticleDiffuse.ktx");
 
-            _computeDescriptorSetLayout = ToDispose(CreateComputeDescriptorSetLayout());
-            _computePipelineLayout = ToDispose(CreateComputePipelineLayout());
+            _graphicsDescriptorSetLayout = ToDispose(CreateGraphicsDescriptorSetLayout());
+            _graphicsPipelineLayout =      ToDispose(CreateGraphicsPipelineLayout());
+            _graphicsDescriptorSet =       CreateGraphicsDescriptorSet();
+
+            _computeDescriptorSetLayout =  ToDispose(CreateComputeDescriptorSetLayout());
+            _computePipelineLayout =       ToDispose(CreateComputePipelineLayout());
+            _computeDescriptorSet =        CreateComputeDescriptorSet();
         }
 
         protected override void InitializeFrame()
         {
             _depthStencilBuffer = ToDispose(new DepthStencilBuffer(Device, Host.Width, Host.Height));
-            _renderPass = ToDispose(CreateRenderPass());
-            _imageViews = ToDispose(CreateImageViews());
-            _framebuffers = ToDispose(CreateFramebuffers());
+            _renderPass =         ToDispose(CreateRenderPass());
+            _imageViews =         ToDispose(CreateImageViews());
+            _framebuffers =       ToDispose(CreateFramebuffers());
 
-            _graphicsPipeline = ToDispose(CreateGraphicsPipeline());
+            _graphicsPipeline =   ToDispose(CreateGraphicsPipeline());
 
-            _computePipeline = ToDispose(CreateComputePipeline());
+            _computePipeline =    ToDispose(CreateComputePipeline());
         }
 
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
             throw new System.NotImplementedException();
+        }
+
+        private DescriptorPool CreateDescriptorPool()
+        {
+            return Device.Logical.CreateDescriptorPool(new DescriptorPoolCreateInfo(3, new[]
+            {
+                new DescriptorPoolSize(DescriptorType.UniformBuffer, 1),
+                new DescriptorPoolSize(DescriptorType.StorageBuffer, 1),
+                new DescriptorPoolSize(DescriptorType.CombinedImageSampler, 2)
+            }));
+        }
+
+        private Sampler CreateSampler()
+        {
+            return Device.Logical.CreateSampler(new SamplerCreateInfo
+            {
+                MagFilter = Filter.Linear,
+                MinFilter = Filter.Linear,
+                MipmapMode = SamplerMipmapMode.Linear
+            });
         }
 
         private RenderPass CreateRenderPass()
@@ -198,6 +228,18 @@
             return Device.Logical.CreateGraphicsPipeline(pipelineCreateInfo);
         }
 
+        private DescriptorSet CreateGraphicsDescriptorSet()
+        {
+            DescriptorSet descriptorSet = _descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, _graphicsDescriptorSetLayout))[0];
+            _descriptorPool.UpdateSets(new[]
+            {
+                // Particle diffuse map.
+                new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.CombinedImageSampler,
+                    new[] { new DescriptorImageInfo(_sampler, _particleDiffuseMap.View, ImageLayout.ColorAttachmentOptimal) })
+            });
+            return descriptorSet;
+        }
+
         private DescriptorSetLayout CreateComputeDescriptorSetLayout()
         {
             return Device.Logical.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
@@ -207,7 +249,7 @@
 
         private PipelineLayout CreateComputePipelineLayout()
         {
-            return Device.Logical.CreatePipelineLayout( new PipelineLayoutCreateInfo(new[] { _computeDescriptorSetLayout }));
+            return Device.Logical.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { _computeDescriptorSetLayout }));
         }
 
         private Pipeline CreateComputePipeline()
@@ -216,6 +258,18 @@
                 new PipelineShaderStageCreateInfo(ShaderStages.Compute, Content.Load<ShaderModule>("shader.comp.spv"), "main"),
                 _computePipelineLayout);
             return Device.Logical.CreateComputePipeline(pipelineCreateInfo);
+        }
+
+        private DescriptorSet CreateComputeDescriptorSet()
+        {
+            DescriptorSet descriptorSet = _descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(2, _computeDescriptorSetLayout))[0];
+            _descriptorPool.UpdateSets(new[]
+            {
+                // Particle position storage buffer.
+                new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.CombinedImageSampler,
+                    bufferInfo: new[] { new DescriptorBufferInfo() })
+            });
+            return descriptorSet;
         }
     }
 
