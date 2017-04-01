@@ -140,7 +140,7 @@ namespace VulkanCore.Samples
             var subresourceRange = new ImageSubresourceRange(ImageAspects.Color, 0, tex2D.Mipmaps.Length, 0, 1);
 
             // Copy the data from staging buffers to device local buffers.
-            CommandBuffer cmdBuffer = ctx.CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
+            CommandBuffer cmdBuffer = ctx.GraphicsCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
             cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.OneTimeSubmit));
             cmdBuffer.CmdPipelineBarrier(PipelineStages.TopOfPipe, PipelineStages.TopOfPipe,
                 imageMemoryBarriers: new[]

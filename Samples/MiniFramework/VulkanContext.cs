@@ -84,8 +84,11 @@ namespace VulkanCore.Samples
                 ? GraphicsQueue
                 : Device.GetQueue(presentQueueFamilyIndex);
 
-            // Create a command pool.
-            CommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(graphicsQueueFamilyIndex));
+            // Create command pool(s).
+            GraphicsCommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(graphicsQueueFamilyIndex));
+            ComputeCommandPool = computeQueueFamilyIndex == graphicsQueueFamilyIndex
+                ? GraphicsCommandPool
+                : Device.CreateCommandPool(new CommandPoolCreateInfo(computeQueueFamilyIndex));
         }
 
         public PhysicalDevice PhysicalDevice { get; }
@@ -94,11 +97,13 @@ namespace VulkanCore.Samples
         public Queue GraphicsQueue { get; }
         public Queue ComputeQueue { get; }
         public Queue PresentQueue { get; }
-        public CommandPool CommandPool { get; }
+        public CommandPool GraphicsCommandPool { get; }
+        public CommandPool ComputeCommandPool { get; }
 
         public void Dispose()
         {
-            CommandPool.Dispose();
+            ComputeCommandPool.Dispose();
+            GraphicsCommandPool.Dispose();
             Device.Dispose();
         }
     }

@@ -1,5 +1,22 @@
-﻿namespace VulkanCore.Samples.ComputeParticles
+﻿using System;
+using System.Numerics;
+using System.Runtime.InteropServices;
+
+namespace VulkanCore.Samples.ComputeParticles
 {
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct VertexParticle
+    {
+        public Vector2 Position;
+        public Vector2 Velocity;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct UniformBufferObject
+    {
+        
+    }
+
     public class ComputeParticlesApp : VulkanApp
     {
         private RenderPass _renderPass;
@@ -17,29 +34,55 @@
         private Pipeline _graphicsPipeline;
         private DescriptorSet _graphicsDescriptorSet;
 
+        private VulkanBuffer _storageBuffer;
+        private VulkanBuffer _uniformBuffer;
         private DescriptorSetLayout _computeDescriptorSetLayout;
         private PipelineLayout _computePipelineLayout;
         private Pipeline _computePipeline;
         private DescriptorSet _computeDescriptorSet;
+        private CommandBuffer _computeCmdBuffer;
 
         protected override void InitializePermanent()
         {
             _descriptorPool              = ToDispose(CreateDescriptorPool());
+
             _sampler                     = ToDispose(CreateSampler());
             _particleDiffuseMap          = Content.Load<VulkanImage>("ParticleDiffuse.ktx");
-
             _graphicsDescriptorSetLayout = ToDispose(CreateGraphicsDescriptorSetLayout());
             _graphicsPipelineLayout      = ToDispose(CreateGraphicsPipelineLayout());
             _graphicsDescriptorSet       = CreateGraphicsDescriptorSet();
 
+            _storageBuffer               = ToDispose(CreateStorageBuffer());
+            _uniformBuffer               = ToDispose(VulkanBuffer.DynamicUniform<UniformBufferObject>(Context, 1));
             _computeDescriptorSetLayout  = ToDispose(CreateComputeDescriptorSetLayout());
             _computePipelineLayout       = ToDispose(CreateComputePipelineLayout());
             _computeDescriptorSet        = CreateComputeDescriptorSet();
+            _computeCmdBuffer            = Context.ComputeCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
+            RecordComputeCommandBuffer();
+        }
+
+        private VulkanBuffer CreateStorageBuffer()
+        {
+            var random = new Random();
+            const int numParticles = 256 * 1024;
+
+            var particles = new VertexParticle[numParticles];
+            for (int i = 0; i < numParticles; i++)
+            {
+                particles[i] = new VertexParticle
+                {
+                    Position = new Vector2(
+                        ((float)random.NextDouble() - 0.5f) * 2.0f,
+                        ((float)random.NextDouble() - 0.5f) * 2.0f),
+                };
+            }
+
+            return VulkanBuffer.Storage(Context, particles);
         }
 
         protected override void InitializeFrame()
         {
-            _depthStencil     = ToDispose(VulkanImage.DepthStencil(Device, Host.Width, Host.Height));
+            _depthStencil     = ToDispose(VulkanImage.DepthStencil(Context, Host.Width, Host.Height));
             _renderPass       = ToDispose(CreateRenderPass());
             _imageViews       = ToDispose(CreateImageViews());
             _framebuffers     = ToDispose(CreateFramebuffers());
@@ -51,12 +94,51 @@
 
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
         {
-            throw new System.NotImplementedException();
+            cmdBuffer.CmdBeginRenderPass(new RenderPassBeginInfo(
+                _framebuffers[imageIndex],
+                new Rect2D(0, 0, Host.Width, Host.Height),
+                new ClearColorValue(new ColorF4(0, 0, 0, 0)),
+                new ClearDepthStencilValue(1.0f, 0)));
+            cmdBuffer.CmdBindPipeline(PipelineBindPoint.Graphics, _graphicsPipeline);
+            cmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Graphics, _graphicsPipelineLayout, _graphicsDescriptorSet);
+            cmdBuffer.CmdBindVertexBuffer(_storageBuffer);
+            cmdBuffer.CmdDraw(_storageBuffer.Count);
+            cmdBuffer.CmdEndRenderPass();
+        }
+
+        private void RecordComputeCommandBuffer()
+        {
+            // Record particle movements.
+
+            var graphicsToComputeBarrier = new BufferMemoryBarrier(_storageBuffer,
+                Accesses.VertexAttributeRead, Accesses.ShaderWrite,
+                Context.GraphicsQueue.FamilyIndex, Context.ComputeQueue.FamilyIndex);
+
+            var computeToGraphicsBarrier = new BufferMemoryBarrier(_storageBuffer,
+                Accesses.ShaderWrite, Accesses.VertexAttributeRead,
+                Context.ComputeQueue.FamilyIndex, Context.GraphicsQueue.FamilyIndex);
+
+            _computeCmdBuffer.Begin();
+
+            // Add memory barrier to ensure that the (graphics) vertex shader has fetched attributes
+            // before compute starts to write to the buffer.
+            _computeCmdBuffer.CmdPipelineBarrier(PipelineStages.VertexShader, PipelineStages.ComputeShader,
+                bufferMemoryBarriers: new[] { graphicsToComputeBarrier });
+            _computeCmdBuffer.CmdBindPipeline(PipelineBindPoint.Compute, _computePipeline);
+            _computeCmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Compute, _computePipelineLayout, _computeDescriptorSet);
+            _computeCmdBuffer.CmdDispatch(_storageBuffer.Count / 256, 1, 1);
+            // Add memory barrier to ensure that compute shader has finished writing to the buffer.
+            // Without this the (rendering) vertex shader may display incomplete results (partial
+            // data from last frame).
+            _computeCmdBuffer.CmdPipelineBarrier(PipelineStages.ComputeShader, PipelineStages.VertexShader,
+                bufferMemoryBarriers: new[] { computeToGraphicsBarrier });
+
+            _computeCmdBuffer.End();
         }
 
         private DescriptorPool CreateDescriptorPool()
         {
-            return Device.Device.CreateDescriptorPool(new DescriptorPoolCreateInfo(3, new[]
+            return Context.Device.CreateDescriptorPool(new DescriptorPoolCreateInfo(3, new[]
             {
                 new DescriptorPoolSize(DescriptorType.UniformBuffer, 1),
                 new DescriptorPoolSize(DescriptorType.StorageBuffer, 1),
@@ -66,7 +148,7 @@
 
         private Sampler CreateSampler()
         {
-            return Device.Device.CreateSampler(new SamplerCreateInfo
+            return Context.Device.CreateSampler(new SamplerCreateInfo
             {
                 MagFilter = Filter.Linear,
                 MinFilter = Filter.Linear,
@@ -134,7 +216,7 @@
             };
 
             var createInfo = new RenderPassCreateInfo(subpasses, attachments, dependencies);
-            return Device.Device.CreateRenderPass(createInfo);
+            return Context.Device.CreateRenderPass(createInfo);
         }
 
         private ImageView[] CreateImageViews()
@@ -164,14 +246,14 @@
 
         private DescriptorSetLayout CreateGraphicsDescriptorSetLayout()
         {
-            return Device.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
+            return Context.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment),
                 new DescriptorSetLayoutBinding(1, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment)));
         }
 
         private PipelineLayout CreateGraphicsPipelineLayout()
         {
-            return Device.Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { _graphicsDescriptorSetLayout }));
+            return Context.Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { _graphicsDescriptorSetLayout }));
         }
 
         private Pipeline CreateGraphicsPipeline()
@@ -188,7 +270,8 @@
             {
                 PolygonMode = PolygonMode.Fill,
                 CullMode = CullModes.None,
-                FrontFace = FrontFace.CounterClockwise
+                FrontFace = FrontFace.CounterClockwise,
+                LineWidth = 1.0f
             };
             // Additive blending.
             var blendAttachmentState = new PipelineColorBlendAttachmentState
@@ -225,7 +308,7 @@
                 depthStencilState: depthStencilState,
                 colorBlendState: colorBlendState);
 
-            return Device.Device.CreateGraphicsPipeline(pipelineCreateInfo);
+            return Context.Device.CreateGraphicsPipeline(pipelineCreateInfo);
         }
 
         private DescriptorSet CreateGraphicsDescriptorSet()
@@ -242,14 +325,14 @@
 
         private DescriptorSetLayout CreateComputeDescriptorSetLayout()
         {
-            return Device.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
+            return Context.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
                 new DescriptorSetLayoutBinding(0, DescriptorType.StorageBuffer, 1, ShaderStages.Compute),
                 new DescriptorSetLayoutBinding(1, DescriptorType.UniformBuffer, 1, ShaderStages.Compute)));
         }
 
         private PipelineLayout CreateComputePipelineLayout()
         {
-            return Device.Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { _computeDescriptorSetLayout }));
+            return Context.Device.CreatePipelineLayout(new PipelineLayoutCreateInfo(new[] { _computeDescriptorSetLayout }));
         }
 
         private Pipeline CreateComputePipeline()
@@ -257,24 +340,22 @@
             var pipelineCreateInfo = new ComputePipelineCreateInfo(
                 new PipelineShaderStageCreateInfo(ShaderStages.Compute, Content.Load<ShaderModule>("shader.comp.spv"), "main"),
                 _computePipelineLayout);
-            return Device.Device.CreateComputePipeline(pipelineCreateInfo);
+            return Context.Device.CreateComputePipeline(pipelineCreateInfo);
         }
 
         private DescriptorSet CreateComputeDescriptorSet()
         {
-            DescriptorSet descriptorSet = _descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(2, _computeDescriptorSetLayout))[0];
+            DescriptorSet descriptorSet = _descriptorPool.AllocateSets(new DescriptorSetAllocateInfo(1, _computeDescriptorSetLayout))[0];
             _descriptorPool.UpdateSets(new[]
             {
-                // Particle position storage buffer.
-                new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.CombinedImageSampler,
-                    bufferInfo: new[] { new DescriptorBufferInfo() })
+                // Particles storage buffer.
+                new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.StorageBuffer,
+                    bufferInfo: new[] { new DescriptorBufferInfo(_storageBuffer) }),
+                // Simulation data (ie. time etc).
+                new WriteDescriptorSet(descriptorSet, 1, 0, 1, DescriptorType.UniformBuffer,
+                    bufferInfo: new[] { new DescriptorBufferInfo(_uniformBuffer) }),
             });
             return descriptorSet;
         }
-    }
-
-    public struct VertexParticle
-    {
-        
     }
 }

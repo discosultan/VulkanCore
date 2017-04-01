@@ -36,7 +36,7 @@ namespace VulkanCore.Samples.ClearScreen
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
             // Submit recorded commands to graphics queue for execution.
-            Device.GraphicsQueue.Submit(
+            Context.GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.Transfer,
                 CommandBuffers[imageIndex],
@@ -44,7 +44,7 @@ namespace VulkanCore.Samples.ClearScreen
             );
 
             // Present the color output to screen.
-            Device.PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
+            Context.PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
     }
 }

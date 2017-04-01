@@ -45,7 +45,7 @@ namespace VulkanCore.Samples.ColoredTriangle
             };
 
             var createInfo = new RenderPassCreateInfo(subpasses, attachments);
-            return Device.Device.CreateRenderPass(createInfo);
+            return Context.Device.CreateRenderPass(createInfo);
         }
 
         private ImageView[] CreateImageViews()
@@ -76,7 +76,7 @@ namespace VulkanCore.Samples.ColoredTriangle
         private PipelineLayout CreatePipelineLayout()
         {
             var layoutCreateInfo = new PipelineLayoutCreateInfo();
-            return Device.Device.CreatePipelineLayout(layoutCreateInfo);
+            return Context.Device.CreatePipelineLayout(layoutCreateInfo);
         }
 
         private Pipeline CreateGraphicsPipeline()
@@ -128,7 +128,7 @@ namespace VulkanCore.Samples.ColoredTriangle
                 viewportState: viewportStateCreateInfo,
                 multisampleState: multisampleStateCreateInfo,
                 colorBlendState: colorBlendStateCreateInfo);
-            return Device.Device.CreateGraphicsPipeline(pipelineCreateInfo);
+            return Context.Device.CreateGraphicsPipeline(pipelineCreateInfo);
         }
 
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)

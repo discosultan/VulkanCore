@@ -34,7 +34,7 @@ namespace VulkanCore.Samples
 
         public Instance Instance { get; private set; }
         protected DebugReportCallbackExt DebugReportCallback { get; private set; }
-        public VulkanContext Device { get; private set; }
+        public VulkanContext Context { get; private set; }
         public ContentManager Content { get; private set; }
 
         protected SurfaceKhr Surface { get; private set; }
@@ -49,19 +49,19 @@ namespace VulkanCore.Samples
         {
             Host = host;
 #if DEBUG
-            bool debug = true;
+            const bool debug = true;
 #else
-            bool debug = false;
+            const bool debug = false;
 #endif
             _initializingPermanent = true;
             // Calling ToDispose here registers the resource to be automatically disposed on exit.
             Instance                   = ToDispose(CreateInstance(debug));
             DebugReportCallback        = ToDispose(CreateDebugReportCallback(debug));
             Surface                    = ToDispose(CreateSurface());
-            Device                     = ToDispose(new VulkanContext(Instance, Surface, Host.Platform));
-            Content                    = ToDispose(new ContentManager(Host, Device, "Content"));
-            ImageAvailableSemaphore    = ToDispose(Device.Device.CreateSemaphore());
-            RenderingFinishedSemaphore = ToDispose(Device.Device.CreateSemaphore());
+            Context                    = ToDispose(new VulkanContext(Instance, Surface, Host.Platform));
+            Content                    = ToDispose(new ContentManager(Host, Context, "Content"));
+            ImageAvailableSemaphore    = ToDispose(Context.Device.CreateSemaphore());
+            RenderingFinishedSemaphore = ToDispose(Context.Device.CreateSemaphore());
 
             _initializingPermanent = false;
             // Calling ToDispose here registers the resource to be automatically disposed on events
@@ -70,7 +70,7 @@ namespace VulkanCore.Samples
             // Acquire underlying images of the freshly created swapchain.
             SwapchainImages = Swapchain.GetImages();
             // Create a command buffer for each swapchain image.
-            CommandBuffers = Device.CommandPool.AllocateBuffers(
+            CommandBuffers = Context.GraphicsCommandPool.AllocateBuffers(
                 new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
 
             // Allow concrete samples to initialize their resources.
@@ -97,7 +97,7 @@ namespace VulkanCore.Samples
 
         public void Resize()
         {
-            Device.Device.WaitIdle();
+            Context.Device.WaitIdle();
 
             // Dispose all frame dependent resources.
             while (_toDisposeFrame.Count > 0)
@@ -109,7 +109,7 @@ namespace VulkanCore.Samples
             InitializeFrame();
 
             // Reset all the command buffers allocated from the pool and re-record them.
-            Device.CommandPool.Reset();
+            Context.GraphicsCommandPool.Reset();
             RecordCommandBuffers();
         }
 
@@ -127,7 +127,7 @@ namespace VulkanCore.Samples
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
             // Submit recorded commands to graphics queue for execution.
-            Device.GraphicsQueue.Submit(
+            Context.GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.ColorAttachmentOutput,
                 CommandBuffers[imageIndex],
@@ -135,12 +135,12 @@ namespace VulkanCore.Samples
             );
 
             // Present the color output to screen.
-            Device.PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
+            Context.PresentQueue.PresentKhr(RenderingFinishedSemaphore, Swapchain, imageIndex);
         }
 
         public virtual void Dispose()
         {
-            Device.Device.WaitIdle();
+            Context.Device.WaitIdle();
             while (_toDisposeFrame.Count > 0)
                 _toDisposeFrame.Pop().Dispose();
             while (_toDisposePermanent.Count > 0)
@@ -220,9 +220,9 @@ namespace VulkanCore.Samples
 
         private SwapchainKhr CreateSwapchain()
         {
-            SurfaceCapabilitiesKhr capabilities = Device.PhysicalDevice.GetSurfaceCapabilitiesKhr(Surface);
-            SurfaceFormatKhr[] formats = Device.PhysicalDevice.GetSurfaceFormatsKhr(Surface);
-            PresentModeKhr[] presentModes = Device.PhysicalDevice.GetSurfacePresentModesKhr(Surface);
+            SurfaceCapabilitiesKhr capabilities = Context.PhysicalDevice.GetSurfaceCapabilitiesKhr(Surface);
+            SurfaceFormatKhr[] formats = Context.PhysicalDevice.GetSurfaceFormatsKhr(Surface);
+            PresentModeKhr[] presentModes = Context.PhysicalDevice.GetSurfacePresentModesKhr(Surface);
             Format format = formats.Length == 1 && formats[0].Format == Format.Undefined
                 ? Format.B8G8R8A8UNorm
                 : formats[0].Format;
@@ -232,7 +232,7 @@ namespace VulkanCore.Samples
                 presentModes.Contains(PresentModeKhr.Fifo) ? PresentModeKhr.Fifo :
                 PresentModeKhr.Immediate;
 
-            return Device.Device.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
+            return Context.Device.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
                 Surface,
                 format,
                 capabilities.CurrentExtent,
@@ -248,13 +248,13 @@ namespace VulkanCore.Samples
                 CommandBuffer cmdBuffer = CommandBuffers[i];
                 cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.SimultaneousUse));
 
-                if (Device.PresentQueue != Device.GraphicsQueue)
+                if (Context.PresentQueue != Context.GraphicsQueue)
                 {
                     var barrierFromPresentToDraw = new ImageMemoryBarrier(
                         SwapchainImages[i], subresourceRange,
                         Accesses.MemoryRead, Accesses.ColorAttachmentWrite,
                         ImageLayout.Undefined, ImageLayout.PresentSrcKhr,
-                        Device.PresentQueue.FamilyIndex, Device.GraphicsQueue.FamilyIndex);
+                        Context.PresentQueue.FamilyIndex, Context.GraphicsQueue.FamilyIndex);
 
                     cmdBuffer.CmdPipelineBarrier(
                         PipelineStages.ColorAttachmentOutput,
@@ -264,13 +264,13 @@ namespace VulkanCore.Samples
 
                 RecordCommandBuffer(cmdBuffer, i);
 
-                if (Device.PresentQueue != Device.GraphicsQueue)
+                if (Context.PresentQueue != Context.GraphicsQueue)
                 {
                     var barrierFromDrawToPresent = new ImageMemoryBarrier(
                         SwapchainImages[i], subresourceRange,
                         Accesses.ColorAttachmentWrite, Accesses.MemoryRead,
                         ImageLayout.PresentSrcKhr, ImageLayout.PresentSrcKhr,
-                        Device.GraphicsQueue.FamilyIndex, Device.PresentQueue.FamilyIndex);
+                        Context.GraphicsQueue.FamilyIndex, Context.PresentQueue.FamilyIndex);
 
                     cmdBuffer.CmdPipelineBarrier(
                         PipelineStages.ColorAttachmentOutput,

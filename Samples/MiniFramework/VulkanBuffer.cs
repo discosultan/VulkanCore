@@ -23,7 +23,7 @@ namespace VulkanCore.Samples
 
         public static implicit operator Buffer(VulkanBuffer value) => value.Buffer;
 
-        public static VulkanBuffer Uniform<T>(VulkanContext ctx, int count) where T : struct
+        public static VulkanBuffer DynamicUniform<T>(VulkanContext ctx, int count) where T : struct
         {
             long size = Interop.SizeOf<T>() * count;
 
@@ -45,30 +45,30 @@ namespace VulkanCore.Samples
             long size = indices.Length * sizeof(int);
 
             // Create staging buffer.
-            Buffer indexStagingBuffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.TransferSrc));
-            MemoryRequirements indexStagingReq = indexStagingBuffer.GetMemoryRequirements();
-            int indexStagingMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
-                indexStagingReq.MemoryTypeBits,
+            Buffer stagingBuffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.TransferSrc));
+            MemoryRequirements stagingReq = stagingBuffer.GetMemoryRequirements();
+            int stagingMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
+                stagingReq.MemoryTypeBits,
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
-            DeviceMemory indexStagingMemory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(indexStagingReq.Size, indexStagingMemoryTypeIndex));
-            IntPtr indexPtr = indexStagingMemory.Map(0, indexStagingReq.Size);
+            DeviceMemory stagingMemory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(stagingReq.Size, stagingMemoryTypeIndex));
+            IntPtr indexPtr = stagingMemory.Map(0, stagingReq.Size);
             Interop.Write(indexPtr, indices);
-            indexStagingMemory.Unmap();
-            indexStagingBuffer.BindMemory(indexStagingMemory);
+            stagingMemory.Unmap();
+            stagingBuffer.BindMemory(stagingMemory);
 
             // Create a device local buffer.
             Buffer buffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.IndexBuffer | BufferUsages.TransferDst));
-            MemoryRequirements indexReq = buffer.GetMemoryRequirements();
-            int indexMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
-                indexReq.MemoryTypeBits,
+            MemoryRequirements req = buffer.GetMemoryRequirements();
+            int memoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
+                req.MemoryTypeBits,
                 MemoryProperties.DeviceLocal);
-            DeviceMemory memory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(indexReq.Size, indexMemoryTypeIndex));
+            DeviceMemory memory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(req.Size, memoryTypeIndex));
             buffer.BindMemory(memory);
 
             // Copy the data from staging buffer to device local buffer.
-            CommandBuffer cmdBuffer = ctx.CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
+            CommandBuffer cmdBuffer = ctx.GraphicsCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
             cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.OneTimeSubmit));
-            cmdBuffer.CmdCopyBuffer(indexStagingBuffer, buffer, new BufferCopy(size));
+            cmdBuffer.CmdCopyBuffer(stagingBuffer, buffer, new BufferCopy(size));
             cmdBuffer.End();
 
             // Submit.
@@ -79,41 +79,41 @@ namespace VulkanCore.Samples
             // Cleanup.
             fence.Dispose();
             cmdBuffer.Dispose();
-            indexStagingBuffer.Dispose();
-            indexStagingMemory.Dispose();
+            stagingBuffer.Dispose();
+            stagingMemory.Dispose();
 
             return new VulkanBuffer(buffer, memory, indices.Length);
         }
 
         public static VulkanBuffer Vertex<T>(VulkanContext ctx, T[] vertices) where T : struct
         {
-            int vertexBufferSize = vertices.Length * Interop.SizeOf<T>();
+            long size = vertices.Length * Interop.SizeOf<T>();
 
-            // Vertex buffer.
-            Buffer vertexStagingBuffer = ctx.Device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.TransferSrc));
-            MemoryRequirements vertexStagingReq = vertexStagingBuffer.GetMemoryRequirements();
-            int vertexStagingMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
-                vertexStagingReq.MemoryTypeBits,
+            // Create a staging buffer that is writable by host.
+            Buffer stagingBuffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.TransferSrc));
+            MemoryRequirements stagingReq = stagingBuffer.GetMemoryRequirements();
+            int stagingMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
+                stagingReq.MemoryTypeBits,
                 MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
-            DeviceMemory vertexStagingMemory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(vertexStagingReq.Size, vertexStagingMemoryTypeIndex));
-            IntPtr vertexPtr = vertexStagingMemory.Map(0, vertexStagingReq.Size);
+            DeviceMemory stagingMemory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(stagingReq.Size, stagingMemoryTypeIndex));
+            IntPtr vertexPtr = stagingMemory.Map(0, stagingReq.Size);
             Interop.Write(vertexPtr, vertices);
-            vertexStagingMemory.Unmap();
-            vertexStagingBuffer.BindMemory(vertexStagingMemory);
+            stagingMemory.Unmap();
+            stagingBuffer.BindMemory(stagingMemory);
 
             // Create a device local buffer where the vertex data will be copied and which will be used for rendering.
-            Buffer buffer = ctx.Device.CreateBuffer(new BufferCreateInfo(vertexBufferSize, BufferUsages.VertexBuffer | BufferUsages.TransferDst));
-            MemoryRequirements vertexReq = buffer.GetMemoryRequirements();
-            int vertexMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
-                vertexReq.MemoryTypeBits,
+            Buffer buffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.VertexBuffer | BufferUsages.TransferDst));
+            MemoryRequirements req = buffer.GetMemoryRequirements();
+            int memoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
+                req.MemoryTypeBits,
                 MemoryProperties.DeviceLocal);
-            DeviceMemory memory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(vertexReq.Size, vertexMemoryTypeIndex));
+            DeviceMemory memory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(req.Size, memoryTypeIndex));
             buffer.BindMemory(memory);
 
             // Copy the data from staging buffers to device local buffers.
-            CommandBuffer cmdBuffer = ctx.CommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
+            CommandBuffer cmdBuffer = ctx.GraphicsCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
             cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.OneTimeSubmit));
-            cmdBuffer.CmdCopyBuffer(vertexStagingBuffer, buffer, new BufferCopy(vertexBufferSize));
+            cmdBuffer.CmdCopyBuffer(stagingBuffer, buffer, new BufferCopy(size));
             cmdBuffer.End();
 
             // Submit.
@@ -124,10 +124,55 @@ namespace VulkanCore.Samples
             // Cleanup.
             fence.Dispose();
             cmdBuffer.Dispose();
-            vertexStagingBuffer.Dispose();
-            vertexStagingMemory.Dispose();
+            stagingBuffer.Dispose();
+            stagingMemory.Dispose();
 
             return new VulkanBuffer(buffer, memory, vertices.Length);
+        }
+
+        public static VulkanBuffer Storage<T>(VulkanContext ctx, T[] data) where T : struct
+        {
+            long size = data.Length * Interop.SizeOf<T>();
+
+            // Create a staging buffer that is writable by host.
+            Buffer stagingBuffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.TransferSrc));
+            MemoryRequirements stagingReq = stagingBuffer.GetMemoryRequirements();
+            int stagingMemoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
+                stagingReq.MemoryTypeBits,
+                MemoryProperties.HostVisible | MemoryProperties.HostCoherent);
+            DeviceMemory stagingMemory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(stagingReq.Size, stagingMemoryTypeIndex));
+            IntPtr vertexPtr = stagingMemory.Map(0, stagingReq.Size);
+            Interop.Write(vertexPtr, data);
+            stagingMemory.Unmap();
+            stagingBuffer.BindMemory(stagingMemory);
+
+            // Create a device local buffer where the data will be copied.
+            Buffer buffer = ctx.Device.CreateBuffer(new BufferCreateInfo(size, BufferUsages.VertexBuffer | BufferUsages.StorageBuffer | BufferUsages.TransferDst));
+            MemoryRequirements req = buffer.GetMemoryRequirements();
+            int memoryTypeIndex = ctx.MemoryProperties.MemoryTypes.IndexOf(
+                req.MemoryTypeBits,
+                MemoryProperties.DeviceLocal);
+            DeviceMemory memory = ctx.Device.AllocateMemory(new MemoryAllocateInfo(req.Size, memoryTypeIndex));
+            buffer.BindMemory(memory);
+
+            // Copy the data from staging buffers to device local buffers.
+            CommandBuffer cmdBuffer = ctx.GraphicsCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
+            cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.OneTimeSubmit));
+            cmdBuffer.CmdCopyBuffer(stagingBuffer, buffer, new BufferCopy(size));
+            cmdBuffer.End();
+
+            // Submit.
+            Fence fence = ctx.Device.CreateFence();
+            ctx.GraphicsQueue.Submit(new SubmitInfo(commandBuffers: new[] { cmdBuffer }), fence);
+            fence.Wait();
+
+            // Cleanup.
+            fence.Dispose();
+            cmdBuffer.Dispose();
+            stagingBuffer.Dispose();
+            stagingMemory.Dispose();
+
+            return new VulkanBuffer(buffer, memory, data.Length);
         }
     }
 }
