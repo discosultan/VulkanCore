@@ -47,6 +47,11 @@ Renders a colored triangle defined in a shader.
 Renders a textured cube.
 <br><br>
 
+## [04-ComputeParticles](Samples/Shared/04-ComputeParticles)
+<img src="Doc/ComputeParticles.jpg" alt="ComputeParticles" height="96px" align="right">
+Simulates 2D particles using compute shader.
+<br><br>
+
 ## Tests <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Ubuntu64.png">
 
 In order to provide a certain level of *functional correctness*, the project aims to achieve *full statement coverage* for the *core API*. Note that it's difficult to test some of the vendor specific extensions due to the requirements for specialized hardware/drivers - therefore, covering them at this point is not planned. Tests are based on .NET Core and have been tested both on Ubuntu and Windows platforms.
