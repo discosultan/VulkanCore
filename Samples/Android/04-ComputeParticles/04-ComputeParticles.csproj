@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FBAF65E5-F7FD-4565-BBFB-1C3680FBCF15}</ProjectGuid>
+    <ProjectGuid>{DBFAA3F2-7373-4B91-98F2-921760A975A8}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VulkanCore.Samples.TexturedCube</RootNamespace>
-    <AssemblyName>TexturedCube</AssemblyName>
+    <RootNamespace>VulkanCore.Samples.ComputeParticles</RootNamespace>
+    <AssemblyName>ComputeParticles</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
@@ -44,6 +44,7 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -52,10 +53,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Shared\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\03-TexturedCube\TexturedCubeApp.cs">
-      <Link>TexturedCubeApp.cs</Link>
+    <Compile Include="..\..\Shared\04-ComputeParticles\ComputeParticlesApp.cs">
+      <Link>ComputeParticlesApp.cs</Link>
     </Compile>
     <Compile Include="..\..\Shared\VulkanSurfaceView.cs">
       <Link>VulkanSurfaceView.cs</Link>
@@ -65,23 +68,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\IndustryForgedDark512.ktx">
-      <Link>Assets\Content\IndustryForgedDark512.ktx</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\CompileShaders.bat">
+    <None Include="..\..\Shared\04-ComputeParticles\Content\CompileShaders.bat">
       <Link>Assets\Content\CompileShaders.bat</Link>
+    </None>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.comp">
+      <Link>Assets\Content\Shader.comp</Link>
+    </None>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\shader.comp.spv">
+      <Link>Assets\Content\shader.comp.spv</Link>
     </AndroidAsset>
-    <None Include="..\..\Shared\03-TexturedCube\Content\Shader.frag">
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.frag">
       <Link>Assets\Content\Shader.frag</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\Shader.frag.spv">
-      <Link>Assets\Content\Shader.frag.spv</Link>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\shader.frag.spv">
+      <Link>Assets\Content\shader.frag.spv</Link>
     </AndroidAsset>
-    <None Include="..\..\Shared\03-TexturedCube\Content\Shader.vert">
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.vert">
       <Link>Assets\Content\Shader.vert</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\03-TexturedCube\Content\Shader.vert.spv">
-      <Link>Assets\Content\Shader.vert.spv</Link>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\shader.vert.spv">
+      <Link>Assets\Content\shader.vert.spv</Link>
     </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -114,6 +120,11 @@
     <PackageReference Include="System.ValueTuple">
       <Version>4.3.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\ParticleDiffuse.ktx">
+      <Link>Assets\Content\ParticleDiffuse.ktx</Link>
+    </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Shared\System.Numerics.Vectors.dll">

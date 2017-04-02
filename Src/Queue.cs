@@ -95,17 +95,25 @@ namespace VulkanCore
             long waitSemaphoreHandle = waitSemaphore;
             IntPtr commandBufferHandle = commandBuffer;
             long signalSemaphoreHandle = signalSemaphore;
-            var nativeSubmit = new SubmitInfo.Native
+
+            var nativeSubmit = new SubmitInfo.Native { Type = StructureType.SubmitInfo };
+            if (waitSemaphoreHandle != 0)
             {
-                Type = StructureType.SubmitInfo,
-                WaitSemaphoreCount = waitSemaphoreHandle == 0 ? 0 : 1,
-                WaitSemaphores = new IntPtr(&waitSemaphoreHandle),
-                WaitDstStageMask = new IntPtr(&waitDstStageMask),
-                CommandBufferCount = waitSemaphoreHandle == 0 ? 0 : 1,
-                CommandBuffers = new IntPtr(&commandBufferHandle),
-                SignalSemaphoreCount = signalSemaphoreHandle == 0 ? 0 : 1,
-                SignalSemaphores = new IntPtr(&signalSemaphoreHandle)
-            };
+                nativeSubmit.WaitSemaphoreCount = 1;
+                nativeSubmit.WaitSemaphores = new IntPtr(&waitSemaphoreHandle);
+                nativeSubmit.WaitDstStageMask = new IntPtr(&waitDstStageMask);
+            }
+            if (commandBufferHandle != IntPtr.Zero)
+            {
+                nativeSubmit.CommandBufferCount = 1;
+                nativeSubmit.CommandBuffers = new IntPtr(&commandBufferHandle);
+            }
+            if (signalSemaphoreHandle != 0)
+            {
+                nativeSubmit.SignalSemaphoreCount = 1;
+                nativeSubmit.SignalSemaphores = new IntPtr(&signalSemaphoreHandle);
+            }
+            
             Result result = vkQueueSubmit(this, 1, &nativeSubmit, fence);
             VulkanException.ThrowForInvalidResult(result);
         }

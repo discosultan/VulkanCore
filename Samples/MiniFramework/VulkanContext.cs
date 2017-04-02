@@ -86,9 +86,7 @@ namespace VulkanCore.Samples
 
             // Create command pool(s).
             GraphicsCommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(graphicsQueueFamilyIndex));
-            ComputeCommandPool = computeQueueFamilyIndex == graphicsQueueFamilyIndex
-                ? GraphicsCommandPool
-                : Device.CreateCommandPool(new CommandPoolCreateInfo(computeQueueFamilyIndex));
+            ComputeCommandPool = Device.CreateCommandPool(new CommandPoolCreateInfo(computeQueueFamilyIndex));
         }
 
         public PhysicalDevice PhysicalDevice { get; }

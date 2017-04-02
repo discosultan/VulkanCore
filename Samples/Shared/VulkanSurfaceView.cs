@@ -18,13 +18,11 @@ namespace VulkanCore.Samples
         // Game timer used by samples for elapsed/total duration.
         private readonly Timer _gameTimer = new Timer();
 
-        private readonly VulkanApp _app;
+        private VulkanApp _app;
 
         public VulkanSurfaceView(Context ctx, VulkanApp app) : base(ctx)
         {
-            _app = app;
-            Holder.AddCallback(this);
-            SetWillNotDraw(false);
+            Initialize(app);
         }
 
         public IntPtr WindowHandle { get; private set; }
@@ -32,6 +30,12 @@ namespace VulkanCore.Samples
         public Platform Platform => Platform.Android;
 
         public Stream Open(string path) => Context.Assets.Open(path);
+
+        private void Initialize(VulkanApp app)
+        {
+            _app = app;
+            Holder.AddCallback(this);
+        }
 
         private void Tick()
         {
@@ -47,7 +51,6 @@ namespace VulkanCore.Samples
 
             _appPaused = false;
             _app.Initialize(this);
-            _app.Resize();
 
             _gameTimer.Start();
             _tickTimer = new System.Threading.Timer(state =>

@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="_04_ComputeParticles._04_ComputeParticles" android:versionCode="1" android:versionName="1.0">
+	<uses-sdk android:minSdkVersion="24" />
+	<application android:label="_04_ComputeParticles"></application>
+</manifest>

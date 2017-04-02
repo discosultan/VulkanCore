@@ -9,12 +9,15 @@ namespace VulkanCore.Samples.ComputeParticles
     {
         public Vector2 Position;
         public Vector2 Velocity;
+        public Vector4 Color;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct UniformBufferObject
     {
-        
+        public Vector2 DstPosition;
+        public float DeltaTime;
+        public float Padding;
     }
 
     public class ComputeParticlesApp : VulkanApp
@@ -41,6 +44,7 @@ namespace VulkanCore.Samples.ComputeParticles
         private Pipeline _computePipeline;
         private DescriptorSet _computeDescriptorSet;
         private CommandBuffer _computeCmdBuffer;
+        private Fence _computeFence;
 
         protected override void InitializePermanent()
         {
@@ -58,26 +62,7 @@ namespace VulkanCore.Samples.ComputeParticles
             _computePipelineLayout       = ToDispose(CreateComputePipelineLayout());
             _computeDescriptorSet        = CreateComputeDescriptorSet();
             _computeCmdBuffer            = Context.ComputeCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
-            RecordComputeCommandBuffer();
-        }
-
-        private VulkanBuffer CreateStorageBuffer()
-        {
-            var random = new Random();
-            const int numParticles = 256 * 1024;
-
-            var particles = new VertexParticle[numParticles];
-            for (int i = 0; i < numParticles; i++)
-            {
-                particles[i] = new VertexParticle
-                {
-                    Position = new Vector2(
-                        ((float)random.NextDouble() - 0.5f) * 2.0f,
-                        ((float)random.NextDouble() - 0.5f) * 2.0f),
-                };
-            }
-
-            return VulkanBuffer.Storage(Context, particles);
+            _computeFence                = ToDispose(Context.Device.CreateFence());
         }
 
         protected override void InitializeFrame()
@@ -90,6 +75,36 @@ namespace VulkanCore.Samples.ComputeParticles
             _graphicsPipeline = ToDispose(CreateGraphicsPipeline());
 
             _computePipeline  = ToDispose(CreateComputePipeline());
+            RecordComputeCommandBuffer();
+        }
+
+        protected override void Update(Timer timer)
+        {
+            const float radius = 0.5f;
+            const float rotationSpeed = 0.5f;
+
+            var global = new UniformBufferObject
+            {
+                DeltaTime = timer.DeltaTime,
+                DstPosition = new Vector2(
+                    radius * (float)Math.Cos(timer.TotalTime * rotationSpeed),
+                    radius * (float)Math.Sin(timer.TotalTime * rotationSpeed))
+            };
+
+            IntPtr ptr = _uniformBuffer.Memory.Map(0, Constant.WholeSize);
+            Interop.Write(ptr, ref global);
+            _uniformBuffer.Memory.Unmap();
+        }
+
+        protected override void Draw(Timer timer)
+        {
+            // Submit compute commands.
+            Context.ComputeQueue.Submit(new SubmitInfo(commandBuffers: new[] { _computeCmdBuffer }), _computeFence);
+            _computeFence.Wait();
+            _computeFence.Reset();
+
+            // Submit graphics commands.
+            base.Draw(timer);
         }
 
         protected override void RecordCommandBuffer(CommandBuffer cmdBuffer, int imageIndex)
@@ -136,13 +151,40 @@ namespace VulkanCore.Samples.ComputeParticles
             _computeCmdBuffer.End();
         }
 
+        private VulkanBuffer CreateStorageBuffer()
+        {
+            var random = new Random();
+            
+            int numParticles = Host.Platform == Platform.Android
+                ? 256 * 1024
+                : 256 * 2048; // ~500k particles.
+
+            var particles = new VertexParticle[numParticles];
+            for (int i = 0; i < numParticles; i++)
+            {
+                particles[i] = new VertexParticle
+                {
+                    Position = new Vector2(
+                        ((float)random.NextDouble() - 0.5f) * 2.0f,
+                        ((float)random.NextDouble() - 0.5f) * 2.0f),
+                    Color = new Vector4(
+                        0.5f + (float)random.NextDouble() / 2.0f,
+                        (float)random.NextDouble() / 2.0f,
+                        (float)random.NextDouble() / 2.0f,
+                        1.0f)
+                };
+            }
+
+            return VulkanBuffer.Storage(Context, particles);
+        }
+
         private DescriptorPool CreateDescriptorPool()
         {
             return Context.Device.CreateDescriptorPool(new DescriptorPoolCreateInfo(3, new[]
             {
                 new DescriptorPoolSize(DescriptorType.UniformBuffer, 1),
                 new DescriptorPoolSize(DescriptorType.StorageBuffer, 1),
-                new DescriptorPoolSize(DescriptorType.CombinedImageSampler, 2)
+                new DescriptorPoolSize(DescriptorType.CombinedImageSampler, 1)
             }));
         }
 
@@ -247,8 +289,7 @@ namespace VulkanCore.Samples.ComputeParticles
         private DescriptorSetLayout CreateGraphicsDescriptorSetLayout()
         {
             return Context.Device.CreateDescriptorSetLayout(new DescriptorSetLayoutCreateInfo(
-                new DescriptorSetLayoutBinding(0, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment),
-                new DescriptorSetLayoutBinding(1, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment)));
+                new DescriptorSetLayoutBinding(0, DescriptorType.CombinedImageSampler, 1, ShaderStages.Fragment)));
         }
 
         private PipelineLayout CreateGraphicsPipelineLayout()
@@ -264,7 +305,8 @@ namespace VulkanCore.Samples.ComputeParticles
                 new[]
                 {
                     new VertexInputAttributeDescription(0, 0, Format.R32G32SFloat, 0),
-                    new VertexInputAttributeDescription(1, 0, Format.R32G32B32A32SFloat, 8)
+                    new VertexInputAttributeDescription(1, 0, Format.R32G32SFloat, 8),
+                    new VertexInputAttributeDescription(2, 0, Format.R32G32B32SFloat, 16)
                 });
             var rasterizationState = new PipelineRasterizationStateCreateInfo
             {
@@ -351,7 +393,7 @@ namespace VulkanCore.Samples.ComputeParticles
                 // Particles storage buffer.
                 new WriteDescriptorSet(descriptorSet, 0, 0, 1, DescriptorType.StorageBuffer,
                     bufferInfo: new[] { new DescriptorBufferInfo(_storageBuffer) }),
-                // Simulation data (ie. time etc).
+                // Global simulation data (ie. delta time, etc).
                 new WriteDescriptorSet(descriptorSet, 1, 0, 1, DescriptorType.UniformBuffer,
                     bufferInfo: new[] { new DescriptorBufferInfo(_uniformBuffer) }),
             });

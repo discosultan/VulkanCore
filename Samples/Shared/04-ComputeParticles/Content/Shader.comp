@@ -2,6 +2,46 @@
 
 layout (local_size_x = 256) in;
 
+struct VertexParticle
+{
+    vec2 Position;
+    vec2 Velocity;
+    vec4 Color;
+};
+
+layout(std140, binding = 0) buffer layout_Particles 
+{
+    VertexParticle Particles[];
+};
+
+layout (binding = 1) uniform layout_Global
+{
+    vec2 DstPosition;
+    float DeltaTime;
+    float Padding;
+};
+
 void main() 
 {
+    uint index = gl_GlobalInvocationID.x;
+    vec2 position = Particles[index].Position;
+    vec2 velocity = Particles[index].Velocity;
+    vec4 color = Particles[index].Color;
+
+    // Adjust velocity towards destination.
+    vec2 deltaPosition = DstPosition - position;
+    float distanceSquared = dot(deltaPosition, deltaPosition);
+    velocity += deltaPosition * (1.0 / (distanceSquared)) * -0.0005;
+
+    // Move position by velocity.
+    position += velocity * DeltaTime;
+
+    // Collide from window edges.
+    if (position.x < -1 || position.x > 1 || position.y < -1 || position.y > 1)
+    {
+        velocity = -velocity;
+        position = clamp(position, vec2(-1, -1), vec2(1, 1));
+    }
+
+    Particles[index] = VertexParticle(position, velocity, color);
 }

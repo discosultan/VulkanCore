@@ -103,13 +103,16 @@ namespace VulkanCore.Samples
             while (_toDisposeFrame.Count > 0)
                 _toDisposeFrame.Pop().Dispose();
 
+            // Reset all the command buffers allocated from the pools.
+            Context.GraphicsCommandPool.Reset();
+            Context.ComputeCommandPool.Reset();
+
             // Reinitialize frame dependent resources.
             Swapchain = ToDispose(CreateSwapchain());
             SwapchainImages = Swapchain.GetImages();
             InitializeFrame();
 
-            // Reset all the command buffers allocated from the pool and re-record them.
-            Context.GraphicsCommandPool.Reset();
+            // Re-record command buffers.
             RecordCommandBuffers();
         }
 
