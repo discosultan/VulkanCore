@@ -32,25 +32,36 @@ Cons:
 
 Vulkan-capable graphics hardware and drivers are required to run the samples. Win32 samples are based on WinForms (.NET Framework) and Android ones run on Xamarin (Mono).
 
-## [01-ClearScreen](Samples/Shared/01-ClearScreen)
-<img src="Doc/ClearScreen.jpg" alt="ClearScreen" height="96px" align="right">
-Sets up a window and clears it to a solid color.
-<br><br>
-
-## [02-ColoredTriangle](Samples/Shared/02-ColoredTriangle)
-<img src="Doc/ColoredTriangle.jpg" alt="ColoredTriangle" height="96px" align="right">
-Renders a colored triangle defined in a shader.
-<br><br>
-
-## [03-TexturedCube](Samples/Shared/03-TexturedCube)
-<img src="Doc/TexturedCube.jpg" alt="TexturedCube" height="96px" align="right">
-Renders a textured cube.
-<br><br>
-
-## [04-ComputeParticles](Samples/Shared/04-ComputeParticles)
-<img src="Doc/ComputeParticles.jpg" alt="ComputeParticles" height="96px" align="right">
-Simulates 2D particles using compute shader.
-<br><br>
+<table>
+  <tr>
+    <td><img src="Doc/ClearScreen.jpg" alt="ClearScreen"></td>
+    <td>
+      <a href="Samples/Shared/01-ClearScreen">ClearScreen</a>
+      <p>Sets up a window and clears it to a solid color</p>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="Doc/ColoredTriangle.jpg" alt="ColoredTriangle"></td>
+    <td>
+      <a href="Samples/Shared/02-ColoredTriangle">ColoredTriangle</a>
+      <p>Renders a colored triangle defined in a vertex shader</p>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="Doc/TexturedCube.jpg" alt="TexturedCube"></td>
+    <td>
+      <a href="Samples/Shared/03-TexturedCube">TexturedCube</a>
+      <p>Creates a rotating textured cube mesh</p>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="Doc/ComputeParticles.jpg" alt="ComputeParticles"></td>
+    <td>
+      <a href="Samples/Shared/04-ComputeParticles">ComputeParticles</a>
+      <p>Simulates 2D particles using a compute shader</p>
+    </td>
+  </tr>
+</table>
 
 ## Tests <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Ubuntu64.png">
 
