@@ -12,7 +12,7 @@ Vulkan 1.0 bindings for .NET Standard 1.3
 
 ## Introduction
 
-VulkanCore is a thin cross-platform object-oriented wrapper around the Vulkan C API.
+VulkanCore is a thin cross-platform object-oriented wrapper around the Vulkan C API. It supports .NET Core, .NET Framework and Mono.
 
 **Why yet another set of bindings?** While most of the alternatives use a generator-based approach, these bindings do not. This means:
 
@@ -30,7 +30,7 @@ Cons:
 
 ## Samples <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Android64.png">
 
-Vulkan-capable graphics hardware and drivers are required to run the samples. Win32 samples are based on WinForms (.NET Framework) and Android ones run on Xamarin (Mono).
+Vulkan-capable graphics hardware and drivers are required to run the samples. Win32 samples are based on WinForms (.NET Framework) and Android ones on Xamarin (Mono).
 
 <table>
   <tr>
@@ -65,7 +65,9 @@ Vulkan-capable graphics hardware and drivers are required to run the samples. Wi
 
 ## Tests <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Ubuntu64.png">
 
-In order to provide a certain level of *functional correctness*, the project aims to achieve *full statement coverage* for the *core API*. Note that it's difficult to test some of the vendor specific extensions due to the requirements for specialized hardware/drivers - therefore, covering them at this point is not planned. Tests are based on .NET Core and have been tested both on Ubuntu and Windows platforms.
+In order to provide a certain level of *functional correctness*, the project aims to achieve *full statement coverage* for the *core API*. Tests are built using [xUnit](https://xunit.github.io/) and .NET Core and have been tested on Ubuntu and Windows platforms.
+
+Note that it's difficult to test vendor specific extensions due to requirements for specialized hardware/drivers - therefore, covering them at this point is not planned.
 
 ## Related Work
 
