@@ -159,14 +159,14 @@ namespace VulkanCore
         /// </summary>
         public PipelineInputAssemblyStateCreateInfo InputAssemblyState;
         /// <summary>
-        /// An instance of the <see cref="PipelineTessellationStateCreateInfo"/> structure, or
-        /// <c>null</c> if the pipeline does not include a tessellation control shader stage and
+        /// An instance of the <see cref="PipelineTessellationStateCreateInfo"/> structure, and
+        /// is ignored if the pipeline does not include a tessellation control shader stage and
         /// tessellation evaluation shader stage.
         /// </summary>
         public PipelineTessellationStateCreateInfo? TessellationState;
         /// <summary>
-        /// An instance of the <see cref="PipelineViewportStateCreateInfo"/> structure, or
-        /// <c>null</c> if the pipeline has rasterization disabled.
+        /// An instance of the <see cref="PipelineViewportStateCreateInfo"/> structure, and
+        /// is ignored if the pipeline has rasterization disabled.
         /// </summary>
         public PipelineViewportStateCreateInfo? ViewportState;
         /// <summary>
@@ -174,19 +174,19 @@ namespace VulkanCore
         /// </summary>
         public PipelineRasterizationStateCreateInfo RasterizationState;
         /// <summary>
-        /// An instance of the <see cref="PipelineMultisampleStateCreateInfo"/>, or <c>null</c> if
+        /// An instance of the <see cref="PipelineMultisampleStateCreateInfo"/>, and is ignored if
         /// the pipeline has rasterization disabled.
         /// </summary>
         public PipelineMultisampleStateCreateInfo? MultisampleState;
         /// <summary>
-        /// An instance of the <see cref="PipelineDepthStencilStateCreateInfo"/> structure, or
-        /// <c>null</c> if the pipeline has rasterization disabled or if the subpass of the render
+        /// An instance of the <see cref="PipelineDepthStencilStateCreateInfo"/> structure, and
+        /// is ignored if the pipeline has rasterization disabled or if the subpass of the render
         /// pass the pipeline is created against does not use a depth/stencil attachment.
         /// </summary>
         public PipelineDepthStencilStateCreateInfo? DepthStencilState;
         /// <summary>
-        /// An instance of the <see cref="PipelineColorBlendStateCreateInfo"/> structure, or
-        /// <c>null</c> if the pipeline has rasterization disabled or if the subpass of the render
+        /// An instance of the <see cref="PipelineColorBlendStateCreateInfo"/> structure, and
+        /// is ignored if the pipeline has rasterization disabled or if the subpass of the render
         /// pass the pipeline is created against does not use any color attachments.
         /// </summary>
         public PipelineColorBlendStateCreateInfo? ColorBlendState;

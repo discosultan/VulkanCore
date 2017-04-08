@@ -355,16 +355,36 @@ namespace VulkanCore
         /// No flags.
         /// </summary>
         None = 0,
+        /// <summary>
+        /// Indicates that shaders compiled for this subpass write the attributes for all views in a
+        /// single invocation of each vertex processing stage. All pipelines compiled against a
+        /// subpass that includes this bit must write per-view attributes to the *PerViewNV[] shader
+        /// outputs, in addition to the non-per-view (e.g. <c>Position</c>) outputs.
+        /// </summary>
         PerViewAttributesNvx = 1 << 0,
+        /// <summary>
+        /// Indicates that shaders compiled for this subpass use per-view positions which only differ
+        /// in value in the x component. Per-view viewport mask can also be used.
+        /// </summary>
         PerViewPositionXOnlyNvx = 1 << 1
     }
 
     /// <summary>
     /// Specify the bind point of a pipeline object to a command buffer.
+    /// <para>
+    /// There are separate bind points for each of graphics and compute, so binding one does not
+    /// disturb the other.
+    /// </para>
     /// </summary>
     public enum PipelineBindPoint
     {
+        /// <summary>
+        /// Pipeline will be bound as a graphics pipeline.
+        /// </summary>
         Graphics = 0,
+        /// <summary>
+        /// Pipeline will be bound as a compute pipeline.
+        /// </summary>
         Compute = 1
     }
 
