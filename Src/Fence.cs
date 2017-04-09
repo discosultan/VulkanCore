@@ -112,26 +112,22 @@ namespace VulkanCore
 
         internal static void Reset(Device parent, Fence[] fences)
         {
-            if (fences != null && fences.Length > 0)
-            {
-                long* fenceHandles = stackalloc long[fences.Length];
-                for (int i = 0; i < fences.Length; i++)
-                    fenceHandles[i] = fences[i];
-                Result result = vkResetFences(parent, fences.Length, fenceHandles);
-                VulkanException.ThrowForInvalidResult(result);
-            }
+            int count = fences?.Length ?? 0;
+            long* handles = stackalloc long[count];
+            for (int i = 0; i < count; i++)
+                handles[i] = fences[i];
+            Result result = vkResetFences(parent, count, handles);
+            VulkanException.ThrowForInvalidResult(result);
         }
 
         internal static void Wait(Device parent, Fence[] fences, bool waitAll, long timeout)
         {
-            if (fences != null && fences.Length > 0)
-            {
-                long* fenceHandles = stackalloc long[fences.Length];
-                for (int i = 0; i < fences.Length; i++)
-                    fenceHandles[i] = fences[i];
-                Result result = vkWaitForFences(parent, fences.Length, fenceHandles, waitAll, timeout);
-                VulkanException.ThrowForInvalidResult(result);
-            }
+            int count = fences?.Length ?? 0;
+            long* handles = stackalloc long[count];
+            for (int i = 0; i < count; i++)
+                handles[i] = fences[i];
+            Result result = vkWaitForFences(parent, count, handles, waitAll, timeout);
+            VulkanException.ThrowForInvalidResult(result);
         }
 
         private delegate Result vkCreateFenceDelegate(IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);

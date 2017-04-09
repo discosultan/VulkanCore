@@ -53,7 +53,6 @@ namespace VulkanCore
     /// <summary>
     /// Structure specifying parameters of a newly created shader module.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe struct ShaderModuleCreateInfo
     {
         /// <summary>
@@ -74,6 +73,7 @@ namespace VulkanCore
             Code = code;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
             public StructureType Type;

@@ -14,15 +14,15 @@ namespace VulkanCore
     /// </summary>
     public unsafe class ImageView : DisposableHandle<long>
     {
-        internal ImageView(Device parent, Image image, ImageViewCreateInfo createInfo, ref AllocationCallbacks? allocator)
+        internal ImageView(Device parent, Image image, ImageViewCreateInfo* createInfo, ref AllocationCallbacks? allocator)
         {
             Parent = parent;
             Allocator = allocator;
 
-            createInfo.Prepare(image);
+            createInfo->Prepare(image);
 
             long handle;
-            Result result = vkCreateImageView(Parent, &createInfo, NativeAllocator, &handle);
+            Result result = vkCreateImageView(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }

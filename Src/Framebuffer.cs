@@ -40,7 +40,7 @@ namespace VulkanCore
         public RenderPass RenderPass { get; }
 
         /// <summary>
-        ///  Destroy a framebuffer object.
+        /// Destroy a framebuffer object.
         /// </summary>
         public override void Dispose()
         {

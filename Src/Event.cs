@@ -23,6 +23,7 @@ namespace VulkanCore
 
             var createInfo = new EventCreateInfo();
             createInfo.Prepare();
+
             long handle;
             Result result = vkCreateEvent(Parent, &createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);

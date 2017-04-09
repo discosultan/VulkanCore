@@ -14,15 +14,15 @@ namespace VulkanCore
     /// </summary>
     public unsafe class BufferView : DisposableHandle<long>
     {
-        internal BufferView(Device parent, Buffer buffer, BufferViewCreateInfo createInfo, ref AllocationCallbacks? allocator)
+        internal BufferView(Device parent, Buffer buffer, BufferViewCreateInfo* createInfo, ref AllocationCallbacks? allocator)
         {
             Parent = parent;
             Allocator = allocator;
 
-            createInfo.Prepare(buffer);
+            createInfo->Prepare(buffer);
 
             long handle;
-            Result result = vkCreateBufferView(Parent, &createInfo, NativeAllocator, &handle);
+            Result result = vkCreateBufferView(Parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }

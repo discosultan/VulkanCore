@@ -65,7 +65,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public BufferView CreateView(BufferViewCreateInfo createInfo, AllocationCallbacks? allocator = null)
         {
-            return new BufferView(Parent, this, createInfo, ref allocator);
+            return new BufferView(Parent, this, &createInfo, ref allocator);
         }
 
         /// <summary>

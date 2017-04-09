@@ -91,7 +91,7 @@ namespace VulkanCore
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public ImageView CreateView(ImageViewCreateInfo createInfo, AllocationCallbacks? allocator = null)
         {
-            return new ImageView(Parent, this, createInfo, ref allocator);
+            return new ImageView(Parent, this, &createInfo, ref allocator);
         }
 
         /// <summary>

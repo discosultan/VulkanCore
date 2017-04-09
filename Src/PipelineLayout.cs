@@ -142,18 +142,42 @@ namespace VulkanCore
         /// </summary>
         public ShaderStages StageFlags;
         /// <summary>
-        /// The start offset, consumed by the range. Offset is in units of bytes and must be a
-        /// multiple of 4. The layout of the push constant variables is specified in the shader.
+        /// The start offset consumed by the range.
+        /// <para>Offset is in units of bytes and must be a multiple of 4.</para>
+        /// <para>The layout of the push constant variables is specified in the shader.</para>
         /// </summary>
         public int Offset;
         /// <summary>
-        /// The size, consumed by the range. Size is in units of bytes and must be a multiple of 4.
-        /// The layout of the push constant variables is specified in the shader.
-        /// <para>
-        /// Must be less than or equal to <see cref="PhysicalDeviceLimits.MaxPushConstantsSize"/>
-        /// minus offset.
-        /// </para>
+        /// The size consumed by the range.
+        /// <para>Size is in units of bytes and must be a multiple of 4.</para>
+        /// <para>The layout of the push constant variables is specified in the shader.</para>
         /// </summary>
         public int Size;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PushConstantRange"/> structure.
+        /// </summary>
+        /// <param name="stageFlags">
+        /// A set of stage flags describing the shader stages that will access a range of push
+        /// constants. If a particular stage is not included in the range, then accessing members of
+        /// that range of push constants from the corresponding shader stage will result in undefined
+        /// data being read.
+        /// </param>
+        /// <param name="offset">
+        /// The start offset consumed by the range.
+        /// <para>Offset is in units of bytes and must be a multiple of 4.</para>
+        /// <para>The layout of the push constant variables is specified in the shader.</para>
+        /// </param>
+        /// <param name="size">
+        /// The size consumed by the range.
+        /// <para>Size is in units of bytes and must be a multiple of 4.</para>
+        /// <para>The layout of the push constant variables is specified in the shader.</para>
+        /// </param>
+        public PushConstantRange(ShaderStages stageFlags, int offset, int size)
+        {
+            StageFlags = stageFlags;
+            Offset = offset;
+            Size = size;
+        }
     }
 }
