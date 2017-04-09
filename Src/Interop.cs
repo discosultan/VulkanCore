@@ -282,8 +282,9 @@ namespace VulkanCore
             /// <returns>
             /// The maximum number of bytes produced by encoding the specified number of characters.
             /// </returns>
-            public static int GetMaxByteCount(string value)
-                => value == null ? 0: Encoding.UTF8.GetMaxByteCount(value.Length + 1); // +1 for null-terminator.
+            public static int GetMaxByteCount(string value) => value == null 
+                ? 0
+                : Encoding.UTF8.GetMaxByteCount(value.Length + 1); // +1 for null-terminator.
         }
 
         /// <summary>
