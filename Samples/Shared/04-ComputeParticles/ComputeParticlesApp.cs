@@ -190,12 +190,24 @@ namespace VulkanCore.Samples.ComputeParticles
 
         private Sampler CreateSampler()
         {
-            return Context.Device.CreateSampler(new SamplerCreateInfo
+            var createInfo = new SamplerCreateInfo
             {
                 MagFilter = Filter.Linear,
                 MinFilter = Filter.Linear,
                 MipmapMode = SamplerMipmapMode.Linear
-            });
+            };
+            // We also enable anisotropic filtering. Because that feature is optional, it must be
+            // checked if it is supported by the device.
+            if (Context.Features.SamplerAnisotropy)
+            {
+                createInfo.AnisotropyEnable = true;
+                createInfo.MaxAnisotropy = Context.Properties.Limits.MaxSamplerAnisotropy;
+            }
+            else
+            {
+                createInfo.MaxAnisotropy = 1.0f;
+            }
+            return Context.Device.CreateSampler(createInfo);
         }
 
         private RenderPass CreateRenderPass()

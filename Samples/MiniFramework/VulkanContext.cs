@@ -62,6 +62,8 @@ namespace VulkanCore.Samples
 
             // Store memory properties of the physical device.
             MemoryProperties = PhysicalDevice.GetMemoryProperties();
+            Features = PhysicalDevice.GetFeatures();
+            Properties = PhysicalDevice.GetProperties();
 
             // Create a logical device.
             bool sameGraphicsAndPresent = graphicsQueueFamilyIndex == presentQueueFamilyIndex;
@@ -72,7 +74,8 @@ namespace VulkanCore.Samples
 
             var deviceCreateInfo = new DeviceCreateInfo(
                 queueCreateInfos,
-                new[] { Constant.DeviceExtension.KhrSwapchain });
+                new[] { Constant.DeviceExtension.KhrSwapchain },
+                Features);
             Device = PhysicalDevice.CreateDevice(deviceCreateInfo);
 
             // Get queue(s).
@@ -92,6 +95,8 @@ namespace VulkanCore.Samples
         public PhysicalDevice PhysicalDevice { get; }
         public Device Device { get; }
         public PhysicalDeviceMemoryProperties MemoryProperties { get; }
+        public PhysicalDeviceFeatures Features { get; }
+        public PhysicalDeviceProperties Properties { get; }
         public Queue GraphicsQueue { get; }
         public Queue ComputeQueue { get; }
         public Queue PresentQueue { get; }
