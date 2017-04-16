@@ -524,8 +524,26 @@ namespace VulkanCore
     /// </summary>
     public enum AttachmentLoadOp
     {
+        /// <summary>
+        /// Means the previous contents of the image within the render area will be preserved. For
+        /// attachments with a depth/stencil format, this uses the access type <see
+        /// cref="Accesses.DepthStencilAttachmentRead"/>. For attachments with a color format, this
+        /// uses the access type <see cref="Accesses.ColorAttachmentRead"/>.
+        /// </summary>
         Load = 0,
+        /// <summary>
+        /// Means the contents within the render area will be cleared to a uniform value, which is
+        /// specified when a render pass instance is begun. For attachments with a depth/stencil
+        /// format, this uses the access type <see cref="Accesses.DepthStencilAttachmentWrite"/>. For
+        /// attachments with a color format, this uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
+        /// </summary>
         Clear = 1,
+        /// <summary>
+        /// Means the previous contents within the area need not be preserved; the contents of the
+        /// attachment will be undefined inside the render area. For attachments with a depth/stencil
+        /// format, this uses the access type <see cref="Accesses.DepthStencilAttachmentWrite"/>. For
+        /// attachments with a color format, this uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
+        /// </summary>
         DontCare = 2
     }
 
@@ -534,7 +552,20 @@ namespace VulkanCore
     /// </summary>
     public enum AttachmentStoreOp
     {
+        /// <summary>
+        /// Means the contents generated during the render pass and within the render area are
+        /// written to memory. For attachments with a depth/stencil format, this uses the access type
+        /// <see cref="Accesses.DepthStencilAttachmentWrite"/>. For attachments with a color format,
+        /// this uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
+        /// </summary>
         Store = 0,
+        /// <summary>
+        /// Means the contents within the render area are not needed after rendering, and may be
+        /// discarded; the contents of the attachment will be undefined inside the render area. For
+        /// attachments with a depth/stencil format, this uses the access type <see
+        /// cref="Accesses.DepthStencilAttachmentWrite"/>. For attachments with a color format, this
+        /// uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
+        /// </summary>
         DontCare = 1
     }
 

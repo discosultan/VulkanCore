@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/4q42ayrn28obs8rf/branch/master?svg=true)](https://ci.appveyor.com/project/discosultan/vulkancore/branch/master)
 [![NuGet Pre Release](https://img.shields.io/nuget/vpre/VulkanCore.svg)](https://www.nuget.org/packages/VulkanCore)
-[![Vulkan](https://img.shields.io/badge/vulkan-1.0.47-brightgreen.svg)](https://www.khronos.org/vulkan/)
+[![Vulkan](https://img.shields.io/badge/vulkan-1.0.48-brightgreen.svg)](https://www.khronos.org/vulkan/)
 [![.NET Standard](https://img.shields.io/badge/netstandard-1.3-brightgreen.svg)](https://github.com/dotnet/standard/blob/master/docs/versions.md)
 
 - [Introduction](#introduction)
