@@ -1633,7 +1633,8 @@ namespace VulkanCore
         /// </summary>
         public Bool DepthTestEnable;
         /// <summary>
-        /// Controls whether depth writes are enabled.
+        /// Controls whether depth writes are enabled when <see cref="DepthTestEnable"/> is
+        /// <c>true</c>. Depth writes are always disabled when <see cref="DepthTestEnable"/> is <c>false</c>.
         /// </summary>
         public Bool DepthWriteEnable;
         /// <summary>

@@ -149,6 +149,10 @@
         PhysicalDeviceDiscardRectanglePropertiesExt = 1000099000,
         PipelineDiscardRectangleStateCreateInfoExt = 1000099001,
         HdrMetadataExt = 1000105000,
+        SharedPresentSurfaceCapabilitiesKhr = 1000111000,
+        PhysicalDeviceSurfaceInfo2Khr = 1000119000,
+        SurfaceCapabilities2Khr = 1000119001,
+        SurfaceFormat2Khr = 1000119002,
         IOSSurfaceCreateInfoMvk = 1000122000,
         MacOSSurfaceCreateInfoMvk = 1000123000
     }

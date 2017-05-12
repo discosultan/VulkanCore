@@ -107,6 +107,29 @@ namespace VulkanCore.Khr
             return nextImageIndex;
         }
 
+        /// <summary>
+        /// Get a swapchain's status. The possible return values should be interpreted as follows:
+        /// <para>
+        /// * <see cref="Result.Success"/> - Indicates the presentation engine is presenting the
+        ///   contents of the shared presentable image, as per the swapchain's <see cref="PresentModeKhr"/>
+        /// </para>
+        /// <para>
+        /// * <see cref="Result.SuboptimalKhr"/> - The swapchain no longer matches the surface
+        ///   properties exactly, but the presentation engine is presenting the contents of the
+        ///   shared presentable image, as per the swapchain's <see cref="PresentModeKhr"/>
+        /// </para>
+        /// <para>
+        /// * <see cref="Result.ErrorOutOfDateKhr"/> - The surface has changed in such a way that it
+        ///   is no longer compatible with the swapchain
+        /// </para>
+        /// <para>* <see cref="Result.ErrorSurfaceLostKhr"/> - The surface is no longer available</para>
+        /// </summary>
+        /// <returns>Status of the swapchain.</returns>
+        public Result GetStatus()
+        {
+            return vkGetSwapchainStatusKHR(Parent, this);
+        }
+
         internal static SwapchainKhr[] CreateSharedKhr(Device parent, SwapchainCreateInfoKhr[] createInfos,
             ref AllocationCallbacks? allocator)
         {
@@ -154,6 +177,9 @@ namespace VulkanCore.Khr
 
         private delegate Result vkCreateSharedSwapchainsKHRDelegate(IntPtr device, int swapchainCount, SwapchainCreateInfoKhr.Native* createInfos, AllocationCallbacks.Native* allocator, long* swapchains);
         private static readonly vkCreateSharedSwapchainsKHRDelegate vkCreateSharedSwapchainsKHR = VulkanLibrary.GetProc<vkCreateSharedSwapchainsKHRDelegate>(nameof(vkCreateSharedSwapchainsKHR));
+
+        private delegate Result vkGetSwapchainStatusKHRDelegate(IntPtr device, long swapchain);
+        private static readonly vkGetSwapchainStatusKHRDelegate vkGetSwapchainStatusKHR = VulkanLibrary.GetProc<vkGetSwapchainStatusKHRDelegate>(nameof(vkGetSwapchainStatusKHR));
     }
 
     /// <summary>
@@ -429,6 +455,9 @@ namespace VulkanCore.Khr
         /// No flags.
         /// </summary>
         None = 0,
+        /// <summary>
+        /// Allow images with <see cref="ImageCreateFlags.BindSfrKhx"/>.
+        /// </summary>
         BindSfrKhx = 1 << 0
     }
 
@@ -619,6 +648,26 @@ namespace VulkanCore.Khr
         /// from the beginning of the queue and processed during or after each vertical blanking
         /// period in which the queue is non-empty.
         /// </summary>
-        FifoRelaxed = 3
+        FifoRelaxed = 3,
+        /// <summary>
+        /// The presentation engine and application have concurrent access to a single image, which
+        /// is referred to as a shared presentable image. The presentation engine is only required to
+        /// update the current image after a new presentation request is received. Therefore the
+        /// application must make a presentation request whenever an update is required. However, the
+        /// presentation engine may update the current image at any point, meaning this mode may
+        /// result in visible tearing.
+        /// </summary>
+        SharedDemandRefreshKhr = 1000111000,
+        /// <summary>
+        /// The presentation engine and application have concurrent access to a single image, which
+        /// is referred to as a shared presentable image. The presentation engine periodically
+        /// updates the current image on its regular refresh cycle. The application is only required
+        /// to make one initial presentation request, after which the presentation engine must update
+        /// the current image without any need for further presentation requests. The application can
+        /// indicate the image contents have been updated by making a presentation request, but this
+        /// does not guarantee the timing of when it will be updated. This mode may result in visible
+        /// tearing if rendering to the image is not timed correctly.
+        /// </summary>
+        SharedContinuousRefreshKhr = 1000111001
     }
 }

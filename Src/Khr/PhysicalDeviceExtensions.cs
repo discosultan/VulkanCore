@@ -383,6 +383,58 @@ namespace VulkanCore.Khr
             return properties;
         }
 
+        /// <summary>
+        /// Reports capabilities of a surface on a physical device.
+        /// </summary>
+        /// <param name="physicalDevice">
+        /// The physical device that will be associated with the swapchain to be created, as
+        /// described for <see cref="DeviceExtensions.CreateSwapchainKhr"/>.
+        /// </param>
+        /// <param name="surfaceInfo">
+        /// Describes the surface and other fixed parameters that would be consumed by <see cref="DeviceExtensions.CreateSwapchainKhr"/>.
+        /// </param>
+        /// <returns>A structure in which the capabilities are returned.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static SurfaceCapabilities2Khr GetSurfaceCapabilities2Khr(this PhysicalDevice physicalDevice, PhysicalDeviceSurfaceInfo2Khr surfaceInfo)
+        {
+            surfaceInfo.Prepare();
+            SurfaceCapabilities2Khr capabilities;
+            Result result = vkGetPhysicalDeviceSurfaceCapabilities2KHR(physicalDevice, &surfaceInfo, &capabilities);
+            VulkanException.ThrowForInvalidResult(result);
+            capabilities.Prepare();
+            return capabilities;
+        }
+
+        /// <summary>
+        /// Query color formats supported by surface.
+        /// </summary>
+        /// <param name="physicalDevice">
+        /// The physical device that will be associated with the swapchain to be created, as
+        /// described for <see cref="DeviceExtensions.CreateSwapchainKhr"/>.
+        /// </param>
+        /// <param name="surfaceInfo">
+        /// Describes the surface and other fixed parameters that would be consumed by <see cref="DeviceExtensions.CreateSwapchainKhr"/>.
+        /// </param>
+        /// <returns>An array of <see cref="SurfaceFormat2Khr"/> structures.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static SurfaceFormat2Khr[] GetSurfaceFormats2Khr(this PhysicalDevice physicalDevice, PhysicalDeviceSurfaceInfo2Khr surfaceInfo)
+        {
+            surfaceInfo.Prepare();
+
+            int count;
+            Result result = vkGetPhysicalDeviceSurfaceFormats2KHR(physicalDevice, &surfaceInfo, &count, null);
+            VulkanException.ThrowForInvalidResult(result);
+
+            var formats = new SurfaceFormat2Khr[count];
+            fixed (SurfaceFormat2Khr* formatsPtr = formats)
+                result = vkGetPhysicalDeviceSurfaceFormats2KHR(physicalDevice, &surfaceInfo, &count, formatsPtr);
+            VulkanException.ThrowForInvalidResult(result);
+            for (int i = 0; i < count; i++)
+                formats[i].Prepare();
+
+            return formats;
+        }
+
         private delegate Result vkGetPhysicalDeviceSurfaceSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, long surface, Bool* supported);
         private static readonly vkGetPhysicalDeviceSurfaceSupportKHRDelegate vkGetPhysicalDeviceSurfaceSupportKHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceSupportKHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceSupportKHR));
 
@@ -442,6 +494,12 @@ namespace VulkanCore.Khr
 
         private delegate void vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSparseImageFormatInfo2Khr* formatInfo, int* propertyCount, SparseImageFormatProperties2Khr* properties);
         private static readonly vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate vkGetPhysicalDeviceSparseImageFormatProperties2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceSparseImageFormatProperties2KHR));
+
+        private delegate Result vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSurfaceInfo2Khr* surfaceInfo, SurfaceCapabilities2Khr* surfaceCapabilities);
+        private static readonly vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate vkGetPhysicalDeviceSurfaceCapabilities2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceCapabilities2KHR));
+        
+        private delegate Result vkGetPhysicalDeviceSurfaceFormats2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSurfaceInfo2Khr* surfaceInfo, int* surfaceFormatCount, SurfaceFormat2Khr* surfaceFormats);
+        private static readonly vkGetPhysicalDeviceSurfaceFormats2KHRDelegate vkGetPhysicalDeviceSurfaceFormats2KHR = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceFormats2KHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceFormats2KHR));
     }
 
     /// <summary>
@@ -715,8 +773,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceFeatures2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -766,8 +826,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct FormatProperties2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -784,8 +846,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct ImageFormatProperties2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -802,8 +866,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceImageFormatInfo2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -836,8 +902,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct QueueFamilyProperties2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -883,8 +951,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct SparseImageFormatProperties2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -901,8 +971,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceSparseImageFormatInfo2Khr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -935,8 +1007,10 @@ namespace VulkanCore.Khr
     [StructLayout(LayoutKind.Sequential)]
     public struct SurfaceCapabilities2Ext
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -989,18 +1063,210 @@ namespace VulkanCore.Khr
     }
 
     /// <summary>
-    /// Structure describing push descriptor limits that can be supported by an
-    /// implementation.
+    /// Structure describing push descriptor limits that can be supported by an implementation.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDevicePushDescriptorPropertiesKhr
     {
-        internal StructureType Type;
-
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Pointer to next structure.
         /// </summary>
         public IntPtr Next;
+        /// <summary>
+        /// The maximum number of descriptors that can be used in a descriptor set created with <see
+        /// cref="DescriptorSetLayoutCreateFlags.PushDescriptorKhr"/> set.
+        /// </summary>
         public int MaxPushDescriptors;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhysicalDevicePushDescriptorPropertiesKhr"/> structure.
+        /// </summary>
+        /// <param name="maxPushDescriptors">
+        /// The maximum number of descriptors that can be used in a descriptor set created with <see
+        /// cref="DescriptorSetLayoutCreateFlags.PushDescriptorKhr"/> set.
+        /// </param>
+        /// <param name="next">Pointer to next structure.</param>
+        public PhysicalDevicePushDescriptorPropertiesKhr(int maxPushDescriptors, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PhysicalDevicePushDescriptorPropertiesKhr;
+            Next = next;
+            MaxPushDescriptors = maxPushDescriptors;
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying a surface and related swapchain creation parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceSurfaceInfo2Khr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The <see cref="SurfaceKhr"/> that will be associated with the swapchain.
+        /// </summary>
+        public long Surface;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhysicalDeviceSurfaceInfo2Khr"/> structure.
+        /// </summary>
+        /// <param name="surface">
+        /// The <see cref="SurfaceKhr"/> that will be associated with the swapchain.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public PhysicalDeviceSurfaceInfo2Khr(SurfaceKhr surface, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PhysicalDeviceSurfaceInfo2Khr;
+            Next = next;
+            Surface = surface;
+        }
+
+        internal void Prepare()
+        {
+            Type = StructureType.PhysicalDeviceSurfaceInfo2Khr;
+        }
+    }
+
+    /// <summary>
+    /// Structure describing capabilities of a surface.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SurfaceCapabilities2Khr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Describes the capabilities of the specified surface.
+        /// </summary>
+        public SurfaceCapabilitiesKhr SurfaceCapabilities;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SurfaceCapabilities2Khr"/> structure.
+        /// </summary>
+        /// <param name="surfaceCapabilities">Describes the capabilities of the specified surface.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public SurfaceCapabilities2Khr(SurfaceCapabilitiesKhr surfaceCapabilities, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.SurfaceCapabilities2Khr;
+            Next = next;
+            SurfaceCapabilities = surfaceCapabilities;
+        }
+
+        internal void Prepare()
+        {
+            Type = StructureType.SurfaceCapabilities2Khr;
+        }
+    }
+
+    /// <summary>
+    /// Structure describing a supported swapchain format tuple.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SurfaceFormat2Khr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Describes a format-color space pair that is compatible with the specified surface.
+        /// </summary>
+        public SurfaceFormatKhr SurfaceFormat;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SurfaceFormat2Khr"/> structure.
+        /// </summary>
+        /// <param name="surfaceFormat">
+        /// Describes a format-color space pair that is compatible with the specified surface.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public SurfaceFormat2Khr(SurfaceFormatKhr surfaceFormat, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.SurfaceFormat2Khr;
+            Next = next;
+            SurfaceFormat = surfaceFormat;
+        }
+
+        internal void Prepare()
+        {
+            Type = StructureType.SurfaceFormat2Khr;
+        }
+    }
+
+    /// <summary>
+    /// Structure describing capabilities of a surface for shared presentation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SharedPresentSurfaceCapabilitiesKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Represents the ways the application can use the shared presentable image from a swapchain
+        /// created with <see cref="PresentModeKhr"/> set to <see
+        /// cref="PresentModeKhr.SharedDemandRefreshKhr"/> or <see
+        /// cref="PresentModeKhr.SharedContinuousRefreshKhr"/> for the surface on the specified
+        /// device. <see cref="ImageUsages.ColorAttachment"/> must be included in the set but
+        /// implementations may support additional usages.
+        /// </summary>
+        public ImageUsages SharedPresentSupportedUsages;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedPresentSurfaceCapabilitiesKhr"/> structure.
+        /// </summary>
+        /// <param name="sharedPresentSupportedUsages">
+        /// Represents the ways the application can use the shared presentable image from a swapchain
+        /// created with <see cref="PresentModeKhr"/> set to <see
+        /// cref="PresentModeKhr.SharedDemandRefreshKhr"/> or <see
+        /// cref="PresentModeKhr.SharedContinuousRefreshKhr"/> for the surface on the specified
+        /// device. <see cref="ImageUsages.ColorAttachment"/> must be included in the set but
+        /// implementations may support additional usages.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public SharedPresentSurfaceCapabilitiesKhr(ImageUsages sharedPresentSupportedUsages, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.SharedPresentSurfaceCapabilitiesKhr;
+            Next = next;
+            SharedPresentSupportedUsages = sharedPresentSupportedUsages;
+        }
+
+        internal void Prepare()
+        {
+            Type = StructureType.SharedPresentSurfaceCapabilitiesKhr;
+        }
     }
 }

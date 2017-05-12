@@ -452,7 +452,11 @@ namespace VulkanCore
         /// cref="QueueExtensions.PresentKhr(Queue, PresentInfoKhr)"/>, and must be transitioned away
         /// from this layout after calling <see cref="SwapchainKhr.vkAcquireNextImageKHR"/>.
         /// </summary>
-        PresentSrcKhr = 1000001002
+        PresentSrcKhr = 1000001002,
+        /// <summary>
+        /// Is valid only for shared presentable images, and must be used for any usage the image supports.
+        /// </summary>
+        SharedPresentKhr = 1000111000
     }
 
     /// <summary>
