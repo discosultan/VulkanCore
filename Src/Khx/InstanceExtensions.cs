@@ -17,7 +17,12 @@ namespace VulkanCore.Khx
         public static PhysicalDeviceGroupPropertiesKhx[] EnumeratePhysicalDeviceGroupsKhx(this Instance instance)
         {
             int count;
-            Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
+			if (vkEnumeratePhysicalDeviceGroupsKHX == null)
+			{
+		        throw new MissingMethodException(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
+	        }
+
+			Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var nativeProperties = stackalloc PhysicalDeviceGroupPropertiesKhx.Native[count];
