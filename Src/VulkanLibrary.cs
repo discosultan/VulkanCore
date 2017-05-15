@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -68,11 +69,51 @@ namespace VulkanCore
             }
             return handle;
         }
+		
+	    public static IEnumerable<string> SearchExecutablePath(string searchPattern)
+	    {
+		    var values = Environment.GetEnvironmentVariable("PATH");
+		    foreach (var path in values.Split(Path.PathSeparator))
+		    {
+			    if (string.IsNullOrWhiteSpace(path))
+				{
+				    continue;
+			    }
+
+				string expandedPath = Environment.ExpandEnvironmentVariables(path);
+			    IEnumerable<string> searchResults;
+			    try
+				{
+					searchResults = Directory.EnumerateFiles(expandedPath, searchPattern).ToArray();
+				}
+				catch ( FileNotFoundException )
+				{
+					continue;
+				}
+			    catch ( DirectoryNotFoundException )
+			    {
+				    continue;
+			    }
+				foreach (var file in searchResults)
+			    {
+				    yield return file;
+			    }
+		    }
+	    }
 
         private static IEnumerable<string> GetVulkanLibraryNameCandidates()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				var searchResults = SearchExecutablePath("vulkan-*.dll")
+					.Distinct(StringComparer.OrdinalIgnoreCase)
+					.OrderByDescending(Path.GetFileName);
+				foreach ( var result in searchResults )
+				{
+					yield return result;
+				}
+				yield return "vulkan-1-1-0-46-0.dll";
+				yield return "vulkan-1-1-0-42-1.dll";
                 yield return "vulkan-1.dll";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
