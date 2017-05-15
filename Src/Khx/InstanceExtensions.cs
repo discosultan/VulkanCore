@@ -17,7 +17,15 @@ namespace VulkanCore.Khx
         public static PhysicalDeviceGroupPropertiesKhx[] EnumeratePhysicalDeviceGroupsKhx(this Instance instance)
         {
             int count;
-            Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
+
+	        if (vkEnumeratePhysicalDeviceGroupsKHX == null)
+			{
+		        vkEnumeratePhysicalDeviceGroupsKHX = instance
+			        .GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>
+						(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
+	        }
+
+	        Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var nativeProperties = stackalloc PhysicalDeviceGroupPropertiesKhx.Native[count];
@@ -38,7 +46,7 @@ namespace VulkanCore.Khx
         }
 
         private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native* physicalDeviceGroupProperties);
-        private static readonly vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
+        private static vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
     }
 
     /// <summary>
