@@ -81,7 +81,7 @@ namespace VulkanCore.Khx
             public StructureType Type;
             public IntPtr Next;
             public int PhysicalDeviceCount;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Constant.MaxDeviceGroupSizeKhx)]
             public IntPtr[] PhysicalDevices;
             public Bool SubsetAllocation;
         }
