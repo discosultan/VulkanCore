@@ -28,9 +28,8 @@ namespace VulkanCore.Khx
 	        Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, default(IntPtr));
             VulkanException.ThrowForInvalidResult(result);
 
-	        var structSize = Marshal.SizeOf<PhysicalDeviceGroupPropertiesKhx.Native>();
-	        var allocSize = structSize * count;
-	        var nativePropertiesPtr = stackalloc byte[allocSize];
+	        var structSize = Interop.SizeOf<PhysicalDeviceGroupPropertiesKhx.Native>();
+	        var nativePropertiesPtr = stackalloc byte[structSize * count];
             result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, (IntPtr)nativePropertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
 
