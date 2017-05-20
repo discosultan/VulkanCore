@@ -43,8 +43,6 @@ namespace VulkanCore
 
         /// <summary>
         /// Bind device memory to an image object.
-        /// <para>Must not already be backed by a memory object.</para>
-        /// <para>Must not have been created with any sparse memory binding flags.</para>
         /// </summary>
         /// <param name="memory">The object describing the device memory to attach.</param>
         /// <param name="memoryOffset">
@@ -161,7 +159,6 @@ namespace VulkanCore
         public ImageType ImageType;
         /// <summary>
         /// Describes the format and type of the data elements that will be contained in the image.
-        /// <para>Must not be <see cref="VulkanCore.Format.Undefined"/>.</para>
         /// </summary>
         public Format Format;
         /// <summary>
@@ -171,33 +168,14 @@ namespace VulkanCore
         public Extent3D Extent;
         /// <summary>
         /// Describes the number of levels of detail available for minified sampling of the image.
-        /// <para>
-        /// If any of <see cref="Extent3D.Width"/>, <see cref="Extent3D.Height"/>, or <see
-        /// cref="Extent3D.Depth"/> are greater than the equivalently named members of <see
-        /// cref="PhysicalDeviceLimits.MaxImageDimension3D"/>, <see cref="MipLevels"/> must be less
-        /// than or equal to <see cref="ImageFormatProperties.MaxMipLevels"/> (as returned by <see
-        /// cref="PhysicalDevice.GetImageFormatProperties"/> with format, type, tiling, usage, and
-        /// flags equal to those in this structure).
-        /// </para>
         /// </summary>
         public int MipLevels;
         /// <summary>
         /// The number of layers in the image.
-        /// <para>
-        /// Must be less than or equal to <see cref="ImageFormatProperties.MaxArrayLayers"/> (as
-        /// returned by <see cref="PhysicalDevice.GetImageFormatProperties"/> with format, type,
-        /// tiling, usage, and flags equal to those in this structure). If <see cref="ImageType"/> is
-        /// <see cref="VulkanCore.ImageType.Image3D"/>, <see cref="ArrayLayers"/> must be 1.
-        /// </para>
         /// </summary>
         public int ArrayLayers;
         /// <summary>
         /// The number of sub-data element samples in the image.
-        /// <para>
-        /// Must be a bit value that is set in <see cref="ImageFormatProperties.SampleCounts"/>
-        /// returned by <see cref="PhysicalDevice.GetImageFormatProperties"/> with format, type,
-        /// tiling, usage, and flags equal to those in this structure.
-        /// </para>
         /// </summary>
         public SampleCounts Samples;
         /// <summary>
@@ -206,7 +184,6 @@ namespace VulkanCore
         public ImageTiling Tiling;
         /// <summary>
         /// A bitmask describing the intended usage of the image.
-        /// <para>Usage must not be 0.</para>
         /// </summary>
         public ImageUsages Usage;
         /// <summary>
@@ -219,8 +196,7 @@ namespace VulkanCore
         /// </summary>
         public int[] QueueFamilyIndices;
         /// <summary>
-        /// Selects the initial <see cref="ImageLayout"/> state of all image subresources of the
-        /// image. Must be <see cref="ImageLayout.Undefined"/> or <see cref="ImageLayout.Preinitialized"/>.
+        /// Selects the initial <see cref="ImageLayout"/> state of all image subresources of the image.
         /// </summary>
         public ImageLayout InitialLayout;
 
@@ -318,8 +294,17 @@ namespace VulkanCore
     /// </summary>
     public enum ImageType
     {
+        /// <summary>
+        /// Specify one-dimensional image.
+        /// </summary>
         Image1D = 0,
+        /// <summary>
+        /// Specify two-dimensional image.
+        /// </summary>
         Image2D = 1,
+        /// <summary>
+        /// Specify three-dimensional image.
+        /// </summary>
         Image3D = 2
     }
 
@@ -586,7 +571,7 @@ namespace VulkanCore
         /// <summary>
         /// The maximum number of mipmap levels. Must either be equal to 1 (valid only if tiling is
         /// <see cref="ImageTiling.Linear"/>) or be equal to `ceil(log2(max(width, height, depth))) +
-        /// 1`. Width, height, and depth are taken from the corresponding members of <see cref="MaxExtent"/>.
+        /// 1`. Width, height and depth are taken from the corresponding members of <see cref="MaxExtent"/>.
         /// </summary>
         public int MaxMipLevels;
         /// <summary>
@@ -620,18 +605,10 @@ namespace VulkanCore
         public ImageAspects AspectMask;
         /// <summary>
         /// Selects the mipmap level.
-        /// <para>
-        /// Must be less than specified in the <see cref="ImageCreateInfo.MipLevels"/> when the image
-        /// was created.
-        /// </para>
         /// </summary>
         public int MipLevel;
         /// <summary>
         /// Selects the array layer.
-        /// <para>
-        /// Must be less than specified in the <see cref="ImageCreateInfo.ArrayLayers"/> when the
-        /// image was created.
-        /// </para>
         /// </summary>
         public int ArrayLayer;
 
@@ -639,20 +616,8 @@ namespace VulkanCore
         /// Initializes a new instance of <see cref="ImageSubresource"/> structure.
         /// </summary>
         /// <param name="aspectMask">An <see cref="ImageAspects"/> selecting the image aspect.</param>
-        /// <param name="mipLevel">
-        /// Selects the mipmap level.
-        /// <para>
-        /// Must be less than specified in the <see cref="ImageCreateInfo.MipLevels"/> when the image
-        /// was created.
-        /// </para>
-        /// </param>
-        /// <param name="arrayLayer">
-        /// Selects the array layer.
-        /// <para>
-        /// Must be less than specified in the <see cref="ImageCreateInfo.ArrayLayers"/> when the
-        /// image was created.
-        /// </para>
-        /// </param>
+        /// <param name="mipLevel">Selects the mipmap level.</param>
+        /// <param name="arrayLayer">Selects the array layer.</param>
         public ImageSubresource(ImageAspects aspectMask, int mipLevel, int arrayLayer)
         {
             AspectMask = aspectMask;
