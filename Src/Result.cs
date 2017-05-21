@@ -75,7 +75,8 @@
         /// </summary>
         ErrorFormatNotSupported = -11,
         /// <summary>
-        /// A requested pool allocation has failed due to fragmentation of the pool's memory.
+        /// A pool allocation has failed due to fragmentation of the pool's memory. This must only be
+        /// returned if no attempt to allocate host or device memory was made to accomodate the new allocation.
         /// </summary>
         ErrorFragmentedPool = -12,
         /// <summary>
@@ -113,7 +114,10 @@
         /// </summary>
         ErrorInvalidShaderNV = -1000012000,
         /// <summary>
-        /// There is no more memory in the descriptor set pool.
+        /// A pool memory allocation has failed. This must only be returned if no attempt to allocate
+        /// host or device memory was made to accomodate the new allocation. If the failure was
+        /// definitely due to fragmentation of the pool, <see cref="ErrorFragmentedPool"/> should be
+        /// returned instead.
         /// </summary>
         ErrorOutOfPoolMemoryKhr = -1000069000,
         /// <summary>

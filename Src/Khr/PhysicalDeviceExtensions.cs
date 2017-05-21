@@ -851,7 +851,9 @@ namespace VulkanCore.Khr
         /// </summary>
         public StructureType Type;
         /// <summary>
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure. The <see
+        /// cref="Next"/> chain is used to allow the specification of additional capabilities to be
+        /// returned from <see cref="PhysicalDeviceExtensions.GetImageFormatProperties2Khr"/>.
         /// </summary>
         public IntPtr Next;
         /// <summary>
@@ -871,7 +873,8 @@ namespace VulkanCore.Khr
         /// </summary>
         public StructureType Type;
         /// <summary>
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure. The <see
+        /// cref="Next"/> chain is used to provide additional image parameters to <see cref="PhysicalDeviceExtensions.GetImageFormatProperties2Khr"/>.
         /// </summary>
         public IntPtr Next;
         /// <summary>

@@ -111,9 +111,43 @@ namespace VulkanCore.Amd
         }
     }
 
+    /// <summary>
+    /// Graphics pipeline primitive rasterization ordering rules.
+    /// </summary>
     public enum RasterizationOrderAmd
     {
+        /// <summary>
+        /// Indicates that the order of these operations for each primitive in a subpass must occur
+        /// in drawing-primitive-order.
+        /// </summary>
         Strict = 0,
+        /// <summary>
+        /// Indicates that the order of these operations for each primitive in a subpass may not
+        /// occur in drawing-primitive-order.
+        /// </summary>
         Relaxed = 1
+    }
+
+    /// <summary>
+    /// Structure informing whether or not texture gather bias/LOD functionality is
+    /// supported for a given image format and a given physical device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct TextureLodGatherFormatPropertiesAmd
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/>.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Tells if the image format can be used with texture gather bias/LOD functions, as
+        /// introduced by the "VK_AMD_texture_gather_bias_lod" extension. This field is set by the
+        /// implementation. User-specified value is ignored.
+        /// </summary>
+        public Bool SupportsTextureGatherLodBiasAmd;
     }
 }

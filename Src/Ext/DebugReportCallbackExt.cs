@@ -103,7 +103,8 @@ namespace VulkanCore.Ext
     public struct DebugReportCallbackCreateInfoExt
     {
         /// <summary>
-        /// Indicate which event(s) will cause this callback to be called.
+        /// Indicate which event(s) will cause this callback to be called. Flags are interpreted as
+        /// bitmasks and multiple can be set.
         /// </summary>
         public DebugReportFlagsExt Flags;
         /// <summary>
@@ -118,7 +119,10 @@ namespace VulkanCore.Ext
         /// <summary>
         /// Initializes a new instance of the <see cref="DebugReportCallbackCreateInfoExt"/> structure.
         /// </summary>
-        /// <param name="flags">Indicate which event(s) will cause this callback to be called.</param>
+        /// <param name="flags">
+        /// Indicate which event(s) will cause this callback to be called. Flags are interpreted as
+        /// bitmasks and multiple can be set.
+        /// </param>
         /// <param name="callback">The callback function.</param>
         /// <param name="userData">The handle to user data provided to callback function.</param>
         public DebugReportCallbackCreateInfoExt(
@@ -352,7 +356,7 @@ namespace VulkanCore.Ext
         /// <summary>
         /// Is a <see cref="DebugReportCallbackExt"/>.
         /// </summary>
-        DebugReport = 28,
+        DebugReportCallback = 28,
         /// <summary>
         /// Is a <see cref="Khr.DisplayKhr"/>.
         /// </summary>

@@ -507,6 +507,13 @@
             /// lines and triangles.
             /// </summary>
             public const string ExtDiscardRectangles = "VK_EXT_discard_rectangles";
+            /// <summary>
+            /// This extension adds support for the following SPIR-V extension:
+            /// "SPV_AMD_shader_trinary_minmax". Secondly, the extension allows the application to
+            /// query, which formats can be used together with the new function prototypes introduced
+            /// by the SPIR-V extension.
+            /// </summary>
+            public const string AmdTextureGatherBiasLod = "VK_AMD_texture_gather_bias_lod";
         }
 
         /// <summary>

@@ -170,7 +170,7 @@ namespace VulkanCore.Tests
         public void DebugReportMessageExt()
         {
             const string message = "message õäöü";
-            const DebugReportObjectTypeExt objectType = DebugReportObjectTypeExt.DebugReport;
+            const DebugReportObjectTypeExt objectType = DebugReportObjectTypeExt.DebugReportCallback;
             const long @object = long.MaxValue;
             var location = new IntPtr(int.MaxValue);
             const int messageCode = 1;

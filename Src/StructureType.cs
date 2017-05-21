@@ -73,6 +73,7 @@
         DedicatedAllocationImageCreateInfoNV = 1000026000,
         DedicatedAllocationBufferCreateInfoNV = 1000026001,
         DedicatedAllocationMemoryAllocateInfoNV = 1000026002,
+        TextureLodGatherFormatPropertiesAmd = 1000041000,
         RenderPassMultiviewCreateInfoKhx = 1000053000,
         PhysicalDeviceMultiviewFeaturesKhx = 1000053001,
         PhysicalDeviceMultiviewPropertiesKhx = 1000053002,

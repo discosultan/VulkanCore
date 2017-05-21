@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VulkanCore.Ext
 {
@@ -67,5 +68,45 @@ namespace VulkanCore.Ext
 
         private delegate void DebugReportMessageExtDelegate(IntPtr instance, DebugReportFlagsExt flags,
             DebugReportObjectTypeExt objectType, long @object, IntPtr location, int messageCode, byte* layerPrefix, byte* message);
+    }
+
+    /// <summary>
+    /// Specify validation checks to disable for a Vulkan instance.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ValidationFlagsExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of checks to disable.
+        /// </summary>
+        public int DisabledValidationCheckCount;
+        /// <summary>
+        /// A pointer to an array of <see cref="ValidationCheckExt"/> values specifying the
+        /// validation checks to be disabled.
+        /// </summary>
+        public IntPtr DisabledValidationChecks;
+    }
+
+    /// <summary>
+    /// Specify validation checks to disable.
+    /// </summary>
+    public enum ValidationCheckExt
+    {
+        /// <summary>
+        /// Disables all validation checks.
+        /// </summary>
+        All = 0,
+        /// <summary>
+        /// Disables all shader validation.
+        /// </summary>
+        Shaders = 1
     }
 }
