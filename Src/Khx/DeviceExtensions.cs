@@ -780,7 +780,7 @@ namespace VulkanCore.Khx
 
 	    public unsafe IntPtr ToNative()
 	    {
-			Native* pNative = (Native*)Interop.Alloc<Native>(1);
+			Native* pNative = (Native*)Interop.Alloc<Native>();
 		    pNative->Type = Type;
 		    pNative->Next = Next;
 		    pNative->PhysicalDeviceCount = PhysicalDeviceCount;
