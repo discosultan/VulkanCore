@@ -75,6 +75,16 @@ namespace VulkanCore.Ext
             proc(commandBuffer, &nativeMarkerInfo);
         }
 
+        /// <summary>
+        /// If the pipeline state object was created with the <see
+        /// cref="DynamicState.DiscardRectangleExt"/> dynamic state enabled, the discard rectangles
+        /// are dynamically set and changed with this command.
+        /// </summary>
+        /// <param name="commandBuffer">The command buffer into which the command will be recorded.</param>
+        /// <param name="firstDiscardRectangle">
+        /// The index of the first discard rectangle whose state is updated by the command.
+        /// </param>
+        /// <param name="discardRectangles">Structures specifying discard rectangles.</param>
         public static void CmdSetDiscardRectangleExt(this CommandBuffer commandBuffer,
             int firstDiscardRectangle, Rect2D[] discardRectangles)
         {
