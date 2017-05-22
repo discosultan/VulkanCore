@@ -5,6 +5,12 @@ using System.Runtime.InteropServices;
 
 namespace VulkanCore
 {
+    internal interface IGetProc
+    {
+        IntPtr GetProcAddr(string name);
+        TDelegate GetProc<TDelegate>(string name) where TDelegate : class;
+    }
+
     internal static class VulkanLibrary
     {
         private static readonly IntPtr _handle;
@@ -12,7 +18,7 @@ namespace VulkanCore
         // Note that the loaded Vulkan module is never freed by this assembly because we have no way
         // to guarantee that it's freed after the client application has finished using this
         // assembly. This becomes a problem, for example, when the client application wants to
-        // dispose any types of this assmebly in a finalizer. In that case, we don't know in which
+        // dispose any types of this assembly in a finalizer. In that case, we don't know in which
         // order the finalizers are run.
 
         // If for some reason, the client application wishes to unload Vulkan module when the process

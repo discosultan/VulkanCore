@@ -8,7 +8,7 @@ namespace VulkanCore
     /// <summary>
     /// Opaque handle to a device object.
     /// </summary>
-    public unsafe class Device : DisposableHandle<IntPtr>
+    public unsafe class Device : DisposableHandle<IntPtr>, IGetProc
     {
         private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache
             = new ConcurrentDictionary<string, IntPtr>(StringComparer.Ordinal);
@@ -47,14 +47,11 @@ namespace VulkanCore
         /// dispatchable object.
         /// </para>
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">The name of the command to obtain.</param>
         /// <returns>Function handle for a command or <see cref="IntPtr.Zero"/> if not found.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
         public IntPtr GetProcAddr(string name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-
             if (!_procAddrCache.TryGetValue(name, out IntPtr addr))
             {
                 int byteCount = Interop.String.GetMaxByteCount(name);
@@ -78,6 +75,7 @@ namespace VulkanCore
         /// dispatchable object.
         /// </para>
         /// </summary>
+        /// <param name="name">The name of the command to obtain.</param>
         /// <returns>Function delegate for a command or <c>null</c> if not found.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
         public TDelegate GetProc<TDelegate>(string name) where TDelegate : class
