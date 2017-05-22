@@ -83,16 +83,24 @@ namespace VulkanCore.Amd
         private static readonly vkCmdDrawIndexedIndirectCountAMDDelegate vkCmdDrawIndexedIndirectCountAMD = VulkanLibrary.GetProc<vkCmdDrawIndexedIndirectCountAMDDelegate>(nameof(vkCmdDrawIndexedIndirectCountAMD));
     }
 
+    /// <summary>
+    /// The rasterization order to use for a graphics pipeline is specified by adding a <see
+    /// cref="PipelineRasterizationStateRasterizationOrderAmd"/> structure to <see
+    /// cref="PipelineRasterizationStateCreateInfo.Next"/> chain.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PipelineRasterizationStateRasterizationOrderAmd
     {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
         public StructureType Type;
         /// <summary>
-        /// Pointer to next structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Rasterization order to use for the pipeline.
+        /// The primitive rasterization order to use.
         /// </summary>
         public RasterizationOrderAmd RasterizationOrder;
 
