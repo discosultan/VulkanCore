@@ -345,8 +345,19 @@ namespace VulkanCore.Ext
     /// </summary>
     public enum DisplayPowerStateExt
     {
+        /// <summary>
+        /// The display is powered down.
+        /// </summary>
         Off = 0,
+        /// <summary>
+        /// The display is in a low power mode, but may be able to transition back to <see
+        /// cref="On"/> more quickly than if it were in <see cref="Off"/>.
+        /// <para>This state may be the same as <see cref="Off"/>.</para>
+        /// </summary>
         Suspend = 1,
+        /// <summary>
+        /// Is powered on.
+        /// </summary>
         On = 2
     }
 
@@ -417,6 +428,11 @@ namespace VulkanCore.Ext
     /// </summary>
     public enum DeviceEventTypeExt
     {
+        /// <summary>
+        /// Occurs when a display is plugged into or unplugged from the specified device.
+        /// Applications can use this notification to determine when they need to re-enumerate the
+        /// available displays on a device.
+        /// </summary>
         DisplayHotplug = 0
     }
 
@@ -425,6 +441,10 @@ namespace VulkanCore.Ext
     /// </summary>
     public enum DisplayEventTypeExt
     {
+        /// <summary>
+        /// Occurs when the first pixel of the next display refresh cycle leaves the display engine
+        /// for the display.
+        /// </summary>
         FirstPixelOut = 0
     }
 
@@ -485,7 +505,13 @@ namespace VulkanCore.Ext
     [StructLayout(LayoutKind.Sequential)]
     public struct XYColorExt
     {
+        /// <summary>
+        /// The X coordinate of chromaticity limited to between 0 and 1.
+        /// </summary>
         public float X;
+        /// <summary>
+        /// The Y coordinate of chromaticity limited to between 0 and 1.
+        /// </summary>
         public float Y;
     }
 }
