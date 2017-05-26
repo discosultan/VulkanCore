@@ -13,8 +13,8 @@ namespace VulkanCore
         private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache
             = new ConcurrentDictionary<string, IntPtr>(StringComparer.Ordinal);
 
-        private readonly ConcurrentDictionary<string, object> _procCache
-            = new ConcurrentDictionary<string, object>(StringComparer.Ordinal);
+        private readonly ConcurrentDictionary<Type, object> _procCache
+            = new ConcurrentDictionary<Type, object>();
 
         internal Device(PhysicalDevice parent, ref DeviceCreateInfo createInfo, ref AllocationCallbacks? allocator)
         {
@@ -80,17 +80,17 @@ namespace VulkanCore
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
         public TDelegate GetProc<TDelegate>(string name) where TDelegate : class
         {
-            // It is important that we use Interop.As instead of direct casting!
-            // Since the delegate types are cached, if we have multiple delegates with similar signatures
-            // defined for the same command, casting between those delegates throws at runtime.
-            if (_procCache.TryGetValue(name, out object cachedProc))
-                return Interop.As<TDelegate>(cachedProc);
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
+            if (_procCache.TryGetValue(typeof(TDelegate), out object cachedProc))
+                return (TDelegate)cachedProc;
 
             IntPtr ptr = GetProcAddr(name);
             TDelegate proc = ptr != IntPtr.Zero
                 ? Interop.GetDelegateForFunctionPointer<TDelegate>(ptr)
                 : null;
-            _procCache.TryAdd(name, proc);
+            _procCache.TryAdd(typeof(TDelegate), proc);
             return proc;
         }
 
