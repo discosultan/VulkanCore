@@ -1,6 +1,14 @@
-; Top-Most EditorConfig file
+; Topmost EditorConfig file.
 root = true
 
-; Space indentation
+[*]
+charset = utf-8
 indent_style = space
 indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_brace_style = Allman ; Not part of the standard but some tools do support it.
+
+; VS 2017 references:
+; https://docs.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options
+; https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
