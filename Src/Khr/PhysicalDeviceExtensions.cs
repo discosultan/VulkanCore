@@ -266,12 +266,14 @@ namespace VulkanCore.Khr
         /// <summary>
         /// Reports capabilities of a physical device.
         /// </summary>
-        /// <param name="device">The physical device from which to query the supported features.</param>
+        /// <param name="physicalDevice">
+        /// The physical device from which to query the supported features.
+        /// </param>
         /// <returns>A structure in which the physical device features are returned.</returns>
-        public static PhysicalDeviceFeatures2Khr GetFeatures2Khr(this PhysicalDevice device)
+        public static PhysicalDeviceFeatures2Khr GetFeatures2Khr(this PhysicalDevice physicalDevice)
         {
             PhysicalDeviceFeatures2Khr features;
-            vkGetPhysicalDeviceFeatures2KHR(device, &features);
+            vkGetPhysicalDeviceFeatures2KHR(physicalDevice)(physicalDevice, &features);
             return features;
         }
 
@@ -285,7 +287,7 @@ namespace VulkanCore.Khr
         public static PhysicalDeviceProperties2Khr GetProperties2Khr(this PhysicalDevice physicalDevice)
         {
             PhysicalDeviceProperties2Khr.Native nativeProperties;
-            vkGetPhysicalDeviceProperties2KHR(physicalDevice, &nativeProperties);
+            vkGetPhysicalDeviceProperties2KHR(physicalDevice)(physicalDevice, &nativeProperties);
             PhysicalDeviceProperties2Khr.FromNative(
                 ref nativeProperties,
                 out PhysicalDeviceProperties2Khr properties);
@@ -303,7 +305,7 @@ namespace VulkanCore.Khr
         public static FormatProperties2Khr GetFormatProperties2Khr(this PhysicalDevice physicalDevice, Format format)
         {
             FormatProperties2Khr properties;
-            vkGetPhysicalDeviceFormatProperties2KHR(physicalDevice, format, &properties);
+            vkGetPhysicalDeviceFormatProperties2KHR(physicalDevice)(physicalDevice, format, &properties);
             return properties;
         }
 
@@ -320,7 +322,8 @@ namespace VulkanCore.Khr
             PhysicalDeviceImageFormatInfo2Khr imageFormatInfo)
         {
             ImageFormatProperties2Khr properties;
-            Result result = vkGetPhysicalDeviceImageFormatProperties2KHR(physicalDevice, &imageFormatInfo, &properties);
+            Result result = vkGetPhysicalDeviceImageFormatProperties2KHR(physicalDevice)
+                (physicalDevice, &imageFormatInfo, &properties);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
@@ -328,16 +331,18 @@ namespace VulkanCore.Khr
         /// <summary>
         /// Reports properties of the queues of the specified physical device.
         /// </summary>
-        /// <param name="device">The handle to the physical device whose properties will be queried.</param>
+        /// <param name="physicalDevice">
+        /// The handle to the physical device whose properties will be queried.
+        /// </param>
         /// <returns>An array of <see cref="QueueFamilyProperties2Khr"/> structures.</returns>
-        public static QueueFamilyProperties2Khr[] GetQueueFamilyProperties2Khr(this PhysicalDevice device)
+        public static QueueFamilyProperties2Khr[] GetQueueFamilyProperties2Khr(this PhysicalDevice physicalDevice)
         {
             int count;
-            vkGetPhysicalDeviceQueueFamilyProperties2KHR(device, &count, null);
+            vkGetPhysicalDeviceQueueFamilyProperties2KHR(physicalDevice)(physicalDevice, &count, null);
 
             var properties = new QueueFamilyProperties2Khr[count];
             fixed (QueueFamilyProperties2Khr* propertiesPtr = properties)
-                vkGetPhysicalDeviceQueueFamilyProperties2KHR(device, &count, propertiesPtr);
+                vkGetPhysicalDeviceQueueFamilyProperties2KHR(physicalDevice)(physicalDevice, &count, propertiesPtr);
 
             return properties;
         }
@@ -350,7 +355,7 @@ namespace VulkanCore.Khr
         public static PhysicalDeviceMemoryProperties2Khr GetMemoryProperties2Khr(this PhysicalDevice physicalDevice)
         {
             var nativeProperties = new PhysicalDeviceMemoryProperties2Khr.Native();
-            vkGetPhysicalDeviceMemoryProperties2KHR(physicalDevice, ref nativeProperties);
+            vkGetPhysicalDeviceMemoryProperties2KHR(physicalDevice)(physicalDevice, ref nativeProperties);
             PhysicalDeviceMemoryProperties2Khr.FromNative(ref nativeProperties, out var properties);
             return properties;
         }
@@ -375,11 +380,11 @@ namespace VulkanCore.Khr
             PhysicalDeviceSparseImageFormatInfo2Khr formatInfo)
         {
             int count;
-            vkGetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice, &formatInfo, &count, null);
+            vkGetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice)(physicalDevice, &formatInfo, &count, null);
 
             var properties = new SparseImageFormatProperties2Khr[count];
             fixed (SparseImageFormatProperties2Khr* propertiesPtr = properties)
-                vkGetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice, &formatInfo, &count, propertiesPtr);
+                vkGetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice)(physicalDevice, &formatInfo, &count, propertiesPtr);
             return properties;
         }
 
@@ -399,7 +404,7 @@ namespace VulkanCore.Khr
         {
             surfaceInfo.Prepare();
             SurfaceCapabilities2Khr capabilities;
-            Result result = vkGetPhysicalDeviceSurfaceCapabilities2KHR(physicalDevice, &surfaceInfo, &capabilities);
+            Result result = vkGetPhysicalDeviceSurfaceCapabilities2KHR(physicalDevice)(physicalDevice, &surfaceInfo, &capabilities);
             VulkanException.ThrowForInvalidResult(result);
             capabilities.Prepare();
             return capabilities;
@@ -422,12 +427,12 @@ namespace VulkanCore.Khr
             surfaceInfo.Prepare();
 
             int count;
-            Result result = vkGetPhysicalDeviceSurfaceFormats2KHR(physicalDevice, &surfaceInfo, &count, null);
+            Result result = vkGetPhysicalDeviceSurfaceFormats2KHR(physicalDevice)(physicalDevice, &surfaceInfo, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var formats = new SurfaceFormat2Khr[count];
             fixed (SurfaceFormat2Khr* formatsPtr = formats)
-                result = vkGetPhysicalDeviceSurfaceFormats2KHR(physicalDevice, &surfaceInfo, &count, formatsPtr);
+                result = vkGetPhysicalDeviceSurfaceFormats2KHR(physicalDevice)(physicalDevice, &surfaceInfo, &count, formatsPtr);
             VulkanException.ThrowForInvalidResult(result);
             for (int i = 0; i < count; i++)
                 formats[i].Prepare();
@@ -435,6 +440,7 @@ namespace VulkanCore.Khr
             return formats;
         }
 
+        // static begins
         private delegate Result vkGetPhysicalDeviceSurfaceSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, long surface, Bool* supported);
         private static readonly vkGetPhysicalDeviceSurfaceSupportKHRDelegate vkGetPhysicalDeviceSurfaceSupportKHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceSurfaceSupportKHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceSupportKHR));
 
@@ -473,33 +479,36 @@ namespace VulkanCore.Khr
 
         private delegate Result vkGetDisplayPlaneCapabilitiesKHRDelegate(IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
         private static readonly vkGetDisplayPlaneCapabilitiesKHRDelegate vkGetDisplayPlaneCapabilitiesKHR = VulkanLibrary.GetStaticProc<vkGetDisplayPlaneCapabilitiesKHRDelegate>(nameof(vkGetDisplayPlaneCapabilitiesKHR));
+        // static ends
 
         private delegate void vkGetPhysicalDeviceFeatures2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceFeatures2Khr* features);
-        private static readonly vkGetPhysicalDeviceFeatures2KHRDelegate vkGetPhysicalDeviceFeatures2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceFeatures2KHRDelegate>(nameof(vkGetPhysicalDeviceFeatures2KHR));
+        private static vkGetPhysicalDeviceFeatures2KHRDelegate vkGetPhysicalDeviceFeatures2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceFeatures2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceFeatures2KHR));
 
         private delegate void vkGetPhysicalDeviceProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceProperties2Khr.Native* properties);
-        private static readonly vkGetPhysicalDeviceProperties2KHRDelegate vkGetPhysicalDeviceProperties2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceProperties2KHR));
+        private static vkGetPhysicalDeviceProperties2KHRDelegate vkGetPhysicalDeviceProperties2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceProperties2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceProperties2KHR));
 
         private delegate void vkGetPhysicalDeviceFormatProperties2KHRDelegate(IntPtr physicalDevice, Format format, FormatProperties2Khr* formatProperties);
-        private static readonly vkGetPhysicalDeviceFormatProperties2KHRDelegate vkGetPhysicalDeviceFormatProperties2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceFormatProperties2KHR));
+        private static vkGetPhysicalDeviceFormatProperties2KHRDelegate vkGetPhysicalDeviceFormatProperties2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceFormatProperties2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceFormatProperties2KHR));
 
         private delegate Result vkGetPhysicalDeviceImageFormatProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceImageFormatInfo2Khr* imageFormatInfo, ImageFormatProperties2Khr* imageFormatProperties);
-        private static readonly vkGetPhysicalDeviceImageFormatProperties2KHRDelegate vkGetPhysicalDeviceImageFormatProperties2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceImageFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceImageFormatProperties2KHR));
+        private static vkGetPhysicalDeviceImageFormatProperties2KHRDelegate vkGetPhysicalDeviceImageFormatProperties2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceImageFormatProperties2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceImageFormatProperties2KHR));
 
         private delegate void vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate(IntPtr physicalDevice, int* queueFamilyPropertyCount, QueueFamilyProperties2Khr* queueFamilyProperties);
-        private static readonly vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate vkGetPhysicalDeviceQueueFamilyProperties2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceQueueFamilyProperties2KHR));
+        private static vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate vkGetPhysicalDeviceQueueFamilyProperties2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceQueueFamilyProperties2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceQueueFamilyProperties2KHR));
 
         private delegate void vkGetPhysicalDeviceMemoryProperties2KHRDelegate(IntPtr physicalDevice, ref PhysicalDeviceMemoryProperties2Khr.Native memoryProperties);
-        private static readonly vkGetPhysicalDeviceMemoryProperties2KHRDelegate vkGetPhysicalDeviceMemoryProperties2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceMemoryProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceMemoryProperties2KHR));
+        private static vkGetPhysicalDeviceMemoryProperties2KHRDelegate vkGetPhysicalDeviceMemoryProperties2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceMemoryProperties2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceMemoryProperties2KHR));
 
         private delegate void vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSparseImageFormatInfo2Khr* formatInfo, int* propertyCount, SparseImageFormatProperties2Khr* properties);
-        private static readonly vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate vkGetPhysicalDeviceSparseImageFormatProperties2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate>(nameof(vkGetPhysicalDeviceSparseImageFormatProperties2KHR));
+        private static vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate vkGetPhysicalDeviceSparseImageFormatProperties2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceSparseImageFormatProperties2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceSparseImageFormatProperties2KHR));
 
         private delegate Result vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSurfaceInfo2Khr* surfaceInfo, SurfaceCapabilities2Khr* surfaceCapabilities);
-        private static readonly vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate vkGetPhysicalDeviceSurfaceCapabilities2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceCapabilities2KHR));
+        private static vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate vkGetPhysicalDeviceSurfaceCapabilities2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceSurfaceCapabilities2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceSurfaceCapabilities2KHR));
         
         private delegate Result vkGetPhysicalDeviceSurfaceFormats2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSurfaceInfo2Khr* surfaceInfo, int* surfaceFormatCount, SurfaceFormat2Khr* surfaceFormats);
-        private static readonly vkGetPhysicalDeviceSurfaceFormats2KHRDelegate vkGetPhysicalDeviceSurfaceFormats2KHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceSurfaceFormats2KHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceFormats2KHR));
+        private static vkGetPhysicalDeviceSurfaceFormats2KHRDelegate vkGetPhysicalDeviceSurfaceFormats2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceSurfaceFormats2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceSurfaceFormats2KHR));
+
+        private static TDelegate GetProc<TDelegate>(PhysicalDevice physicalDevice, string name) where TDelegate : class => physicalDevice.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

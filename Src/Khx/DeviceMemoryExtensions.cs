@@ -19,7 +19,7 @@ namespace VulkanCore.Khx
         public static IntPtr GetWin32HandleKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
         {
             IntPtr handle;
-            Result result = vkGetMemoryWin32HandleKHX(memory.Parent, memory, handleType, &handle);
+            Result result = vkGetMemoryWin32HandleKHX(memory)(memory.Parent, memory, handleType, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
@@ -34,16 +34,18 @@ namespace VulkanCore.Khx
         public static int GetFdKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
         {
             int fd;
-            Result result = vkGetMemoryFdKHX(memory.Parent, memory, handleType, &fd);
+            Result result = vkGetMemoryFdKHX(memory)(memory.Parent, memory, handleType, &fd);
             VulkanException.ThrowForInvalidResult(result);
             return fd;
         }
 
         private delegate Result vkGetMemoryWin32HandleKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
-        private static readonly vkGetMemoryWin32HandleKHXDelegate vkGetMemoryWin32HandleKHX = VulkanLibrary.GetStaticProc<vkGetMemoryWin32HandleKHXDelegate>(nameof(vkGetMemoryWin32HandleKHX));
+        private static vkGetMemoryWin32HandleKHXDelegate vkGetMemoryWin32HandleKHX(DeviceMemory memory) => GetProc<vkGetMemoryWin32HandleKHXDelegate>(memory, nameof(vkGetMemoryWin32HandleKHX));
 
         private delegate Result vkGetMemoryFdKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
-        private static readonly vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX = VulkanLibrary.GetStaticProc<vkGetMemoryFdKHXDelegate>(nameof(vkGetMemoryFdKHX));
+        private static vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX(DeviceMemory memory) => GetProc<vkGetMemoryFdKHXDelegate>(memory, nameof(vkGetMemoryFdKHX));
+
+        private static TDelegate GetProc<TDelegate>(DeviceMemory memory, string name) where TDelegate : class => memory.Parent.GetProc<TDelegate>(name);
     }
 
     [StructLayout(LayoutKind.Sequential)]

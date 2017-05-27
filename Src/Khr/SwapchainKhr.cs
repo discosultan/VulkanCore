@@ -127,7 +127,7 @@ namespace VulkanCore.Khr
         /// <returns>Status of the swapchain.</returns>
         public Result GetStatus()
         {
-            return vkGetSwapchainStatusKHR(Parent, this);
+            return vkGetSwapchainStatusKHR(this)(Parent, this);
         }
 
         internal static SwapchainKhr[] CreateSharedKhr(Device parent, SwapchainCreateInfoKhr[] createInfos,
@@ -179,7 +179,7 @@ namespace VulkanCore.Khr
         private static readonly vkCreateSharedSwapchainsKHRDelegate vkCreateSharedSwapchainsKHR = VulkanLibrary.GetStaticProc<vkCreateSharedSwapchainsKHRDelegate>(nameof(vkCreateSharedSwapchainsKHR));
 
         private delegate Result vkGetSwapchainStatusKHRDelegate(IntPtr device, long swapchain);
-        private static readonly vkGetSwapchainStatusKHRDelegate vkGetSwapchainStatusKHR = VulkanLibrary.GetStaticProc<vkGetSwapchainStatusKHRDelegate>(nameof(vkGetSwapchainStatusKHR));
+        private static vkGetSwapchainStatusKHRDelegate vkGetSwapchainStatusKHR(SwapchainKhr swapchain) => swapchain.Parent.GetProc<vkGetSwapchainStatusKHRDelegate>(nameof(vkGetSwapchainStatusKHR));
     }
 
     /// <summary>
