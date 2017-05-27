@@ -163,7 +163,7 @@ namespace VulkanCore
         /// </summary>
         /// <typeparam name="T">The type of object whose size is retrieved.</typeparam>
         /// <returns>The size of an object of type <typeparamref name="T"/>.</returns>
-        public static int SizeOf<T>() => Unsafe.SizeOf<T>();
+        public static int SizeOf<T>() => Marshal.SizeOf<T>();
 
         /// <summary>
         /// Casts the gived object to the specified type.

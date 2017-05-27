@@ -768,6 +768,26 @@ namespace VulkanCore.Khx
             PhysicalDeviceCount = physicalDevices?.Length ?? 0;
             PhysicalDevices = physicalDevices?.ToHandleArray();
         }
+		
+	    [StructLayout(LayoutKind.Sequential)]
+	    internal struct Native
+	    {
+		    public StructureType Type;
+		    public IntPtr Next;
+		    public int PhysicalDeviceCount;
+		    public IntPtr PhysicalDevices;
+	    }
+
+	    public unsafe IntPtr ToNative()
+	    {
+			Native* pNative = (Native*)Interop.Alloc<Native>();
+		    pNative->Type = Type;
+		    pNative->Next = Next;
+		    pNative->PhysicalDeviceCount = PhysicalDeviceCount;
+		    pNative->PhysicalDevices = Interop.Struct.AllocToPointer(PhysicalDevices);
+		    return (IntPtr) pNative;
+	    }
+
     }
 
     /// <summary>
