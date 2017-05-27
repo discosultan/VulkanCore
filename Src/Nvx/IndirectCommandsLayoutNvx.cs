@@ -21,7 +21,7 @@ namespace VulkanCore.Nvx
             {
                 createInfo.ToNative(out IndirectCommandsLayoutCreateInfoNvx.Native nativeCreateInfo, tokensPtr);
                 long handle;
-                Result result = vkCreateIndirectCommandsLayoutNVX(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateIndirectCommandsLayoutNVX(this)(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -37,15 +37,17 @@ namespace VulkanCore.Nvx
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) vkDestroyIndirectCommandsLayoutNVX(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyIndirectCommandsLayoutNVX(this)(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
         private delegate Result vkCreateIndirectCommandsLayoutNVXDelegate(IntPtr device, IndirectCommandsLayoutCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* indirectCommandsLayout);
-        private static readonly vkCreateIndirectCommandsLayoutNVXDelegate vkCreateIndirectCommandsLayoutNVX = VulkanLibrary.GetProc<vkCreateIndirectCommandsLayoutNVXDelegate>(nameof(vkCreateIndirectCommandsLayoutNVX));
+        private static vkCreateIndirectCommandsLayoutNVXDelegate vkCreateIndirectCommandsLayoutNVX(IndirectCommandsLayoutNvx indirectCommandsLayout) => GetProc<vkCreateIndirectCommandsLayoutNVXDelegate>(indirectCommandsLayout, nameof(vkCreateIndirectCommandsLayoutNVX));
 
         private delegate void vkDestroyIndirectCommandsLayoutNVXDelegate(IntPtr device, long indirectCommandsLayout, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyIndirectCommandsLayoutNVXDelegate vkDestroyIndirectCommandsLayoutNVX = VulkanLibrary.GetProc<vkDestroyIndirectCommandsLayoutNVXDelegate>(nameof(vkDestroyIndirectCommandsLayoutNVX));
+        private static vkDestroyIndirectCommandsLayoutNVXDelegate vkDestroyIndirectCommandsLayoutNVX(IndirectCommandsLayoutNvx indirectCommandsLayout) => GetProc<vkDestroyIndirectCommandsLayoutNVXDelegate>(indirectCommandsLayout, nameof(vkDestroyIndirectCommandsLayoutNVX));
+
+        private static TDelegate GetProc<TDelegate>(IndirectCommandsLayoutNvx indirectCommandsLayout, string name) where TDelegate : class => indirectCommandsLayout.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>
@@ -122,17 +124,14 @@ namespace VulkanCore.Nvx
         public IndirectCommandsTokenTypeNvx TokenType;
         /// <summary>
         /// Has a different meaning depending on the type.
-        /// <para>Must stay within device supported limits for the appropriate commands.</para>
         /// </summary>
         public int BindingUnit;
         /// <summary>
         /// Has a different meaning depending on the type.
-        /// <para>Must stay within device supported limits for the appropriate commands.</para>
         /// </summary>
         public int DynamicCount;
         /// <summary>
         /// Defines the rate at which the input data buffers are accessed.
-        /// <para>Must be greater than 0 and a power of two.</para>
         /// </summary>
         public int Divisor;
     }

@@ -42,10 +42,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateBufferViewDelegate(IntPtr device, BufferViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
-        private static readonly vkCreateBufferViewDelegate vkCreateBufferView = VulkanLibrary.GetProc<vkCreateBufferViewDelegate>(nameof(vkCreateBufferView));
+        private static readonly vkCreateBufferViewDelegate vkCreateBufferView = VulkanLibrary.GetStaticProc<vkCreateBufferViewDelegate>(nameof(vkCreateBufferView));
 
         private delegate void vkDestroyBufferViewDelegate(IntPtr device, long bufferView, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyBufferViewDelegate vkDestroyBufferView = VulkanLibrary.GetProc<vkDestroyBufferViewDelegate>(nameof(vkDestroyBufferView));
+        private static readonly vkDestroyBufferViewDelegate vkDestroyBufferView = VulkanLibrary.GetStaticProc<vkDestroyBufferViewDelegate>(nameof(vkDestroyBufferView));
     }
 
     /// <summary>

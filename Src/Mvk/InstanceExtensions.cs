@@ -34,7 +34,7 @@ namespace VulkanCore.Mvk
             }
 
             long handle;
-            Result result = vkCreateIOSSurfaceMVK(instance, &createInfo, nativeAllocator, &handle);
+            Result result = vkCreateIOSSurfaceMVK(instance)(instance, &createInfo, nativeAllocator, &handle);
 
             Interop.Free(nativeAllocator);
 
@@ -67,7 +67,7 @@ namespace VulkanCore.Mvk
             }
 
             long handle;
-            Result result = vkCreateMacOSSurfaceMVK(instance, &createInfo, nativeAllocator, &handle);
+            Result result = vkCreateMacOSSurfaceMVK(instance)(instance, &createInfo, nativeAllocator, &handle);
 
             Interop.Free(nativeAllocator);
 
@@ -76,10 +76,10 @@ namespace VulkanCore.Mvk
         }
 
         private delegate Result vkCreateIOSSurfaceMVKDelegate(IntPtr instance, IOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateIOSSurfaceMVKDelegate vkCreateIOSSurfaceMVK = VulkanLibrary.GetProc<vkCreateIOSSurfaceMVKDelegate>(nameof(vkCreateIOSSurfaceMVK));
+        private static vkCreateIOSSurfaceMVKDelegate vkCreateIOSSurfaceMVK(Instance instance) => instance.GetProc<vkCreateIOSSurfaceMVKDelegate>(nameof(vkCreateIOSSurfaceMVK));
 
         private delegate Result vkCreateMacOSSurfaceMVKDelegate(IntPtr instance, MacOSSurfaceCreateInfoMvk* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateMacOSSurfaceMVKDelegate vkCreateMacOSSurfaceMVK = VulkanLibrary.GetProc<vkCreateMacOSSurfaceMVKDelegate>(nameof(vkCreateMacOSSurfaceMVK));
+        private static vkCreateMacOSSurfaceMVKDelegate vkCreateMacOSSurfaceMVK(Instance instance) => instance.GetProc<vkCreateMacOSSurfaceMVKDelegate>(nameof(vkCreateMacOSSurfaceMVK));
     }
 
     /// <summary>

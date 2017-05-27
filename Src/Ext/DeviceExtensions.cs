@@ -23,14 +23,12 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void DebugMarkerSetObjectNameExt(this Device device, DebugMarkerObjectNameInfoExt nameInfo)
         {
-            var proc = device.GetProc<DebugMarkerSetObjectNameExtDelegate>("vkDebugMarkerSetObjectNameEXT");
-
             int nameByteCount = Interop.String.GetMaxByteCount(nameInfo.ObjectName);
             byte* nameBytes = stackalloc byte[nameByteCount];
             Interop.String.ToPointer(nameInfo.ObjectName, nameBytes, nameByteCount);
             nameInfo.ToNative(out DebugMarkerObjectNameInfoExt.Native nativeNameInfo, nameBytes);
 
-            Result result = proc(device, &nativeNameInfo);
+            Result result = vkDebugMarkerSetObjectNameEXT(device)(device, &nativeNameInfo);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -48,11 +46,10 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void DebugMarkerSetObjectTagExt(this Device device, DebugMarkerObjectTagInfoExt tagInfo)
         {
-            var proc = device.GetProc<DebugMarkerSetObjectTagExtDelegate>("vkDebugMarkerSetObjectTagEXT");
             fixed (byte* tagPtr = tagInfo.Tag)
             {
                 tagInfo.ToNative(out DebugMarkerObjectTagInfoExt.Native nativeTagInfo, tagPtr);
-                proc(device, &nativeTagInfo);
+                vkDebugMarkerSetObjectTagEXT(device)(device, &nativeTagInfo);
             }
         }
 
@@ -74,7 +71,7 @@ namespace VulkanCore.Ext
             DisplayPowerInfoExt displayPowerInfo)
         {
             displayPowerInfo.Prepare();
-            Result result = vkDisplayPowerControlEXT(device, display, &displayPowerInfo);
+            Result result = vkDisplayPowerControlEXT(device)(device, display, &displayPowerInfo);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -99,7 +96,7 @@ namespace VulkanCore.Ext
             }
 
             long handle;
-            Result result = vkRegisterDeviceEventEXT(device, &deviceEventInfo, nativeAllocator, &handle);
+            Result result = vkRegisterDeviceEventEXT(device)(device, &deviceEventInfo, nativeAllocator, &handle);
             Interop.Free(nativeAllocator);
             VulkanException.ThrowForInvalidResult(result);
             return new Fence(device, ref allocator, handle);
@@ -129,7 +126,7 @@ namespace VulkanCore.Ext
             }
 
             long handle;
-            Result result = vkRegisterDisplayEventEXT(device, display, &displayEventInfo, nativeAllocator, &handle);
+            Result result = vkRegisterDisplayEventEXT(device)(device, display, &displayEventInfo, nativeAllocator, &handle);
             Interop.Free(nativeAllocator);
             VulkanException.ThrowForInvalidResult(result);
             return new Fence(device, ref allocator, handle);
@@ -153,24 +150,26 @@ namespace VulkanCore.Ext
                 metadata[i].Prepare();
 
             fixed (HdrMetadataExt* metadataPtr = metadata)
-                vkSetHdrMetadataEXT(device, swapchainCount, swapchainPtrs, metadataPtr);
+                vkSetHdrMetadataEXT(device)(device, swapchainCount, swapchainPtrs, metadataPtr);
         }
 
-        private delegate Result DebugMarkerSetObjectNameExtDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
+        private delegate Result vkDebugMarkerSetObjectNameEXTDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
+        private static vkDebugMarkerSetObjectNameEXTDelegate vkDebugMarkerSetObjectNameEXT(Device device) => device.GetProc<vkDebugMarkerSetObjectNameEXTDelegate>(nameof(vkDebugMarkerSetObjectNameEXT));
 
-        private delegate Result DebugMarkerSetObjectTagExtDelegate(IntPtr device, DebugMarkerObjectTagInfoExt.Native* tagInfo);
+        private delegate Result vkDebugMarkerSetObjectTagEXTDelegate(IntPtr device, DebugMarkerObjectTagInfoExt.Native* tagInfo);
+        private static vkDebugMarkerSetObjectTagEXTDelegate vkDebugMarkerSetObjectTagEXT(Device device) => device.GetProc<vkDebugMarkerSetObjectTagEXTDelegate>(nameof(vkDebugMarkerSetObjectTagEXT));
 
         private delegate Result vkDisplayPowerControlEXTDelegate(IntPtr device, long display, DisplayPowerInfoExt* displayPowerInfo);
-        private static readonly vkDisplayPowerControlEXTDelegate vkDisplayPowerControlEXT = VulkanLibrary.GetProc<vkDisplayPowerControlEXTDelegate>(nameof(vkDisplayPowerControlEXT));
+        private static vkDisplayPowerControlEXTDelegate vkDisplayPowerControlEXT(Device device) => device.GetProc<vkDisplayPowerControlEXTDelegate>(nameof(vkDisplayPowerControlEXT));
 
         private delegate Result vkRegisterDisplayEventEXTDelegate(IntPtr device, long display, DisplayEventInfoExt* displayEventInfo, AllocationCallbacks.Native* allocator, long* fence);
-        private static readonly vkRegisterDisplayEventEXTDelegate vkRegisterDisplayEventEXT = VulkanLibrary.GetProc<vkRegisterDisplayEventEXTDelegate>(nameof(vkRegisterDisplayEventEXT));
+        private static vkRegisterDisplayEventEXTDelegate vkRegisterDisplayEventEXT(Device device) => device.GetProc<vkRegisterDisplayEventEXTDelegate>(nameof(vkRegisterDisplayEventEXT));
 
         private delegate Result vkRegisterDeviceEventEXTDelegate(IntPtr device, DeviceEventInfoExt* deviceEventInfo, AllocationCallbacks.Native* allocator, long* fence);
-        private static readonly vkRegisterDeviceEventEXTDelegate vkRegisterDeviceEventEXT = VulkanLibrary.GetProc<vkRegisterDeviceEventEXTDelegate>(nameof(vkRegisterDeviceEventEXT));
+        private static vkRegisterDeviceEventEXTDelegate vkRegisterDeviceEventEXT(Device device) => device.GetProc<vkRegisterDeviceEventEXTDelegate>(nameof(vkRegisterDeviceEventEXT));
 
         private delegate void vkSetHdrMetadataEXTDelegate(IntPtr device, int swapchainCount, long* swapchains, HdrMetadataExt* metadata);
-        private static readonly vkSetHdrMetadataEXTDelegate vkSetHdrMetadataEXT = VulkanLibrary.GetProc<vkSetHdrMetadataEXTDelegate>(nameof(vkSetHdrMetadataEXT));
+        private static vkSetHdrMetadataEXTDelegate vkSetHdrMetadataEXT(Device device) => device.GetProc<vkSetHdrMetadataEXTDelegate>(nameof(vkSetHdrMetadataEXT));
     }
 
     /// <summary>

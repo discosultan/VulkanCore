@@ -5,12 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace VulkanCore
 {
-    internal interface IGetProc
-    {
-        IntPtr GetProcAddr(string name);
-        TDelegate GetProc<TDelegate>(string name) where TDelegate : class;
-    }
-
     internal static class VulkanLibrary
     {
         private static readonly IntPtr _handle;
@@ -36,7 +30,7 @@ namespace VulkanCore
                 throw new NotImplementedException("Vulkan native library was not found.");
         }
 
-        public static TDelegate GetProc<TDelegate>(string procName)
+        public static TDelegate GetStaticProc<TDelegate>(string procName)
             where TDelegate : class
         {
             IntPtr handle;

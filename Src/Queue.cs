@@ -178,13 +178,13 @@ namespace VulkanCore
         }
 
         private delegate Result vkQueueSubmitDelegate(IntPtr queue, int submitCount, SubmitInfo.Native* submits, long fence);
-        private static readonly vkQueueSubmitDelegate vkQueueSubmit = VulkanLibrary.GetProc<vkQueueSubmitDelegate>(nameof(vkQueueSubmit));
+        private static readonly vkQueueSubmitDelegate vkQueueSubmit = VulkanLibrary.GetStaticProc<vkQueueSubmitDelegate>(nameof(vkQueueSubmit));
 
         private delegate Result vkQueueWaitIdleDelegate(IntPtr queue);
-        private static readonly vkQueueWaitIdleDelegate vkQueueWaitIdle = VulkanLibrary.GetProc<vkQueueWaitIdleDelegate>(nameof(vkQueueWaitIdle));
+        private static readonly vkQueueWaitIdleDelegate vkQueueWaitIdle = VulkanLibrary.GetStaticProc<vkQueueWaitIdleDelegate>(nameof(vkQueueWaitIdle));
 
         private delegate Result vkQueueBindSparseDelegate(IntPtr queue, int bindInfoCount, BindSparseInfo.Native* bindInfo, long fence);
-        private static readonly vkQueueBindSparseDelegate vkQueueBindSparse = VulkanLibrary.GetProc<vkQueueBindSparseDelegate>(nameof(vkQueueBindSparse));
+        private static readonly vkQueueBindSparseDelegate vkQueueBindSparse = VulkanLibrary.GetStaticProc<vkQueueBindSparseDelegate>(nameof(vkQueueBindSparse));
     }
 
     /// <summary>

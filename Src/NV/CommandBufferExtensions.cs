@@ -20,11 +20,14 @@ namespace VulkanCore.NV
             int firstViewport, ViewportWScalingNV[] viewportWScalings)
         {
             fixed (ViewportWScalingNV* viewportWScalingsPtr = viewportWScalings)
-                vkCmdSetViewportWScalingNV(commandBuffer, firstViewport, viewportWScalings?.Length ?? 0, viewportWScalingsPtr);
+            {
+                vkCmdSetViewportWScalingNV(commandBuffer)
+                    (commandBuffer, firstViewport, viewportWScalings?.Length ?? 0, viewportWScalingsPtr);
+            }
         }
 
         private delegate void vkCmdSetViewportWScalingNVDelegate(IntPtr commandBuffer, int firstViewport, int viewportCount, ViewportWScalingNV* viewportWScalings);
-        private static readonly vkCmdSetViewportWScalingNVDelegate vkCmdSetViewportWScalingNV = VulkanLibrary.GetProc<vkCmdSetViewportWScalingNVDelegate>(nameof(vkCmdSetViewportWScalingNV));
+        private static vkCmdSetViewportWScalingNVDelegate vkCmdSetViewportWScalingNV(CommandBuffer commandBuffer) => commandBuffer.Parent.Parent.GetProc<vkCmdSetViewportWScalingNVDelegate>(nameof(vkCmdSetViewportWScalingNV));
     }
 
     /// <summary>
@@ -115,7 +118,13 @@ namespace VulkanCore.NV
     [StructLayout(LayoutKind.Sequential)]
     public struct Win32KeyedMutexAcquireReleaseInfoNV
     {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
         public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
         public IntPtr Next;
         /// <summary>
         /// the number of entries in the <see cref="AcquireSyncs"/>, <see cref="AcquireKeys"/>, and

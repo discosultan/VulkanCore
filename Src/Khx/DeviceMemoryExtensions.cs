@@ -40,10 +40,10 @@ namespace VulkanCore.Khx
         }
 
         private delegate Result vkGetMemoryWin32HandleKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
-        private static readonly vkGetMemoryWin32HandleKHXDelegate vkGetMemoryWin32HandleKHX = VulkanLibrary.GetProc<vkGetMemoryWin32HandleKHXDelegate>(nameof(vkGetMemoryWin32HandleKHX));
+        private static readonly vkGetMemoryWin32HandleKHXDelegate vkGetMemoryWin32HandleKHX = VulkanLibrary.GetStaticProc<vkGetMemoryWin32HandleKHXDelegate>(nameof(vkGetMemoryWin32HandleKHX));
 
         private delegate Result vkGetMemoryFdKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
-        private static readonly vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX = VulkanLibrary.GetProc<vkGetMemoryFdKHXDelegate>(nameof(vkGetMemoryFdKHX));
+        private static readonly vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX = VulkanLibrary.GetStaticProc<vkGetMemoryFdKHXDelegate>(nameof(vkGetMemoryFdKHX));
     }
 
     [StructLayout(LayoutKind.Sequential)]

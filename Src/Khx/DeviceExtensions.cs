@@ -200,34 +200,34 @@ namespace VulkanCore.Khx
         }
 
         private delegate Result vkGetMemoryWin32HandlePropertiesKHXDelegate(IntPtr device, ExternalMemoryHandleTypesKhx handleType, IntPtr handle, MemoryWin32HandlePropertiesKhx* memoryWin32HandleProperties);
-        private static readonly vkGetMemoryWin32HandlePropertiesKHXDelegate vkGetMemoryWin32HandlePropertiesKHX = VulkanLibrary.GetProc<vkGetMemoryWin32HandlePropertiesKHXDelegate>(nameof(vkGetMemoryWin32HandlePropertiesKHX));
+        private static readonly vkGetMemoryWin32HandlePropertiesKHXDelegate vkGetMemoryWin32HandlePropertiesKHX = VulkanLibrary.GetStaticProc<vkGetMemoryWin32HandlePropertiesKHXDelegate>(nameof(vkGetMemoryWin32HandlePropertiesKHX));
 
         private delegate Result vkGetMemoryFdPropertiesKHXDelegate(IntPtr device, ExternalMemoryHandleTypesKhx handleType, int fd, MemoryFdPropertiesKhx* memoryFdProperties);
-        private static readonly vkGetMemoryFdPropertiesKHXDelegate vkGetMemoryFdPropertiesKHX = VulkanLibrary.GetProc<vkGetMemoryFdPropertiesKHXDelegate>(nameof(vkGetMemoryFdPropertiesKHX));
+        private static readonly vkGetMemoryFdPropertiesKHXDelegate vkGetMemoryFdPropertiesKHX = VulkanLibrary.GetStaticProc<vkGetMemoryFdPropertiesKHXDelegate>(nameof(vkGetMemoryFdPropertiesKHX));
 
         private delegate Result vkImportSemaphoreWin32HandleKHXDelegate(IntPtr device, ImportSemaphoreWin32HandleInfoKhx.Native* importSemaphoreWin32HandleInfo);
-        private static readonly vkImportSemaphoreWin32HandleKHXDelegate vkImportSemaphoreWin32HandleKHX = VulkanLibrary.GetProc<vkImportSemaphoreWin32HandleKHXDelegate>(nameof(vkImportSemaphoreWin32HandleKHX));
+        private static readonly vkImportSemaphoreWin32HandleKHXDelegate vkImportSemaphoreWin32HandleKHX = VulkanLibrary.GetStaticProc<vkImportSemaphoreWin32HandleKHXDelegate>(nameof(vkImportSemaphoreWin32HandleKHX));
 
         private delegate Result vkImportSemaphoreFdKHXDelegate(IntPtr device, ImportSemaphoreFdInfoKhx.Native* importSemaphoreFdInfo);
-        private static readonly vkImportSemaphoreFdKHXDelegate vkImportSemaphoreFdKHX = VulkanLibrary.GetProc<vkImportSemaphoreFdKHXDelegate>(nameof(vkImportSemaphoreFdKHX));
+        private static readonly vkImportSemaphoreFdKHXDelegate vkImportSemaphoreFdKHX = VulkanLibrary.GetStaticProc<vkImportSemaphoreFdKHXDelegate>(nameof(vkImportSemaphoreFdKHX));
 
         private delegate void vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate(IntPtr device, int heapIndex, int localDeviceIndex, int remoteDeviceIndex, PeerMemoryFeaturesKhx* peerMemoryFeatures);
-        private static readonly vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate vkGetDeviceGroupPeerMemoryFeaturesKHX = VulkanLibrary.GetProc<vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate>(nameof(vkGetDeviceGroupPeerMemoryFeaturesKHX));
+        private static readonly vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate vkGetDeviceGroupPeerMemoryFeaturesKHX = VulkanLibrary.GetStaticProc<vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate>(nameof(vkGetDeviceGroupPeerMemoryFeaturesKHX));
 
         private delegate Result vkBindBufferMemory2KHXDelegate(IntPtr device, int bindInfoCount, BindBufferMemoryInfoKhx.Native* bindInfos);
-        private static readonly vkBindBufferMemory2KHXDelegate vkBindBufferMemory2KHX = VulkanLibrary.GetProc<vkBindBufferMemory2KHXDelegate>(nameof(vkBindBufferMemory2KHX));
+        private static readonly vkBindBufferMemory2KHXDelegate vkBindBufferMemory2KHX = VulkanLibrary.GetStaticProc<vkBindBufferMemory2KHXDelegate>(nameof(vkBindBufferMemory2KHX));
 
         private delegate Result vkBindImageMemory2KHXDelegate(IntPtr device, int bindInfoCount, BindImageMemoryInfoKhx.Native* bindInfos);
-        private static readonly vkBindImageMemory2KHXDelegate vkBindImageMemory2KHX = VulkanLibrary.GetProc<vkBindImageMemory2KHXDelegate>(nameof(vkBindImageMemory2KHX));
+        private static readonly vkBindImageMemory2KHXDelegate vkBindImageMemory2KHX = VulkanLibrary.GetStaticProc<vkBindImageMemory2KHXDelegate>(nameof(vkBindImageMemory2KHX));
 
         private delegate Result vkGetDeviceGroupPresentCapabilitiesKHXDelegate(IntPtr device, DeviceGroupPresentCapabilitiesKhx* deviceGroupPresentCapabilities);
-        private static readonly vkGetDeviceGroupPresentCapabilitiesKHXDelegate vkGetDeviceGroupPresentCapabilitiesKHX = VulkanLibrary.GetProc<vkGetDeviceGroupPresentCapabilitiesKHXDelegate>(nameof(vkGetDeviceGroupPresentCapabilitiesKHX));
+        private static readonly vkGetDeviceGroupPresentCapabilitiesKHXDelegate vkGetDeviceGroupPresentCapabilitiesKHX = VulkanLibrary.GetStaticProc<vkGetDeviceGroupPresentCapabilitiesKHXDelegate>(nameof(vkGetDeviceGroupPresentCapabilitiesKHX));
 
         private delegate Result vkAcquireNextImage2KHXDelegate(IntPtr device, AcquireNextImageInfoKhx* acquireInfo, int* imageIndex);
-        private static readonly vkAcquireNextImage2KHXDelegate vkAcquireNextImage2KHX = VulkanLibrary.GetProc<vkAcquireNextImage2KHXDelegate>(nameof(vkAcquireNextImage2KHX));
+        private static readonly vkAcquireNextImage2KHXDelegate vkAcquireNextImage2KHX = VulkanLibrary.GetStaticProc<vkAcquireNextImage2KHXDelegate>(nameof(vkAcquireNextImage2KHX));
 
         private delegate Result vkGetDeviceGroupSurfacePresentModesKHXDelegate(IntPtr device, long surface, DeviceGroupPresentModesKhx* modes);
-        private static readonly vkGetDeviceGroupSurfacePresentModesKHXDelegate vkGetDeviceGroupSurfacePresentModesKHX = VulkanLibrary.GetProc<vkGetDeviceGroupSurfacePresentModesKHXDelegate>(nameof(vkGetDeviceGroupSurfacePresentModesKHX));
+        private static readonly vkGetDeviceGroupSurfacePresentModesKHXDelegate vkGetDeviceGroupSurfacePresentModesKHX = VulkanLibrary.GetStaticProc<vkGetDeviceGroupSurfacePresentModesKHXDelegate>(nameof(vkGetDeviceGroupSurfacePresentModesKHX));
     }
 
     /// <summary>

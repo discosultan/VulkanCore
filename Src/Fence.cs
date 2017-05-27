@@ -131,19 +131,19 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateFenceDelegate(IntPtr device, FenceCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* fence);
-        private static readonly vkCreateFenceDelegate vkCreateFence = VulkanLibrary.GetProc<vkCreateFenceDelegate>(nameof(vkCreateFence));
+        private static readonly vkCreateFenceDelegate vkCreateFence = VulkanLibrary.GetStaticProc<vkCreateFenceDelegate>(nameof(vkCreateFence));
 
         private delegate void vkDestroyFenceDelegate(IntPtr device, long fence, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyFenceDelegate vkDestroyFence = VulkanLibrary.GetProc<vkDestroyFenceDelegate>(nameof(vkDestroyFence));
+        private static readonly vkDestroyFenceDelegate vkDestroyFence = VulkanLibrary.GetStaticProc<vkDestroyFenceDelegate>(nameof(vkDestroyFence));
 
         private delegate Result vkResetFencesDelegate(IntPtr device, int fenceCount, long* fences);
-        private static readonly vkResetFencesDelegate vkResetFences = VulkanLibrary.GetProc<vkResetFencesDelegate>(nameof(vkResetFences));
+        private static readonly vkResetFencesDelegate vkResetFences = VulkanLibrary.GetStaticProc<vkResetFencesDelegate>(nameof(vkResetFences));
 
         private delegate Result vkWaitForFencesDelegate(IntPtr device, int fenceCount, long* fences, Bool waitAll, long timeout);
-        private static readonly vkWaitForFencesDelegate vkWaitForFences = VulkanLibrary.GetProc<vkWaitForFencesDelegate>(nameof(vkWaitForFences));
+        private static readonly vkWaitForFencesDelegate vkWaitForFences = VulkanLibrary.GetStaticProc<vkWaitForFencesDelegate>(nameof(vkWaitForFences));
 
         private delegate Result vkGetFenceStatusDelegate(IntPtr device, long fence);
-        private static readonly vkGetFenceStatusDelegate vkGetFenceStatus = VulkanLibrary.GetProc<vkGetFenceStatusDelegate>(nameof(vkGetFenceStatus));
+        private static readonly vkGetFenceStatusDelegate vkGetFenceStatus = VulkanLibrary.GetStaticProc<vkGetFenceStatusDelegate>(nameof(vkGetFenceStatus));
     }
 
     /// <summary>

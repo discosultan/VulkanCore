@@ -44,10 +44,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateDescriptorSetLayoutDelegate(IntPtr device, DescriptorSetLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* setLayout);
-        private static readonly vkCreateDescriptorSetLayoutDelegate vkCreateDescriptorSetLayout = VulkanLibrary.GetProc<vkCreateDescriptorSetLayoutDelegate>(nameof(vkCreateDescriptorSetLayout));
+        private static readonly vkCreateDescriptorSetLayoutDelegate vkCreateDescriptorSetLayout = VulkanLibrary.GetStaticProc<vkCreateDescriptorSetLayoutDelegate>(nameof(vkCreateDescriptorSetLayout));
 
         private delegate void vkDestroyDescriptorSetLayoutDelegate(IntPtr device, long descriptorSetLayout, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyDescriptorSetLayoutDelegate vkDestroyDescriptorSetLayout = VulkanLibrary.GetProc<vkDestroyDescriptorSetLayoutDelegate>(nameof(vkDestroyDescriptorSetLayout));
+        private static readonly vkDestroyDescriptorSetLayoutDelegate vkDestroyDescriptorSetLayout = VulkanLibrary.GetStaticProc<vkDestroyDescriptorSetLayoutDelegate>(nameof(vkDestroyDescriptorSetLayout));
     }
 
     /// <summary>

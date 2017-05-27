@@ -38,9 +38,9 @@ namespace VulkanCore.Khx
         }
 
         private delegate Result vkGetSemaphoreWin32HandleKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhx handleType, IntPtr* handle);
-        private static readonly vkGetSemaphoreWin32HandleKHXDelegate vkGetSemaphoreWin32HandleKHX = VulkanLibrary.GetProc<vkGetSemaphoreWin32HandleKHXDelegate>(nameof(vkGetSemaphoreWin32HandleKHX));
+        private static readonly vkGetSemaphoreWin32HandleKHXDelegate vkGetSemaphoreWin32HandleKHX = VulkanLibrary.GetStaticProc<vkGetSemaphoreWin32HandleKHXDelegate>(nameof(vkGetSemaphoreWin32HandleKHX));
 
         private delegate Result vkGetSemaphoreFdKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhx handleType, int* fd);
-        private static readonly vkGetSemaphoreFdKHXDelegate vkGetSemaphoreFdKHX = VulkanLibrary.GetProc<vkGetSemaphoreFdKHXDelegate>(nameof(vkGetSemaphoreFdKHX));
+        private static readonly vkGetSemaphoreFdKHXDelegate vkGetSemaphoreFdKHX = VulkanLibrary.GetStaticProc<vkGetSemaphoreFdKHXDelegate>(nameof(vkGetSemaphoreFdKHX));
     }
 }

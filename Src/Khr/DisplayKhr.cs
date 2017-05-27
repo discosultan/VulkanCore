@@ -38,6 +38,6 @@ namespace VulkanCore.Khr
         }
 
         private delegate Result vkGetDisplayModePropertiesKHRDelegate(IntPtr physicalDevice, long display, int* propertyCount, DisplayModePropertiesKhr* properties);
-        private static readonly vkGetDisplayModePropertiesKHRDelegate vkGetDisplayModePropertiesKHR = VulkanLibrary.GetProc<vkGetDisplayModePropertiesKHRDelegate>(nameof(vkGetDisplayModePropertiesKHR));
+        private static readonly vkGetDisplayModePropertiesKHRDelegate vkGetDisplayModePropertiesKHR = VulkanLibrary.GetStaticProc<vkGetDisplayModePropertiesKHRDelegate>(nameof(vkGetDisplayModePropertiesKHR));
     }
 }

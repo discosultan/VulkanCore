@@ -34,7 +34,7 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void AcquireXlibDisplayExt(this DisplayKhr display, IntPtr dpy)
         {
-            Result result = vkAcquireXlibDisplayEXT(display.Parent, &dpy, display);
+            Result result = vkAcquireXlibDisplayEXT(display)(display.Parent, &dpy, display);
             VulkanException.ThrowForInvalidResult(result);
         }
 
@@ -45,14 +45,16 @@ namespace VulkanCore.Ext
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
         public static void ReleaseDisplayExt(this DisplayKhr display)
         {
-            Result result = vkReleaseDisplayEXT(display.Parent, display);
+            Result result = vkReleaseDisplayEXT(display)(display.Parent, display);
             VulkanException.ThrowForInvalidResult(result);
         }
 
         private delegate Result vkAcquireXlibDisplayEXTDelegate(IntPtr physicalDevice, IntPtr* dpy, long display);
-        private static readonly vkAcquireXlibDisplayEXTDelegate vkAcquireXlibDisplayEXT = VulkanLibrary.GetProc<vkAcquireXlibDisplayEXTDelegate>(nameof(vkAcquireXlibDisplayEXT));
+        private static vkAcquireXlibDisplayEXTDelegate vkAcquireXlibDisplayEXT(DisplayKhr display) => GetProc<vkAcquireXlibDisplayEXTDelegate>(display, nameof(vkAcquireXlibDisplayEXT));
 
         private delegate Result vkReleaseDisplayEXTDelegate(IntPtr physicalDevice, long display);
-        private static readonly vkReleaseDisplayEXTDelegate vkReleaseDisplayEXT = VulkanLibrary.GetProc<vkReleaseDisplayEXTDelegate>(nameof(vkReleaseDisplayEXT));
+        private static vkReleaseDisplayEXTDelegate vkReleaseDisplayEXT(DisplayKhr display) => GetProc<vkReleaseDisplayEXTDelegate>(display, nameof(vkReleaseDisplayEXT));
+
+        private static TDelegate GetProc<TDelegate>(DisplayKhr display, string name) where TDelegate : class => display.Parent.Parent.GetProc<TDelegate>(name);
     }
 }

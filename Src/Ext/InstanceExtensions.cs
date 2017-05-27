@@ -61,13 +61,13 @@ namespace VulkanCore.Ext
             var messageBytes = stackalloc byte[byteCount];
             Interop.String.ToPointer(message, messageBytes, byteCount);
 
-            var debugReportMessageExt = instance.GetProc<DebugReportMessageExtDelegate>("vkDebugReportMessageEXT");
-            debugReportMessageExt(instance,
-                flags, objectType, @object, location, messageCode, layerPrefixBytes, messageBytes);
+            vkDebugReportMessageEXT(instance)
+                (instance, flags, objectType, @object, location, messageCode, layerPrefixBytes, messageBytes);
         }
 
-        private delegate void DebugReportMessageExtDelegate(IntPtr instance, DebugReportFlagsExt flags,
+        private delegate void vkDebugReportMessageEXTDelegate(IntPtr instance, DebugReportFlagsExt flags,
             DebugReportObjectTypeExt objectType, long @object, IntPtr location, int messageCode, byte* layerPrefix, byte* message);
+        private static vkDebugReportMessageEXTDelegate vkDebugReportMessageEXT(Instance instance) => instance.GetProc<vkDebugReportMessageEXTDelegate>(nameof(vkDebugReportMessageEXT));
     }
 
     /// <summary>

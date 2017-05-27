@@ -54,10 +54,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreatePipelineLayoutDelegate(IntPtr device, PipelineLayoutCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineLayout);
-        private static readonly vkCreatePipelineLayoutDelegate vkCreatePipelineLayout = VulkanLibrary.GetProc<vkCreatePipelineLayoutDelegate>(nameof(vkCreatePipelineLayout));
+        private static readonly vkCreatePipelineLayoutDelegate vkCreatePipelineLayout = VulkanLibrary.GetStaticProc<vkCreatePipelineLayoutDelegate>(nameof(vkCreatePipelineLayout));
 
         private delegate void vkDestroyPipelineLayoutDelegate(IntPtr device, long pipelineLayout, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyPipelineLayoutDelegate vkDestroyPipelineLayout = VulkanLibrary.GetProc<vkDestroyPipelineLayoutDelegate>(nameof(vkDestroyPipelineLayout));
+        private static readonly vkDestroyPipelineLayoutDelegate vkDestroyPipelineLayout = VulkanLibrary.GetStaticProc<vkDestroyPipelineLayoutDelegate>(nameof(vkDestroyPipelineLayout));
     }
 
     /// <summary>

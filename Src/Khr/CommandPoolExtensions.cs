@@ -21,7 +21,7 @@ namespace VulkanCore.Khr
         }
 
         private delegate void vkTrimCommandPoolKHRDelegate(IntPtr device, long commandPool, CommandPoolTrimFlags flags);
-        private static readonly vkTrimCommandPoolKHRDelegate vkTrimCommandPoolKHR = VulkanLibrary.GetProc<vkTrimCommandPoolKHRDelegate>(nameof(vkTrimCommandPoolKHR));
+        private static readonly vkTrimCommandPoolKHRDelegate vkTrimCommandPoolKHR = VulkanLibrary.GetStaticProc<vkTrimCommandPoolKHRDelegate>(nameof(vkTrimCommandPoolKHR));
     }
 
     // Is reserved for future use.

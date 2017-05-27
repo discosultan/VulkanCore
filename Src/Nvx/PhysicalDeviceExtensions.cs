@@ -20,12 +20,12 @@ namespace VulkanCore.Nvx
         {
             DeviceGeneratedCommandsFeaturesNvx features;
             DeviceGeneratedCommandsLimitsNvx limits;
-            vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX(physicalDevice, &features, &limits);
+            vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX(physicalDevice)(physicalDevice, &features, &limits);
             return (features, limits);
         }
 
         private delegate void vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate(IntPtr physicalDevice, DeviceGeneratedCommandsFeaturesNvx* features, DeviceGeneratedCommandsLimitsNvx* limits);
-        private static readonly vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX = VulkanLibrary.GetProc<vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate>(nameof(vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX));
+        private static vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX(PhysicalDevice physicalDevice) => physicalDevice.Parent.GetProc<vkGetPhysicalDeviceGeneratedCommandsPropertiesNVXDelegate>(nameof(vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX));
     }
 
     /// <summary>

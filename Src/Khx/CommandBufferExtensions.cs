@@ -38,10 +38,10 @@ namespace VulkanCore.Khx
         }
 
         private delegate void vkCmdSetDeviceMaskKHXDelegate(IntPtr commandBuffer, int deviceMask);
-        private static readonly vkCmdSetDeviceMaskKHXDelegate vkCmdSetDeviceMaskKHX = VulkanLibrary.GetProc<vkCmdSetDeviceMaskKHXDelegate>(nameof(vkCmdSetDeviceMaskKHX));
+        private static readonly vkCmdSetDeviceMaskKHXDelegate vkCmdSetDeviceMaskKHX = VulkanLibrary.GetStaticProc<vkCmdSetDeviceMaskKHXDelegate>(nameof(vkCmdSetDeviceMaskKHX));
 
         private delegate void vkCmdDispatchBaseKHXDelegate(IntPtr commandBuffer, int baseGroupX, int baseGroupY, int baseGroupZ, int groupCountX, int groupCountY, int groupCountZ);
-        private static readonly vkCmdDispatchBaseKHXDelegate vkCmdDispatchBaseKHX = VulkanLibrary.GetProc<vkCmdDispatchBaseKHXDelegate>(nameof(vkCmdDispatchBaseKHX));
+        private static readonly vkCmdDispatchBaseKHXDelegate vkCmdDispatchBaseKHX = VulkanLibrary.GetStaticProc<vkCmdDispatchBaseKHXDelegate>(nameof(vkCmdDispatchBaseKHX));
     }
 
     /// <summary>

@@ -40,10 +40,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateSamplerDelegate(IntPtr device, SamplerCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* sampler);
-        private static readonly vkCreateSamplerDelegate vkCreateSampler = VulkanLibrary.GetProc<vkCreateSamplerDelegate>(nameof(vkCreateSampler));
+        private static readonly vkCreateSamplerDelegate vkCreateSampler = VulkanLibrary.GetStaticProc<vkCreateSamplerDelegate>(nameof(vkCreateSampler));
 
         private delegate void vkDestroySamplerDelegate(IntPtr device, long sampler, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroySamplerDelegate vkDestroySampler = VulkanLibrary.GetProc<vkDestroySamplerDelegate>(nameof(vkDestroySampler));
+        private static readonly vkDestroySamplerDelegate vkDestroySampler = VulkanLibrary.GetStaticProc<vkDestroySamplerDelegate>(nameof(vkDestroySampler));
     }
 
     /// <summary>

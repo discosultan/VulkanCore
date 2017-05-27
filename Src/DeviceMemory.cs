@@ -126,19 +126,19 @@ namespace VulkanCore
         }
 
         private delegate Result vkAllocateMemoryDelegate(IntPtr device, MemoryAllocateInfo* allocateInfo, AllocationCallbacks.Native* allocator, long* memory);
-        private static readonly vkAllocateMemoryDelegate vkAllocateMemory = VulkanLibrary.GetProc<vkAllocateMemoryDelegate>(nameof(vkAllocateMemory));
+        private static readonly vkAllocateMemoryDelegate vkAllocateMemory = VulkanLibrary.GetStaticProc<vkAllocateMemoryDelegate>(nameof(vkAllocateMemory));
 
         private delegate void vkFreeMemoryDelegate(IntPtr device, long memory, AllocationCallbacks.Native* allocator);
-        private static readonly vkFreeMemoryDelegate vkFreeMemory = VulkanLibrary.GetProc<vkFreeMemoryDelegate>(nameof(vkFreeMemory));
+        private static readonly vkFreeMemoryDelegate vkFreeMemory = VulkanLibrary.GetStaticProc<vkFreeMemoryDelegate>(nameof(vkFreeMemory));
 
         private delegate Result vkMapMemoryDelegate(IntPtr device, long memory, long offset, long size, MemoryMapFlags flags, IntPtr* data);
-        private static readonly vkMapMemoryDelegate vkMapMemory = VulkanLibrary.GetProc<vkMapMemoryDelegate>(nameof(vkMapMemory));
+        private static readonly vkMapMemoryDelegate vkMapMemory = VulkanLibrary.GetStaticProc<vkMapMemoryDelegate>(nameof(vkMapMemory));
 
         private delegate void vkUnmapMemoryDelegate(IntPtr device, long memory);
-        private static readonly vkUnmapMemoryDelegate vkUnmapMemory = VulkanLibrary.GetProc<vkUnmapMemoryDelegate>(nameof(vkUnmapMemory));
+        private static readonly vkUnmapMemoryDelegate vkUnmapMemory = VulkanLibrary.GetStaticProc<vkUnmapMemoryDelegate>(nameof(vkUnmapMemory));
 
         private delegate void vkGetDeviceMemoryCommitmentDelegate(IntPtr device, long memory, long* committedMemoryInBytes);
-        private static readonly vkGetDeviceMemoryCommitmentDelegate vkGetDeviceMemoryCommitment = VulkanLibrary.GetProc<vkGetDeviceMemoryCommitmentDelegate>(nameof(vkGetDeviceMemoryCommitment));
+        private static readonly vkGetDeviceMemoryCommitmentDelegate vkGetDeviceMemoryCommitment = VulkanLibrary.GetStaticProc<vkGetDeviceMemoryCommitmentDelegate>(nameof(vkGetDeviceMemoryCommitment));
     }
 
     /// <summary>

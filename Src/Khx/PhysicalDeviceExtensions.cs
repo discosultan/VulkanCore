@@ -70,13 +70,13 @@ namespace VulkanCore.Khx
         }
 
         private delegate void vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate(IntPtr physicalDevice, PhysicalDeviceExternalBufferInfoKhx* externalBufferInfo, ExternalBufferPropertiesKhx* externalBufferProperties);
-        private static readonly vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate vkGetPhysicalDeviceExternalBufferPropertiesKHX = VulkanLibrary.GetProc<vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate>(nameof(vkGetPhysicalDeviceExternalBufferPropertiesKHX));
+        private static readonly vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate vkGetPhysicalDeviceExternalBufferPropertiesKHX = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate>(nameof(vkGetPhysicalDeviceExternalBufferPropertiesKHX));
 
         private delegate void vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate(IntPtr physicalDevice, PhysicalDeviceExternalSemaphoreInfoKhx* externalSemaphoreInfo, ExternalSemaphorePropertiesKhx* externalSemaphoreProperties);
-        private static readonly vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate vkGetPhysicalDeviceExternalSemaphorePropertiesKHX = VulkanLibrary.GetProc<vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate>(nameof(vkGetPhysicalDeviceExternalSemaphorePropertiesKHX));
+        private static readonly vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate vkGetPhysicalDeviceExternalSemaphorePropertiesKHX = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate>(nameof(vkGetPhysicalDeviceExternalSemaphorePropertiesKHX));
 
         private delegate Result vkGetPhysicalDevicePresentRectanglesKHXDelegate(IntPtr physicalDevice, long surface, int* rectCount, Rect2D* rects);
-        private static readonly vkGetPhysicalDevicePresentRectanglesKHXDelegate vkGetPhysicalDevicePresentRectanglesKHX = VulkanLibrary.GetProc<vkGetPhysicalDevicePresentRectanglesKHXDelegate>(nameof(vkGetPhysicalDevicePresentRectanglesKHX));
+        private static readonly vkGetPhysicalDevicePresentRectanglesKHXDelegate vkGetPhysicalDevicePresentRectanglesKHX = VulkanLibrary.GetStaticProc<vkGetPhysicalDevicePresentRectanglesKHXDelegate>(nameof(vkGetPhysicalDevicePresentRectanglesKHX));
     }
 
     /// <summary>
