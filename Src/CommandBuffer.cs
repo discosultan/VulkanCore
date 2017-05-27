@@ -2364,11 +2364,13 @@ namespace VulkanCore
         /// The <see cref="VulkanCore.RenderPass"/> to begin an instance of.
         /// </summary>
         public long RenderPass;
+
         /// <summary>
         /// The <see cref="VulkanCore.Framebuffer"/> containing the attachments that are used with
         /// the render pass.
         /// </summary>
         public long Framebuffer;
+
         /// <summary>
         /// The render area that is affected by the render pass instance.
         /// <para>
@@ -2382,6 +2384,7 @@ namespace VulkanCore
         /// </para>
         /// </summary>
         public Rect2D RenderArea;
+
         /// <summary>
         /// An array of <see cref="ClearValue"/> structures that contains clear values for each
         /// attachment, if the attachment uses a <see cref="AttachmentDescription.LoadOp"/> value of
@@ -2413,6 +2416,32 @@ namespace VulkanCore
         public RenderPassBeginInfo(Framebuffer framebuffer, Rect2D renderArea, params ClearValue[] clearValues)
         {
             RenderPass = framebuffer.RenderPass;
+            Framebuffer = framebuffer;
+            RenderArea = renderArea;
+            ClearValues = clearValues;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RenderPassBeginInfo"/> structure.
+        /// </summary>
+        /// <param name="framebuffer">
+        /// The <see cref="VulkanCore.Framebuffer"/> containing the attachments that are used with
+        /// the render pass.
+        /// </param>
+        /// <param name="renderPass">The <see cref="VulkanCore.RenderPass"/> to use.</param>
+        /// <param name="renderArea">The render area that is affected by the render pass instance.</param>
+        /// <param name="clearValues">
+        /// An array of <see cref="ClearValue"/> structures that contains clear values for each
+        /// attachment, if the attachment uses a <see cref="AttachmentDescription.LoadOp"/> value of
+        /// <see cref="AttachmentLoadOp.Clear"/> or if the attachment has a depth/stencil format and
+        /// uses a <see cref="AttachmentDescription.StencilLoadOp"/> value of <see
+        /// cref="AttachmentLoadOp.Clear"/>. The array is indexed by attachment number. Only elements
+        /// corresponding to cleared attachments are used. Other elements of <see
+        /// cref="ClearValues"/> are ignored.
+        /// </param>
+        public RenderPassBeginInfo(Framebuffer framebuffer, RenderPass renderPass, Rect2D renderArea, params ClearValue[] clearValues)
+        {
+            RenderPass = renderPass;
             Framebuffer = framebuffer;
             RenderArea = renderArea;
             ClearValues = clearValues;
