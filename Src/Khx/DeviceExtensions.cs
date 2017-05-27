@@ -860,21 +860,12 @@ namespace VulkanCore.Khx
     /// <summary>
     /// Create a logical device from multiple physical devices.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DeviceGroupDeviceCreateInfoKhx
+    public unsafe struct DeviceGroupDeviceCreateInfoKhx
     {
-        /// <summary>
-        /// The type of this structure.
-        /// </summary>
-        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
-        /// <summary>
-        /// The number of elements in the <see cref="PhysicalDevices"/> array.
-        /// </summary>
-        public int PhysicalDeviceCount;
         /// <summary>
         /// An array of <see cref="PhysicalDevice"/> handles belonging to the same device group.
         /// </summary>
@@ -891,10 +882,33 @@ namespace VulkanCore.Khx
         /// </param>
         public DeviceGroupDeviceCreateInfoKhx(PhysicalDevice[] physicalDevices, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupDeviceCreateInfoKhx;
             Next = next;
-            PhysicalDeviceCount = physicalDevices?.Length ?? 0;
             PhysicalDevices = physicalDevices?.ToHandleArray();
+        }
+
+        /// <summary>
+        /// Allocates unmanaged memory and fills it with the struct's native form.
+        /// <para>Make sure to free the memory after usage using <see cref="Interop.Free(IntPtr)"/>.</para>
+        /// </summary>
+        /// <returns>A pointer to the native struct.</returns>
+        public IntPtr AllocToNative()
+        {
+            IntPtr ptr = Interop.Alloc<Native>();
+            var nativePtr = (Native*)ptr;
+            nativePtr->Type = StructureType.DeviceGroupDeviceCreateInfoKhx;
+            nativePtr->Next = Next;
+            nativePtr->PhysicalDeviceCount = PhysicalDevices?.Length ?? 0;
+            nativePtr->PhysicalDevices = Interop.Struct.AllocToPointer(PhysicalDevices);
+            return ptr;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Native
+        {
+            public StructureType Type;
+            public IntPtr Next;
+            public int PhysicalDeviceCount;
+            public IntPtr PhysicalDevices;
         }
     }
 
