@@ -236,12 +236,68 @@ namespace VulkanCore.Khx
     [Flags]
     public enum ExternalMemoryHandleTypesKhx
     {
+        /// <summary>
+        /// a POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
+        /// other compatible APIs.
+        /// <para>
+        /// It must be compatible with the POSIX system calls `dup`, `dup2`, `close`, and the
+        /// non-standard system call `dup3`. Additionally, it must be transportable over a socket
+        /// using an `SCM_RIGHTS` control message.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
+        /// </para>
+        /// </summary>
         OpaqueFd = 1 << 0,
+        /// <summary>
+        /// An NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
+        /// <para>
+        /// It must: be compatible with the functions `DuplicateHandle`, `CloseHandle`,
+        /// `CompareObjectHandles`, `GetHandleInformation`, and `SetHandleInformation`.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
+        /// </para>
+        /// </summary>
         OpaqueWin32 = 1 << 1,
+        /// <summary>
+        /// A global share handle that has only limited valid usage outside of Vulkan and other
+        /// compatible APIs.
+        /// <para>It is not compatible with any native APIs.</para>
+        /// <para>
+        /// It does not own own a reference to the underlying memory resource represented its Vulkan
+        /// memory object, and will therefore become invalid when all Vulkan memory objects
+        /// associated with it are destroyed.
+        /// </para>
+        /// </summary>
         OpaqueWin32Kmt = 1 << 2,
+        /// <summary>
+        /// An NT handle returned by `IDXGIResource1::CreateSharedHandle` referring to a Direct3D 10
+        /// or 11 texture resource.
+        /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
+        /// </summary>
         D3D11Texture = 1 << 3,
+        /// <summary>
+        /// A global share handle returned by `IDXGIResource::GetSharedHandle` referring to a
+        /// Direct3D 10 or 11 texture resource.
+        /// <para>
+        /// It does not own own a reference to the underlying Direct3D resource, and will therefore
+        /// become invalid when all Vulkan memory objects and Direct3D resources associated with it
+        /// are destroyed.
+        /// </para>
+        /// </summary>
         D3D11TextureKmt = 1 << 4,
+        /// <summary>
+        /// An NT handle returned by `ID3D12Device::CreateSharedHandle` referring to a Direct3D 12
+        /// heap resource.
+        /// <para>It owns a reference to the resources used by the Direct3D heap.</para>
+        /// </summary>
         D3D12Heap = 1 << 5,
+        /// <summary>
+        /// An NT handle returned by `ID3D12Device::CreateSharedHandle` referring to a Direct3D 12
+        /// committed resource.
+        /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
+        /// </summary>
         D3D12Resource = 1 << 6
     }
 
@@ -286,11 +342,20 @@ namespace VulkanCore.Khx
     public struct ImportSemaphoreWin32HandleInfoKhx
     {
         /// <summary>
-        /// Pointer to next structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
+        /// <summary>
+        /// The semaphore into which the state will be imported.
+        /// </summary>
         public Semaphore Semaphore;
+        /// <summary>
+        /// Specifies the type of <see cref="Handle"/>.
+        /// </summary>
         public ExternalSemaphoreHandleTypesKhx HandleType;
+        /// <summary>
+        /// The external handle to import.
+        /// </summary>
         public IntPtr Handle;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -316,11 +381,20 @@ namespace VulkanCore.Khx
     public struct ImportSemaphoreFdInfoKhx
     {
         /// <summary>
-        /// Pointer to next structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
+        /// <summary>
+        /// The semaphore into which the state will be imported.
+        /// </summary>
         public Semaphore Semaphore;
+        /// <summary>
+        /// Specifies the type of <see cref="Fd"/>.
+        /// </summary>
         public ExternalSemaphoreHandleTypesKhx HandleType;
+        /// <summary>
+        /// The external handle to import.
+        /// </summary>
         public int Fd;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -349,10 +423,64 @@ namespace VulkanCore.Khx
     [Flags]
     public enum ExternalSemaphoreHandleTypesKhx
     {
+        /// <summary>
+        /// A POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
+        /// other compatible APIs.
+        /// <para>
+        /// It must be compatible with the POSIX system calls `dup`, `dup2`, `close`, and the
+        /// non-standard system call `dup3`. Additionally, it must be transportable over a socket
+        /// using an `SCM_RIGHTS` control message.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying synchronization primitive represented by its Vulkan
+        /// semaphore object.
+        /// </para>
+        /// </summary>
         OpaqueFd = 1 << 0,
+        /// <summary>
+        /// An NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
+        /// <para>
+        /// It must be compatible with the functions `DuplicateHandle`, `CloseHandle`,
+        /// `CompareObjectHandles`, `GetHandleInformation`, and `SetHandleInformation`.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying synchronization primitive represented by its Vulkan
+        /// semaphore object.
+        /// </para>
+        /// </summary>
         OpaqueWin32 = 1 << 1,
+        /// <summary>
+        /// A global share handle that has only limited valid usage outside of Vulkan and other
+        /// compatible APIs.
+        /// <para>It is not compatible with any native APIs.</para>
+        /// <para>
+        /// It does not own own a reference to the underlying synchronization primitive represented
+        /// its Vulkan semaphore object, and will therefore become invalid when all Vulkan semaphore
+        /// objects associated with it are destroyed.
+        /// </para>
+        /// </summary>
         OpaqueWin32Kmt = 1 << 2,
+        /// <summary>
+        /// An NT handle returned by `ID3D12Device::CreateSharedHandle` referring to a Direct3D 12 fence.
+        /// <para>
+        /// It owns a reference to the underlying synchronization primitive associated with the
+        /// Direct3D fence.
+        /// </para>
+        /// </summary>
         D3D12Fence = 1 << 3,
+        /// <summary>
+        /// A POSIX file descriptor handle to a Linux or Android Fence object.
+        /// <para>
+        /// It can be used with any native API accepting a valid fence object file descriptor as input.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying synchronization primitive associated with the file descriptor.
+        /// </para>
+        /// <para>
+        /// Implementations which support importing this handle type must accept any type of fence FD
+        /// supported by the native system they are running on.
+        /// </para>
+        /// </summary>
         FenceFd = 1 << 4
     }
 

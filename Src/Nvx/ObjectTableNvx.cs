@@ -186,7 +186,14 @@ namespace VulkanCore.Nvx
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTableEntryNvx
     {
+        /// <summary>
+        /// Defines the entry type.
+        /// </summary>
         public ObjectEntryTypeNvx Type;
+        /// <summary>
+        /// Defines which <see cref="PipelineBindPoint"/> the resource can be used with.
+        /// <para>Some entry types allow only a single flag to be set.</para>
+        /// </summary>
         public ObjectEntryUsagesNvx Flags;
     }
 
@@ -195,10 +202,128 @@ namespace VulkanCore.Nvx
     /// </summary>
     public enum ObjectEntryTypeNvx
     {
+        /// <summary>
+        /// Indicates a <see cref="DescriptorSet"/> resource entry that is registered via <see cref="ObjectTableDescriptorSetEntryNvx"/>.
+        /// </summary>
         ObjectEntryDescriptorSet = 0,
+        /// <summary>
+        /// Indicates a <see cref="Pipeline"/> resource entry that is registered via <see cref="ObjectTablePipelineEntryNvx"/>.
+        /// </summary>
         ObjectEntryPipeline = 1,
+        /// <summary>
+        /// Indicates a <see cref="Buffer"/> resource entry that is registered via <see cref="ObjectTableIndexBufferEntryNvx"/>.
+        /// </summary>
         ObjectEntryIndexBuffer = 2,
+        /// <summary>
+        /// Indicates a <see cref="Buffer"/> resource entry that is registered via <see cref="ObjectTableVertexBufferEntryNvx"/>.
+        /// </summary>
         ObjectEntryVertexBuffer = 3,
+        /// <summary>
+        /// Indicates the resource entry is registered via <see cref="ObjectTablePushConstantEntryNvx"/>.
+        /// </summary>
         ObjectEntryPushConstant = 4
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ObjectTablePipelineEntryNvx
+    {
+        /// <summary>
+        /// Defines the entry type.
+        /// </summary>
+        public ObjectEntryTypeNvx Type;
+        /// <summary>
+        /// Defines which <see cref="PipelineBindPoint"/> the resource can be used with.
+        /// <para>Some entry types allow only a single flag to be set.</para>
+        /// </summary>
+        public ObjectEntryUsagesNvx Flags;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.Pipeline"/> that this resource entry references.
+        /// </summary>
+        public long Pipeline;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ObjectTableDescriptorSetEntryNvx
+    {
+        /// <summary>
+        /// Defines the entry type.
+        /// </summary>
+        public ObjectEntryTypeNvx Type;
+        /// <summary>
+        /// Defines which <see cref="PipelineBindPoint"/> the resource can be used with.
+        /// <para>Some entry types allow only a single flag to be set.</para>
+        /// </summary>
+        public ObjectEntryUsagesNvx Flags;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.PipelineLayout"/> that the <see
+        /// cref="DescriptorSet"/> is used with.
+        /// </summary>
+        public long PipelineLayout;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.DescriptorSet"/> that can be bound with this entry.
+        /// </summary>
+        public long DescriptorSet;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ObjectTableVertexBufferEntryNvx
+    {
+        /// <summary>
+        /// Defines the entry type.
+        /// </summary>
+        public ObjectEntryTypeNvx Type;
+        /// <summary>
+        /// Defines which <see cref="PipelineBindPoint"/> the resource can be used with.
+        /// <para>Some entry types allow only a single flag to be set.</para>
+        /// </summary>
+        public ObjectEntryUsagesNvx Flags;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.Buffer"/> that can be bound as vertex buffer.
+        /// </summary>
+        public long Buffer;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ObjectTableIndexBufferEntryNvx
+    {
+        /// <summary>
+        /// Defines the entry type.
+        /// </summary>
+        public ObjectEntryTypeNvx Type;
+        /// <summary>
+        /// Defines which <see cref="PipelineBindPoint"/> the resource can be used with.
+        /// <para>Some entry types allow only a single flag to be set.</para>
+        /// </summary>
+        public ObjectEntryUsagesNvx Flags;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.Buffer"/> that can be bound as index buffer.
+        /// </summary>
+        public long Buffer;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.IndexType"/> used with this index buffer.
+        /// </summary>
+        public IndexType IndexType;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ObjectTablePushConstantEntryNvx
+    {
+        /// <summary>
+        /// Defines the entry type.
+        /// </summary>
+        public ObjectEntryTypeNvx Type;
+        /// <summary>
+        /// Defines which <see cref="PipelineBindPoint"/> the resource can be used with.
+        /// <para>Some entry types allow only a single flag to be set.</para>
+        /// </summary>
+        public ObjectEntryUsagesNvx Flags;
+        /// <summary>
+        /// Specifies the <see cref="VulkanCore.PipelineLayout"/> that push constants using this object index are used with.
+        /// </summary>
+        public long PipelineLayout;
+        /// <summary>
+        /// The <see cref="ShaderStages"/> that push constants using this object index are used with.
+        /// </summary>
+        public ShaderStages StageFlags;
     }
 }

@@ -1364,7 +1364,13 @@ namespace VulkanCore
     /// </summary>
     public enum CommandBufferLevel
     {
+        /// <summary>
+        /// Is a primary command buffer.
+        /// </summary>
         Primary = 0,
+        /// <summary>
+        /// Is a secondary command buffer.
+        /// </summary>
         Secondary = 1
     }
 
@@ -1605,7 +1611,13 @@ namespace VulkanCore
     /// </summary>
     public enum IndexType
     {
+        /// <summary>
+        /// Indices are treated as 16 bits.
+        /// </summary>
         UInt16 = 0,
+        /// <summary>
+        /// Indices are treated as 32 bits.
+        /// </summary>
         UInt32 = 1
     }
 
@@ -1967,7 +1979,17 @@ namespace VulkanCore
             DepthStencil = depthStencil;
         }
 
+        /// <summary>
+        /// Implicitly converts an instance of <see cref="ClearColorValue"/> to an instance of <see cref="ClearValue"/>.
+        /// </summary>
+        /// <param name="value">Instance to convert.</param>
         public static implicit operator ClearValue(ClearColorValue value) => new ClearValue(value);
+
+        /// <summary>
+        /// Implicitly converts an instance of <see cref="ClearDepthStencilValue"/> to an instance of
+        /// <see cref="ClearValue"/>.
+        /// </summary>
+        /// <param name="value">Instance to convert.</param>
         public static implicit operator ClearValue(ClearDepthStencilValue value) => new ClearValue(value);
     }
 
@@ -2364,13 +2386,11 @@ namespace VulkanCore
         /// The <see cref="VulkanCore.RenderPass"/> to begin an instance of.
         /// </summary>
         public long RenderPass;
-
         /// <summary>
         /// The <see cref="VulkanCore.Framebuffer"/> containing the attachments that are used with
         /// the render pass.
         /// </summary>
         public long Framebuffer;
-
         /// <summary>
         /// The render area that is affected by the render pass instance.
         /// <para>
@@ -2476,7 +2496,17 @@ namespace VulkanCore
     /// </summary>
     public enum SubpassContents
     {
+        /// <summary>
+        /// The contents of the subpass will be recorded inline in the primary command buffer, and
+        /// secondary command buffers must not be executed within the subpass.
+        /// </summary>
         Inline = 0,
+        /// <summary>
+        /// The contents are recorded in secondary command buffers that will be called from the
+        /// primary command buffer, and <see cref="CommandBuffer.CmdExecuteCommands"/> is the only
+        /// valid command on the command buffer until <see cref="CommandBuffer.vkCmdNextSubpass"/> or
+        /// <see cref="CommandBuffer.CmdEndRenderPass"/>.
+        /// </summary>
         SecondaryCommandBuffers = 1
     }
 

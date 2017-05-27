@@ -10,11 +10,19 @@ namespace VulkanCore.Khx
     /// </summary>
     public static unsafe class PhysicalDeviceExtensions
     {
+        /// <summary>
+        /// Query the external handle types supported by buffers.
+        /// </summary>
+        /// <param name="physicalDevice">The physical device from which to query the buffer capabilities.</param>
+        /// <param name="externalBufferInfo">
+        /// Structure, describing the parameters that would be consumed by <see cref="Device.CreateBuffer"/>.
+        /// </param>
+        /// <returns>A structure in which capabilities are returned.</returns>
         public static ExternalBufferPropertiesKhx GetExternalBufferPropertiesKhx(this PhysicalDevice physicalDevice,
-            PhysicalDeviceExternalBufferInfoKhx info)
+            PhysicalDeviceExternalBufferInfoKhx externalBufferInfo)
         {
             ExternalBufferPropertiesKhx properties;
-            vkGetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice)(physicalDevice, &info, &properties);
+            vkGetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice)(physicalDevice, &externalBufferInfo, &properties);
             return properties;
         }
 

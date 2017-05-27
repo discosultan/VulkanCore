@@ -1287,9 +1287,21 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// If set, heap represents device memory.
+        /// If set, it means the heap corresponds to device local memory.
+        /// <para>
+        /// Device local memory may have different performance characteristics than host local
+        /// memory, and may support different memory property flags.
+        /// </para>
         /// </summary>
         DeviceLocal = 1 << 0,
+        /// <summary>
+        /// If set, then in a logical device representing more than one physical device there is a
+        /// per-physical device instance of the heap memory.
+        /// <para>
+        /// By default, an allocation from such a heap will be replicated to each physical device's
+        /// instance of the heap.
+        /// </para>
+        /// </summary>
         MultiInstanceKhx = 1 << 1
     }
 
@@ -1577,7 +1589,15 @@ namespace VulkanCore
     /// </summary>
     public enum ImageTiling
     {
+        /// <summary>
+        /// Specifies optimal tiling (texels are laid out in an implementation-dependent arrangement,
+        /// for more optimal memory access).
+        /// </summary>
         Optimal = 0,
+        /// <summary>
+        /// Specifies linear tiling (texels are laid out in memory in row-major order, possibly with
+        /// some padding on each row).
+        /// </summary>
         Linear = 1
     }
 

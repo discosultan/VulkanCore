@@ -141,13 +141,37 @@ namespace VulkanCore.Nvx
     /// </summary>
     public enum IndirectCommandsTokenTypeNvx
     {
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdBindPipeline"/>.
+        /// </summary>
         Pipeline = 0,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdBindDescriptorSets"/>.
+        /// </summary>
         DescriptorSet = 1,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdBindIndexBuffer"/>.
+        /// </summary>
         IndexBuffer = 2,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdBindVertexBuffers"/>.
+        /// </summary>
         VertexBuffer = 3,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdPushConstants"/>.
+        /// </summary>
         PushConstant = 4,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdDrawIndexedIndirect"/>.
+        /// </summary>
         DrawIndexed = 5,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdDrawIndirect"/>.
+        /// </summary>
         Draw = 6,
+        /// <summary>
+        /// Equivalent command: <see cref="CommandBuffer.CmdDispatchIndirect"/>.
+        /// </summary>
         Dispatch = 7
     }
 

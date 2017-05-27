@@ -51,12 +51,23 @@ namespace VulkanCore.Khx
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryAllocateFlagsInfoKhx
     {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
         public StructureType Type;
         /// <summary>
-        /// Pointer to next structure.
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
+        /// <summary>
+        /// A bitmask of flags controlling the allocation.
+        /// </summary>
         public MemoryAllocateFlagsKhx Flags;
+        /// <summary>
+        /// A mask of physical devices in the logical device, indicating that memory must be
+        /// allocated on each device in the mask, if <see
+        /// cref="MemoryAllocateFlagsKhx.MemoryAllocateDeviceMaskKhx"/> is set.
+        /// </summary>
         public int DeviceMask;
 
         /// <summary>
