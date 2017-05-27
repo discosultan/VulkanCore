@@ -14,7 +14,7 @@ namespace VulkanCore.Khx
             PhysicalDeviceExternalBufferInfoKhx info)
         {
             ExternalBufferPropertiesKhx properties;
-            vkGetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice, &info, &properties);
+            vkGetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice)(physicalDevice, &info, &properties);
             return properties;
         }
 
@@ -33,7 +33,7 @@ namespace VulkanCore.Khx
             PhysicalDeviceExternalSemaphoreInfoKhx externalSemaphoreInfo)
         {
             ExternalSemaphorePropertiesKhx properties;
-            vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice, &externalSemaphoreInfo, &properties);
+            vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice)(physicalDevice, &externalSemaphoreInfo, &properties);
             return properties;
         }
 
@@ -57,26 +57,28 @@ namespace VulkanCore.Khx
         public static Rect2D[] GetPresentRectanglesKhx(this PhysicalDevice physicalDevice, SurfaceKhr surface)
         {
             int count;
-            Result result = vkGetPhysicalDevicePresentRectanglesKHX(physicalDevice, surface, &count, null);
+            Result result = vkGetPhysicalDevicePresentRectanglesKHX(physicalDevice)(physicalDevice, surface, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var rectangles = new Rect2D[count];
             fixed (Rect2D* rectanglesPtr = rectangles)
             {
-                result = vkGetPhysicalDevicePresentRectanglesKHX(physicalDevice, surface, &count, rectanglesPtr);
+                result = vkGetPhysicalDevicePresentRectanglesKHX(physicalDevice)(physicalDevice, surface, &count, rectanglesPtr);
                 VulkanException.ThrowForInvalidResult(result);
                 return rectangles;
             }
         }
 
         private delegate void vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate(IntPtr physicalDevice, PhysicalDeviceExternalBufferInfoKhx* externalBufferInfo, ExternalBufferPropertiesKhx* externalBufferProperties);
-        private static readonly vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate vkGetPhysicalDeviceExternalBufferPropertiesKHX = VulkanLibrary.GetProc<vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate>(nameof(vkGetPhysicalDeviceExternalBufferPropertiesKHX));
+        private static vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate vkGetPhysicalDeviceExternalBufferPropertiesKHX(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceExternalBufferPropertiesKHXDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceExternalBufferPropertiesKHX));
 
         private delegate void vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate(IntPtr physicalDevice, PhysicalDeviceExternalSemaphoreInfoKhx* externalSemaphoreInfo, ExternalSemaphorePropertiesKhx* externalSemaphoreProperties);
-        private static readonly vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate vkGetPhysicalDeviceExternalSemaphorePropertiesKHX = VulkanLibrary.GetProc<vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate>(nameof(vkGetPhysicalDeviceExternalSemaphorePropertiesKHX));
+        private static vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate vkGetPhysicalDeviceExternalSemaphorePropertiesKHX(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceExternalSemaphorePropertiesKHXDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceExternalSemaphorePropertiesKHX));
 
         private delegate Result vkGetPhysicalDevicePresentRectanglesKHXDelegate(IntPtr physicalDevice, long surface, int* rectCount, Rect2D* rects);
-        private static readonly vkGetPhysicalDevicePresentRectanglesKHXDelegate vkGetPhysicalDevicePresentRectanglesKHX = VulkanLibrary.GetProc<vkGetPhysicalDevicePresentRectanglesKHXDelegate>(nameof(vkGetPhysicalDevicePresentRectanglesKHX));
+        private static vkGetPhysicalDevicePresentRectanglesKHXDelegate vkGetPhysicalDevicePresentRectanglesKHX(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDevicePresentRectanglesKHXDelegate>(physicalDevice, nameof(vkGetPhysicalDevicePresentRectanglesKHX));
+
+        private static TDelegate GetProc<TDelegate>(PhysicalDevice physicalDevice, string name) where TDelegate : class => physicalDevice.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

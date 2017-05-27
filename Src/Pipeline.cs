@@ -128,13 +128,13 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateGraphicsPipelinesDelegate(IntPtr device, long pipelineCache, int createInfoCount, GraphicsPipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
-        private static readonly vkCreateGraphicsPipelinesDelegate vkCreateGraphicsPipelines = VulkanLibrary.GetProc<vkCreateGraphicsPipelinesDelegate>(nameof(vkCreateGraphicsPipelines));
+        private static readonly vkCreateGraphicsPipelinesDelegate vkCreateGraphicsPipelines = VulkanLibrary.GetStaticProc<vkCreateGraphicsPipelinesDelegate>(nameof(vkCreateGraphicsPipelines));
 
         private delegate Result vkCreateComputePipelinesDelegate(IntPtr device, long pipelineCache, int createInfoCount, ComputePipelineCreateInfo.Native* createInfos, AllocationCallbacks.Native* allocator, long* pipelines);
-        private static readonly vkCreateComputePipelinesDelegate vkCreateComputePipelines = VulkanLibrary.GetProc<vkCreateComputePipelinesDelegate>(nameof(vkCreateComputePipelines));
+        private static readonly vkCreateComputePipelinesDelegate vkCreateComputePipelines = VulkanLibrary.GetStaticProc<vkCreateComputePipelinesDelegate>(nameof(vkCreateComputePipelines));
 
         private delegate void vkDestroyPipelineDelegate(IntPtr device, long pipeline, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyPipelineDelegate vkDestroyPipeline = VulkanLibrary.GetProc<vkDestroyPipelineDelegate>(nameof(vkDestroyPipeline));
+        private static readonly vkDestroyPipelineDelegate vkDestroyPipeline = VulkanLibrary.GetStaticProc<vkDestroyPipelineDelegate>(nameof(vkDestroyPipeline));
     }
 
     /// <summary>

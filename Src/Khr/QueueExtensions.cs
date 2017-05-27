@@ -64,7 +64,7 @@ namespace VulkanCore.Khr
         }
 
         private delegate Result vkQueuePresentKHRDelegate(IntPtr queue, PresentInfoKhr.Native* presentInfo);
-        private static readonly vkQueuePresentKHRDelegate vkQueuePresentKHR = VulkanLibrary.GetProc<vkQueuePresentKHRDelegate>(nameof(vkQueuePresentKHR));
+        private static readonly vkQueuePresentKHRDelegate vkQueuePresentKHR = VulkanLibrary.GetStaticProc<vkQueuePresentKHRDelegate>(nameof(vkQueuePresentKHR));
     }
 
     /// <summary>

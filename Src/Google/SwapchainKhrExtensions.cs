@@ -18,7 +18,7 @@ namespace VulkanCore.Google
         public static RefreshCycleDurationGoogle GetRefreshCycleDurationGoogle(this SwapchainKhr swapchain)
         {
             RefreshCycleDurationGoogle properties;
-            Result result = vkGetRefreshCycleDurationGOOGLE(swapchain.Parent, swapchain, &properties);
+            Result result = vkGetRefreshCycleDurationGOOGLE(swapchain)(swapchain.Parent, swapchain, &properties);
             VulkanException.ThrowForInvalidResult(result);
             return properties;
         }
@@ -48,22 +48,24 @@ namespace VulkanCore.Google
         public static PastPresentationTimingGoogle[] GetPastPresentationTimingGoogle(this SwapchainKhr swapchain)
         {
             int count;
-            Result result = vkGetPastPresentationTimingGOOGLE(swapchain.Parent, swapchain, &count, null);
+            Result result = vkGetPastPresentationTimingGOOGLE(swapchain)(swapchain.Parent, swapchain, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var timings = new PastPresentationTimingGoogle[count];
             fixed (PastPresentationTimingGoogle* timingsPtr = timings)
-                result = vkGetPastPresentationTimingGOOGLE(swapchain.Parent, swapchain, &count, timingsPtr);
+                result = vkGetPastPresentationTimingGOOGLE(swapchain)(swapchain.Parent, swapchain, &count, timingsPtr);
             VulkanException.ThrowForInvalidResult(result);
 
             return timings;
         }
 
         private delegate Result vkGetRefreshCycleDurationGOOGLEDelegate(IntPtr device, long swapchain, RefreshCycleDurationGoogle* displayTimingProperties);
-        private static readonly vkGetRefreshCycleDurationGOOGLEDelegate vkGetRefreshCycleDurationGOOGLE = VulkanLibrary.GetProc<vkGetRefreshCycleDurationGOOGLEDelegate>(nameof(vkGetRefreshCycleDurationGOOGLE));
+        private static vkGetRefreshCycleDurationGOOGLEDelegate vkGetRefreshCycleDurationGOOGLE(SwapchainKhr swapchain) => GetProc<vkGetRefreshCycleDurationGOOGLEDelegate>(swapchain, nameof(vkGetRefreshCycleDurationGOOGLE));
 
         private delegate Result vkGetPastPresentationTimingGOOGLEDelegate(IntPtr device, long swapchain, int* presentationTimingCount, PastPresentationTimingGoogle* presentationTimings);
-        private static readonly vkGetPastPresentationTimingGOOGLEDelegate vkGetPastPresentationTimingGOOGLE = VulkanLibrary.GetProc<vkGetPastPresentationTimingGOOGLEDelegate>(nameof(vkGetPastPresentationTimingGOOGLE));
+        private static vkGetPastPresentationTimingGOOGLEDelegate vkGetPastPresentationTimingGOOGLE(SwapchainKhr swapchain) => GetProc<vkGetPastPresentationTimingGOOGLEDelegate>(swapchain, nameof(vkGetPastPresentationTimingGOOGLE));
+
+        private static TDelegate GetProc<TDelegate>(SwapchainKhr swapchain, string name) where TDelegate : class => swapchain.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

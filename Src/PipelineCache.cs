@@ -93,16 +93,16 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreatePipelineCacheDelegate(IntPtr device, PipelineCacheCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* pipelineCache);
-        private static readonly vkCreatePipelineCacheDelegate vkCreatePipelineCache = VulkanLibrary.GetProc<vkCreatePipelineCacheDelegate>(nameof(vkCreatePipelineCache));
+        private static readonly vkCreatePipelineCacheDelegate vkCreatePipelineCache = VulkanLibrary.GetStaticProc<vkCreatePipelineCacheDelegate>(nameof(vkCreatePipelineCache));
 
         private delegate void vkDestroyPipelineCacheDelegate(IntPtr device, long pipelineCache, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyPipelineCacheDelegate vkDestroyPipelineCache = VulkanLibrary.GetProc<vkDestroyPipelineCacheDelegate>(nameof(vkDestroyPipelineCache));
+        private static readonly vkDestroyPipelineCacheDelegate vkDestroyPipelineCache = VulkanLibrary.GetStaticProc<vkDestroyPipelineCacheDelegate>(nameof(vkDestroyPipelineCache));
 
         private delegate Result vkGetPipelineCacheDataDelegate(IntPtr device, long pipelineCache, int* dataSize, byte* data);
-        private static readonly vkGetPipelineCacheDataDelegate vkGetPipelineCacheData = VulkanLibrary.GetProc<vkGetPipelineCacheDataDelegate>(nameof(vkGetPipelineCacheData));
+        private static readonly vkGetPipelineCacheDataDelegate vkGetPipelineCacheData = VulkanLibrary.GetStaticProc<vkGetPipelineCacheDataDelegate>(nameof(vkGetPipelineCacheData));
 
         private delegate Result vkMergePipelineCachesDelegate(IntPtr device, long dstCache, int srcCacheCount, long* srcCaches);
-        private static readonly vkMergePipelineCachesDelegate vkMergePipelineCaches = VulkanLibrary.GetProc<vkMergePipelineCachesDelegate>(nameof(vkMergePipelineCaches));
+        private static readonly vkMergePipelineCachesDelegate vkMergePipelineCaches = VulkanLibrary.GetStaticProc<vkMergePipelineCachesDelegate>(nameof(vkMergePipelineCaches));
     }
 
     /// <summary>

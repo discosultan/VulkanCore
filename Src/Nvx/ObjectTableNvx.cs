@@ -21,7 +21,7 @@ namespace VulkanCore.Nvx
                 createInfo.ToNative(out ObjectTableCreateInfoNvx.Native nativeCreateInfo, objEntryTypesPtr,
                     objEntryCountsPtr, objEntryUsagesPtr);
                 long handle;
-                Result result = vkCreateObjectTableNVX(Parent, &nativeCreateInfo, NativeAllocator, &handle);
+                Result result = vkCreateObjectTableNVX(this)(Parent, &nativeCreateInfo, NativeAllocator, &handle);
                 VulkanException.ThrowForInvalidResult(result);
                 Handle = handle;
             }
@@ -44,7 +44,7 @@ namespace VulkanCore.Nvx
                 var ptrs = stackalloc ObjectTableEntryNvx*[x];
                 for (int i = 0; i < x; i++)
                     ptrs[i] = &objTableEntriesPtrsPtr[i * y];
-                Result result = vkRegisterObjectsNVX(Parent, this, objectIndices?.Length ?? 0, ptrs, objIndicesPtr);
+                Result result = vkRegisterObjectsNVX(this)(Parent, this, objectIndices?.Length ?? 0, ptrs, objIndicesPtr);
                 VulkanException.ThrowForInvalidResult(result);
             }
         }
@@ -55,7 +55,7 @@ namespace VulkanCore.Nvx
             fixed (ObjectEntryTypeNvx* objEntryTypesPtr = objectEntryTypes)
             fixed (int* objIndicesPtr = objectIndices)
             {
-                Result result = vkUnregisterObjectsNVX(Parent, this, objectEntryTypes?.Length ?? 0, objEntryTypesPtr,
+                Result result = vkUnregisterObjectsNVX(this)(Parent, this, objectEntryTypes?.Length ?? 0, objEntryTypesPtr,
                     objIndicesPtr);
                 VulkanException.ThrowForInvalidResult(result);
             }
@@ -66,21 +66,23 @@ namespace VulkanCore.Nvx
         /// </summary>
         public override void Dispose()
         {
-            if (!Disposed) vkDestroyObjectTableNVX(Parent, this, NativeAllocator);
+            if (!Disposed) vkDestroyObjectTableNVX(this)(Parent, this, NativeAllocator);
             base.Dispose();
         }
 
         private delegate Result vkCreateObjectTableNVXDelegate(IntPtr device, ObjectTableCreateInfoNvx.Native* createInfo, AllocationCallbacks.Native* allocator, long* objectTable);
-        private static readonly vkCreateObjectTableNVXDelegate vkCreateObjectTableNVX = VulkanLibrary.GetProc<vkCreateObjectTableNVXDelegate>(nameof(vkCreateObjectTableNVX));
+        private static vkCreateObjectTableNVXDelegate vkCreateObjectTableNVX(ObjectTableNvx objectTable) => GetProc<vkCreateObjectTableNVXDelegate>(objectTable, nameof(vkCreateObjectTableNVX));
 
         private delegate void vkDestroyObjectTableNVXDelegate(IntPtr device, long objectTable, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyObjectTableNVXDelegate vkDestroyObjectTableNVX = VulkanLibrary.GetProc<vkDestroyObjectTableNVXDelegate>(nameof(vkDestroyObjectTableNVX));
+        private static vkDestroyObjectTableNVXDelegate vkDestroyObjectTableNVX(ObjectTableNvx objectTable) => GetProc<vkDestroyObjectTableNVXDelegate>(objectTable, nameof(vkDestroyObjectTableNVX));
 
         private delegate Result vkRegisterObjectsNVXDelegate(IntPtr device, long objectTable, int objectCount, ObjectTableEntryNvx** ppObjectTableEntries, int* objectIndices);
-        private static readonly vkRegisterObjectsNVXDelegate vkRegisterObjectsNVX = VulkanLibrary.GetProc<vkRegisterObjectsNVXDelegate>(nameof(vkRegisterObjectsNVX));
+        private static vkRegisterObjectsNVXDelegate vkRegisterObjectsNVX(ObjectTableNvx objectTable) => GetProc<vkRegisterObjectsNVXDelegate>(objectTable, nameof(vkRegisterObjectsNVX));
 
         private delegate Result vkUnregisterObjectsNVXDelegate(IntPtr device, long objectTable, int objectCount, ObjectEntryTypeNvx* objectEntryTypes, int* objectIndices);
-        private static readonly vkUnregisterObjectsNVXDelegate vkUnregisterObjectsNVX = VulkanLibrary.GetProc<vkUnregisterObjectsNVXDelegate>(nameof(vkUnregisterObjectsNVX));
+        private static vkUnregisterObjectsNVXDelegate vkUnregisterObjectsNVX(ObjectTableNvx objectTable) => GetProc<vkUnregisterObjectsNVXDelegate>(objectTable, nameof(vkUnregisterObjectsNVX));
+
+        private static TDelegate GetProc<TDelegate>(ObjectTableNvx objectTable, string name) where TDelegate : class => objectTable.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

@@ -49,10 +49,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateFramebufferDelegate(IntPtr device, FramebufferCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* framebuffer);
-        private static readonly vkCreateFramebufferDelegate vkCreateFramebuffer = VulkanLibrary.GetProc<vkCreateFramebufferDelegate>(nameof(vkCreateFramebuffer));
+        private static readonly vkCreateFramebufferDelegate vkCreateFramebuffer = VulkanLibrary.GetStaticProc<vkCreateFramebufferDelegate>(nameof(vkCreateFramebuffer));
 
         private delegate void vkDestroyFramebufferDelegate(IntPtr device, long framebuffer, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyFramebufferDelegate vkDestroyFramebuffer = VulkanLibrary.GetProc<vkDestroyFramebufferDelegate>(nameof(vkDestroyFramebuffer));
+        private static readonly vkDestroyFramebufferDelegate vkDestroyFramebuffer = VulkanLibrary.GetStaticProc<vkDestroyFramebufferDelegate>(nameof(vkDestroyFramebuffer));
     }
 
     /// <summary>

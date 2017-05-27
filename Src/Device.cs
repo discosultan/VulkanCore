@@ -8,7 +8,7 @@ namespace VulkanCore
     /// <summary>
     /// Opaque handle to a device object.
     /// </summary>
-    public unsafe class Device : DisposableHandle<IntPtr>, IGetProc
+    public unsafe class Device : DisposableHandle<IntPtr>
     {
         private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache
             = new ConcurrentDictionary<string, IntPtr>(StringComparer.Ordinal);
@@ -591,25 +591,25 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateDeviceDelegate(IntPtr physicalDevice, DeviceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* device);
-        private static readonly vkCreateDeviceDelegate vkCreateDevice = VulkanLibrary.GetProc<vkCreateDeviceDelegate>(nameof(vkCreateDevice));
+        private static readonly vkCreateDeviceDelegate vkCreateDevice = VulkanLibrary.GetStaticProc<vkCreateDeviceDelegate>(nameof(vkCreateDevice));
 
         private delegate void vkDestroyDeviceDelegate(IntPtr device, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyDeviceDelegate vkDestroyDevice = VulkanLibrary.GetProc<vkDestroyDeviceDelegate>(nameof(vkDestroyDevice));
+        private static readonly vkDestroyDeviceDelegate vkDestroyDevice = VulkanLibrary.GetStaticProc<vkDestroyDeviceDelegate>(nameof(vkDestroyDevice));
 
         private delegate IntPtr vkGetDeviceProcAddrDelegate(IntPtr device, byte* name);
-        private static readonly vkGetDeviceProcAddrDelegate vkGetDeviceProcAddr = VulkanLibrary.GetProc<vkGetDeviceProcAddrDelegate>(nameof(vkGetDeviceProcAddr));
+        private static readonly vkGetDeviceProcAddrDelegate vkGetDeviceProcAddr = VulkanLibrary.GetStaticProc<vkGetDeviceProcAddrDelegate>(nameof(vkGetDeviceProcAddr));
 
         private delegate void vkGetDeviceQueueDelegate(IntPtr device, int queueFamilyIndex, int queueIndex, IntPtr* queue);
-        private static readonly vkGetDeviceQueueDelegate vkGetDeviceQueue = VulkanLibrary.GetProc<vkGetDeviceQueueDelegate>(nameof(vkGetDeviceQueue));
+        private static readonly vkGetDeviceQueueDelegate vkGetDeviceQueue = VulkanLibrary.GetStaticProc<vkGetDeviceQueueDelegate>(nameof(vkGetDeviceQueue));
 
         private delegate Result vkDeviceWaitIdleDelegate(IntPtr device);
-        private static readonly vkDeviceWaitIdleDelegate vkDeviceWaitIdle = VulkanLibrary.GetProc<vkDeviceWaitIdleDelegate>(nameof(vkDeviceWaitIdle));
+        private static readonly vkDeviceWaitIdleDelegate vkDeviceWaitIdle = VulkanLibrary.GetStaticProc<vkDeviceWaitIdleDelegate>(nameof(vkDeviceWaitIdle));
 
         private delegate Result vkFlushMappedMemoryRangesDelegate(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
-        private static readonly vkFlushMappedMemoryRangesDelegate vkFlushMappedMemoryRanges = VulkanLibrary.GetProc<vkFlushMappedMemoryRangesDelegate>(nameof(vkFlushMappedMemoryRanges));
+        private static readonly vkFlushMappedMemoryRangesDelegate vkFlushMappedMemoryRanges = VulkanLibrary.GetStaticProc<vkFlushMappedMemoryRangesDelegate>(nameof(vkFlushMappedMemoryRanges));
 
         private delegate Result vkInvalidateMappedMemoryRangesDelegate(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
-        private static readonly vkInvalidateMappedMemoryRangesDelegate vkInvalidateMappedMemoryRanges = VulkanLibrary.GetProc<vkInvalidateMappedMemoryRangesDelegate>(nameof(vkInvalidateMappedMemoryRanges));
+        private static readonly vkInvalidateMappedMemoryRangesDelegate vkInvalidateMappedMemoryRanges = VulkanLibrary.GetStaticProc<vkInvalidateMappedMemoryRangesDelegate>(nameof(vkInvalidateMappedMemoryRanges));
     }
 
     /// <summary>

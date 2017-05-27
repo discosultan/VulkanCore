@@ -47,10 +47,10 @@ namespace VulkanCore.Khr
         }
 
         private delegate Result vkCreateDisplayModeKHRDelegate(IntPtr physicalDevice, long display, DisplayModeCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* mode);
-        private static readonly vkCreateDisplayModeKHRDelegate vkCreateDisplayModeKHR = VulkanLibrary.GetProc<vkCreateDisplayModeKHRDelegate>(nameof(vkCreateDisplayModeKHR));
+        private static readonly vkCreateDisplayModeKHRDelegate vkCreateDisplayModeKHR = VulkanLibrary.GetStaticProc<vkCreateDisplayModeKHRDelegate>(nameof(vkCreateDisplayModeKHR));
 
         private delegate Result vkGetDisplayPlaneCapabilitiesKHRDelegate(IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
-        private static readonly vkGetDisplayPlaneCapabilitiesKHRDelegate vkGetDisplayPlaneCapabilitiesKHR = VulkanLibrary.GetProc<vkGetDisplayPlaneCapabilitiesKHRDelegate>(nameof(vkGetDisplayPlaneCapabilitiesKHR));
+        private static readonly vkGetDisplayPlaneCapabilitiesKHRDelegate vkGetDisplayPlaneCapabilitiesKHR = VulkanLibrary.GetStaticProc<vkGetDisplayPlaneCapabilitiesKHRDelegate>(nameof(vkGetDisplayPlaneCapabilitiesKHR));
     }
 
     /// <summary>

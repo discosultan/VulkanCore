@@ -39,7 +39,7 @@ namespace VulkanCore.Amd
         public static void CmdDrawIndirectCountAmd(this CommandBuffer commandBuffer, Buffer buffer, long offset,
             Buffer countBuffer, long countBufferOffset, int maxDrawCount, int stride)
         {
-            vkCmdDrawIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+            vkCmdDrawIndirectCountAMD(commandBuffer)(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
         }
 
         /// <summary>
@@ -73,14 +73,16 @@ namespace VulkanCore.Amd
         public static void CmdDrawIndexedIndirectCountAmd(this CommandBuffer commandBuffer,
             Buffer buffer, long offset, Buffer countBuffer, long countBufferOffset, int maxDrawCount, int stride)
         {
-            vkCmdDrawIndexedIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+            vkCmdDrawIndexedIndirectCountAMD(commandBuffer)(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
         }
 
         private delegate void vkCmdDrawIndirectCountAMDDelegate(IntPtr commandBuffer, long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
-        private static readonly vkCmdDrawIndirectCountAMDDelegate vkCmdDrawIndirectCountAMD = VulkanLibrary.GetProc<vkCmdDrawIndirectCountAMDDelegate>(nameof(vkCmdDrawIndirectCountAMD));
+        private static vkCmdDrawIndirectCountAMDDelegate vkCmdDrawIndirectCountAMD(CommandBuffer commandBuffer) => GetProc<vkCmdDrawIndirectCountAMDDelegate>(commandBuffer, nameof(vkCmdDrawIndirectCountAMD));
 
         private delegate void vkCmdDrawIndexedIndirectCountAMDDelegate(IntPtr commandBuffer, long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
-        private static readonly vkCmdDrawIndexedIndirectCountAMDDelegate vkCmdDrawIndexedIndirectCountAMD = VulkanLibrary.GetProc<vkCmdDrawIndexedIndirectCountAMDDelegate>(nameof(vkCmdDrawIndexedIndirectCountAMD));
+        private static vkCmdDrawIndexedIndirectCountAMDDelegate vkCmdDrawIndexedIndirectCountAMD(CommandBuffer commandBuffer) => GetProc<vkCmdDrawIndexedIndirectCountAMDDelegate>(commandBuffer, nameof(vkCmdDrawIndexedIndirectCountAMD));
+
+        private static TDelegate GetProc<TDelegate>(CommandBuffer commandBuffer, string name) where TDelegate : class => commandBuffer.Parent.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

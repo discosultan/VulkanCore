@@ -73,9 +73,9 @@ namespace VulkanCore.Khr
         }
 
         private delegate void vkCmdPushDescriptorSetKHRDelegate(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, long layout, int set, int descriptorWriteCount, WriteDescriptorSet.Native* descriptorWrites);
-        private static readonly vkCmdPushDescriptorSetKHRDelegate vkCmdPushDescriptorSetKHR = VulkanLibrary.GetProc<vkCmdPushDescriptorSetKHRDelegate>(nameof(vkCmdPushDescriptorSetKHR));
+        private static readonly vkCmdPushDescriptorSetKHRDelegate vkCmdPushDescriptorSetKHR = VulkanLibrary.GetStaticProc<vkCmdPushDescriptorSetKHRDelegate>(nameof(vkCmdPushDescriptorSetKHR));
 
         private delegate void vkCmdPushDescriptorSetWithTemplateKHRDelegate(IntPtr commandBuffer, long descriptorUpdateTemplate, long layout, int set, IntPtr data);
-        private static readonly vkCmdPushDescriptorSetWithTemplateKHRDelegate vkCmdPushDescriptorSetWithTemplateKHR = VulkanLibrary.GetProc<vkCmdPushDescriptorSetWithTemplateKHRDelegate>(nameof(vkCmdPushDescriptorSetWithTemplateKHR));
+        private static readonly vkCmdPushDescriptorSetWithTemplateKHRDelegate vkCmdPushDescriptorSetWithTemplateKHR = VulkanLibrary.GetStaticProc<vkCmdPushDescriptorSetWithTemplateKHRDelegate>(nameof(vkCmdPushDescriptorSetWithTemplateKHR));
     }
 }

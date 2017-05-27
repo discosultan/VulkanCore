@@ -26,6 +26,6 @@ namespace VulkanCore.Khr
         }
 
         private delegate void vkUpdateDescriptorSetWithTemplateKHRDelegate(IntPtr device, long descriptorSet, long descriptorUpdateTemplate, IntPtr data);
-        private static readonly vkUpdateDescriptorSetWithTemplateKHRDelegate vkUpdateDescriptorSetWithTemplateKHR = VulkanLibrary.GetProc<vkUpdateDescriptorSetWithTemplateKHRDelegate>(nameof(vkUpdateDescriptorSetWithTemplateKHR));
+        private static readonly vkUpdateDescriptorSetWithTemplateKHRDelegate vkUpdateDescriptorSetWithTemplateKHR = VulkanLibrary.GetStaticProc<vkUpdateDescriptorSetWithTemplateKHRDelegate>(nameof(vkUpdateDescriptorSetWithTemplateKHR));
     }
 }

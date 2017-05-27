@@ -23,7 +23,7 @@ namespace VulkanCore.Nvx
             fixed (IndirectCommandsTokenNvx* tokensPtr = processCommandsInfo.IndirectCommandsTokens)
             {
                 processCommandsInfo.ToNative(out CmdProcessCommandsInfoNvx.Native nativeProcessCommandsInfo, tokensPtr);
-                vkCmdProcessCommandsNVX(commandBuffer, &nativeProcessCommandsInfo);
+                vkCmdProcessCommandsNVX(commandBuffer)(commandBuffer, &nativeProcessCommandsInfo);
             }
         }
 
@@ -49,14 +49,16 @@ namespace VulkanCore.Nvx
             CmdReserveSpaceForCommandsInfoNvx reserveSpaceInfo)
         {
             reserveSpaceInfo.Prepare();
-            vkCmdReserveSpaceForCommandsNVX(commandBuffer, &reserveSpaceInfo);
+            vkCmdReserveSpaceForCommandsNVX(commandBuffer)(commandBuffer, &reserveSpaceInfo);
         }
 
         private delegate void vkCmdProcessCommandsNVXDelegate(IntPtr commandBuffer, CmdProcessCommandsInfoNvx.Native* processCommandsInfo);
-        private static readonly vkCmdProcessCommandsNVXDelegate vkCmdProcessCommandsNVX = VulkanLibrary.GetProc<vkCmdProcessCommandsNVXDelegate>(nameof(vkCmdProcessCommandsNVX));
+        private static vkCmdProcessCommandsNVXDelegate vkCmdProcessCommandsNVX(CommandBuffer commandBuffer) => GetProc<vkCmdProcessCommandsNVXDelegate>(commandBuffer, nameof(vkCmdProcessCommandsNVX));
 
         private delegate void vkCmdReserveSpaceForCommandsNVXDelegate(IntPtr commandBuffer, CmdReserveSpaceForCommandsInfoNvx* reserveSpaceInfo);
-        private static readonly vkCmdReserveSpaceForCommandsNVXDelegate vkCmdReserveSpaceForCommandsNVX = VulkanLibrary.GetProc<vkCmdReserveSpaceForCommandsNVXDelegate>(nameof(vkCmdReserveSpaceForCommandsNVX));
+        private static vkCmdReserveSpaceForCommandsNVXDelegate vkCmdReserveSpaceForCommandsNVX(CommandBuffer commandBuffer) => GetProc<vkCmdReserveSpaceForCommandsNVXDelegate>(commandBuffer, nameof(vkCmdReserveSpaceForCommandsNVX));
+
+        private static TDelegate GetProc<TDelegate>(CommandBuffer commandBuffer, string name) where TDelegate : class => commandBuffer.Parent.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

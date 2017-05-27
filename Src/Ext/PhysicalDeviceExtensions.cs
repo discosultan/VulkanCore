@@ -22,7 +22,7 @@ namespace VulkanCore.Ext
         public static SurfaceCapabilities2Ext GetSurfaceCapabilities2Ext(this PhysicalDevice physicalDevice, SurfaceKhr surface)
         {
             SurfaceCapabilities2Ext capabilities;
-            Result result = vkGetPhysicalDeviceSurfaceCapabilities2EXT(physicalDevice, surface, &capabilities);
+            Result result = vkGetPhysicalDeviceSurfaceCapabilities2EXT(physicalDevice)(physicalDevice, surface, &capabilities);
             VulkanException.ThrowForInvalidResult(result);
             return capabilities;
         }
@@ -43,16 +43,18 @@ namespace VulkanCore.Ext
             IntPtr rrOutput)
         {
             long handle;
-            Result result = vkGetRandROutputDisplayEXT(physicalDevice, &dpy, rrOutput, &handle);
+            Result result = vkGetRandROutputDisplayEXT(physicalDevice)(physicalDevice, &dpy, rrOutput, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return new DisplayKhr(physicalDevice, handle);
         }
 
         private delegate Result vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate(IntPtr physicalDevice, long surface, SurfaceCapabilities2Ext* surfaceCapabilities);
-        private static readonly vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate vkGetPhysicalDeviceSurfaceCapabilities2EXT = VulkanLibrary.GetProc<vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate>(nameof(vkGetPhysicalDeviceSurfaceCapabilities2EXT));
+        private static vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate vkGetPhysicalDeviceSurfaceCapabilities2EXT(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceSurfaceCapabilities2EXT));
 
         private delegate Result vkGetRandROutputDisplayEXTDelegate(IntPtr physicalDevice, IntPtr* dpy, IntPtr rrOutput, long* display);
-        private static readonly vkGetRandROutputDisplayEXTDelegate vkGetRandROutputDisplayEXT = VulkanLibrary.GetProc<vkGetRandROutputDisplayEXTDelegate>(nameof(vkGetRandROutputDisplayEXT));
+        private static vkGetRandROutputDisplayEXTDelegate vkGetRandROutputDisplayEXT(PhysicalDevice physicalDevice) => GetProc<vkGetRandROutputDisplayEXTDelegate>(physicalDevice, nameof(vkGetRandROutputDisplayEXT));
+
+        private static TDelegate GetProc<TDelegate>(PhysicalDevice physicalDevice, string name) where TDelegate : class => physicalDevice.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>
@@ -135,12 +137,8 @@ namespace VulkanCore.Ext
         public ImageUsages SupportedUsageFlags;
         /// <summary>
         /// A bitfield containing one bit set for each surface counter type supported.
-        /// <para>
-        /// Must not include <see cref="SurfaceCountersExt.VBlank"/> unless the surface queried
-        /// is a display surface.
-        /// </para>
         /// </summary>
-        public int SupportedSurfaceCounters;
+        public SurfaceCountersExt SupportedSurfaceCounters;
     }
 
     /// <summary>
@@ -149,6 +147,10 @@ namespace VulkanCore.Ext
     [Flags]
     public enum SurfaceCountersExt
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
         /// <summary>
         /// A counter incrementing once every time a vblank period occurs on the display associated
         /// with the surface.

@@ -15,7 +15,7 @@ namespace VulkanCore.Khx
         /// <param name="deviceMask">The new value of the current device mask.</param>
         public static void CmdSetDeviceMaskKhx(this CommandBuffer commandBuffer, int deviceMask)
         {
-            vkCmdSetDeviceMaskKHX(commandBuffer.Handle, deviceMask);
+            vkCmdSetDeviceMaskKHX(commandBuffer)(commandBuffer.Handle, deviceMask);
         }
 
         /// <summary>
@@ -32,16 +32,18 @@ namespace VulkanCore.Khx
             int baseGroupX, int baseGroupY, int baseGroupZ,
             int groupCountX, int groupCountY, int groupCountZ)
         {
-            vkCmdDispatchBaseKHX(commandBuffer.Handle,
+            vkCmdDispatchBaseKHX(commandBuffer)(commandBuffer.Handle,
                 baseGroupX, baseGroupY, baseGroupZ,
                 groupCountX, groupCountY, groupCountZ);
         }
 
         private delegate void vkCmdSetDeviceMaskKHXDelegate(IntPtr commandBuffer, int deviceMask);
-        private static readonly vkCmdSetDeviceMaskKHXDelegate vkCmdSetDeviceMaskKHX = VulkanLibrary.GetProc<vkCmdSetDeviceMaskKHXDelegate>(nameof(vkCmdSetDeviceMaskKHX));
+        private static vkCmdSetDeviceMaskKHXDelegate vkCmdSetDeviceMaskKHX(CommandBuffer commandBuffer) => GetProc<vkCmdSetDeviceMaskKHXDelegate>(commandBuffer, nameof(vkCmdSetDeviceMaskKHX));
 
         private delegate void vkCmdDispatchBaseKHXDelegate(IntPtr commandBuffer, int baseGroupX, int baseGroupY, int baseGroupZ, int groupCountX, int groupCountY, int groupCountZ);
-        private static readonly vkCmdDispatchBaseKHXDelegate vkCmdDispatchBaseKHX = VulkanLibrary.GetProc<vkCmdDispatchBaseKHXDelegate>(nameof(vkCmdDispatchBaseKHX));
+        private static vkCmdDispatchBaseKHXDelegate vkCmdDispatchBaseKHX(CommandBuffer commandBuffer) => GetProc<vkCmdDispatchBaseKHXDelegate>(commandBuffer, nameof(vkCmdDispatchBaseKHX));
+
+        private static TDelegate GetProc<TDelegate>(CommandBuffer commandBuffer, string name) where TDelegate : class => commandBuffer.Parent.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

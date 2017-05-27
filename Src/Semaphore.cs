@@ -50,10 +50,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateSemaphoreDelegate(IntPtr device, SemaphoreCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* semaphore);
-        private static readonly vkCreateSemaphoreDelegate vkCreateSemaphore = VulkanLibrary.GetProc<vkCreateSemaphoreDelegate>(nameof(vkCreateSemaphore));
+        private static readonly vkCreateSemaphoreDelegate vkCreateSemaphore = VulkanLibrary.GetStaticProc<vkCreateSemaphoreDelegate>(nameof(vkCreateSemaphore));
 
         private delegate void vkDestroySemaphoreDelegate(IntPtr device, long semaphore, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroySemaphoreDelegate vkDestroySemaphore = VulkanLibrary.GetProc<vkDestroySemaphoreDelegate>(nameof(vkDestroySemaphore));
+        private static readonly vkDestroySemaphoreDelegate vkDestroySemaphore = VulkanLibrary.GetStaticProc<vkDestroySemaphoreDelegate>(nameof(vkDestroySemaphore));
     }
 
     /// <summary>

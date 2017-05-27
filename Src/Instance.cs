@@ -13,7 +13,7 @@ namespace VulkanCore
     /// library and allows the application to pass information about itself to the implementation.
     /// </para>
     /// </summary>
-    public unsafe class Instance : DisposableHandle<IntPtr>, IGetProc
+    public unsafe class Instance : DisposableHandle<IntPtr>
     {
         private readonly ConcurrentDictionary<string, IntPtr> _procAddrCache
             = new ConcurrentDictionary<string, IntPtr>(StringComparer.Ordinal);
@@ -176,22 +176,22 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateInstanceDelegate(InstanceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* instance);
-        private static readonly vkCreateInstanceDelegate vkCreateInstance = VulkanLibrary.GetProc<vkCreateInstanceDelegate>(nameof(vkCreateInstance));
+        private static readonly vkCreateInstanceDelegate vkCreateInstance = VulkanLibrary.GetStaticProc<vkCreateInstanceDelegate>(nameof(vkCreateInstance));
 
         private delegate void vkDestroyInstanceDelegate(IntPtr instance, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyInstanceDelegate vkDestroyInstance = VulkanLibrary.GetProc<vkDestroyInstanceDelegate>(nameof(vkDestroyInstance));
+        private static readonly vkDestroyInstanceDelegate vkDestroyInstance = VulkanLibrary.GetStaticProc<vkDestroyInstanceDelegate>(nameof(vkDestroyInstance));
 
         private delegate Result vkEnumeratePhysicalDevicesDelegate(IntPtr instance, int* physicalDeviceCount, IntPtr* physicalDevices);
-        private static readonly vkEnumeratePhysicalDevicesDelegate vkEnumeratePhysicalDevices = VulkanLibrary.GetProc<vkEnumeratePhysicalDevicesDelegate>(nameof(vkEnumeratePhysicalDevices));
+        private static readonly vkEnumeratePhysicalDevicesDelegate vkEnumeratePhysicalDevices = VulkanLibrary.GetStaticProc<vkEnumeratePhysicalDevicesDelegate>(nameof(vkEnumeratePhysicalDevices));
 
         private delegate IntPtr vkGetInstanceProcAddrDelegate(IntPtr instance, byte* name);
-        private static readonly vkGetInstanceProcAddrDelegate vkGetInstanceProcAddr = VulkanLibrary.GetProc<vkGetInstanceProcAddrDelegate>(nameof(vkGetInstanceProcAddr));
+        private static readonly vkGetInstanceProcAddrDelegate vkGetInstanceProcAddr = VulkanLibrary.GetStaticProc<vkGetInstanceProcAddrDelegate>(nameof(vkGetInstanceProcAddr));
 
         private delegate Result vkEnumerateInstanceLayerPropertiesDelegate(int* propertyCount, LayerProperties.Native* properties);
-        private static readonly vkEnumerateInstanceLayerPropertiesDelegate vkEnumerateInstanceLayerProperties = VulkanLibrary.GetProc<vkEnumerateInstanceLayerPropertiesDelegate>(nameof(vkEnumerateInstanceLayerProperties));
+        private static readonly vkEnumerateInstanceLayerPropertiesDelegate vkEnumerateInstanceLayerProperties = VulkanLibrary.GetStaticProc<vkEnumerateInstanceLayerPropertiesDelegate>(nameof(vkEnumerateInstanceLayerProperties));
 
         private delegate Result vkEnumerateInstanceExtensionPropertiesDelegate(byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
-        private static readonly vkEnumerateInstanceExtensionPropertiesDelegate vkEnumerateInstanceExtensionProperties = VulkanLibrary.GetProc<vkEnumerateInstanceExtensionPropertiesDelegate>(nameof(vkEnumerateInstanceExtensionProperties));
+        private static readonly vkEnumerateInstanceExtensionPropertiesDelegate vkEnumerateInstanceExtensionProperties = VulkanLibrary.GetStaticProc<vkEnumerateInstanceExtensionPropertiesDelegate>(nameof(vkEnumerateInstanceExtensionProperties));
     }
 
     /// <summary>

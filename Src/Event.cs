@@ -81,19 +81,19 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateEventDelegate(IntPtr device, EventCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* @event);
-        private static readonly vkCreateEventDelegate vkCreateEvent = VulkanLibrary.GetProc<vkCreateEventDelegate>(nameof(vkCreateEvent));
+        private static readonly vkCreateEventDelegate vkCreateEvent = VulkanLibrary.GetStaticProc<vkCreateEventDelegate>(nameof(vkCreateEvent));
 
         private delegate void vkDestroyEventDelegate(IntPtr device, long @event, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyEventDelegate vkDestroyEvent = VulkanLibrary.GetProc<vkDestroyEventDelegate>(nameof(vkDestroyEvent));
+        private static readonly vkDestroyEventDelegate vkDestroyEvent = VulkanLibrary.GetStaticProc<vkDestroyEventDelegate>(nameof(vkDestroyEvent));
 
         private delegate Result vkGetEventStatusDelegate(IntPtr device, long @event);
-        private static readonly vkGetEventStatusDelegate vkGetEventStatus = VulkanLibrary.GetProc<vkGetEventStatusDelegate>(nameof(vkGetEventStatus));
+        private static readonly vkGetEventStatusDelegate vkGetEventStatus = VulkanLibrary.GetStaticProc<vkGetEventStatusDelegate>(nameof(vkGetEventStatus));
 
         private delegate Result vkSetEventDelegate(IntPtr device, long @event);
-        private static readonly vkSetEventDelegate vkSetEvent = VulkanLibrary.GetProc<vkSetEventDelegate>(nameof(vkSetEvent));
+        private static readonly vkSetEventDelegate vkSetEvent = VulkanLibrary.GetStaticProc<vkSetEventDelegate>(nameof(vkSetEvent));
 
         private delegate Result vkResetEventDelegate(IntPtr device, long @event);
-        private static readonly vkResetEventDelegate vkResetEvent = VulkanLibrary.GetProc<vkResetEventDelegate>(nameof(vkResetEvent));
+        private static readonly vkResetEventDelegate vkResetEvent = VulkanLibrary.GetStaticProc<vkResetEventDelegate>(nameof(vkResetEvent));
     }
 
     /// <summary>

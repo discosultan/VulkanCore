@@ -42,10 +42,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateImageViewDelegate(IntPtr device, ImageViewCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* view);
-        private static readonly vkCreateImageViewDelegate vkCreateImageView = VulkanLibrary.GetProc<vkCreateImageViewDelegate>(nameof(vkCreateImageView));
+        private static readonly vkCreateImageViewDelegate vkCreateImageView = VulkanLibrary.GetStaticProc<vkCreateImageViewDelegate>(nameof(vkCreateImageView));
 
         private delegate void vkDestroyImageViewDelegate(IntPtr device, long imageView, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyImageViewDelegate vkDestroyImageView = VulkanLibrary.GetProc<vkDestroyImageViewDelegate>(nameof(vkDestroyImageView));
+        private static readonly vkDestroyImageViewDelegate vkDestroyImageView = VulkanLibrary.GetStaticProc<vkDestroyImageViewDelegate>(nameof(vkDestroyImageView));
     }
 
     /// <summary>

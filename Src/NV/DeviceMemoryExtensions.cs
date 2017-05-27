@@ -21,13 +21,13 @@ namespace VulkanCore.NV
             ExternalMemoryHandleTypesNV handleType)
         {
             IntPtr handle;
-            Result result = vkGetMemoryWin32HandleNV(deviceMemory.Parent, deviceMemory, handleType, &handle);
+            Result result = vkGetMemoryWin32HandleNV(deviceMemory)(deviceMemory.Parent, deviceMemory, handleType, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
 
         private delegate Result vkGetMemoryWin32HandleNVDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesNV handleType, IntPtr* handle);
-        private static readonly vkGetMemoryWin32HandleNVDelegate vkGetMemoryWin32HandleNV = VulkanLibrary.GetProc<vkGetMemoryWin32HandleNVDelegate>(nameof(vkGetMemoryWin32HandleNV));
+        private static vkGetMemoryWin32HandleNVDelegate vkGetMemoryWin32HandleNV(DeviceMemory deviceMemory) => deviceMemory.Parent.GetProc<vkGetMemoryWin32HandleNVDelegate>(nameof(vkGetMemoryWin32HandleNV));
     }
 
     /// <summary>

@@ -123,28 +123,28 @@ namespace VulkanCore.Khr
         }
 
         private delegate Result vkCreateAndroidSurfaceKHRDelegate(IntPtr instance, AndroidSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateAndroidSurfaceKHRDelegate vkCreateAndroidSurfaceKHR = VulkanLibrary.GetProc<vkCreateAndroidSurfaceKHRDelegate>(nameof(vkCreateAndroidSurfaceKHR));
+        private static readonly vkCreateAndroidSurfaceKHRDelegate vkCreateAndroidSurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateAndroidSurfaceKHRDelegate>(nameof(vkCreateAndroidSurfaceKHR));
 
         private delegate Result vkCreateDisplayPlaneSurfaceKHRDelegate(IntPtr instance, DisplaySurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateDisplayPlaneSurfaceKHRDelegate vkCreateDisplayPlaneSurfaceKHR = VulkanLibrary.GetProc<vkCreateDisplayPlaneSurfaceKHRDelegate>(nameof(vkCreateDisplayPlaneSurfaceKHR));
+        private static readonly vkCreateDisplayPlaneSurfaceKHRDelegate vkCreateDisplayPlaneSurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateDisplayPlaneSurfaceKHRDelegate>(nameof(vkCreateDisplayPlaneSurfaceKHR));
 
         private delegate Result vkCreateMirSurfaceKHRDelegate(IntPtr instance, MirSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateMirSurfaceKHRDelegate vkCreateMirSurfaceKHR = VulkanLibrary.GetProc<vkCreateMirSurfaceKHRDelegate>(nameof(vkCreateMirSurfaceKHR));
+        private static readonly vkCreateMirSurfaceKHRDelegate vkCreateMirSurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateMirSurfaceKHRDelegate>(nameof(vkCreateMirSurfaceKHR));
 
         private delegate Result vkCreateWaylandSurfaceKHRDelegate(IntPtr instance, WaylandSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateWaylandSurfaceKHRDelegate vkCreateWaylandSurfaceKHR = VulkanLibrary.GetProc<vkCreateWaylandSurfaceKHRDelegate>(nameof(vkCreateWaylandSurfaceKHR));
+        private static readonly vkCreateWaylandSurfaceKHRDelegate vkCreateWaylandSurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateWaylandSurfaceKHRDelegate>(nameof(vkCreateWaylandSurfaceKHR));
 
         private delegate Result vkCreateWin32SurfaceKHRDelegate(IntPtr instance, Win32SurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateWin32SurfaceKHRDelegate vkCreateWin32SurfaceKHR = VulkanLibrary.GetProc<vkCreateWin32SurfaceKHRDelegate>(nameof(vkCreateWin32SurfaceKHR));
+        private static readonly vkCreateWin32SurfaceKHRDelegate vkCreateWin32SurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateWin32SurfaceKHRDelegate>(nameof(vkCreateWin32SurfaceKHR));
 
         private delegate Result vkCreateXlibSurfaceKHRDelegate(IntPtr instance, XlibSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateXlibSurfaceKHRDelegate vkCreateXlibSurfaceKHR = VulkanLibrary.GetProc<vkCreateXlibSurfaceKHRDelegate>(nameof(vkCreateXlibSurfaceKHR));
+        private static readonly vkCreateXlibSurfaceKHRDelegate vkCreateXlibSurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateXlibSurfaceKHRDelegate>(nameof(vkCreateXlibSurfaceKHR));
 
         private delegate Result vkCreateXcbSurfaceKHRDelegate(IntPtr instance, XcbSurfaceCreateInfoKhr* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateXcbSurfaceKHRDelegate vkCreateXcbSurfaceKHR = VulkanLibrary.GetProc<vkCreateXcbSurfaceKHRDelegate>(nameof(vkCreateXcbSurfaceKHR));
+        private static readonly vkCreateXcbSurfaceKHRDelegate vkCreateXcbSurfaceKHR = VulkanLibrary.GetStaticProc<vkCreateXcbSurfaceKHRDelegate>(nameof(vkCreateXcbSurfaceKHR));
 
         private delegate void vkDestroySurfaceKHRDelegate(IntPtr instance, long surface, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroySurfaceKHRDelegate vkDestroySurfaceKHR = VulkanLibrary.GetProc<vkDestroySurfaceKHRDelegate>(nameof(vkDestroySurfaceKHR));
+        private static readonly vkDestroySurfaceKHRDelegate vkDestroySurfaceKHR = VulkanLibrary.GetStaticProc<vkDestroySurfaceKHRDelegate>(nameof(vkDestroySurfaceKHR));
     }
 
     /// <summary>

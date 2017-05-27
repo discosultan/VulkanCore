@@ -44,10 +44,10 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateShaderModuleDelegate(IntPtr device, ShaderModuleCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* shaderModule);
-        private static readonly vkCreateShaderModuleDelegate vkCreateShaderModule = VulkanLibrary.GetProc<vkCreateShaderModuleDelegate>(nameof(vkCreateShaderModule));
+        private static readonly vkCreateShaderModuleDelegate vkCreateShaderModule = VulkanLibrary.GetStaticProc<vkCreateShaderModuleDelegate>(nameof(vkCreateShaderModule));
 
         private delegate void vkDestroyShaderModuleDelegate(IntPtr device, long shaderModule, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyShaderModuleDelegate vkDestroyShaderModule = VulkanLibrary.GetProc<vkDestroyShaderModuleDelegate>(nameof(vkDestroyShaderModule));
+        private static readonly vkDestroyShaderModuleDelegate vkDestroyShaderModule = VulkanLibrary.GetStaticProc<vkDestroyShaderModuleDelegate>(nameof(vkDestroyShaderModule));
     }
 
     /// <summary>

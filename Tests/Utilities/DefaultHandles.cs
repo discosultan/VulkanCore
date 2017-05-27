@@ -41,12 +41,15 @@ namespace VulkanCore.Tests.Utilities
         private void CreateInstance()
         {
             AvailableInstanceExtensions = Instance.EnumerateExtensionProperties();
+            string[] selectExtensions = new[] { Constant.InstanceExtension.ExtDebugReport }
+                .Where(AvailableInstanceExtensions.Contains)
+                .ToArray();
 
             // Specify standard validation layers.
             var createInfo = new InstanceCreateInfo
             {
                 EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation },
-                EnabledExtensionNames = new[] { Constant.InstanceExtension.ExtDebugReport }
+                EnabledExtensionNames = selectExtensions
             };
             Instance = new Instance(createInfo);
 
@@ -111,7 +114,7 @@ namespace VulkanCore.Tests.Utilities
             }.Distinct().Select(i => new DeviceQueueCreateInfo(i, 1, 1.0f)).ToArray();
 
             string[] selectExtensions = new[] { Constant.DeviceExtension.ExtDebugMarker }
-                .Where(AvailableInstanceExtensions.Contains)
+                .Where(AvailableDeviceExtensions.Contains)
                 .ToArray();
 
             var createInfo = new DeviceCreateInfo(queueInfos, selectExtensions, PhysicalDeviceFeatures);

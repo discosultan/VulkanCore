@@ -60,13 +60,13 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateQueryPoolDelegate(IntPtr device, QueryPoolCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* queryPool);
-        private static readonly vkCreateQueryPoolDelegate vkCreateQueryPool = VulkanLibrary.GetProc<vkCreateQueryPoolDelegate>(nameof(vkCreateQueryPool));
+        private static readonly vkCreateQueryPoolDelegate vkCreateQueryPool = VulkanLibrary.GetStaticProc<vkCreateQueryPoolDelegate>(nameof(vkCreateQueryPool));
 
         private delegate void vkDestroyQueryPoolDelegate(IntPtr device, long queryPool, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyQueryPoolDelegate vkDestroyQueryPool = VulkanLibrary.GetProc<vkDestroyQueryPoolDelegate>(nameof(vkDestroyQueryPool));
+        private static readonly vkDestroyQueryPoolDelegate vkDestroyQueryPool = VulkanLibrary.GetStaticProc<vkDestroyQueryPoolDelegate>(nameof(vkDestroyQueryPool));
 
         private delegate Result vkGetQueryPoolResultsDelegate(IntPtr device, long queryPool, int firstQuery, int queryCount, int dataSize, IntPtr data, long stride, QueryResults flags);
-        private static readonly vkGetQueryPoolResultsDelegate vkGetQueryPoolResults = VulkanLibrary.GetProc<vkGetQueryPoolResultsDelegate>(nameof(vkGetQueryPoolResults));
+        private static readonly vkGetQueryPoolResultsDelegate vkGetQueryPoolResults = VulkanLibrary.GetStaticProc<vkGetQueryPoolResultsDelegate>(nameof(vkGetQueryPoolResults));
     }
 
     /// <summary>

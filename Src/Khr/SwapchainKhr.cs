@@ -127,7 +127,7 @@ namespace VulkanCore.Khr
         /// <returns>Status of the swapchain.</returns>
         public Result GetStatus()
         {
-            return vkGetSwapchainStatusKHR(Parent, this);
+            return vkGetSwapchainStatusKHR(this)(Parent, this);
         }
 
         internal static SwapchainKhr[] CreateSharedKhr(Device parent, SwapchainCreateInfoKhr[] createInfos,
@@ -164,22 +164,22 @@ namespace VulkanCore.Khr
         }
 
         private delegate Result vkCreateSwapchainKHRDelegate(IntPtr device, SwapchainCreateInfoKhr.Native* createInfo, AllocationCallbacks.Native* allocator, long* swapchain);
-        private static readonly vkCreateSwapchainKHRDelegate vkCreateSwapchainKHR = VulkanLibrary.GetProc<vkCreateSwapchainKHRDelegate>(nameof(vkCreateSwapchainKHR));
+        private static readonly vkCreateSwapchainKHRDelegate vkCreateSwapchainKHR = VulkanLibrary.GetStaticProc<vkCreateSwapchainKHRDelegate>(nameof(vkCreateSwapchainKHR));
 
         private delegate void vkDestroySwapchainKHRDelegate(IntPtr device, long swapchain, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroySwapchainKHRDelegate vkDestroySwapchainKHR = VulkanLibrary.GetProc<vkDestroySwapchainKHRDelegate>(nameof(vkDestroySwapchainKHR));
+        private static readonly vkDestroySwapchainKHRDelegate vkDestroySwapchainKHR = VulkanLibrary.GetStaticProc<vkDestroySwapchainKHRDelegate>(nameof(vkDestroySwapchainKHR));
 
         private delegate Result vkGetSwapchainImagesKHRDelegate(IntPtr device, long swapchain, int* swapchainImageCount, long* swapchainImages);
-        private static readonly vkGetSwapchainImagesKHRDelegate vkGetSwapchainImagesKHR = VulkanLibrary.GetProc<vkGetSwapchainImagesKHRDelegate>(nameof(vkGetSwapchainImagesKHR));
+        private static readonly vkGetSwapchainImagesKHRDelegate vkGetSwapchainImagesKHR = VulkanLibrary.GetStaticProc<vkGetSwapchainImagesKHRDelegate>(nameof(vkGetSwapchainImagesKHR));
 
         private delegate Result vkAcquireNextImageKHRDelegate(IntPtr device, long swapchain, long timeout, long semaphore, long fence, int* imageIndex);
-        private static readonly vkAcquireNextImageKHRDelegate vkAcquireNextImageKHR = VulkanLibrary.GetProc<vkAcquireNextImageKHRDelegate>(nameof(vkAcquireNextImageKHR));
+        private static readonly vkAcquireNextImageKHRDelegate vkAcquireNextImageKHR = VulkanLibrary.GetStaticProc<vkAcquireNextImageKHRDelegate>(nameof(vkAcquireNextImageKHR));
 
         private delegate Result vkCreateSharedSwapchainsKHRDelegate(IntPtr device, int swapchainCount, SwapchainCreateInfoKhr.Native* createInfos, AllocationCallbacks.Native* allocator, long* swapchains);
-        private static readonly vkCreateSharedSwapchainsKHRDelegate vkCreateSharedSwapchainsKHR = VulkanLibrary.GetProc<vkCreateSharedSwapchainsKHRDelegate>(nameof(vkCreateSharedSwapchainsKHR));
+        private static readonly vkCreateSharedSwapchainsKHRDelegate vkCreateSharedSwapchainsKHR = VulkanLibrary.GetStaticProc<vkCreateSharedSwapchainsKHRDelegate>(nameof(vkCreateSharedSwapchainsKHR));
 
         private delegate Result vkGetSwapchainStatusKHRDelegate(IntPtr device, long swapchain);
-        private static readonly vkGetSwapchainStatusKHRDelegate vkGetSwapchainStatusKHR = VulkanLibrary.GetProc<vkGetSwapchainStatusKHRDelegate>(nameof(vkGetSwapchainStatusKHR));
+        private static vkGetSwapchainStatusKHRDelegate vkGetSwapchainStatusKHR(SwapchainKhr swapchain) => swapchain.Parent.GetProc<vkGetSwapchainStatusKHRDelegate>(nameof(vkGetSwapchainStatusKHR));
     }
 
     /// <summary>

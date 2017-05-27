@@ -44,7 +44,7 @@ namespace VulkanCore.NN
             }
 
             long handle;
-            Result result = vkCreateViSurfaceNN(instance, &createInfo, nativeAllocator, &handle);
+            Result result = vkCreateViSurfaceNN(instance)(instance, &createInfo, nativeAllocator, &handle);
 
             Interop.Free(nativeAllocator);
 
@@ -53,7 +53,7 @@ namespace VulkanCore.NN
         }
 
         private delegate Result vkCreateViSurfaceNNDelegate(IntPtr instance, VISurfaceCreateInfoNN* createInfo, AllocationCallbacks.Native* allocator, long* surface);
-        private static readonly vkCreateViSurfaceNNDelegate vkCreateViSurfaceNN = VulkanLibrary.GetProc<vkCreateViSurfaceNNDelegate>(nameof(vkCreateViSurfaceNN));
+        private static vkCreateViSurfaceNNDelegate vkCreateViSurfaceNN(Instance instance) => instance.GetProc<vkCreateViSurfaceNNDelegate>(nameof(vkCreateViSurfaceNN));
     }
 
     /// <summary>

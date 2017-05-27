@@ -44,10 +44,10 @@ namespace VulkanCore.Khr
         }
 
         private delegate Result vkCreateDescriptorUpdateTemplateKHRDelegate(IntPtr device, DescriptorUpdateTemplateCreateInfoKhr.Native* createInfo, AllocationCallbacks.Native* allocator, long* descriptorUpdateTemplate);
-        private static readonly vkCreateDescriptorUpdateTemplateKHRDelegate vkCreateDescriptorUpdateTemplateKHR = VulkanLibrary.GetProc<vkCreateDescriptorUpdateTemplateKHRDelegate>(nameof(vkCreateDescriptorUpdateTemplateKHR));
+        private static readonly vkCreateDescriptorUpdateTemplateKHRDelegate vkCreateDescriptorUpdateTemplateKHR = VulkanLibrary.GetStaticProc<vkCreateDescriptorUpdateTemplateKHRDelegate>(nameof(vkCreateDescriptorUpdateTemplateKHR));
 
         private delegate void vkDestroyDescriptorUpdateTemplateKHRDelegate(IntPtr device, long descriptorUpdateTemplate, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyDescriptorUpdateTemplateKHRDelegate vkDestroyDescriptorUpdateTemplateKHR = VulkanLibrary.GetProc<vkDestroyDescriptorUpdateTemplateKHRDelegate>(nameof(vkDestroyDescriptorUpdateTemplateKHR));
+        private static readonly vkDestroyDescriptorUpdateTemplateKHRDelegate vkDestroyDescriptorUpdateTemplateKHR = VulkanLibrary.GetStaticProc<vkDestroyDescriptorUpdateTemplateKHRDelegate>(nameof(vkDestroyDescriptorUpdateTemplateKHR));
     }
 
     /// <summary>

@@ -26,14 +26,12 @@ namespace VulkanCore.Ext
         /// <param name="markerInfo">Specifies the parameters of the marker region to open.</param>
         public static void CmdDebugMarkerBeginExt(this CommandBuffer commandBuffer, DebugMarkerMarkerInfoExt markerInfo)
         {
-            var proc = commandBuffer.Parent.Parent.GetProc<CmdDebugMarkerBeginExtDelegate>("vkCmdDebugMarkerBeginEXT");
-
             int byteCount = Interop.String.GetMaxByteCount(markerInfo.MarkerName);
             var markerNamePtr = stackalloc byte[byteCount];
             Interop.String.ToPointer(markerInfo.MarkerName, markerNamePtr, byteCount);
 
             markerInfo.ToNative(out DebugMarkerMarkerInfoExt.Native nativeMarkerInfo, markerNamePtr);
-            proc(commandBuffer, &nativeMarkerInfo);
+            vkCmdDebugMarkerBeginEXT(commandBuffer)(commandBuffer, &nativeMarkerInfo);
         }
 
         /// <summary>
@@ -53,8 +51,7 @@ namespace VulkanCore.Ext
         /// <param name="commandBuffer">The command buffer into which the command is recorded.</param>
         public static void CmdDebugMarkerEndExt(this CommandBuffer commandBuffer)
         {
-            var proc = commandBuffer.Parent.Parent.GetProc<CmdDebugMarkerEndExtDelegate>("vkCmdDebugMarkerEndEXT");
-            proc(commandBuffer);
+            vkCmdDebugMarkerEndEXT(commandBuffer)(commandBuffer);
         }
 
         /// <summary>
@@ -65,14 +62,12 @@ namespace VulkanCore.Ext
         /// <param name="markerInfo">Specifies the parameters of the marker to insert.</param>
         public static void CmdDebugMarkerInsertExt(this CommandBuffer commandBuffer, DebugMarkerMarkerInfoExt markerInfo)
         {
-            var proc = commandBuffer.Parent.Parent.GetProc<CmdDebugMarkerInsertExtDelegate>("vkCmdDebugMarkerInsertEXT");
-
             int byteCount = Interop.String.GetMaxByteCount(markerInfo.MarkerName);
             var markerNamePtr = stackalloc byte[byteCount];
             Interop.String.ToPointer(markerInfo.MarkerName, markerNamePtr, byteCount);
 
             markerInfo.ToNative(out DebugMarkerMarkerInfoExt.Native nativeMarkerInfo, markerNamePtr);
-            proc(commandBuffer, &nativeMarkerInfo);
+            vkCmdDebugMarkerInsertEXT(commandBuffer)(commandBuffer, &nativeMarkerInfo);
         }
 
         /// <summary>
@@ -89,17 +84,22 @@ namespace VulkanCore.Ext
             int firstDiscardRectangle, Rect2D[] discardRectangles)
         {
             fixed (Rect2D* discardRectanglesPtr = discardRectangles)
-                vkCmdSetDiscardRectangleEXT(commandBuffer, firstDiscardRectangle, discardRectangles?.Length ?? 0, discardRectanglesPtr);
+                vkCmdSetDiscardRectangleEXT(commandBuffer)(commandBuffer, firstDiscardRectangle, discardRectangles?.Length ?? 0, discardRectanglesPtr);
         }
 
-        private delegate void CmdDebugMarkerBeginExtDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
+        private delegate void vkCmdDebugMarkerBeginEXTDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
+        private static vkCmdDebugMarkerBeginEXTDelegate vkCmdDebugMarkerBeginEXT(CommandBuffer commandBuffer) => GetProc<vkCmdDebugMarkerBeginEXTDelegate>(commandBuffer, nameof(vkCmdDebugMarkerBeginEXT));
 
-        private delegate void CmdDebugMarkerEndExtDelegate(IntPtr commandBuffer);
+        private delegate void vkCmdDebugMarkerEndEXTDelegate(IntPtr commandBuffer);
+        private static vkCmdDebugMarkerEndEXTDelegate vkCmdDebugMarkerEndEXT(CommandBuffer commandBuffer) => GetProc<vkCmdDebugMarkerEndEXTDelegate>(commandBuffer, nameof(vkCmdDebugMarkerEndEXT));
 
-        private delegate void CmdDebugMarkerInsertExtDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
+        private delegate void vkCmdDebugMarkerInsertEXTDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
+        private static vkCmdDebugMarkerInsertEXTDelegate vkCmdDebugMarkerInsertEXT(CommandBuffer commandBuffer) => GetProc<vkCmdDebugMarkerInsertEXTDelegate>(commandBuffer, nameof(vkCmdDebugMarkerInsertEXT));
 
         private delegate void vkCmdSetDiscardRectangleEXTDelegate(IntPtr commandBuffer, int firstDiscardRectangle, int discardRectangleCount, Rect2D* discardRectangles);
-        private static readonly vkCmdSetDiscardRectangleEXTDelegate vkCmdSetDiscardRectangleEXT = VulkanLibrary.GetProc<vkCmdSetDiscardRectangleEXTDelegate>(nameof(vkCmdSetDiscardRectangleEXT));
+        private static vkCmdSetDiscardRectangleEXTDelegate vkCmdSetDiscardRectangleEXT(CommandBuffer commandBuffer) => GetProc<vkCmdSetDiscardRectangleEXTDelegate>(commandBuffer, nameof(vkCmdSetDiscardRectangleEXT));
+
+        private static TDelegate GetProc<TDelegate>(CommandBuffer commandBuffer, string name) where TDelegate : class => commandBuffer.Parent.Parent.GetProc<TDelegate>(name);
     }
 
     /// <summary>

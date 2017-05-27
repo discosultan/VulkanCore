@@ -121,22 +121,22 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateImageDelegate(IntPtr device, ImageCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* image);
-        private static readonly vkCreateImageDelegate vkCreateImage = VulkanLibrary.GetProc<vkCreateImageDelegate>(nameof(vkCreateImage));
+        private static readonly vkCreateImageDelegate vkCreateImage = VulkanLibrary.GetStaticProc<vkCreateImageDelegate>(nameof(vkCreateImage));
 
         private delegate void vkGetImageMemoryRequirementsDelegate(IntPtr device, long image, MemoryRequirements* memoryRequirements);
-        private static readonly vkGetImageMemoryRequirementsDelegate vkGetImageMemoryRequirements = VulkanLibrary.GetProc<vkGetImageMemoryRequirementsDelegate>(nameof(vkGetImageMemoryRequirements));
+        private static readonly vkGetImageMemoryRequirementsDelegate vkGetImageMemoryRequirements = VulkanLibrary.GetStaticProc<vkGetImageMemoryRequirementsDelegate>(nameof(vkGetImageMemoryRequirements));
 
         private delegate void vkGetImageSparseMemoryRequirementsDelegate(IntPtr device, long image, int* sparseMemoryRequirementCount, SparseImageMemoryRequirements* sparseMemoryRequirements);
-        private static readonly vkGetImageSparseMemoryRequirementsDelegate vkGetImageSparseMemoryRequirements = VulkanLibrary.GetProc<vkGetImageSparseMemoryRequirementsDelegate>(nameof(vkGetImageSparseMemoryRequirements));
+        private static readonly vkGetImageSparseMemoryRequirementsDelegate vkGetImageSparseMemoryRequirements = VulkanLibrary.GetStaticProc<vkGetImageSparseMemoryRequirementsDelegate>(nameof(vkGetImageSparseMemoryRequirements));
 
         private delegate void vkDestroyImageDelegate(IntPtr device, long image, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyImageDelegate vkDestroyImage = VulkanLibrary.GetProc<vkDestroyImageDelegate>(nameof(vkDestroyImage));
+        private static readonly vkDestroyImageDelegate vkDestroyImage = VulkanLibrary.GetStaticProc<vkDestroyImageDelegate>(nameof(vkDestroyImage));
 
         private delegate void vkGetImageSubresourceLayoutDelegate(IntPtr device, long image, ImageSubresource* subresource, SubresourceLayout* layout);
-        private static readonly vkGetImageSubresourceLayoutDelegate vkGetImageSubresourceLayout = VulkanLibrary.GetProc<vkGetImageSubresourceLayoutDelegate>(nameof(vkGetImageSubresourceLayout));
+        private static readonly vkGetImageSubresourceLayoutDelegate vkGetImageSubresourceLayout = VulkanLibrary.GetStaticProc<vkGetImageSubresourceLayoutDelegate>(nameof(vkGetImageSubresourceLayout));
 
         private delegate Result vkBindImageMemoryDelegate(IntPtr device, long image, long memory, long memoryOffset);
-        private static readonly vkBindImageMemoryDelegate vkBindImageMemory = VulkanLibrary.GetProc<vkBindImageMemoryDelegate>(nameof(vkBindImageMemory));
+        private static readonly vkBindImageMemoryDelegate vkBindImageMemory = VulkanLibrary.GetStaticProc<vkBindImageMemoryDelegate>(nameof(vkBindImageMemory));
     }
 
     /// <summary>

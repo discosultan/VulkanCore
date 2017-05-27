@@ -1170,151 +1170,151 @@ namespace VulkanCore
         }
 
         private delegate Result vkAllocateCommandBuffersDelegate(IntPtr device, CommandBufferAllocateInfo* allocateInfo, IntPtr* commandBuffers);
-        private static readonly vkAllocateCommandBuffersDelegate vkAllocateCommandBuffers = VulkanLibrary.GetProc<vkAllocateCommandBuffersDelegate>(nameof(vkAllocateCommandBuffers));
+        private static readonly vkAllocateCommandBuffersDelegate vkAllocateCommandBuffers = VulkanLibrary.GetStaticProc<vkAllocateCommandBuffersDelegate>(nameof(vkAllocateCommandBuffers));
 
         private delegate void vkFreeCommandBuffersDelegate(IntPtr device, long commandPool, int commandBufferCount, IntPtr* commandBuffers);
-        private static readonly vkFreeCommandBuffersDelegate vkFreeCommandBuffers = VulkanLibrary.GetProc<vkFreeCommandBuffersDelegate>(nameof(vkFreeCommandBuffers));
+        private static readonly vkFreeCommandBuffersDelegate vkFreeCommandBuffers = VulkanLibrary.GetStaticProc<vkFreeCommandBuffersDelegate>(nameof(vkFreeCommandBuffers));
 
         private delegate Result vkBeginCommandBufferDelegate(IntPtr commandBuffer, CommandBufferBeginInfo.Native* beginInfo);
-        private static readonly vkBeginCommandBufferDelegate vkBeginCommandBuffer = VulkanLibrary.GetProc<vkBeginCommandBufferDelegate>(nameof(vkBeginCommandBuffer));
+        private static readonly vkBeginCommandBufferDelegate vkBeginCommandBuffer = VulkanLibrary.GetStaticProc<vkBeginCommandBufferDelegate>(nameof(vkBeginCommandBuffer));
 
         private delegate Result vkEndCommandBufferDelegate(IntPtr commandBuffer);
-        private static readonly vkEndCommandBufferDelegate vkEndCommandBuffer = VulkanLibrary.GetProc<vkEndCommandBufferDelegate>(nameof(vkEndCommandBuffer));
+        private static readonly vkEndCommandBufferDelegate vkEndCommandBuffer = VulkanLibrary.GetStaticProc<vkEndCommandBufferDelegate>(nameof(vkEndCommandBuffer));
 
         private delegate Result vkResetCommandBufferDelegate(IntPtr commandBuffer, CommandBufferResetFlags flags);
-        private static readonly vkResetCommandBufferDelegate vkResetCommandBuffer = VulkanLibrary.GetProc<vkResetCommandBufferDelegate>(nameof(vkResetCommandBuffer));
+        private static readonly vkResetCommandBufferDelegate vkResetCommandBuffer = VulkanLibrary.GetStaticProc<vkResetCommandBufferDelegate>(nameof(vkResetCommandBuffer));
 
         private delegate void vkCmdBindPipelineDelegate(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, long pipeline);
-        private static readonly vkCmdBindPipelineDelegate vkCmdBindPipeline = VulkanLibrary.GetProc<vkCmdBindPipelineDelegate>(nameof(vkCmdBindPipeline));
+        private static readonly vkCmdBindPipelineDelegate vkCmdBindPipeline = VulkanLibrary.GetStaticProc<vkCmdBindPipelineDelegate>(nameof(vkCmdBindPipeline));
 
         private delegate void vkCmdSetViewportDelegate(IntPtr commandBuffer, int firstViewport, int viewportCount, Viewport* viewports);
-        private static readonly vkCmdSetViewportDelegate vkCmdSetViewport = VulkanLibrary.GetProc<vkCmdSetViewportDelegate>(nameof(vkCmdSetViewport));
+        private static readonly vkCmdSetViewportDelegate vkCmdSetViewport = VulkanLibrary.GetStaticProc<vkCmdSetViewportDelegate>(nameof(vkCmdSetViewport));
 
         private delegate void vkCmdSetScissorDelegate(IntPtr commandBuffer, int firstScissor, int scissorCount, Rect2D* scissors);
-        private static readonly vkCmdSetScissorDelegate vkCmdSetScissor = VulkanLibrary.GetProc<vkCmdSetScissorDelegate>(nameof(vkCmdSetScissor));
+        private static readonly vkCmdSetScissorDelegate vkCmdSetScissor = VulkanLibrary.GetStaticProc<vkCmdSetScissorDelegate>(nameof(vkCmdSetScissor));
 
         private delegate void vkCmdSetLineWidthDelegate(IntPtr commandBuffer, float lineWidth);
-        private static readonly vkCmdSetLineWidthDelegate vkCmdSetLineWidth = VulkanLibrary.GetProc<vkCmdSetLineWidthDelegate>(nameof(vkCmdSetLineWidth));
+        private static readonly vkCmdSetLineWidthDelegate vkCmdSetLineWidth = VulkanLibrary.GetStaticProc<vkCmdSetLineWidthDelegate>(nameof(vkCmdSetLineWidth));
 
         private delegate void vkCmdSetDepthBiasDelegate(IntPtr commandBuffer, float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor);
-        private static readonly vkCmdSetDepthBiasDelegate vkCmdSetDepthBias = VulkanLibrary.GetProc<vkCmdSetDepthBiasDelegate>(nameof(vkCmdSetDepthBias));
+        private static readonly vkCmdSetDepthBiasDelegate vkCmdSetDepthBias = VulkanLibrary.GetStaticProc<vkCmdSetDepthBiasDelegate>(nameof(vkCmdSetDepthBias));
 
         private delegate void vkCmdSetBlendConstantsDelegate(IntPtr commandBuffer, ColorF4 blendConstants);
-        private static readonly vkCmdSetBlendConstantsDelegate vkCmdSetBlendConstants = VulkanLibrary.GetProc<vkCmdSetBlendConstantsDelegate>(nameof(vkCmdSetBlendConstants));
+        private static readonly vkCmdSetBlendConstantsDelegate vkCmdSetBlendConstants = VulkanLibrary.GetStaticProc<vkCmdSetBlendConstantsDelegate>(nameof(vkCmdSetBlendConstants));
 
         private delegate void vkCmdSetDepthBoundsDelegate(IntPtr commandBuffer, float minDepthBounds, float maxDepthBounds);
-        private static readonly vkCmdSetDepthBoundsDelegate vkCmdSetDepthBounds = VulkanLibrary.GetProc<vkCmdSetDepthBoundsDelegate>(nameof(vkCmdSetDepthBounds));
+        private static readonly vkCmdSetDepthBoundsDelegate vkCmdSetDepthBounds = VulkanLibrary.GetStaticProc<vkCmdSetDepthBoundsDelegate>(nameof(vkCmdSetDepthBounds));
 
         private delegate void vkCmdSetStencilCompareMaskDelegate(IntPtr commandBuffer, StencilFaces faceMask, int compareMask);
-        private static readonly vkCmdSetStencilCompareMaskDelegate vkCmdSetStencilCompareMask = VulkanLibrary.GetProc<vkCmdSetStencilCompareMaskDelegate>(nameof(vkCmdSetStencilCompareMask));
+        private static readonly vkCmdSetStencilCompareMaskDelegate vkCmdSetStencilCompareMask = VulkanLibrary.GetStaticProc<vkCmdSetStencilCompareMaskDelegate>(nameof(vkCmdSetStencilCompareMask));
 
         private delegate void vkCmdSetStencilWriteMaskDelegate(IntPtr commandBuffer, StencilFaces faceMask, int writeMask);
-        private static readonly vkCmdSetStencilWriteMaskDelegate vkCmdSetStencilWriteMask = VulkanLibrary.GetProc<vkCmdSetStencilWriteMaskDelegate>(nameof(vkCmdSetStencilWriteMask));
+        private static readonly vkCmdSetStencilWriteMaskDelegate vkCmdSetStencilWriteMask = VulkanLibrary.GetStaticProc<vkCmdSetStencilWriteMaskDelegate>(nameof(vkCmdSetStencilWriteMask));
 
         private delegate void vkCmdSetStencilReferenceDelegate(IntPtr commandBuffer, StencilFaces faceMask, int reference);
-        private static readonly vkCmdSetStencilReferenceDelegate vkCmdSetStencilReference = VulkanLibrary.GetProc<vkCmdSetStencilReferenceDelegate>(nameof(vkCmdSetStencilReference));
+        private static readonly vkCmdSetStencilReferenceDelegate vkCmdSetStencilReference = VulkanLibrary.GetStaticProc<vkCmdSetStencilReferenceDelegate>(nameof(vkCmdSetStencilReference));
 
         private delegate void vkCmdBindDescriptorSetsDelegate(IntPtr commandBuffer, PipelineBindPoint pipelineBindPoint, long layout, int firstSet, int descriptorSetCount, long* descriptorSets, int dynamicOffsetCount, int* dynamicOffsets);
-        private static readonly vkCmdBindDescriptorSetsDelegate vkCmdBindDescriptorSets = VulkanLibrary.GetProc<vkCmdBindDescriptorSetsDelegate>(nameof(vkCmdBindDescriptorSets));
+        private static readonly vkCmdBindDescriptorSetsDelegate vkCmdBindDescriptorSets = VulkanLibrary.GetStaticProc<vkCmdBindDescriptorSetsDelegate>(nameof(vkCmdBindDescriptorSets));
 
         private delegate void vkCmdBindVertexBuffersDelegate(IntPtr commandBuffer, int firstBinding, int bindingCount, long* buffers, long* offsets);
-        private static readonly vkCmdBindVertexBuffersDelegate vkCmdBindVertexBuffers = VulkanLibrary.GetProc<vkCmdBindVertexBuffersDelegate>(nameof(vkCmdBindVertexBuffers));
+        private static readonly vkCmdBindVertexBuffersDelegate vkCmdBindVertexBuffers = VulkanLibrary.GetStaticProc<vkCmdBindVertexBuffersDelegate>(nameof(vkCmdBindVertexBuffers));
 
         private delegate void vkCmdDrawDelegate(IntPtr commandBuffer, int vertexCount, int instanceCount, int firstVertex, int firstInstance);
-        private static readonly vkCmdDrawDelegate vkCmdDraw = VulkanLibrary.GetProc<vkCmdDrawDelegate>(nameof(vkCmdDraw));
+        private static readonly vkCmdDrawDelegate vkCmdDraw = VulkanLibrary.GetStaticProc<vkCmdDrawDelegate>(nameof(vkCmdDraw));
 
         private delegate void vkCmdDrawIndexedDelegate(IntPtr commandBuffer, int indexCount, int instanceCount, int firstIndex, int vertexOffset, int firstInstance);
-        private static readonly vkCmdDrawIndexedDelegate vkCmdDrawIndexed = VulkanLibrary.GetProc<vkCmdDrawIndexedDelegate>(nameof(vkCmdDrawIndexed));
+        private static readonly vkCmdDrawIndexedDelegate vkCmdDrawIndexed = VulkanLibrary.GetStaticProc<vkCmdDrawIndexedDelegate>(nameof(vkCmdDrawIndexed));
 
         private delegate void vkCmdDispatchDelegate(IntPtr commandBuffer, int groupCountX, int groupCountY, int groupCountZ);
-        private static readonly vkCmdDispatchDelegate vkCmdDispatch = VulkanLibrary.GetProc<vkCmdDispatchDelegate>(nameof(vkCmdDispatch));
+        private static readonly vkCmdDispatchDelegate vkCmdDispatch = VulkanLibrary.GetStaticProc<vkCmdDispatchDelegate>(nameof(vkCmdDispatch));
 
         private delegate void vkCmdClearAttachmentsDelegate(IntPtr commandBuffer, int attachmentCount, ClearAttachment* attachments, int rectCount, ClearRect* rects);
-        private static readonly vkCmdClearAttachmentsDelegate vkCmdClearAttachments = VulkanLibrary.GetProc<vkCmdClearAttachmentsDelegate>(nameof(vkCmdClearAttachments));
+        private static readonly vkCmdClearAttachmentsDelegate vkCmdClearAttachments = VulkanLibrary.GetStaticProc<vkCmdClearAttachmentsDelegate>(nameof(vkCmdClearAttachments));
 
         private delegate void vkCmdWaitEventsDelegate(IntPtr commandBuffer, int eventCount, long* events, PipelineStages srcStageMask, PipelineStages dstStageMask, int memoryBarrierCount, MemoryBarrier* memoryBarriers, int bufferMemoryBarrierCount, BufferMemoryBarrier* bufferMemoryBarriers, int imageMemoryBarrierCount, ImageMemoryBarrier* imageMemoryBarriers);
-        private static readonly vkCmdWaitEventsDelegate vkCmdWaitEvents = VulkanLibrary.GetProc<vkCmdWaitEventsDelegate>(nameof(vkCmdWaitEvents));
+        private static readonly vkCmdWaitEventsDelegate vkCmdWaitEvents = VulkanLibrary.GetStaticProc<vkCmdWaitEventsDelegate>(nameof(vkCmdWaitEvents));
 
         private delegate void vkCmdPipelineBarrierDelegate(IntPtr commandBuffer, PipelineStages srcStageMask, PipelineStages dstStageMask, Dependencies dependencyFlags, int memoryBarrierCount, MemoryBarrier* memoryBarriers, int bufferMemoryBarrierCount, BufferMemoryBarrier* bufferMemoryBarriers, int imageMemoryBarrierCount, ImageMemoryBarrier* imageMemoryBarriers);
-        private static readonly vkCmdPipelineBarrierDelegate vkCmdPipelineBarrier = VulkanLibrary.GetProc<vkCmdPipelineBarrierDelegate>(nameof(vkCmdPipelineBarrier));
+        private static readonly vkCmdPipelineBarrierDelegate vkCmdPipelineBarrier = VulkanLibrary.GetStaticProc<vkCmdPipelineBarrierDelegate>(nameof(vkCmdPipelineBarrier));
 
         private delegate void vkCmdWriteTimestampDelegate(IntPtr commandBuffer, PipelineStages pipelineStage, long queryPool, int query);
-        private static readonly vkCmdWriteTimestampDelegate vkCmdWriteTimestamp = VulkanLibrary.GetProc<vkCmdWriteTimestampDelegate>(nameof(vkCmdWriteTimestamp));
+        private static readonly vkCmdWriteTimestampDelegate vkCmdWriteTimestamp = VulkanLibrary.GetStaticProc<vkCmdWriteTimestampDelegate>(nameof(vkCmdWriteTimestamp));
 
         private delegate void vkCmdBeginRenderPassDelegate(IntPtr commandBuffer, RenderPassBeginInfo.Native* renderPassBegin, SubpassContents contents);
-        private static readonly vkCmdBeginRenderPassDelegate vkCmdBeginRenderPass = VulkanLibrary.GetProc<vkCmdBeginRenderPassDelegate>(nameof(vkCmdBeginRenderPass));
+        private static readonly vkCmdBeginRenderPassDelegate vkCmdBeginRenderPass = VulkanLibrary.GetStaticProc<vkCmdBeginRenderPassDelegate>(nameof(vkCmdBeginRenderPass));
 
         private delegate void vkCmdNextSubpassDelegate(IntPtr commandBuffer, SubpassContents contents);
-        private static readonly vkCmdNextSubpassDelegate vkCmdNextSubpass = VulkanLibrary.GetProc<vkCmdNextSubpassDelegate>(nameof(vkCmdNextSubpass));
+        private static readonly vkCmdNextSubpassDelegate vkCmdNextSubpass = VulkanLibrary.GetStaticProc<vkCmdNextSubpassDelegate>(nameof(vkCmdNextSubpass));
 
         private delegate void vkCmdEndRenderPassDelegate(IntPtr commandBuffer);
-        private static readonly vkCmdEndRenderPassDelegate vkCmdEndRenderPass = VulkanLibrary.GetProc<vkCmdEndRenderPassDelegate>(nameof(vkCmdEndRenderPass));
+        private static readonly vkCmdEndRenderPassDelegate vkCmdEndRenderPass = VulkanLibrary.GetStaticProc<vkCmdEndRenderPassDelegate>(nameof(vkCmdEndRenderPass));
 
         private delegate void vkCmdExecuteCommandsDelegate(IntPtr commandBuffer, int commandBufferCount, IntPtr* commandBuffers);
-        private static readonly vkCmdExecuteCommandsDelegate vkCmdExecuteCommands = VulkanLibrary.GetProc<vkCmdExecuteCommandsDelegate>(nameof(vkCmdExecuteCommands));
+        private static readonly vkCmdExecuteCommandsDelegate vkCmdExecuteCommands = VulkanLibrary.GetStaticProc<vkCmdExecuteCommandsDelegate>(nameof(vkCmdExecuteCommands));
 
         private delegate void vkCmdBindIndexBufferDelegate(IntPtr commandBuffer, long buffer, long offset, IndexType indexType);
-        private static readonly vkCmdBindIndexBufferDelegate vkCmdBindIndexBuffer = VulkanLibrary.GetProc<vkCmdBindIndexBufferDelegate>(nameof(vkCmdBindIndexBuffer));
+        private static readonly vkCmdBindIndexBufferDelegate vkCmdBindIndexBuffer = VulkanLibrary.GetStaticProc<vkCmdBindIndexBufferDelegate>(nameof(vkCmdBindIndexBuffer));
 
         private delegate void vkCmdDrawIndirectDelegate(IntPtr commandBuffer, long buffer, long offset, int drawCount, int stride);
-        private static readonly vkCmdDrawIndirectDelegate vkCmdDrawIndirect = VulkanLibrary.GetProc<vkCmdDrawIndirectDelegate>(nameof(vkCmdDrawIndirect));
+        private static readonly vkCmdDrawIndirectDelegate vkCmdDrawIndirect = VulkanLibrary.GetStaticProc<vkCmdDrawIndirectDelegate>(nameof(vkCmdDrawIndirect));
 
         private delegate void vkCmdDrawIndexedIndirectDelegate(IntPtr commandBuffer, long buffer, long offset, int drawCount, int stride);
-        private static readonly vkCmdDrawIndexedIndirectDelegate vkCmdDrawIndexedIndirect = VulkanLibrary.GetProc<vkCmdDrawIndexedIndirectDelegate>(nameof(vkCmdDrawIndexedIndirect));
+        private static readonly vkCmdDrawIndexedIndirectDelegate vkCmdDrawIndexedIndirect = VulkanLibrary.GetStaticProc<vkCmdDrawIndexedIndirectDelegate>(nameof(vkCmdDrawIndexedIndirect));
 
         private delegate void vkCmdDispatchIndirectDelegate(IntPtr commandBuffer, long buffer, long offset);
-        private static readonly vkCmdDispatchIndirectDelegate vkCmdDispatchIndirect = VulkanLibrary.GetProc<vkCmdDispatchIndirectDelegate>(nameof(vkCmdDispatchIndirect));
+        private static readonly vkCmdDispatchIndirectDelegate vkCmdDispatchIndirect = VulkanLibrary.GetStaticProc<vkCmdDispatchIndirectDelegate>(nameof(vkCmdDispatchIndirect));
 
         private delegate void vkCmdCopyBufferDelegate(IntPtr commandBuffer, long srcBuffer, long dstBuffer, int regionCount, BufferCopy* regions);
-        private static readonly vkCmdCopyBufferDelegate vkCmdCopyBuffer = VulkanLibrary.GetProc<vkCmdCopyBufferDelegate>(nameof(vkCmdCopyBuffer));
+        private static readonly vkCmdCopyBufferDelegate vkCmdCopyBuffer = VulkanLibrary.GetStaticProc<vkCmdCopyBufferDelegate>(nameof(vkCmdCopyBuffer));
 
         private delegate void vkCmdUpdateBufferDelegate(IntPtr commandBuffer, long dstBuffer, long dstOffset, long dataSize, IntPtr data);
-        private static readonly vkCmdUpdateBufferDelegate vkCmdUpdateBuffer = VulkanLibrary.GetProc<vkCmdUpdateBufferDelegate>(nameof(vkCmdUpdateBuffer));
+        private static readonly vkCmdUpdateBufferDelegate vkCmdUpdateBuffer = VulkanLibrary.GetStaticProc<vkCmdUpdateBufferDelegate>(nameof(vkCmdUpdateBuffer));
 
         private delegate void vkCmdFillBufferDelegate(IntPtr commandBuffer, long dstBuffer, long dstOffset, long size, int data);
-        private static readonly vkCmdFillBufferDelegate vkCmdFillBuffer = VulkanLibrary.GetProc<vkCmdFillBufferDelegate>(nameof(vkCmdFillBuffer));
+        private static readonly vkCmdFillBufferDelegate vkCmdFillBuffer = VulkanLibrary.GetStaticProc<vkCmdFillBufferDelegate>(nameof(vkCmdFillBuffer));
 
         private delegate void vkCmdCopyImageDelegate(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstImage, ImageLayout dstImageLayout, int regionCount, ImageCopy* regions);
-        private static readonly vkCmdCopyImageDelegate vkCmdCopyImage = VulkanLibrary.GetProc<vkCmdCopyImageDelegate>(nameof(vkCmdCopyImage));
+        private static readonly vkCmdCopyImageDelegate vkCmdCopyImage = VulkanLibrary.GetStaticProc<vkCmdCopyImageDelegate>(nameof(vkCmdCopyImage));
 
         private delegate void vkCmdBlitImageDelegate(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstImage, ImageLayout dstImageLayout, int regionCount, ImageBlit* regions, Filter filter);
-        private static readonly vkCmdBlitImageDelegate vkCmdBlitImage = VulkanLibrary.GetProc<vkCmdBlitImageDelegate>(nameof(vkCmdBlitImage));
+        private static readonly vkCmdBlitImageDelegate vkCmdBlitImage = VulkanLibrary.GetStaticProc<vkCmdBlitImageDelegate>(nameof(vkCmdBlitImage));
 
         private delegate void vkCmdCopyImageToBufferDelegate(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstBuffer, int regionCount, BufferImageCopy* regions);
-        private static readonly vkCmdCopyImageToBufferDelegate vkCmdCopyImageToBuffer = VulkanLibrary.GetProc<vkCmdCopyImageToBufferDelegate>(nameof(vkCmdCopyImageToBuffer));
+        private static readonly vkCmdCopyImageToBufferDelegate vkCmdCopyImageToBuffer = VulkanLibrary.GetStaticProc<vkCmdCopyImageToBufferDelegate>(nameof(vkCmdCopyImageToBuffer));
 
         private delegate void vkCmdResolveImageDelegate(IntPtr commandBuffer, long srcImage, ImageLayout srcImageLayout, long dstImage, ImageLayout dstImageLayout, int regionCount, ImageResolve* regions);
-        private static readonly vkCmdResolveImageDelegate vkCmdResolveImage = VulkanLibrary.GetProc<vkCmdResolveImageDelegate>(nameof(vkCmdResolveImage));
+        private static readonly vkCmdResolveImageDelegate vkCmdResolveImage = VulkanLibrary.GetStaticProc<vkCmdResolveImageDelegate>(nameof(vkCmdResolveImage));
 
         private delegate void vkCmdCopyBufferToImageDelegate(IntPtr commandBuffer, long srcBuffer, long dstImage, ImageLayout dstImageLayout, int regionCount, BufferImageCopy* regions);
-        private static readonly vkCmdCopyBufferToImageDelegate vkCmdCopyBufferToImage = VulkanLibrary.GetProc<vkCmdCopyBufferToImageDelegate>(nameof(vkCmdCopyBufferToImage));
+        private static readonly vkCmdCopyBufferToImageDelegate vkCmdCopyBufferToImage = VulkanLibrary.GetStaticProc<vkCmdCopyBufferToImageDelegate>(nameof(vkCmdCopyBufferToImage));
 
         private delegate void vkCmdPushConstantsDelegate(IntPtr commandBuffer, long layout, ShaderStages stageFlags, int offset, int size, IntPtr values);
-        private static readonly vkCmdPushConstantsDelegate vkCmdPushConstants = VulkanLibrary.GetProc<vkCmdPushConstantsDelegate>(nameof(vkCmdPushConstants));
+        private static readonly vkCmdPushConstantsDelegate vkCmdPushConstants = VulkanLibrary.GetStaticProc<vkCmdPushConstantsDelegate>(nameof(vkCmdPushConstants));
 
         private delegate void vkCmdClearColorImageDelegate(IntPtr commandBuffer, long image, ImageLayout imageLayout, ClearColorValue* color, int rangeCount, ImageSubresourceRange* ranges);
-        private static readonly vkCmdClearColorImageDelegate vkCmdClearColorImage = VulkanLibrary.GetProc<vkCmdClearColorImageDelegate>(nameof(vkCmdClearColorImage));
+        private static readonly vkCmdClearColorImageDelegate vkCmdClearColorImage = VulkanLibrary.GetStaticProc<vkCmdClearColorImageDelegate>(nameof(vkCmdClearColorImage));
 
         private delegate void vkCmdClearDepthStencilImageDelegate(IntPtr commandBuffer, long image, ImageLayout imageLayout, ClearDepthStencilValue* depthStencil, int rangeCount, ImageSubresourceRange* ranges);
-        private static readonly vkCmdClearDepthStencilImageDelegate vkCmdClearDepthStencilImage = VulkanLibrary.GetProc<vkCmdClearDepthStencilImageDelegate>(nameof(vkCmdClearDepthStencilImage));
+        private static readonly vkCmdClearDepthStencilImageDelegate vkCmdClearDepthStencilImage = VulkanLibrary.GetStaticProc<vkCmdClearDepthStencilImageDelegate>(nameof(vkCmdClearDepthStencilImage));
 
         private delegate void vkCmdSetEventDelegate(IntPtr commandBuffer, long @event, PipelineStages stageMask);
-        private static readonly vkCmdSetEventDelegate vkCmdSetEvent = VulkanLibrary.GetProc<vkCmdSetEventDelegate>(nameof(vkCmdSetEvent));
+        private static readonly vkCmdSetEventDelegate vkCmdSetEvent = VulkanLibrary.GetStaticProc<vkCmdSetEventDelegate>(nameof(vkCmdSetEvent));
 
         private delegate void vkCmdResetEventDelegate(IntPtr commandBuffer, long @event, PipelineStages stageMask);
-        private static readonly vkCmdResetEventDelegate vkCmdResetEvent = VulkanLibrary.GetProc<vkCmdResetEventDelegate>(nameof(vkCmdResetEvent));
+        private static readonly vkCmdResetEventDelegate vkCmdResetEvent = VulkanLibrary.GetStaticProc<vkCmdResetEventDelegate>(nameof(vkCmdResetEvent));
 
         private delegate void vkCmdBeginQueryDelegate(IntPtr commandBuffer, long queryPool, int query, QueryControlFlags flags);
-        private static readonly vkCmdBeginQueryDelegate vkCmdBeginQuery = VulkanLibrary.GetProc<vkCmdBeginQueryDelegate>(nameof(vkCmdBeginQuery));
+        private static readonly vkCmdBeginQueryDelegate vkCmdBeginQuery = VulkanLibrary.GetStaticProc<vkCmdBeginQueryDelegate>(nameof(vkCmdBeginQuery));
 
         private delegate void vkCmdEndQueryDelegate(IntPtr commandBuffer, long queryPool, int query);
-        private static readonly vkCmdEndQueryDelegate vkCmdEndQuery = VulkanLibrary.GetProc<vkCmdEndQueryDelegate>(nameof(vkCmdEndQuery));
+        private static readonly vkCmdEndQueryDelegate vkCmdEndQuery = VulkanLibrary.GetStaticProc<vkCmdEndQueryDelegate>(nameof(vkCmdEndQuery));
 
         private delegate void vkCmdResetQueryPoolDelegate(IntPtr commandBuffer, long queryPool, int firstQuery, int queryCount);
-        private static readonly vkCmdResetQueryPoolDelegate vkCmdResetQueryPool = VulkanLibrary.GetProc<vkCmdResetQueryPoolDelegate>(nameof(vkCmdResetQueryPool));
+        private static readonly vkCmdResetQueryPoolDelegate vkCmdResetQueryPool = VulkanLibrary.GetStaticProc<vkCmdResetQueryPoolDelegate>(nameof(vkCmdResetQueryPool));
 
         private delegate void vkCmdCopyQueryPoolResultsDelegate(IntPtr commandBuffer, long queryPool, int firstQuery, int queryCount, long dstBuffer, long dstOffset, long stride, QueryResults flags);
-        private static readonly vkCmdCopyQueryPoolResultsDelegate vkCmdCopyQueryPoolResults = VulkanLibrary.GetProc<vkCmdCopyQueryPoolResultsDelegate>(nameof(vkCmdCopyQueryPoolResults));
+        private static readonly vkCmdCopyQueryPoolResultsDelegate vkCmdCopyQueryPoolResults = VulkanLibrary.GetStaticProc<vkCmdCopyQueryPoolResultsDelegate>(nameof(vkCmdCopyQueryPoolResults));
     }
 
     /// <summary>

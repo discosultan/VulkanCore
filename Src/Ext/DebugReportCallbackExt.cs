@@ -17,10 +17,6 @@ namespace VulkanCore.Ext
             Parent = parent;
             Allocator = allocator;
 
-            var createDelegate = Parent.GetProc<CreateDebugReportCallbackExt>("vkCreateDebugReportCallbackEXT");
-            if (createDelegate == null)
-                throw new InvalidOperationException(nameof(DebugReportCallbackExt) + " is not supported.");
-
             Func<DebugReportCallbackInfo, bool> createInfoCallback = createInfo.Callback;
             IntPtr callbackHandle = IntPtr.Zero;
             if (createInfoCallback != null)
@@ -39,15 +35,10 @@ namespace VulkanCore.Ext
                     });
                 callbackHandle = Interop.GetFunctionPointerForDelegate(_callback);
             }
+                        createInfo.ToNative(out DebugReportCallbackCreateInfoExt.Native nativeCreateInfo, callbackHandle);
 
-            createInfo.ToNative(out DebugReportCallbackCreateInfoExt.Native nativeCreateInfo, callbackHandle);
             long handle;
-            Result result = createDelegate(
-                Parent.Handle,
-                &nativeCreateInfo,
-                NativeAllocator,
-                &handle);
-
+            Result result = vkCreateDebugReportCallbackEXT(Parent)(Parent, &nativeCreateInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
             Handle = handle;
         }
@@ -64,21 +55,21 @@ namespace VulkanCore.Ext
         {
             if (!Disposed)
             {
-                var destroyDelegate = Parent.GetProc<DestroyDebugReportCallbackExt>("vkDestroyDebugReportCallbackEXT");
-                destroyDelegate?.Invoke(Parent, this, NativeAllocator);
+                vkDestroyDebugReportCallbackEXT(Parent)(Parent, this, NativeAllocator);
                 _callback = null;
             }
             base.Dispose();
         }
 
-        private delegate Result CreateDebugReportCallbackExt(IntPtr instance,
-            DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
-
-        private delegate Result DestroyDebugReportCallbackExt(IntPtr instance, long callback, AllocationCallbacks.Native* allocator);
-
         private delegate Bool DebugReportCallback(
             DebugReportFlagsExt flags, DebugReportObjectTypeExt objectType, long @object,
             IntPtr location, int messageCode, byte* layerPrefix, byte* message, IntPtr userData);
+
+        private delegate Result vkCreateDebugReportCallbackEXTDelegate(IntPtr instance, DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
+        private static vkCreateDebugReportCallbackEXTDelegate vkCreateDebugReportCallbackEXT(Instance instance) => instance.GetProc<vkCreateDebugReportCallbackEXTDelegate>(nameof(vkCreateDebugReportCallbackEXT));
+
+        private delegate Result vkDestroyDebugReportCallbackEXTDelegate(IntPtr instance, long callback, AllocationCallbacks.Native* allocator);
+        private static vkDestroyDebugReportCallbackEXTDelegate vkDestroyDebugReportCallbackEXT(Instance instance) => instance.GetProc<vkDestroyDebugReportCallbackEXTDelegate>(nameof(vkDestroyDebugReportCallbackEXT));
     }
 
     /// <summary>

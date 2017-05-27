@@ -70,13 +70,13 @@ namespace VulkanCore
         }
 
         private delegate Result vkCreateRenderPassDelegate(IntPtr device, RenderPassCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, long* renderPass);
-        private static readonly vkCreateRenderPassDelegate vkCreateRenderPass = VulkanLibrary.GetProc<vkCreateRenderPassDelegate>(nameof(vkCreateRenderPass));
+        private static readonly vkCreateRenderPassDelegate vkCreateRenderPass = VulkanLibrary.GetStaticProc<vkCreateRenderPassDelegate>(nameof(vkCreateRenderPass));
 
         private delegate void vkDestroyRenderPassDelegate(IntPtr device, long renderPass, AllocationCallbacks.Native* allocator);
-        private static readonly vkDestroyRenderPassDelegate vkDestroyRenderPass = VulkanLibrary.GetProc<vkDestroyRenderPassDelegate>(nameof(vkDestroyRenderPass));
+        private static readonly vkDestroyRenderPassDelegate vkDestroyRenderPass = VulkanLibrary.GetStaticProc<vkDestroyRenderPassDelegate>(nameof(vkDestroyRenderPass));
 
         private delegate void vkGetRenderAreaGranularityDelegate(IntPtr device, long renderPass, Extent2D* granularity);
-        private static readonly vkGetRenderAreaGranularityDelegate vkGetRenderAreaGranularity = VulkanLibrary.GetProc<vkGetRenderAreaGranularityDelegate>(nameof(vkGetRenderAreaGranularity));
+        private static readonly vkGetRenderAreaGranularityDelegate vkGetRenderAreaGranularity = VulkanLibrary.GetStaticProc<vkGetRenderAreaGranularityDelegate>(nameof(vkGetRenderAreaGranularity));
     }
 
     /// <summary>

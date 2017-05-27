@@ -93,13 +93,13 @@ namespace VulkanCore
         }
 
         private delegate Result vkAllocateDescriptorSetsDelegate(IntPtr device, DescriptorSetAllocateInfo.Native* allocateInfo, long* descriptorSets);
-        private static readonly vkAllocateDescriptorSetsDelegate vkAllocateDescriptorSets = VulkanLibrary.GetProc<vkAllocateDescriptorSetsDelegate>(nameof(vkAllocateDescriptorSets));
+        private static readonly vkAllocateDescriptorSetsDelegate vkAllocateDescriptorSets = VulkanLibrary.GetStaticProc<vkAllocateDescriptorSetsDelegate>(nameof(vkAllocateDescriptorSets));
 
         private delegate Result vkFreeDescriptorSetsDelegate(IntPtr device, long descriptorPool, int descriptorSetCount, long* descriptorSets);
-        private static readonly vkFreeDescriptorSetsDelegate vkFreeDescriptorSets = VulkanLibrary.GetProc<vkFreeDescriptorSetsDelegate>(nameof(vkFreeDescriptorSets));
+        private static readonly vkFreeDescriptorSetsDelegate vkFreeDescriptorSets = VulkanLibrary.GetStaticProc<vkFreeDescriptorSetsDelegate>(nameof(vkFreeDescriptorSets));
 
         private delegate void vkUpdateDescriptorSetsDelegate(IntPtr device, int descriptorWriteCount, WriteDescriptorSet.Native* descriptorWrites, int descriptorCopyCount, CopyDescriptorSet* descriptorCopies);
-        private static readonly vkUpdateDescriptorSetsDelegate vkUpdateDescriptorSets = VulkanLibrary.GetProc<vkUpdateDescriptorSetsDelegate>(nameof(vkUpdateDescriptorSets));
+        private static readonly vkUpdateDescriptorSetsDelegate vkUpdateDescriptorSets = VulkanLibrary.GetStaticProc<vkUpdateDescriptorSetsDelegate>(nameof(vkUpdateDescriptorSets));
     }
 
     /// <summary>
