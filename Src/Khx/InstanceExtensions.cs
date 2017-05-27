@@ -17,28 +17,39 @@ namespace VulkanCore.Khx
         public static PhysicalDeviceGroupPropertiesKhx[] EnumeratePhysicalDeviceGroupsKhx(this Instance instance)
         {
             int count;
-            Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, null);
+
+	        if (vkEnumeratePhysicalDeviceGroupsKHX == null)
+			{
+		        vkEnumeratePhysicalDeviceGroupsKHX = instance
+			        .GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>
+						(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
+	        }
+			
+	        Result result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, default(IntPtr));
             VulkanException.ThrowForInvalidResult(result);
 
-            var nativeProperties = stackalloc PhysicalDeviceGroupPropertiesKhx.Native[count];
-            result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, nativeProperties);
+	        var structSize = Interop.SizeOf<PhysicalDeviceGroupPropertiesKhx.Native>();
+	        var nativePropertiesPtr = stackalloc byte[structSize * count];
+            result = vkEnumeratePhysicalDeviceGroupsKHX(instance, &count, (IntPtr)nativePropertiesPtr);
             VulkanException.ThrowForInvalidResult(result);
 
             var groupProperties = new PhysicalDeviceGroupPropertiesKhx[count];
             for (int i = 0; i < count; i++)
             {
-                ref PhysicalDeviceGroupPropertiesKhx.Native nativeProps = ref nativeProperties[i];
-                var devices = new PhysicalDevice[nativeProps.PhysicalDeviceCount];
-                for (int j = 0; j < nativeProps.PhysicalDeviceCount; j++)
-                    devices[j] = new PhysicalDevice(nativeProps.PhysicalDevices[j], instance);
-                PhysicalDeviceGroupPropertiesKhx.FromNative(ref nativeProps, devices, out groupProperties[i]);
+	            var nativeProperty = Marshal.PtrToStructure<PhysicalDeviceGroupPropertiesKhx.Native>
+					((IntPtr)nativePropertiesPtr + structSize*i);
+                var devices = new PhysicalDevice[nativeProperty.PhysicalDeviceCount];
+                for (int j = 0; j < nativeProperty.PhysicalDeviceCount; j++)
+                    devices[j] = new PhysicalDevice(nativeProperty.PhysicalDevices[j], instance);
+                PhysicalDeviceGroupPropertiesKhx.FromNative(ref nativeProperty, devices, out groupProperties[i]);
             }
+			
 
             return groupProperties;
         }
 
-        private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, PhysicalDeviceGroupPropertiesKhx.Native* physicalDeviceGroupProperties);
-        private static readonly vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
+        private delegate Result vkEnumeratePhysicalDeviceGroupsKHXDelegate(IntPtr instance, int* physicalDeviceGroupCount, IntPtr physicalDeviceGroupProperties);
+        private static vkEnumeratePhysicalDeviceGroupsKHXDelegate vkEnumeratePhysicalDeviceGroupsKHX = VulkanLibrary.GetProc<vkEnumeratePhysicalDeviceGroupsKHXDelegate>(nameof(vkEnumeratePhysicalDeviceGroupsKHX));
     }
 
     /// <summary>
@@ -62,15 +73,15 @@ namespace VulkanCore.Khx
         /// physicalDeviceCount is 1, then <see cref="SubsetAllocation"/> must be <c>false</c>.
         /// </summary>
         public Bool SubsetAllocation;
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct Native
+		
+	    [StructLayout(LayoutKind.Sequential)]
+	    internal struct Native
         {
             public StructureType Type;
             public IntPtr Next;
             public int PhysicalDeviceCount;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-            public IntPtr* PhysicalDevices; // TODO: validate
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = Constant.MaxDeviceGroupSizeKhx)]
+            public IntPtr[] PhysicalDevices;
             public Bool SubsetAllocation;
         }
 
