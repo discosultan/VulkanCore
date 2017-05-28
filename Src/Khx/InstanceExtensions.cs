@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khx
@@ -26,14 +26,7 @@ namespace VulkanCore.Khx
 
             var groupProperties = new PhysicalDeviceGroupPropertiesKhx[count];
             for (int i = 0; i < count; i++)
-            {
-                ref PhysicalDeviceGroupPropertiesKhx.Native nativeProps = ref nativeProperties[i];
-                var devices = new PhysicalDevice[nativeProps.PhysicalDeviceCount];
-                for (int j = 0; j < nativeProps.PhysicalDeviceCount; j++)
-                    devices[j] = new PhysicalDevice(nativeProps.PhysicalDevices[j], instance);
-                PhysicalDeviceGroupPropertiesKhx.FromNative(ref nativeProps, devices, out groupProperties[i]);
-            }
-
+                PhysicalDeviceGroupPropertiesKhx.FromNative(ref nativeProperties[i], instance, out groupProperties[i]);
             return groupProperties;
         }
 
@@ -74,10 +67,12 @@ namespace VulkanCore.Khx
             public Bool SubsetAllocation;
         }
 
-        internal static void FromNative(ref Native native, PhysicalDevice[] physicalDevices, out PhysicalDeviceGroupPropertiesKhx managed)
+        internal static void FromNative(ref Native native, Instance instance, out PhysicalDeviceGroupPropertiesKhx managed)
         {
             managed.Next = native.Next;
-            managed.PhysicalDevices = physicalDevices;
+            managed.PhysicalDevices = new PhysicalDevice[native.PhysicalDeviceCount];
+            for (int i = 0; i < native.PhysicalDeviceCount; i++)
+                managed.PhysicalDevices[i] = new PhysicalDevice(native.PhysicalDevices[i], instance);
             managed.SubsetAllocation = native.SubsetAllocation;
         }
     }

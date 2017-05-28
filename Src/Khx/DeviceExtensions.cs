@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -860,55 +860,46 @@ namespace VulkanCore.Khx
     /// <summary>
     /// Create a logical device from multiple physical devices.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe struct DeviceGroupDeviceCreateInfoKhx
     {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// An array of <see cref="PhysicalDevice"/> handles belonging to the same device group.
+        /// The number of elements in the <see cref="PhysicalDevices"/> array.
         /// </summary>
-        public IntPtr[] PhysicalDevices;
+        public int PhysicalDeviceCount;
+        /// <summary>
+        /// A pointer to an array of <see cref="PhysicalDevice"/> handles belonging to the same
+        /// device group.
+        /// </summary>
+        public IntPtr PhysicalDevices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceGroupDeviceCreateInfoKhx"/> structure.
         /// </summary>
+        /// <param name="physicalDeviceCount">
+        /// The number of elements in the <paramref name="physicalDevices"/> array.
+        /// </param>
         /// <param name="physicalDevices">
-        /// An array of <see cref="PhysicalDevice"/> handles belonging to the same device group.
+        /// A pointer to an array of <see cref="PhysicalDevice"/> handles belonging to the same
+        /// device group.
         /// </param>
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </param>
-        public DeviceGroupDeviceCreateInfoKhx(PhysicalDevice[] physicalDevices, IntPtr next = default(IntPtr))
+        public DeviceGroupDeviceCreateInfoKhx(int physicalDeviceCount, IntPtr physicalDevices, IntPtr next = default(IntPtr))
         {
+            Type = StructureType.DeviceGroupDeviceCreateInfoKhx;
             Next = next;
-            PhysicalDevices = physicalDevices?.ToHandleArray();
-        }
-
-        /// <summary>
-        /// Allocates unmanaged memory and fills it with the struct's native form.
-        /// <para>Make sure to free the memory after usage using <see cref="Interop.Free(IntPtr)"/>.</para>
-        /// </summary>
-        /// <returns>A pointer to the native struct.</returns>
-        public IntPtr AllocToNative()
-        {
-            IntPtr ptr = Interop.Alloc<Native>();
-            var nativePtr = (Native*)ptr;
-            nativePtr->Type = StructureType.DeviceGroupDeviceCreateInfoKhx;
-            nativePtr->Next = Next;
-            nativePtr->PhysicalDeviceCount = PhysicalDevices?.Length ?? 0;
-            nativePtr->PhysicalDevices = Interop.Struct.AllocToPointer(PhysicalDevices);
-            return ptr;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct Native
-        {
-            public StructureType Type;
-            public IntPtr Next;
-            public int PhysicalDeviceCount;
-            public IntPtr PhysicalDevices;
+            PhysicalDeviceCount = physicalDeviceCount;
+            PhysicalDevices = physicalDevices;
         }
     }
 

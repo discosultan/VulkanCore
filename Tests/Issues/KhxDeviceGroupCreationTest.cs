@@ -16,16 +16,18 @@ namespace VulkanCore.Tests.Issues
     // enabled, vkEnumeratePhysicalDeviceGroupsKHX will raise an error when null is passed to
     // pPhysicalDeviceGroupProperties.
 
-    public class OverambitiousStaticCommandImportTest
+    public class KhxDeviceGroupCreationTest
     {
         [Fact]
         public void EnumeratePhysicalDeviceGroupsKhx()
         {
+            // Only continue with the test if "VK_KHX_device_group_creation" extension is present.
             ExtensionProperties[] availableExtensions = Instance.EnumerateExtensionProperties();
             if (!availableExtensions.Contains(Constant.InstanceExtension.KhxDeviceGroupCreation)) return;
-            
+
             var instance = new Instance(new InstanceCreateInfo(
                 enabledExtensionNames: new[] { Constant.InstanceExtension.KhxDeviceGroupCreation }));
+
             PhysicalDeviceGroupPropertiesKhx[] groups = instance.EnumeratePhysicalDeviceGroupsKhx();
 
             Assert.True(0 < groups.Length && groups.Length <= Constant.MaxDeviceGroupSizeKhx);
@@ -41,17 +43,24 @@ namespace VulkanCore.Tests.Issues
 
             var instance = new Instance(new InstanceCreateInfo(
                 enabledExtensionNames: new[] { Constant.InstanceExtension.KhxDeviceGroupCreation }));
+
             PhysicalDeviceGroupPropertiesKhx physicalDeviceGroup = instance.EnumeratePhysicalDeviceGroupsKhx()[0];
-            PhysicalDevice physicalDevice = instance.EnumeratePhysicalDevices()[0];
+            // We need a pointer to the array of native handles.
+            IntPtr devicePtrs = Interop.Struct.AllocToPointer(physicalDeviceGroup.PhysicalDevices.ToHandleArray());
 
-            var deviceGroupCreateInfo = new DeviceGroupDeviceCreateInfoKhx(physicalDeviceGroup.PhysicalDevices);
-            IntPtr nativeDeviceGroupCreateInfo = deviceGroupCreateInfo.AllocToNative();
+            // Fill in the device group create info struct.
+            var deviceGroupCreateInfo = new DeviceGroupDeviceCreateInfoKhx(physicalDeviceGroup.PhysicalDevices.Length, devicePtrs);
+            // We also need a pointer to the create info struct itself.
+            IntPtr createInfoPtr = Interop.Struct.AllocToPointer(ref deviceGroupCreateInfo);
 
-            Device device = physicalDevice.CreateDevice(new DeviceCreateInfo(
+            // Finally, pass the device group create info pointer to the `Next` chain of device create info.
+            Device device = physicalDeviceGroup.PhysicalDevices[0].CreateDevice(new DeviceCreateInfo(
                 new[] { new DeviceQueueCreateInfo(0, 1, 1.0f) },
-                next: nativeDeviceGroupCreateInfo));
+                next: createInfoPtr));
 
-            Interop.Free(nativeDeviceGroupCreateInfo);
+            // Make sure to free unmanaged allocations.
+            Interop.Free(createInfoPtr);
+            Interop.Free(devicePtrs);
         }
     }
 }
