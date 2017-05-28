@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     // https://www.khronos.org/registry/vulkan/
 

@@ -1,4 +1,4 @@
-﻿namespace VulkanCore.Khr
+namespace VulkanCore.Khr
 {
     /// <summary>
     /// Provides Khronos specific extension methods for the <see cref="Instance"/> class.

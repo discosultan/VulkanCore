@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Structure type enumerant.

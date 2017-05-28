@@ -1,4 +1,4 @@
-﻿using VulkanCore.Khr;
+using VulkanCore.Khr;
 
 namespace VulkanCore.Samples.ClearScreen
 {

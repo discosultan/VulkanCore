@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Specify an enumeration to track object handle types.

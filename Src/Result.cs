@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Vulkan command return codes.

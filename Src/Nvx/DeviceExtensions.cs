@@ -1,4 +1,4 @@
-﻿namespace VulkanCore.Nvx
+namespace VulkanCore.Nvx
 {
     /// <summary>
     /// Provides NVIDIA specific extension methods for the <see cref="Device"/> class.
