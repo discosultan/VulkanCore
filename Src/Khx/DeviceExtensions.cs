@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -231,7 +231,7 @@ namespace VulkanCore.Khx
     }
 
     /// <summary>
-    /// Bitmask of valid external memory handle types.
+    /// Bitmask specifying external memory handle types.
     /// </summary>
     [Flags]
     public enum ExternalMemoryHandleTypesKhx

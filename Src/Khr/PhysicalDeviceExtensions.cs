@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Ext;
 
@@ -1248,12 +1248,14 @@ namespace VulkanCore.Khr
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Represents the ways the application can use the shared presentable image from a swapchain
-        /// created with <see cref="PresentModeKhr"/> set to <see
+        /// A bitmask representing the ways the application can use the shared presentable image from
+        /// a swapchain created with <see cref="PresentModeKhr"/> set to <see
         /// cref="PresentModeKhr.SharedDemandRefreshKhr"/> or <see
-        /// cref="PresentModeKhr.SharedContinuousRefreshKhr"/> for the surface on the specified
-        /// device. <see cref="ImageUsages.ColorAttachment"/> must be included in the set but
-        /// implementations may support additional usages.
+        /// cref="PresentModeKhr.SharedContinuousRefreshKhr"/> for the surface on the specified device.
+        /// <para>
+        /// <see cref="ImageUsages.ColorAttachment"/> must be included in the set but implementations
+        /// may support additional usages.
+        /// </para>
         /// </summary>
         public ImageUsages SharedPresentSupportedUsages;
 
@@ -1261,12 +1263,14 @@ namespace VulkanCore.Khr
         /// Initializes a new instance of the <see cref="SharedPresentSurfaceCapabilitiesKhr"/> structure.
         /// </summary>
         /// <param name="sharedPresentSupportedUsages">
-        /// Represents the ways the application can use the shared presentable image from a swapchain
-        /// created with <see cref="PresentModeKhr"/> set to <see
+        /// A bitmask representing the ways the application can use the shared presentable image from
+        /// a swapchain created with <see cref="PresentModeKhr"/> set to <see
         /// cref="PresentModeKhr.SharedDemandRefreshKhr"/> or <see
-        /// cref="PresentModeKhr.SharedContinuousRefreshKhr"/> for the surface on the specified
-        /// device. <see cref="ImageUsages.ColorAttachment"/> must be included in the set but
-        /// implementations may support additional usages.
+        /// cref="PresentModeKhr.SharedContinuousRefreshKhr"/> for the surface on the specified device.
+        /// <para>
+        /// <see cref="ImageUsages.ColorAttachment"/> must be included in the set but implementations
+        /// may support additional usages.
+        /// </para>
         /// </param>
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.

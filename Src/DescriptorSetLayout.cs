@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -127,6 +127,10 @@ namespace VulkanCore
         /// No flags.
         /// </summary>
         None = 0,
+        /// <summary>
+        /// Specifies that descriptor sets must not be allocated using this layout, and descriptors
+        /// are instead pushed by <see cref="Khr.CommandBufferExtensions.CmdPushDescriptorSetKhr"/>.
+        /// </summary>
         PushDescriptorKhr = 1 << 0
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.NV
@@ -20,7 +20,7 @@ namespace VulkanCore.NV
         /// A bitmask describing additional parameters of the image, corresponding to <see cref="ImageCreateInfo.Flags"/>.
         /// </param>
         /// <param name="externalHandleType">
-        /// Either one of the bits from <see cref="ExternalMemoryHandleTypesNV"/>, or 0.
+        /// Either one of the bits from <see cref="ExternalMemoryHandleTypesNV"/>, or <c>0</c>.
         /// </param>
         /// <returns>The structure in which capabilities are returned.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
@@ -53,19 +53,20 @@ namespace VulkanCore.NV
         public ImageFormatProperties ImageFormatProperties;
         /// <summary>
         /// A bitmask of <see cref="ExternalMemoryFeaturesNV"/> indicating properties of the external
-        /// memory handle type being queried, or 0 if the external memory handle type is 0.
+        /// memory handle type being queried, or <c>0</c> if the external memory handle type is <c>0</c>.
         /// </summary>
         public ExternalMemoryFeaturesNV ExternalMemoryFeatures;
         /// <summary>
         /// A bitmask of <see cref="ExternalMemoryHandleTypesNV"/> containing a bit set for every
         /// external handle type that may be used to create memory from which the handles of the type
-        /// can be exported, or 0 if the external memory handle type is 0.
+        /// can be exported, or <c>0</c> if the external memory handle type is <c>0</c>.
         /// </summary>
         public ExternalMemoryHandleTypesNV ExportFromImportedHandleTypes;
         /// <summary>
         /// A bitmask of <see cref="ExternalMemoryHandleTypesNV"/> containing a bit set for every
         /// external handle type that may be specified simultaneously with the handle type when
-        /// calling <see cref="Device.AllocateMemory"/>, or 0 if the external memory handle type is 0.
+        /// calling <see cref="Device.AllocateMemory"/>, or <c>0</c> if the external memory handle
+        /// type is <c>0</c>.
         /// </summary>
         public ExternalMemoryHandleTypesNV CompatibleHandleTypes;
     }

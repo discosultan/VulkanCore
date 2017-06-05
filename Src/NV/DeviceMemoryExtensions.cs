@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.NV
@@ -37,8 +37,13 @@ namespace VulkanCore.NV
     public enum ExternalMemoryHandleTypesNV
     {
         /// <summary>
-        /// Indicates a to memory returned by <see cref="DeviceMemoryExtensions.GetWin32HandleNV"/>
-        /// or, one duplicated from such a handle using <c>DuplicateHandle()</c>.
+        /// No flags.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Indicates a handle to memory returned by <see
+        /// cref="DeviceMemoryExtensions.GetWin32HandleNV"/> or, one duplicated from such a handle
+        /// using <c>DuplicateHandle()</c>.
         /// </summary>
         OpaqueWin32 = 1 << 0,
         /// <summary>
@@ -72,18 +77,22 @@ namespace VulkanCore.NV
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Is 0 or a handle of an <see cref="VulkanCore.Image"/> which this memory will be bound to.
+        /// Is <c>0</c> or a handle of an <see cref="VulkanCore.Image"/> which this memory will be
+        /// bound to.
         /// </summary>
         public long Image;
         /// <summary>
-        /// Is 0 or a handle of a <see cref="VulkanCore.Buffer"/> which this memory will be bound to.
+        /// Is <c>0</c> or a handle of a <see cref="VulkanCore.Buffer"/> which this memory will be
+        /// bound to.
         /// </summary>
         public long Buffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DedicatedAllocationMemoryAllocateInfoNV"/> structure.
         /// </summary>
-        /// <param name="image">An image which this memory will be bound to.</param>
+        /// <param name="image">
+        /// Is <c>null</c> or an <see cref="VulkanCore.Image"/> which this memory will be bound to.
+        /// </param>
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </param>
@@ -181,5 +190,30 @@ namespace VulkanCore.NV
             Next = next;
             DedicatedAllocation = dedicatedAllocation;
         }
+    }
+
+    /// <summary>
+    /// Import Win32 memory created on the same physical device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImportMemoryWin32HandleInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is <c>0</c> or a <see cref="ExternalMemoryHandleTypesNV"/> value specifying the
+        /// type of memory handle in handle.
+        /// </summary>
+        public ExternalMemoryHandleTypesNV HandleType;
+        /// <summary>
+        /// Is a Windows <c>HANDLE</c> referring to the memory.
+        /// </summary>
+        public IntPtr Handle;
     }
 }
