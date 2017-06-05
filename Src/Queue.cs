@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -515,7 +515,7 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Operation binds resource metadata to memory.
+        /// Specifies that the memory being bound is only for the metadata aspect.
         /// </summary>
         Metadata = 1 << 0
     }

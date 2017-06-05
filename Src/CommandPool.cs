@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -109,8 +109,11 @@ namespace VulkanCore
         /// </summary>
         public CommandPoolCreateFlags Flags;
         /// <summary>
-        /// Designates a queue family. All command buffers allocated from this command pool must be
-        /// submitted on queues from the same queue family.
+        /// Designates a queue family.
+        /// <para>
+        /// All command buffers allocated from this command pool must be submitted on queues from the
+        /// same queue family.
+        /// </para>
         /// </summary>
         public int QueueFamilyIndex;
 
@@ -118,8 +121,11 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="CommandPoolCreateInfo"/> structure.
         /// </summary>
         /// <param name="queueFamilyIndex">
-        /// Designates a queue family. All command buffers allocated from this command pool must be
-        /// submitted on queues from the same queue family.
+        /// Designates a queue family.
+        /// <para>
+        /// All command buffers allocated from this command pool must be submitted on queues from the
+        /// same queue family.
+        /// </para>
         /// </param>
         /// <param name="flags">
         /// A bitmask indicating usage behavior for the pool and command buffers allocated from it.
@@ -149,11 +155,21 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Command buffers have a short lifetime.
+        /// Indicates that command buffers allocated from the pool will be short-lived,
+        /// meaning that they will be reset or freed in a relatively short timeframe.
+        /// <para>This
+        /// flag may be used by the implementation to control memory allocation behavior
+        /// within the pool.</para>
         /// </summary>
         Transient = 1 << 0,
         /// <summary>
-        /// Command buffers may release their memory individually.
+        /// Allows any command buffer allocated from a pool to be individually reset to the initial
+        /// state either by calling <see cref="CommandBuffer.Reset"/>, or via the implicit reset when
+        /// calling <see cref="CommandBuffer.Begin"/>.
+        /// <para>
+        /// If this flag is not set on a pool, then <see cref="CommandBuffer.Reset"/> must not be
+        /// called for any command buffer allocated from that pool.
+        /// </para>
         /// </summary>
         ResetCommandBuffer = 1 << 1
     }
@@ -169,7 +185,8 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Release resources owned by the pool.
+        /// Specifies that resetting a command pool recycles all of the resources from the command
+        /// pool back to the system.
         /// </summary>
         ReleaseResources = 1 << 0
     }

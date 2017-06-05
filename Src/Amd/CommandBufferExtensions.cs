@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Amd
@@ -86,9 +86,7 @@ namespace VulkanCore.Amd
     }
 
     /// <summary>
-    /// The rasterization order to use for a graphics pipeline is specified by adding a <see
-    /// cref="PipelineRasterizationStateRasterizationOrderAmd"/> structure to <see
-    /// cref="PipelineRasterizationStateCreateInfo.Next"/> chain.
+    /// Structure defining rasterization order for a graphics pipeline.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PipelineRasterizationStateRasterizationOrderAmd
@@ -102,7 +100,7 @@ namespace VulkanCore.Amd
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// The primitive rasterization order to use.
+        /// Specifies the primitive rasterization order to use.
         /// </summary>
         public RasterizationOrderAmd RasterizationOrder;
 
@@ -110,8 +108,10 @@ namespace VulkanCore.Amd
         /// Initializes a new instance of the <see
         /// cref="PipelineRasterizationStateRasterizationOrderAmd"/> structure.
         /// </summary>
-        /// <param name="rasterizationOrder">Rasterization order to use for the pipeline.</param>
-        /// <param name="next">Pointer to next structure.</param>
+        /// <param name="rasterizationOrder">Specifies the primitive rasterization order to use.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
         public PipelineRasterizationStateRasterizationOrderAmd(RasterizationOrderAmd rasterizationOrder,
             IntPtr next = default(IntPtr))
         {
@@ -122,18 +122,18 @@ namespace VulkanCore.Amd
     }
 
     /// <summary>
-    /// Graphics pipeline primitive rasterization ordering rules.
+    /// Specify rasterization order for a graphics pipeline.
     /// </summary>
     public enum RasterizationOrderAmd
     {
         /// <summary>
-        /// Indicates that the order of these operations for each primitive in a subpass must occur
-        /// in drawing-primitive-order.
+        /// Specifies that the order of these operations for each primitive in a subpass must occur
+        /// in primitive order.
         /// </summary>
         Strict = 0,
         /// <summary>
-        /// Indicates that the order of these operations for each primitive in a subpass may not
-        /// occur in drawing-primitive-order.
+        /// Specifies that the order of these operations for each primitive in a subpass may not
+        /// occur in primitive order.
         /// </summary>
         Relaxed = 1
     }

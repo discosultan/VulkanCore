@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.NV
@@ -38,7 +38,7 @@ namespace VulkanCore.NV
     {
         /// <summary>
         /// Indicates a to memory returned by <see cref="DeviceMemoryExtensions.GetWin32HandleNV"/>
-        /// or, one duplicated from such a handle using `DuplicateHandle()`..
+        /// or, one duplicated from such a handle using <c>DuplicateHandle()</c>.
         /// </summary>
         OpaqueWin32 = 1 << 0,
         /// <summary>
@@ -47,12 +47,12 @@ namespace VulkanCore.NV
         OpaqueWin32Kmt = 1 << 1,
         /// <summary>
         /// Indicates a valid NT handle to memory returned by
-        /// `IDXGIResource1::ftext:CreateSharedHandle()`, or a handle duplicated from such a handle
-        /// using `DuplicateHandle()`.
+        /// <c>IDXGIResource1::ftext:CreateSharedHandle()</c>, or a handle duplicated from such a
+        /// handle using <c>DuplicateHandle()</c>.
         /// </summary>
         D3D11Image = 1 << 2,
         /// <summary>
-        /// Indicates a handle to memory returned by `IDXGIResource::GetSharedHandle()`.
+        /// Indicates a handle to memory returned by <c>IDXGIResource::GetSharedHandle()</c>.
         /// </summary>
         D3D11ImageKmt = 1 << 3
     }

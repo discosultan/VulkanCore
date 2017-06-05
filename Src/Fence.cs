@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -156,18 +156,14 @@ namespace VulkanCore
         internal IntPtr Next;
 
         /// <summary>
-        /// Defines the initial state and behavior of the fence.
-        /// <para>
-        /// If flags contains <see cref="FenceCreateFlags.Signaled"/> then the fence object is
-        /// created in the signaled state; otherwise it is created in the unsignaled state.
-        /// </para>
+        /// Specifies the initial state and behavior of the fence.
         /// </summary>
         public FenceCreateFlags Flags;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FenceCreateInfo"/> structure.
         /// </summary>
-        /// <param name="flags">Defines the initial state and behavior of the fence.</param>
+        /// <param name="flags">Specifies the initial state and behavior of the fence.</param>
         public FenceCreateInfo(FenceCreateFlags flags = 0)
         {
             Type = StructureType.FenceCreateInfo;
@@ -188,11 +184,12 @@ namespace VulkanCore
     public enum FenceCreateFlags
     {
         /// <summary>
-        /// The fence object is created in the unsignaled state.
+        /// Specifies that the fence object is created in the unsignaled state.
         /// </summary>
         None = 0,
         /// <summary>
-        /// The fence object is created in the signaled state.
+        /// Specifies that the fence object is created in the signaled state. Otherwise, it is
+        /// created in the unsignaled state.
         /// </summary>
         Signaled = 1 << 0
     }

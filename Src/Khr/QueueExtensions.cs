@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
@@ -85,16 +85,22 @@ namespace VulkanCore.Khr
         /// </summary>
         public long[] Swapchains;
         /// <summary>
-        /// Indices into the array of each swapchain's presentable images, with swapchain count
-        /// entries. Each entry in this array identifies the image to present on the corresponding
-        /// entry in the <see cref="Swapchains"/> array.
+        /// Indices into the array of each swapchain's presentable images, with swapchain count entries.
+        /// <para>
+        /// Each entry in this array identifies the image to present on the corresponding entry in
+        /// the <see cref="Swapchains"/> array.
+        /// </para>
         /// </summary>
         public int[] ImageIndices;
         /// <summary>
-        /// Result typed elements with swapchain count entries. Applications that do not need
-        /// per-swapchain results can use <c>null</c> for <see cref="Results"/>. If not <c>null</c>,
-        /// each entry in <see cref="Results"/> will be set to the result for presenting the
-        /// swapchain corresponding to the same index in <see cref="Swapchains"/>.
+        /// <see cref="Result"/> typed elements with swapchain count entries.
+        /// <para>
+        /// Applications that do not need per-swapchain results can use <c>null</c> for <see cref="Results"/>.
+        /// </para>
+        /// <para>
+        /// If not <c>null</c>, each entry in <see cref="Results"/> will be set to the <see
+        /// cref="Result"/> for presenting the swapchain corresponding to the same index in <see cref="Swapchains"/>.
+        /// </para>
         /// </summary>
         public Result[] Results;
 
@@ -104,15 +110,21 @@ namespace VulkanCore.Khr
         /// <param name="waitSemaphores">Semaphores to wait for before presenting.</param>
         /// <param name="swapchains">Valid <see cref="SwapchainKhr"/> handles.</param>
         /// <param name="imageIndices">
-        /// Indices into the array of each swapchain’s presentable images, with swapchain count
-        /// entries. Each entry in this array identifies the image to present on the corresponding
-        /// entry in the <see cref="Swapchains"/> array.
+        /// Indices into the array of each swapchain’s presentable images, with swapchain count entries.
+        /// <para>
+        /// Each entry in this array identifies the image to present on the corresponding entry in
+        /// the <see cref="Swapchains"/> array.
+        /// </para>
         /// </param>
         /// <param name="results">
-        /// Result typed elements with swapchain count entries. Applications that do not need
-        /// per-swapchain results can use <c>null</c> for <see cref="Results"/>. If not <c>null</c>,
-        /// each entry in <see cref="Results"/> will be set to the result for presenting the
-        /// swapchain corresponding to the same index in <see cref="Swapchains"/>.
+        /// <see cref="Result"/> typed elements with swapchain count entries.
+        /// <para>
+        /// Applications that do not need per-swapchain results can use <c>null</c> for <see cref="Results"/>.
+        /// </para>
+        /// <para>
+        /// If not <c>null</c>, each entry in <see cref="Results"/> will be set to the <see
+        /// cref="Result"/> for presenting the swapchain corresponding to the same index in <see cref="Swapchains"/>.
+        /// </para>
         /// </param>
         /// <param name="next">
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.

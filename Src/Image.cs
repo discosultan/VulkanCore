@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -153,8 +153,10 @@ namespace VulkanCore
         /// </summary>
         public ImageCreateFlags Flags;
         /// <summary>
-        /// Specifies the basic dimensionality of the image. Layers in array textures do not count as
-        /// a dimension for the purposes of the image type.
+        /// Specifies the basic dimensionality of the image.
+        /// <para>
+        /// Layers in array textures do not count as a dimension for the purposes of the image type.
+        /// </para>
         /// </summary>
         public ImageType ImageType;
         /// <summary>
@@ -162,8 +164,8 @@ namespace VulkanCore
         /// </summary>
         public Format Format;
         /// <summary>
-        /// Describes the number of data elements in each dimension of the base level. The width,
-        /// height, and depth members of extent must all be greater than 0.
+        /// Describes the number of data elements in each dimension of the base level.
+        /// <para>The width, height, and depth members of extent must all be greater than 0.</para>
         /// </summary>
         public Extent3D Extent;
         /// <summary>
@@ -179,7 +181,7 @@ namespace VulkanCore
         /// </summary>
         public SampleCounts Samples;
         /// <summary>
-        /// Specifies the tiling arrangement of the data elements in memory, as described below.
+        /// Specifies the tiling arrangement of the data elements in memory.
         /// </summary>
         public ImageTiling Tiling;
         /// <summary>
@@ -187,7 +189,7 @@ namespace VulkanCore
         /// </summary>
         public ImageUsages Usage;
         /// <summary>
-        /// The sharing mode of the image when it will be accessed by multiple queue families.
+        /// Specifies the sharing mode of the image when it will be accessed by multiple queue families.
         /// </summary>
         public SharingMode SharingMode;
         /// <summary>
@@ -196,7 +198,7 @@ namespace VulkanCore
         /// </summary>
         public int[] QueueFamilyIndices;
         /// <summary>
-        /// Selects the initial <see cref="ImageLayout"/> state of all image subresources of the image.
+        /// Specifies the initial <see cref="ImageLayout"/> state of all image subresources of the image.
         /// </summary>
         public ImageLayout InitialLayout;
 
@@ -251,37 +253,38 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Indicates that the image will be backed using sparse memory binding.
+        /// Specifies that the image will be backed using sparse memory binding.
         /// </summary>
         SparseBinding = 1 << 0,
         /// <summary>
-        /// Indicates that the image can be partially backed using sparse memory binding. Images
+        /// Specifies that the image can be partially backed using sparse memory binding. Images
         /// created with this flag must also be created with the <see cref="SparseBinding"/> flag.
         /// </summary>
         SparseResidency = 1 << 1,
         /// <summary>
-        /// Indicates that the image will be backed using sparse memory binding with memory ranges
+        /// Specifies that the image will be backed using sparse memory binding with memory ranges
         /// that might also simultaneously be backing another image (or another portion of the same
         /// image). Images created with this flag must also be created with the <see
         /// cref="SparseBinding"/> flag.
         /// </summary>
         SparseAliased = 1 << 2,
         /// <summary>
-        /// Indicates that the image can be used to create an <see cref="ImageView"/> with a
+        /// Specifies that the image can be used to create an <see cref="ImageView"/> with a
         /// different format from the image.
         /// </summary>
         MutableFormat = 1 << 3,
         /// <summary>
-        /// Indicates that the image can be used to create an <see cref="ImageView"/> of type <see
+        /// Specifies that the image can be used to create an <see cref="ImageView"/> of type <see
         /// cref="ImageViewType.ImageCube"/> or <see cref="ImageViewType.ImageCubeArray"/>.
         /// </summary>
         CubeCompatible = 1 << 4,
         /// <summary>
-        /// The 3D image can be viewed as a 2D or 2D array image.
+        /// Specifies that the image can be used to create a <see cref="ImageView"/> of type <see
+        /// cref="ImageViewType.Image2D"/> or <see cref="ImageViewType.Image2DArray"/>.
         /// </summary>
         Image2DArrayCompatibleKhr = 1 << 5,
         /// <summary>
-        /// Indicates that the image can be used with a non-zero length of the <see
+        /// Specifies that the image can be used with a non-zero length of the <see
         /// cref="Khx.BindImageMemoryInfoKhx.SFRRects"/> member passed into <see
         /// cref="Khx.DeviceExtensions.BindImageMemory2Khx"/>. This flag also has the effect of
         /// making the image use the standard sparse image block dimensions.
@@ -295,15 +298,15 @@ namespace VulkanCore
     public enum ImageType
     {
         /// <summary>
-        /// Specify one-dimensional image.
+        /// Specify a one-dimensional image.
         /// </summary>
         Image1D = 0,
         /// <summary>
-        /// Specify two-dimensional image.
+        /// Specify a two-dimensional image.
         /// </summary>
         Image2D = 1,
         /// <summary>
-        /// Specify three-dimensional image.
+        /// Specify a three-dimensional image.
         /// </summary>
         Image3D = 2
     }
@@ -315,44 +318,44 @@ namespace VulkanCore
     public enum ImageUsages
     {
         /// <summary>
-        /// Indicates that the image can be used as the source of a transfer command.
+        /// Specifies that the image can be used as the source of a transfer command.
         /// </summary>
         TransferSrc = 1 << 0,
         /// <summary>
-        /// Indicates that the image can be used as the destination of a transfer command.
+        /// Specifies that the image can be used as the destination of a transfer command.
         /// </summary>
         TransferDst = 1 << 1,
         /// <summary>
-        /// Indicates that the image can be used to create a <see cref="ImageView"/> suitable for
+        /// Specifies that the image can be used to create a <see cref="ImageView"/> suitable for
         /// occupying a <see cref="DescriptorSet"/> slot either of type <see
         /// cref="DescriptorType.SampledImage"/> or <see
         /// cref="DescriptorType.CombinedImageSampler"/>, and be sampled by a shader.
         /// </summary>
         Sampled = 1 << 2,
         /// <summary>
-        /// Indicates that the image can be used to create a <see cref="ImageView"/> suitable for
+        /// Specifies that the image can be used to create a <see cref="ImageView"/> suitable for
         /// occupying a <see cref="DescriptorSet"/> slot of type <see cref="DescriptorType.StorageImage"/>.
         /// </summary>
         Storage = 1 << 3,
         /// <summary>
-        /// Indicates that the image can be used to create a <see cref="ImageView"/> suitable for use
+        /// Specifies that the image can be used to create a <see cref="ImageView"/> suitable for use
         /// as a color or resolve attachment in a <see cref="Framebuffer"/>.
         /// </summary>
         ColorAttachment = 1 << 4,
         /// <summary>
-        /// Indicates that the image can be used to create a <see cref="ImageView"/> suitable for use
+        /// Specifies that the image can be used to create a <see cref="ImageView"/> suitable for use
         /// as a depth/stencil attachment in a <see cref="Framebuffer"/>.
         /// </summary>
         DepthStencilAttachment = 1 << 5,
         /// <summary>
-        /// Indicates that the memory bound to this image will have been allocated with the <see
+        /// Specifies that the memory bound to this image will have been allocated with the <see
         /// cref="MemoryProperties.LazilyAllocated"/>. This bit can be set for any image that can
         /// be used to create a <see cref="ImageView"/> suitable for use as a color, resolve,
         /// depth/stencil, or input attachment.
         /// </summary>
         TransientAttachment = 1 << 6,
         /// <summary>
-        /// Indicates that the image can be used to create a <see cref="ImageView"/> suitable for
+        /// Specifies that the image can be used to create a <see cref="ImageView"/> suitable for
         /// occupying <see cref="DescriptorSet"/> slot of type <see
         /// cref="DescriptorType.InputAttachment"/>; be read from a shader as an input attachment;
         /// and be used as an input attachment in a framebuffer.
@@ -366,7 +369,7 @@ namespace VulkanCore
     public enum ImageLayout
     {
         /// <summary>
-        /// Supports no device access. This layout must only be used as the <see
+        /// Does not support device access. This layout must only be used as the <see
         /// cref="ImageCreateInfo.InitialLayout"/> or <see
         /// cref="AttachmentDescription.InitialLayout"/> member, or as the old layout in an image
         /// transition. When transitioning out of this layout, the contents of the memory are not
@@ -420,7 +423,7 @@ namespace VulkanCore
         /// </summary>
         TransferDstOptimal = 7,
         /// <summary>
-        /// Supports no device access. This layout must only be used as the <see
+        /// Does not support device access. This layout must only be used as the <see
         /// cref="ImageCreateInfo.InitialLayout"/> or <see
         /// cref="AttachmentDescription.InitialLayout"/> member, or as the old layout in an image
         /// transition. When transitioning out of this layout, the contents of the memory are
@@ -451,7 +454,7 @@ namespace VulkanCore
     public struct AttachmentDescription
     {
         /// <summary>
-        /// A bitmask describing additional properties of the attachment.
+        /// A bitmask specifying additional properties of the attachment.
         /// </summary>
         public AttachmentDescriptions Flags;
         /// <summary>
@@ -503,7 +506,7 @@ namespace VulkanCore
     public enum AttachmentDescriptions
     {
         /// <summary>
-        /// The attachment may alias physical memory of another attachment in the same render pass.
+        /// Specifies that the attachment aliases the same device memory as other attachments.
         /// </summary>
         MayAlias = 1 << 0
     }
@@ -514,24 +517,26 @@ namespace VulkanCore
     public enum AttachmentLoadOp
     {
         /// <summary>
-        /// Means the previous contents of the image within the render area will be preserved. For
-        /// attachments with a depth/stencil format, this uses the access type <see
+        /// Specifies that the previous contents of the image within the render area will be
+        /// preserved. For attachments with a depth/stencil format, this uses the access type <see
         /// cref="Accesses.DepthStencilAttachmentRead"/>. For attachments with a color format, this
         /// uses the access type <see cref="Accesses.ColorAttachmentRead"/>.
         /// </summary>
         Load = 0,
         /// <summary>
-        /// Means the contents within the render area will be cleared to a uniform value, which is
-        /// specified when a render pass instance is begun. For attachments with a depth/stencil
-        /// format, this uses the access type <see cref="Accesses.DepthStencilAttachmentWrite"/>. For
-        /// attachments with a color format, this uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
+        /// Specifies that the contents within the render area will be cleared to a uniform value,
+        /// which is specified when a render pass instance is begun. For attachments with a
+        /// depth/stencil format, this uses the access type <see
+        /// cref="Accesses.DepthStencilAttachmentWrite"/>. For attachments with a color format, this
+        /// uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
         /// </summary>
         Clear = 1,
         /// <summary>
-        /// Means the previous contents within the area need not be preserved; the contents of the
-        /// attachment will be undefined inside the render area. For attachments with a depth/stencil
-        /// format, this uses the access type <see cref="Accesses.DepthStencilAttachmentWrite"/>. For
-        /// attachments with a color format, this uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
+        /// Specifies that the previous contents within the area need not be preserved; the contents
+        /// of the attachment will be undefined inside the render area. For attachments with a
+        /// depth/stencil format, this uses the access type <see
+        /// cref="Accesses.DepthStencilAttachmentWrite"/>. For attachments with a color format, this
+        /// uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
         /// </summary>
         DontCare = 2
     }
@@ -542,14 +547,14 @@ namespace VulkanCore
     public enum AttachmentStoreOp
     {
         /// <summary>
-        /// Means the contents generated during the render pass and within the render area are
+        /// Specifies the contents generated during the render pass and within the render area are
         /// written to memory. For attachments with a depth/stencil format, this uses the access type
         /// <see cref="Accesses.DepthStencilAttachmentWrite"/>. For attachments with a color format,
         /// this uses the access type <see cref="Accesses.ColorAttachmentWrite"/>.
         /// </summary>
         Store = 0,
         /// <summary>
-        /// Means the contents within the render area are not needed after rendering, and may be
+        /// Specifies the contents within the render area are not needed after rendering, and may be
         /// discarded; the contents of the attachment will be undefined inside the render area. For
         /// attachments with a depth/stencil format, this uses the access type <see
         /// cref="Accesses.DepthStencilAttachmentWrite"/>. For attachments with a color format, this
@@ -633,8 +638,7 @@ namespace VulkanCore
     public struct SparseImageFormatProperties
     {
         /// <summary>
-        /// A bitmask of <see cref="ImageAspects"/> specifying which aspects of the image the
-        /// properties apply to.
+        /// A bitmask specifying which aspects of the image the properties apply to.
         /// </summary>
         public ImageAspects AspectMask;
         /// <summary>
@@ -654,16 +658,18 @@ namespace VulkanCore
     public enum SparseImageFormats
     {
         /// <summary>
-        /// Image uses a single mip tail region for all array layers.
+        /// Specifies that the image uses a single mip tail region for all array layers.
         /// </summary>
         SingleMiptail = 1 << 0,
         /// <summary>
-        /// Image requires mip level dimensions to be an integer multiple of the sparse image block
-        /// dimensions for non-tail mip levels.
+        /// Specifies that the first mip level whose dimensions are not integer multiples of the
+        /// corresponding dimensions of the sparse image block begins the mip tail region.
         /// </summary>
         AlignedMipSize = 1 << 1,
         /// <summary>
-        /// Image uses a non-standard sparse image block dimensions.
+        /// Specifies that the image uses non-standard sparse image block dimensions, and the image
+        /// granularity values do not match the standard sparse image block dimensions for the given
+        /// pixel format.
         /// </summary>
         NonstandardBlockSize = 1 << 2
     }
@@ -739,31 +745,31 @@ namespace VulkanCore
     public enum SampleCounts
     {
         /// <summary>
-        /// Sample count 1 supported.
+        /// Specifies an image with one sample per pixel.
         /// </summary>
         Count1 = 1 << 0,
         /// <summary>
-        /// Sample count 2 supported.
+        /// Specifies an image with 2 samples per pixel.
         /// </summary>
         Count2 = 1 << 1,
         /// <summary>
-        /// Sample count 4 supported.
+        /// Specifies an image with 4 samples per pixel.
         /// </summary>
         Count4 = 1 << 2,
         /// <summary>
-        /// Sample count 8 supported.
+        /// Specifies an image with 8 samples per pixel.
         /// </summary>
         Count8 = 1 << 3,
         /// <summary>
-        /// Sample count 16 supported.
+        /// Specifies an image with 16 samples per pixel.
         /// </summary>
         Count16 = 1 << 4,
         /// <summary>
-        /// Sample count 32 supported.
+        /// Specifies an image with 32 samples per pixel.
         /// </summary>
         Count32 = 1 << 5,
         /// <summary>
-        /// Sample count 64 supported.
+        /// Specifies an image with 64 samples per pixel.
         /// </summary>
         Count64 = 1 << 6
     }

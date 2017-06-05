@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -1328,7 +1328,7 @@ namespace VulkanCore
         internal long CommandPool;
 
         /// <summary>
-        /// Determines whether the command buffers are primary or secondary command buffers.
+        /// Specifies the command buffer level.
         /// </summary>
         public CommandBufferLevel Level;
         /// <summary>
@@ -1339,9 +1339,7 @@ namespace VulkanCore
         /// <summary>
         /// Inititializes a new instance of the <see cref="CommandBuffer"/> structure.
         /// </summary>
-        /// <param name="level">
-        /// Determines whether the command buffers are primary or secondary command buffers.
-        /// </param>
+        /// <param name="level">Specifies the command buffer level.</param>
         /// <param name="count">The number of command buffers to allocate from the pool.</param>
         public CommandBufferAllocateInfo(CommandBufferLevel level, int count)
         {
@@ -1360,16 +1358,16 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Structure specifying a command buffer level.
+    /// Enumerant specifying a command buffer level.
     /// </summary>
     public enum CommandBufferLevel
     {
         /// <summary>
-        /// Is a primary command buffer.
+        /// Specifies a primary command buffer.
         /// </summary>
         Primary = 0,
         /// <summary>
-        /// Is a secondary command buffer.
+        /// Specifies a secondary command buffer.
         /// </summary>
         Secondary = 1
     }
@@ -1380,19 +1378,23 @@ namespace VulkanCore
     public unsafe struct CommandBufferBeginInfo
     {
         /// <summary>
-        /// A bitmask indicating usage behavior for the command buffer.
+        /// A bitmask specifying usage behavior for the command buffer.
         /// </summary>
         public CommandBufferUsages Flags;
         /// <summary>
-        /// The inheritance info for secondary command buffers.
+        /// Structure, which is used if command buffer is a secondary command buffer.
+        /// <para>If it is a primary command buffer, then this value is ignored.</para>
         /// </summary>
         public CommandBufferInheritanceInfo? InheritanceInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandBufferBeginInfo"/> structure.
         /// </summary>
-        /// <param name="flags">A bitmask indicating usage behavior for the command buffer.</param>
-        /// <param name="inheritanceInfo">The inheritance info for secondary command buffers.</param>
+        /// <param name="flags">A bitmask specifying usage behavior for the command buffer.</param>
+        /// <param name="inheritanceInfo">
+        /// Structure, which is used if command buffer is a secondary command buffer.
+        /// <para>If it is a primary command buffer, then this value is ignored.</para>
+        /// </param>
         public CommandBufferBeginInfo(CommandBufferUsages flags = 0,
             CommandBufferInheritanceInfo? inheritanceInfo = null)
         {
@@ -1438,18 +1440,18 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Indicates that each recording of the command buffer will only be submitted once, and the
+        /// Specifies that each recording of the command buffer will only be submitted once, and the
         /// command buffer will be reset and recorded again between each submission.
         /// </summary>
         OneTimeSubmit = 1 << 0,
         /// <summary>
-        /// Indicates that a secondary command buffer is considered to be entirely inside a render
-        /// pass. If this is a primary command buffer, then this bit is ignored.
+        /// Specifies that a secondary command buffer is considered to be entirely inside a render pass.
+        /// <para>If this is a primary command buffer, then this bit is ignored.</para>
         /// </summary>
         RenderPassContinue = 1 << 1,
         /// <summary>
-        /// Allows the command buffer to be resubmitted to a queue or recorded into a primary command
-        /// buffer while it is pending execution.
+        /// Specifies that a command buffer can be resubmitted to a queue while it is in the pending
+        /// State, and recorded into multiple primary command buffers.
         /// </summary>
         SimultaneousUse = 1 << 2
     }
@@ -1503,7 +1505,7 @@ namespace VulkanCore
         /// </summary>
         public QueryControlFlags QueryFlags;
         /// <summary>
-        /// Indicates the set of pipeline statistics that can be counted by an active query in the
+        /// Specifies the set of pipeline statistics that can be counted by an active query in the
         /// primary command buffer when this secondary command buffer is executed. If this value
         /// includes a given bit, then this command buffer can be executed whether the primary
         /// command buffer has a pipeline statistics query active that includes this bit or not. If
@@ -1529,7 +1531,7 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Require precise results to be collected by the query.
+        /// Specifies the precision of occlusion queries.
         /// </summary>
         Precise = 1 << 0
     }
@@ -1545,47 +1547,99 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of vertices processed by
+        /// the input assembly stage.
+        /// <para>Vertices corresponding to incomplete primitives may contribute to the count.</para>
         /// </summary>
         InputAssemblyVertices = 1 << 0,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of primitives processed
+        /// by the input assembly stage.
+        /// <para>
+        /// If primitive restart is enabled, restarting the primitive topology has no effect on the count.
+        /// </para>
+        /// <para>Incomplete primitives may be counted.</para>
         /// </summary>
         InputAssemblyPrimitives = 1 << 1,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of vertex shader invocations.
+        /// <para>This counter's value is incremented each time a vertex shader is invoked.</para>
         /// </summary>
         VertexShaderInvocations = 1 << 2,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of geometry shader invocations.
+        /// <para>This counter's value is incremented each time a geometry shader is invoked.</para>
+        /// <para>
+        /// In the case of instanced geometry shaders, the geometry shader invocations count is
+        /// incremented for each separate instanced invocation.
+        /// </para>
         /// </summary>
         GeometryShaderInvocations = 1 << 3,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of primitives generated
+        /// by geometry shader invocations.
+        /// <para>The counter's value is incremented each time the geometry shader emits a primitive.</para>
+        /// <para>
+        /// Restarting primitive topology using the SPIR-V instructions <c>OpEndPrimitive</c> or
+        /// <c>OpEndStreamPrimitive</c> has no effect on the geometry shader output primitives count.
+        /// </para>
         /// </summary>
         GeometryShaderPrimitives = 1 << 4,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of primitives processed
+        /// by the primitive clipping stage of the pipeline.
+        /// <para>
+        /// The counter's value is incremented each time a primitive reaches the primitive clipping stage.
+        /// </para>
         /// </summary>
         ClippingInvocations = 1 << 5,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of primitives output by
+        /// the primitive clipping stage of the pipeline.
+        /// <para>
+        /// The counter's value is incremented each time a primitive passes the primitive clipping stage.
+        /// </para>
+        /// <para>
+        /// The actual number of primitives output by the primitive clipping stage for a particular
+        /// input primitive is implementation-dependent but must satisfy the following conditions:
+        /// </para>
+        /// <para>
+        /// ** If at least one vertex of the input primitive lies inside the clipping volume, the
+        /// counter is incremented by one or more.
+        /// </para>
+        /// <para>** Otherwise, the counter is incremented by zero or more.</para>
         /// </summary>
         ClippingPrimitives = 1 << 6,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of fragment shader invocations.
+        /// <para>The counter's value is incremented each time the fragment shader is invoked.</para>
         /// </summary>
         FragmentShaderInvocations = 1 << 7,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of patches processed by
+        /// the tessellation control shader.
+        /// <para>
+        /// The counter's value is incremented once for each patch for which a tessellation control
+        /// shader is invoked.
+        /// </para>
         /// </summary>
         TessellationControlShaderPatches = 1 << 8,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of invocations of the
+        /// tessellation evaluation shader.
+        /// <para>
+        /// The counter's value is incremented each time the tessellation evaluation shader is invoked.
+        /// </para>
         /// </summary>
         TessellationEvaluationShaderInvocations = 1 << 9,
         /// <summary>
-        /// Optional.
+        /// Specifies that queries managed by the pool will count the number of compute shader invocations.
+        /// <para>The counter's value is incremented every time the compute shader is invoked.</para>
+        /// <para>
+        /// Implementations may skip the execution of certain compute shader invocations or execute
+        /// additional compute shader invocations for implementation-dependent reasons as long as the
+        /// results of rendering otherwise remain unchanged.
+        /// </para>
         /// </summary>
         ComputeShaderInvocations = 1 << 10
     }
@@ -1601,7 +1655,13 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Release resources owned by the buffer.
+        /// Specifies that most or all memory resources currently owned by the command buffer should
+        /// be returned to the parent command pool.
+        /// <para>
+        /// If this flag is not set, then the command buffer may hold onto memory resources and reuse
+        /// them when recording commands.
+        /// </para>
+        /// <para>Command buffer is moved to the initial state.</para>
         /// </summary>
         ReleaseResources = 1 << 0
     }
@@ -1612,11 +1672,11 @@ namespace VulkanCore
     public enum IndexType
     {
         /// <summary>
-        /// Indices are treated as 16 bits.
+        /// Specifies that indices are 16-bit unsigned integer values.
         /// </summary>
         UInt16 = 0,
         /// <summary>
-        /// Indices are treated as 32 bits.
+        /// Specifies that indices are 32-bit unsigned integer values.
         /// </summary>
         UInt32 = 1
     }
@@ -1628,15 +1688,16 @@ namespace VulkanCore
     public enum StencilFaces
     {
         /// <summary>
-        /// Front face.
+        /// Specifies that only the front set of stencil state is updated.
         /// </summary>
         Front = 1 << 0,
         /// <summary>
-        /// Back face.
+        /// Specifies that only the back set of stencil state is updated.
         /// </summary>
         Back = 1 << 1,
         /// <summary>
-        /// Front and back faces.
+        /// Is the combination of <see cref="Front"/> and <see cref="Back"/>, and specifies that both
+        /// sets of stencil state are updated.
         /// </summary>
         StencilFrontAndBack = 0x00000003
     }
@@ -2064,13 +2125,26 @@ namespace VulkanCore
         internal IntPtr Next;
 
         /// <summary>
-        /// Defines a source access mask.
+        /// Specifies a source access mask.
         /// </summary>
         public Accesses SrcAccessMask;
         /// <summary>
-        /// Defines a destination access mask.
+        /// Specifies a destination access mask.
         /// </summary>
         public Accesses DstAccessMask;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemoryBarrier"/> structure.
+        /// </summary>
+        /// <param name="srcAccessMask">Specifies a source access mask.</param>
+        /// <param name="dstAccessMask">Specifies a destination access mask.</param>
+        public MemoryBarrier(Accesses srcAccessMask, Accesses dstAccessMask)
+        {
+            Type = StructureType.MemoryBarrier;
+            Next = IntPtr.Zero;
+            SrcAccessMask = srcAccessMask;
+            DstAccessMask = dstAccessMask;
+        }
 
         internal void Prepare()
         {
@@ -2088,11 +2162,11 @@ namespace VulkanCore
         internal IntPtr Next;
 
         /// <summary>
-        /// Defines a source access mask.
+        /// Specifies a source access mask.
         /// </summary>
         public Accesses SrcAccessMask;
         /// <summary>
-        /// Defines a destination access mask.
+        /// Specifies a destination access mask.
         /// </summary>
         public Accesses DstAccessMask;
         /// <summary>
@@ -2125,8 +2199,8 @@ namespace VulkanCore
         /// A <see cref="VulkanCore.Buffer"/> handle to the buffer whose backing memory is affected
         /// by the barrier.
         /// </param>
-        /// <param name="srcAccessMask">Defines a source access mask.</param>
-        /// <param name="dstAccessMask">Defines a destination access mask.</param>
+        /// <param name="srcAccessMask">Specifies a source access mask.</param>
+        /// <param name="dstAccessMask">Specifies a destination access mask.</param>
         /// <param name="offset">
         /// An offset in bytes into the backing memory for buffer; this is relative to the base
         /// offset as bound to the buffer.
@@ -2147,8 +2221,8 @@ namespace VulkanCore
         /// A <see cref="VulkanCore.Buffer"/> handle to the buffer whose backing memory is affected
         /// by the barrier.
         /// </param>
-        /// <param name="srcAccessMask">Defines a source access mask.</param>
-        /// <param name="dstAccessMask">Defines a destination access mask.</param>
+        /// <param name="srcAccessMask">Specifies a source access mask.</param>
+        /// <param name="dstAccessMask">Specifies a destination access mask.</param>
         /// <param name="srcQueueFamilyIndex">
         /// The source queue family for a queue family ownership transfer.
         /// </param>
@@ -2193,11 +2267,11 @@ namespace VulkanCore
         internal IntPtr Next;
 
         /// <summary>
-        /// Defines a source access mask.
+        /// Specifies a source access mask.
         /// </summary>
         public Accesses SrcAccessMask;
         /// <summary>
-        /// Defines a destination access mask.
+        /// Specifies a destination access mask.
         /// </summary>
         public Accesses DstAccessMask;
         /// <summary>
@@ -2241,8 +2315,8 @@ namespace VulkanCore
         /// Describes an area of the backing memory for image, as well as the set of image
         /// subresources whose image layouts are modified.
         /// </param>
-        /// <param name="srcAccessMask">Defines a source access mask.</param>
-        /// <param name="dstAccessMask">Defines a destination access mask.</param>
+        /// <param name="srcAccessMask">Specifies a source access mask.</param>
+        /// <param name="dstAccessMask">Specifies a destination access mask.</param>
         /// <param name="oldLayout">The old layout in an image layout transition.</param>
         /// <param name="newLayout">The new layout in an image layout transition.</param>
         /// <param name="srcQueueFamilyIndex">
@@ -2284,95 +2358,96 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Read access to an indirect command structure read as part of an indirect drawing or
-        /// dispatch command.
+        /// Specifies read access to an indirect command structure read as part of an indirect
+        /// drawing or dispatch command.
         /// </summary>
         IndirectCommandRead = 1 << 0,
         /// <summary>
-        /// Read access to an index buffer as part of an indexed drawing command, bound by <see cref="CommandBuffer.CmdBindIndexBuffer"/>.
+        /// Specifies read access to an index buffer as part of an indexed drawing command, bound by
+        /// <see cref="CommandBuffer.CmdBindIndexBuffer"/>.
         /// </summary>
         IndexRead = 1 << 1,
         /// <summary>
-        /// Read access to a vertex buffer as part of a drawing command, bound by <see cref="CommandBuffer.CmdBindVertexBuffers"/>.
+        /// Specifies read access to a vertex buffer as part of a drawing command, bound by <see cref="CommandBuffer.CmdBindVertexBuffers"/>.
         /// </summary>
         VertexAttributeRead = 1 << 2,
         /// <summary>
-        /// Read access to a uniform buffer.
+        /// Specifies read access to a uniform buffer.
         /// </summary>
         UniformRead = 1 << 3,
         /// <summary>
-        /// Read access to an input attachment within a renderpass during fragment shading.
+        /// Specifies read access to an input attachment within a renderpass during fragment shading.
         /// </summary>
         InputAttachmentRead = 1 << 4,
         /// <summary>
-        /// Read access to a storage buffer, uniform texel buffer, storage texel buffer, sampled
-        /// image or storage image.
+        /// Specifies read access to a storage buffer, uniform texel buffer, storage texel buffer,
+        /// sampled image or storage image.
         /// </summary>
         ShaderRead = 1 << 5,
         /// <summary>
-        /// Write access to a storage buffer, storage texel buffer or storage image.
+        /// Specifies write access to a storage buffer, storage texel buffer or storage image.
         /// </summary>
         ShaderWrite = 1 << 6,
         /// <summary>
-        /// Read access to a color attachment, such as via blending, logic operations or via certain
-        /// subpass load operations.
+        /// Specifies read access to a color attachment, such as via blending, logic operations or
+        /// via certain subpass load operations.
         /// </summary>
         ColorAttachmentRead = 1 << 7,
         /// <summary>
-        /// Write access to a color or resolve attachment during a render pass or via certain subpass
-        /// load and store operations.
+        /// Specifies write access to a color or resolve attachment during a render pass or via
+        /// certain subpass load and store operations.
         /// </summary>
         ColorAttachmentWrite = 1 << 8,
         /// <summary>
-        /// Read access to a depth/stencil attachment via depth or stencil operations or via certain
-        /// subpass load operations.
+        /// Specifies read access to a depth/stencil attachment via depth or stencil operations or
+        /// via certain subpass load operations.
         /// </summary>
         DepthStencilAttachmentRead = 1 << 9,
         /// <summary>
-        /// Write access to a depth/stencil attachment via depth or stencil operations or via certain
-        /// subpass load and store operations.
+        /// Specifies write access to a depth/stencil attachment via depth or stencil operations or
+        /// via certain subpass load and store operations.
         /// </summary>
         DepthStencilAttachmentWrite = 1 << 10,
         /// <summary>
-        /// Read access to an image or buffer in a copy operation.
+        /// Specifies read access to an image or buffer in a copy operation.
         /// </summary>
         TransferRead = 1 << 11,
         /// <summary>
-        /// Write access to an image or buffer in a clear or copy operation.
+        /// Specifies write access to an image or buffer in a clear or copy operation.
         /// </summary>
         TransferWrite = 1 << 12,
         /// <summary>
-        /// Read access by a host operation. Accesses of this type are not performed through a
-        /// resource, but directly on memory.
+        /// Specifies read access by a host operation. Accesses of this type are not performed
+        /// through a resource, but directly on memory.
         /// </summary>
         HostRead = 1 << 13,
         /// <summary>
-        /// Write access by a host operation. Accesses of this type are not performed through a
-        /// resource, but directly on memory.
+        /// Specifies write access by a host operation. Accesses of this type are not performed
+        /// through a resource, but directly on memory.
         /// </summary>
         HostWrite = 1 << 14,
         /// <summary>
-        /// Read access via non-specific entities. These entities include the Vulkan device and host,
-        /// but may also include entities external to the Vulkan device or otherwise not part of the
-        /// core Vulkan pipeline. When included in a destination access mask, makes all available
-        /// writes visible to all future read accesses on entities known to the Vulkan device.
+        /// Specifies read access via non-specific entities. These entities include the Vulkan device
+        /// and host, but may also include entities external to the Vulkan device or otherwise not
+        /// part of the core Vulkan pipeline. When included in a destination access mask, makes all
+        /// available writes visible to all future read accesses on entities known to the Vulkan device.
         /// </summary>
         MemoryRead = 1 << 15,
         /// <summary>
-        /// Write access via non-specific entities. These entities include the Vulkan device and
-        /// host, but may also include entities external to the Vulkan device or otherwise not part
-        /// of the core Vulkan pipeline. When included in a source access mask, all writes that are
-        /// performed by entities known to the Vulkan device are made available. When included in a
-        /// destination access mask, makes all available writes visible to all future write accesses
-        /// on entities known to the Vulkan device.
+        /// Specifies write access via non-specific entities. These entities include the Vulkan
+        /// device and host, but may also include entities external to the Vulkan device or otherwise
+        /// not part of the core Vulkan pipeline. When included in a source access mask, all writes
+        /// that are performed by entities known to the Vulkan device are made available. When
+        /// included in a destination access mask, makes all available writes visible to all future
+        /// write accesses on entities known to the Vulkan device.
         /// </summary>
         MemoryWrite = 1 << 16,
         /// <summary>
-        /// Reads from <see cref="Buffer"/> inputs to <see cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/>.
+        /// Specifies reads from <see cref="Buffer"/> inputs to <see cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/>.
         /// </summary>
         CommandProcessReadNvx = 1 << 17,
         /// <summary>
-        /// Writes to the target command buffer in <see cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/>.
+        /// Specifies writes to the target command buffer in <see cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/>.
         /// </summary>
         CommandProcessWriteNvx = 1 << 18,
     }
@@ -2497,15 +2572,15 @@ namespace VulkanCore
     public enum SubpassContents
     {
         /// <summary>
-        /// The contents of the subpass will be recorded inline in the primary command buffer, and
-        /// secondary command buffers must not be executed within the subpass.
+        /// Specifies that the contents of the subpass will be recorded inline in the primary command
+        /// buffer, and secondary command buffers must not be executed within the subpass.
         /// </summary>
         Inline = 0,
         /// <summary>
-        /// The contents are recorded in secondary command buffers that will be called from the
-        /// primary command buffer, and <see cref="CommandBuffer.CmdExecuteCommands"/> is the only
-        /// valid command on the command buffer until <see cref="CommandBuffer.vkCmdNextSubpass"/> or
-        /// <see cref="CommandBuffer.CmdEndRenderPass"/>.
+        /// Specifies that the contents are recorded in secondary command buffers that will be called
+        /// from the primary command buffer, and <see cref="CommandBuffer.CmdExecuteCommands"/> is
+        /// the only valid command on the command buffer until <see
+        /// cref="CommandBuffer.vkCmdNextSubpass"/> or <see cref="CommandBuffer.CmdEndRenderPass"/>.
         /// </summary>
         SecondaryCommandBuffers = 1
     }
@@ -2517,57 +2592,65 @@ namespace VulkanCore
     public enum PipelineStages
     {
         /// <summary>
-        /// Stage of the pipeline where any commands are initially received by the queue.
+        /// Specifies the stage of the pipeline where any commands are initially received by the queue.
         /// </summary>
         TopOfPipe = 1 << 0,
         /// <summary>
-        /// Stage of the pipeline where Draw/DispatchIndirect data structures are consumed.
+        /// Specifies the stage of the pipeline where Draw/DispatchIndirect data structures are consumed.
+        /// <para>This stage also includes reading commands written by <see cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/>.</para>
         /// </summary>
         DrawIndirect = 1 << 1,
         /// <summary>
-        /// Stage of the pipeline where vertex and index buffers are consumed.
+        /// Specifies the stage of the pipeline where vertex and index buffers are consumed.
         /// </summary>
         VertexInput = 1 << 2,
         /// <summary>
-        /// Vertex shader stage.
+        /// Specifies the vertex shader stage.
         /// </summary>
         VertexShader = 1 << 3,
         /// <summary>
-        /// Tessellation control shader stage.
+        /// Specifies the tessellation control shader stage.
         /// </summary>
         TessellationControlShader = 1 << 4,
         /// <summary>
-        /// Tessellation evaluation shader stage.
+        /// Specifies the tessellation evaluation shader stage.
         /// </summary>
         TessellationEvaluationShader = 1 << 5,
         /// <summary>
-        /// Geometry shader stage.
+        /// Specifies the geometry shader stage.
         /// </summary>
         GeometryShader = 1 << 6,
         /// <summary>
-        /// Fragment shader stage.
+        /// Specifies the fragment shader stage.
         /// </summary>
         FragmentShader = 1 << 7,
         /// <summary>
-        /// Stage of the pipeline where early fragment tests (depth and stencil tests before fragment
+        /// Specifies the stage of the pipeline where early fragment tests (depth and stencil tests
+        /// before fragment
         /// shading) are performed. This stage also includes subpass load operations for framebuffer
         /// attachments with a depth/stencil format.
         /// </summary>
         EarlyFragmentTests = 1 << 8,
         /// <summary>
-        /// Stage of the pipeline where late fragment tests (depth and stencil tests after fragment
-        /// shading) are performed. This stage also includes subpass store operations for framebuffer
-        /// attachments with a depth/stencil format.
+        /// Specifies that the stage of the pipeline where late fragment tests (depth and stencil
+        /// tests after fragment shading) are performed.
+        /// <para>
+        /// This stage also includes subpass store operations for framebuffer attachments with a
+        /// depth/stencil format.
+        /// </para>
         /// </summary>
         LateFragmentTests = 1 << 9,
         /// <summary>
-        /// Stage of the pipeline after blending where the final color values are output from the
-        /// pipeline. This stage also includes subpass load and store operations and multisample
-        /// resolve operations for framebuffer attachments with a color format.
+        /// Specifies that the stage of the pipeline after blending where the final color values are
+        /// output from the pipeline.
+        /// <para>
+        /// This stage also includes subpass load and store operations and multisample resolve
+        /// operations for framebuffer attachments with a color format.
+        /// </para>
         /// </summary>
         ColorAttachmentOutput = 1 << 10,
         /// <summary>
-        /// Execution of a compute shader.
+        /// Specifies the execution of a compute shader.
         /// </summary>
         ComputeShader = 1 << 11,
         /// <summary>
@@ -2575,25 +2658,35 @@ namespace VulkanCore
         /// </summary>
         Transfer = 1 << 12,
         /// <summary>
-        /// Final stage in the pipeline where operations generated by all commands complete execution.
+        /// Specifies the final stage in the pipeline where operations generated by all commands
+        /// complete execution.
         /// </summary>
         BottomOfPipe = 1 << 13,
         /// <summary>
-        /// A pseudo-stage indicating execution on the host of reads/writes of device memory. This
-        /// stage is not invoked by any commands recorded in a command buffer.
+        /// Specifies a pseudo-stage indicating execution on the host of reads/writes of device
+        /// memory.
+        /// <para>This stage is not invoked by any commands recorded in a command buffer.</para>
         /// </summary>
         Host = 1 << 14,
         /// <summary>
-        /// Execution of all graphics pipeline stages. Equivalent to the logical or of:.
+        /// Specifies the execution of all graphics pipeline stages, and is equivalent to the logical
+        /// OR of:
+        /// <para>
+        /// <see cref="TopOfPipe"/>, <see cref="DrawIndirect"/>, <see cref="VertexInput"/>, <see
+        /// cref="VertexShader"/>, <see cref="TessellationControlShader"/>, <see
+        /// cref="TessellationEvaluationShader"/>, <see cref="GeometryShader"/>, <see
+        /// cref="FragmentShader"/>, <see cref="EarlyFragmentTests"/>, <see
+        /// cref="LateFragmentTests"/>, <see cref="ColorAttachmentOutput"/>, <see cref="BottomOfPipe"/>.
+        /// </para>
         /// </summary>
         AllGraphics = 1 << 15,
         /// <summary>
-        /// Equivalent to the logical or of every other pipeline stage flag that is supported on the
+        /// Equivalent to the logical OR of every other pipeline stage flag that is supported on the
         /// queue it is used with.
         /// </summary>
         AllCommands = 1 << 16,
         /// <summary>
-        /// Stage of the pipeline where device-side generation of commands via <see
+        /// Specifies the stage of the pipeline where device-side generation of commands via <see
         /// cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/> is handled.
         /// </summary>
         CommandProcessNvx = 1 << 17

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -57,7 +57,7 @@ namespace VulkanCore
     public unsafe struct DescriptorSetLayoutCreateInfo
     {
         /// <summary>
-        /// Provides options for descriptor set layout creation.
+        /// A bitmask specifying options for descriptor set layout creation.
         /// </summary>
         public DescriptorSetLayoutCreateFlags Flags;
         /// <summary>
@@ -79,7 +79,7 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="DescriptorSetLayoutCreateInfo"/> structure.
         /// </summary>
         /// <param name="bindings">An array of <see cref="DescriptorSetLayoutBinding"/> structures.</param>
-        /// <param name="flags">Provides options for descriptor set layout creation.</param>
+        /// <param name="flags">A bitmask specifying options for descriptor set layout creation.</param>
         public DescriptorSetLayoutCreateInfo(DescriptorSetLayoutBinding[] bindings, DescriptorSetLayoutCreateFlags flags = 0)
         {
             Flags = flags;

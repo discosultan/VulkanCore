@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -246,25 +246,24 @@ namespace VulkanCore
     public enum SystemAllocationScope
     {
         /// <summary>
-        /// The allocation is scoped to the duration of the Vulkan command.
+        /// Specifies that the allocation is scoped to the duration of the Vulkan command.
         /// </summary>
         Command = 0,
         /// <summary>
-        /// The allocation is scoped to the lifetime of the Vulkan object that is being
-        /// created or used.
+        /// Specifies that the allocation is scoped to the lifetime of the Vulkan object that is
+        /// being created or used.
         /// </summary>
         Object = 1,
         /// <summary>
-        /// The allocation is scoped to the lifetime of a <see cref="PipelineCache"/>
-        /// object.
+        /// Specifies that the allocation is scoped to the lifetime of a <see cref="PipelineCache"/> object.
         /// </summary>
         Cache = 2,
         /// <summary>
-        /// The allocation is scoped to the lifetime of the Vulkan device.
+        /// Specifies that the allocation is scoped to the lifetime of the Vulkan device.
         /// </summary>
         Device = 3,
         /// <summary>
-        /// The allocation is scoped to the lifetime of the Vulkan instance.
+        /// Specifies that the allocation is scoped to the lifetime of the Vulkan instance.
         /// </summary>
         Instance = 4
     }
@@ -275,7 +274,7 @@ namespace VulkanCore
     public enum InternalAllocationType
     {
         /// <summary>
-        /// The allocation is intended for execution by the host.
+        /// Specifies that the allocation is intended for execution by the host.
         /// </summary>
         Executable = 0
     }

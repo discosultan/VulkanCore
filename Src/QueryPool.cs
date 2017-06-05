@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -80,7 +80,7 @@ namespace VulkanCore
         internal QueryPoolCreateFlags Flags;
 
         /// <summary>
-        /// The type of queries managed by the pool.
+        /// Specifies the type of queries managed by the pool.
         /// </summary>
         public QueryType QueryType;
         /// <summary>
@@ -88,19 +88,19 @@ namespace VulkanCore
         /// </summary>
         public int QueryCount;
         /// <summary>
-        /// A bitmask indicating which counters will be returned in queries on the new pool. Ignored
-        /// if <see cref="QueryType"/> is not <see cref="VulkanCore.QueryType.PipelineStatistics"/>.
+        /// A bitmask specifying which counters will be returned in queries on the new pool.
+        /// <para>Ignored if <see cref="QueryType"/> is not <see cref="VulkanCore.QueryType.PipelineStatistics"/>.</para>
         /// </summary>
         public QueryPipelineStatistics PipelineStatistics;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryPoolCreateInfo"/> structure.
         /// </summary>
-        /// <param name="queryType">The type of queries managed by the pool.</param>
+        /// <param name="queryType">Specifies the type of queries managed by the pool.</param>
         /// <param name="queryCount">The number of queries managed by the pool.</param>
         /// <param name="pipelineStatistics">
-        /// A bitmask indicating which counters will be returned in queries on the new pool. Ignored
-        /// if <see cref="QueryType"/> is not <see cref="VulkanCore.QueryType.PipelineStatistics"/>
+        /// A bitmask specifying which counters will be returned in queries on the new pool.
+        /// <para>Ignored if <see cref="QueryType"/> is not <see cref="VulkanCore.QueryType.PipelineStatistics"/>.</para>
         /// </param>
         public QueryPoolCreateInfo(QueryType queryType, int queryCount,
             QueryPipelineStatistics pipelineStatistics = QueryPipelineStatistics.None)
@@ -131,11 +131,17 @@ namespace VulkanCore
     /// </summary>
     public enum QueryType
     {
+        /// <summary>
+        /// Specifies an occlusion query.
+        /// </summary>
         Occlusion = 0,
         /// <summary>
-        /// Optional.
+        /// Specifies a pipeline statistics query.
         /// </summary>
         PipelineStatistics = 1,
+        /// <summary>
+        /// Specifies a timestamp query.
+        /// </summary>
         Timestamp = 2
     }
 
@@ -150,19 +156,21 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Results of the queries are written to the destination buffer as 64-bit values.
+        /// Specifies the results will be written as an array of 64-bit unsigned integer values. If
+        /// this bit is not set, the results will be written as an array of 32-bit unsigned integer values.
         /// </summary>
         Query64 = 1 << 0,
         /// <summary>
-        /// Results of the queries are waited on before proceeding with the result copy.
+        /// Specifies that Vulkan will wait for each query's status to become available before
+        /// retrieving its results.
         /// </summary>
         QueryWait = 1 << 1,
         /// <summary>
-        /// Besides the results of the query, the availability of the results is also written.
+        /// Specifies that the availability status accompanies the results.
         /// </summary>
         QueryWithAvailability = 1 << 2,
         /// <summary>
-        /// Copy the partial results of the query even if the final results are not available.
+        /// Specifies that returning partial results is acceptable.
         /// </summary>
         QueryPartial = 1 << 3
     }

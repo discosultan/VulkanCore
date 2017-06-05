@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -142,18 +142,16 @@ namespace VulkanCore
     public unsafe struct DescriptorPoolCreateInfo
     {
         /// <summary>
-        /// Specifies certain supported operations on the pool.
+        /// A bitmask specifying certain supported operations on the pool.
         /// </summary>
         public DescriptorPoolCreateFlags Flags;
         /// <summary>
         /// The maximum number of descriptor sets that can be allocated from the pool.
-        /// <para>Must be greater than 0.</para>
         /// </summary>
         public int MaxSets;
         /// <summary>
         /// Structures, each containing a descriptor type and number of descriptors of that type to
         /// be allocated in the pool.
-        /// <para>Must have more than 0 elements.</para>
         /// </summary>
         public DescriptorPoolSize[] PoolSizes;
 
@@ -167,7 +165,7 @@ namespace VulkanCore
         /// Structures, each containing a descriptor type and number of descriptors of that type to
         /// be allocated in the pool.
         /// </param>
-        /// <param name="flags">Specifies certain supported operations on the pool.</param>
+        /// <param name="flags">A bitmask specifying certain supported operations on the pool.</param>
         public DescriptorPoolCreateInfo(
             int maxSets,
             DescriptorPoolSize[] poolSizes,
@@ -211,7 +209,14 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Descriptor sets may be freed individually.
+        /// Specifies that descriptor sets can return their individual allocations to the pool, i.e.
+        /// all of <see cref="DescriptorPool.AllocateSets"/>, <see cref="DescriptorPool.FreeSets"/>,
+        /// and <see cref="DescriptorPool.Reset"/> are allowed.
+        /// <para>
+        /// Otherwise, descriptor sets allocated from the pool must not be individually freed back to
+        /// the pool, i.e. only <see cref="DescriptorPool.AllocateSets"/> and <see
+        /// cref="DescriptorPool.Reset"/> are allowed.
+        /// </para>
         /// </summary>
         FreeDescriptorSet = 1 << 0
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -382,77 +382,50 @@ namespace VulkanCore.Khr
         internal DisplaySurfaceCreateFlagsKhr Flags;
 
         /// <summary>
-        /// The mode to use when displaying this surface.
+        /// A <see cref="DisplayModeKhr"/> handle specifying the mode to use when displaying this surface.
         /// </summary>
         public long DisplayMode;
         /// <summary>
         /// The plane on which this surface appears.
-        /// <para>
-        /// Must be less than the number of display planes supported by the device as determined by
-        /// calling <see cref="PhysicalDeviceExtensions.GetDisplayPlanePropertiesKhr"/>.
-        /// </para>
         /// </summary>
         public int PlaneIndex;
         /// <summary>
         /// The z-order of the plane.
-        /// <para>
-        /// If the <see cref="DisplayPropertiesKhr.PlaneReorderPossible"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.GetDisplayPropertiesKhr"/> for the display
-        /// corresponding to <see cref="DisplayMode"/> is <c>true</c> then <see
-        /// cref="PlaneStackIndex"/> must be less than the number of display planes supported by the
-        /// device as determined by calling <see
-        /// cref="PhysicalDeviceExtensions.GetDisplayPlanePropertiesKhr"/>; otherwise
-        /// <see cref="PlaneStackIndex"/> must equal to the <see
-        /// cref="DisplayPlanePropertiesKhr.CurrentStackIndex"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.GetDisplayPlanePropertiesKhr"/> for the
-        /// display plane corresponding to <see cref="DisplayMode"/>.
-        /// </para>
         /// </summary>
         public int PlaneStackIndex;
         /// <summary>
-        /// The transform to apply to the images as part of the scanout operation.
+        /// Specifies the transform to apply to the images as part of the scanout operation.
         /// </summary>
         public SurfaceTransformsKhr Transform;
         /// <summary>
-        /// The global alpha value. This value is ignored if <see cref="AlphaMode"/> is not <see cref="DisplayPlaneAlphasKhr.Global"/>.
-        /// <para>
-        /// If <see cref="AlphaMode"/> is <see cref="DisplayPlaneAlphasKhr.Global"/> then <see
-        /// cref="GlobalAlpha"/> must be between 0 and 1, inclusive.
-        /// </para>
+        /// The global alpha value.
+        /// <para>This value is ignored if <see cref="AlphaMode"/> is not <see cref="DisplayPlaneAlphasKhr.Global"/>.</para>
         /// </summary>
         public float GlobalAlpha;
         /// <summary>
-        /// The type of alpha blending to use.
-        /// <para>
-        /// Must be <see cref="DisplayPlaneAlphasKhr.None"/> or one of the bits present in the
-        /// <see cref="DisplayPlaneCapabilitiesKhr.SupportedAlpha"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.GetDisplayPlaneCapabilitiesKhr"/> for the display plane
-        /// corresponding to <see cref="DisplayMode"/>.
-        /// </para>
+        /// Specifies the type of alpha blending to use.
         /// </summary>
         public DisplayPlaneAlphasKhr AlphaMode;
         /// <summary>
         /// The size of the presentable images to use with the surface.
-        /// <para>
-        /// The width and height members of imageExtent must be less than the <see
-        /// cref="PhysicalDeviceLimits.MaxImageDimension3D"/> member.
-        /// </para>
         /// </summary>
         public Extent2D ImageExtent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplaySurfaceCreateInfoKhr"/> structure.
         /// </summary>
-        /// <param name="displayMode">The mode to use when displaying this surface.</param>
+        /// <param name="displayMode">
+        /// A <see cref="DisplayModeKhr"/> handle specifying the mode to use when displaying this surface.
+        /// </param>
         /// <param name="planeIndex">The plane on which this surface appears.</param>
         /// <param name="planeStackIndex">The z-order of the plane.</param>
         /// <param name="transform">
-        /// The transform to apply to the images as part of the scanout operation.
+        /// Specifies the transform to apply to the images as part of the scanout operation.
         /// </param>
         /// <param name="globalAlpha">
         /// The global alpha value. This value is ignored if <see cref="AlphaMode"/> is not <see cref="DisplayPlaneAlphasKhr.Global"/>.
         /// </param>
-        /// <param name="alphaMode">The type of alpha blending to use.</param>
+        /// <param name="alphaMode">Specifies the type of alpha blending to use.</param>
         /// <param name="imageExtent">Size of the images to use with this surface.</param>
         public DisplaySurfaceCreateInfoKhr(DisplayModeKhr displayMode, int planeIndex, int planeStackIndex,
             SurfaceTransformsKhr transform, float globalAlpha, DisplayPlaneAlphasKhr alphaMode, Extent2D imageExtent)
@@ -493,22 +466,26 @@ namespace VulkanCore.Khr
         /// </summary>
         None = 0,
         /// <summary>
-        /// The source image will be treated as opaque.
+        /// Specifies that the source image will be treated as opaque.
         /// </summary>
         Opaque = 1 << 0,
         /// <summary>
-        /// A global alpha value must be specified that will be applied to all pixels in the source image.
+        /// Specifies that a global alpha value must be specified that will be applied to all pixels
+        /// in the source image.
         /// </summary>
         Global = 1 << 1,
         /// <summary>
-        /// The alpha value will be determined by the alpha channel of the source image's pixels. If
-        /// the source format contains no alpha values, no blending will be applied. The source alpha
-        /// values are not premultiplied into the source image's other color channels.
+        /// Specifies that the alpha value will be determined by the alpha channel of the source
+        /// image's pixels.
+        /// <para>If the source format contains no alpha values, no blending will be applied.</para>
+        /// <para>
+        /// The source alpha values are not premultiplied into the source image's other color channels.
+        /// </para>
         /// </summary>
         PerPixel = 1 << 2,
         /// <summary>
-        /// This is equivalent to <see cref="PerPixel"/> except the source alpha values are assumed
-        /// to be premultiplied into the source image's other color channels.
+        /// Is equivalent to <see cref="PerPixel"/>, except the source alpha values are assumed to be
+        /// premultiplied into the source image's other color channels.
         /// </summary>
         PerPixelPremultiplied = 1 << 3
     }

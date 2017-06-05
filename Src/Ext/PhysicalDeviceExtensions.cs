@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -152,8 +152,8 @@ namespace VulkanCore.Ext
         /// </summary>
         None = 0,
         /// <summary>
-        /// A counter incrementing once every time a vblank period occurs on the display associated
-        /// with the surface.
+        /// Indicates a counter incrementing once every time a vertical blanking period occurs on the
+        /// display associated with the surface.
         /// </summary>
         VBlank = 1 << 0
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Ext
@@ -101,11 +101,11 @@ namespace VulkanCore.Ext
     public enum ValidationCheckExt
     {
         /// <summary>
-        /// Disables all validation checks.
+        /// Specifies that all validation checks are disabled.
         /// </summary>
         All = 0,
         /// <summary>
-        /// Disables all shader validation.
+        /// Specifies that shader validation is disabled.
         /// </summary>
         Shaders = 1
     }

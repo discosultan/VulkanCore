@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
@@ -188,25 +188,124 @@ namespace VulkanCore.Khr
     public struct SwapchainCreateInfoKhr
     {
         /// <summary>
+        /// A bitmask indicating parameters of swapchain creation.
+        /// </summary>
+        public SwapchainCreateFlagsKhr Flags;
+        /// <summary>
+        /// The <see cref="SurfaceKhr"/> that the swapchain will present images to.
+        /// </summary>
+        public long Surface;
+        /// <summary>
+        /// The minimum number of presentable images that the application needs.
+        /// <para>
+        /// The platform will either create the swapchain with at least that many images, or will
+        /// fail to create the swapchain.
+        /// </para>
+        /// </summary>
+        public int MinImageCount;
+        /// <summary>
+        /// A format that is valid for swapchains on the specified surface.
+        /// </summary>
+        public Format ImageFormat;
+        /// <summary>
+        /// Color space that is valid for swapchains on the specified surface.
+        /// </summary>
+        public ColorSpaceKhr ImageColorSpace;
+        /// <summary>
+        /// The size (in pixels) of the swapchain.
+        /// <para>
+        /// Behavior is platform-dependent when the image extent does not match the surface's <see
+        /// cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.
+        /// </para>
+        /// </summary>
+        public Extent2D ImageExtent;
+        /// <summary>
+        /// The number of views in a multiview/stereo surface.
+        /// <para>For non-stereoscopic-3D applications, this value is 1.</para>
+        /// </summary>
+        public int ImageArrayLayers;
+        /// <summary>
+        /// A bitmask indicating how the application will use the swapchain's presentable images.
+        /// </summary>
+        public ImageUsages ImageUsage;
+        /// <summary>
+        /// The sharing mode used for the images of the swapchain.
+        /// </summary>
+        public SharingMode ImageSharingMode;
+        /// <summary>
+        /// Queue family indices having access to the images of the swapchain in case <see
+        /// cref="ImageSharingMode"/> is <see cref="SharingMode.Concurrent"/>.
+        /// </summary>
+        public int[] QueueFamilyIndices;
+        /// <summary>
+        /// A bitmask describing the transform, relative to the presentation engine's natural
+        /// orientation, applied to the image content prior to presentation.
+        /// <para>
+        /// If it does not match the <see cref="SurfaceCapabilitiesKhr.CurrentTransform"/> value
+        /// returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>, the
+        /// presentation engine will transform the image content as part of the presentation operation.
+        /// </para>
+        /// </summary>
+        public SurfaceTransformsKhr PreTransform;
+        /// <summary>
+        /// A bitmask indicating the alpha compositing mode to use when this surface is composited
+        /// together with other surfaces on certain window systems.
+        /// </summary>
+        public CompositeAlphasKhr CompositeAlpha;
+        /// <summary>
+        /// The presentation mode the swapchain will use.
+        /// <para>
+        /// A swapchain's present mode determines how incoming present requests will be processed and
+        /// queued internally.
+        /// </para>
+        /// </summary>
+        public PresentModeKhr PresentMode;
+        /// <summary>
+        /// Indicates whether the Vulkan implementation is allowed to discard rendering operations
+        /// that affect regions of the surface which are not visible.
+        /// <para>
+        /// If set to <c>true</c>, the presentable images associated with the swapchain may not own
+        /// all of their pixels. Pixels in the presentable images that correspond to regions of the
+        /// target surface obscured by another window on the desktop or subject to some other
+        /// clipping mechanism will have undefined content when read back. Pixel shaders may not
+        /// execute for these pixels, and thus any side affects they would have had will not occur.
+        /// </para>
+        /// <para>
+        /// If set to <c>false</c>, presentable images associated with the swapchain will own all the
+        /// pixels they contain. Setting this value to <c>true</c> does not guarantee any clipping
+        /// will occur, but allows more optimal presentation methods to be used on some platforms.
+        /// </para>
+        /// </summary>
+        public Bool Clipped;
+        /// <summary>
+        /// Existing swapchain to replace, if any.
+        /// </summary>
+        public SwapchainKhr OldSwapchain;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SwapchainCreateInfoKhr"/> structure.
         /// </summary>
         /// <param name="surface">
         /// The <see cref="SurfaceKhr"/> that the swapchain will present images to.
         /// </param>
         /// <param name="imageExtent">
-        /// The size (in pixels) of the swapchain. Behavior is platform-dependent when the image
-        /// extent does not match the surface's <see cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as
-        /// returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.
+        /// The size (in pixels) of the swapchain.
+        /// <para>
+        /// Behavior is platform-dependent when the image extent does not match the surface's <see
+        /// cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.
+        /// </para>
         /// </param>
         /// <param name="preTransform">
-        /// A bitmask describing the transform, relative to the presentation engine’s natural
-        /// orientation, applied to the image content prior to presentation. If it does not match the
-        /// <see cref="SurfaceCapabilitiesKhr.CurrentTransform"/> value returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>, the presentation engine will
-        /// transform the image content as part of the presentation operation.
+        /// A bitmask describing the transform, relative to the presentation engine's natural
+        /// orientation, applied to the image content prior to presentation.
+        /// <para>
+        /// If it does not match the <see cref="SurfaceCapabilitiesKhr.CurrentTransform"/> value
+        /// returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>, the
+        /// presentation engine will transform the image content as part of the presentation operation.
+        /// </para>
         /// </param>
         /// <param name="imageUsage">
-        /// A bitmask indicating how the application will use the swapchain’s presentable images.
+        /// A bitmask indicating how the application will use the swapchain's presentable images.
         /// </param>
         /// <param name="flags">A bitmask indicating parameters of swapchain creation.</param>
         /// <param name="minImageCount">
@@ -223,8 +322,11 @@ namespace VulkanCore.Khr
         /// this value is 1.
         /// </param>
         /// <param name="presentMode">
-        /// The presentation mode the swapchain will use. A swapchain’s present mode determines how
-        /// incoming present requests will be processed and queued internally.
+        /// The presentation mode the swapchain will use.
+        /// <para>
+        /// A swapchain's present mode determines how incoming present requests will be processed and
+        /// queued internally.
+        /// </para>
         /// </param>
         /// <param name="clipped">
         /// Indicates whether the Vulkan implementation is allowed to discard rendering operations
@@ -261,138 +363,6 @@ namespace VulkanCore.Khr
             Clipped = clipped;
             OldSwapchain = oldSwapchain;
         }
-
-        /// <summary>
-        /// A bitmask indicating parameters of swapchain creation.
-        /// </summary>
-        public SwapchainCreateFlagsKhr Flags;
-        /// <summary>
-        /// The <see cref="SurfaceKhr"/> that the swapchain will present images to.
-        /// <para>Must be a surface that is supported by the device as determined using <see cref="PhysicalDeviceExtensions.GetSurfaceSupportKhr"/>.</para>
-        /// </summary>
-        public long Surface;
-        /// <summary>
-        /// The minimum number of presentable images that the application needs. The platform will
-        /// either create the swapchain with at least that many images, or will fail to create the swapchain.
-        /// <para>
-        /// Must be less than or equal to the value returned in the <see
-        /// cref="SurfaceCapabilitiesKhr.MaxImageCount"/> member returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/> for the surface if the
-        /// returned max image count is not zero.
-        /// </para>
-        /// </summary>
-        public int MinImageCount;
-        /// <summary>
-        /// A format that is valid for swapchains on the specified surface.
-        /// <para>
-        /// Must match the <see cref="SurfaceFormatKhr.Format"/> member of one of the structures
-        /// returned by <see cref="PhysicalDeviceExtensions.GetSurfaceFormatsKhr"/> for the surface.
-        /// </para>
-        /// </summary>
-        public Format ImageFormat;
-        /// <summary>
-        /// Color space that is valid for swapchains on the specified surface.
-        /// <para>
-        /// Must match the <see cref="SurfaceFormatKhr.ColorSpace"/> member of one of the structures
-        /// returned by returned by <see cref="PhysicalDeviceExtensions.GetSurfaceFormatsKhr"/> for
-        /// the surface.
-        /// </para>
-        /// </summary>
-        public ColorSpaceKhr ImageColorSpace;
-        /// <summary>
-        /// The size (in pixels) of the swapchain. Behavior is platform-dependent when the image
-        /// extent does not match the surface's <see cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as
-        /// returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.
-        /// <para>
-        /// Must be between <see cref="SurfaceCapabilitiesKhr.MinImageExtent"/> and <see
-        /// cref="SurfaceCapabilitiesKhr.MaxImageExtent"/>, inclusive, returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/> for the surface.
-        /// </para>
-        /// </summary>
-        public Extent2D ImageExtent;
-        /// <summary>
-        /// The number of views in a multiview/stereo surface. For non-stereoscopic-3D applications,
-        /// this value is 1.
-        /// <para>
-        /// Must be greater than 0 and less than or equal to the <see
-        /// cref="SurfaceCapabilitiesKhr.MaxImageArrayLayers"/> returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/> for the surface.
-        /// </para>
-        /// </summary>
-        public int ImageArrayLayers;
-        /// <summary>
-        /// A bitmask indicating how the application will use the swapchain’s presentable images.
-        /// <para>
-        /// Must be a subset of the supported usage flags present in the <see
-        /// cref="SurfaceCapabilitiesKhr.SupportedUsageFlags"/> returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/> for the surface. If <see
-        /// cref="ImageSharingMode"/> is <see cref="SharingMode.Concurrent"/>, <see
-        /// cref="QueueFamilyIndices"/> must be an array of at least 2 indices.
-        /// </para>
-        /// </summary>
-        public ImageUsages ImageUsage;
-        /// <summary>
-        /// The sharing mode used for the images of the swapchain.
-        /// </summary>
-        public SharingMode ImageSharingMode;
-        /// <summary>
-        /// Queue family indices having access to the images of the swapchain in case <see
-        /// cref="ImageSharingMode"/> is <see cref="SharingMode.Concurrent"/>.
-        /// </summary>
-        public int[] QueueFamilyIndices;
-        /// <summary>
-        /// A bitmask describing the transform, relative to the presentation engine’s natural
-        /// orientation, applied to the image content prior to presentation. If it does not match the
-        /// <see cref="SurfaceCapabilitiesKhr.CurrentTransform"/> value returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>, the presentation engine will
-        /// transform the image content as part of the presentation operation.
-        /// <para>
-        /// Must be one of the bits present in the <see
-        /// cref="SurfaceCapabilitiesKhr.SupportedTransforms"/> member the structure returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/> for the surface.
-        /// </para>
-        /// </summary>
-        public SurfaceTransformsKhr PreTransform;
-        /// <summary>
-        /// A bitmask indicating the alpha compositing mode to use when this surface is composited
-        /// together with other surfaces on certain window systems.
-        /// <para>
-        /// Must be one of the bits present in the <see
-        /// cref="SurfaceCapabilitiesKhr.SupportedCompositeAlpha"/> returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/> for the surface.
-        /// </para>
-        /// </summary>
-        public CompositeAlphasKhr CompositeAlpha;
-        /// <summary>
-        /// The presentation mode the swapchain will use. A swapchain’s present mode determines how
-        /// incoming present requests will be processed and queued internally.
-        /// <para>
-        /// Must be one of the values returned by <see
-        /// cref="PhysicalDeviceExtensions.GetSurfacePresentModesKhr"/> for the surface.
-        /// </para>
-        /// </summary>
-        public PresentModeKhr PresentMode;
-        /// <summary>
-        /// Indicates whether the Vulkan implementation is allowed to discard rendering operations
-        /// that affect regions of the surface which are not visible.
-        /// <para>
-        /// If set to <c>true</c>, the presentable images associated with the swapchain may not own
-        /// all of their pixels. Pixels in the presentable images that correspond to regions of the
-        /// target surface obscured by another window on the desktop or subject to some other
-        /// clipping mechanism will have undefined content when read back. Pixel shaders may not
-        /// execute for these pixels, and thus any side affects they would have had will not occur.
-        /// </para>
-        /// <para>
-        /// If set to <c>false</c>, presentable images associated with the swapchain will own all the
-        /// pixels they contain. Setting this value to <c>true</c> does not guarantee any clipping
-        /// will occur, but allows more optimal presentation methods to be used on some platforms.
-        /// </para>
-        /// </summary>
-        public Bool Clipped;
-        /// <summary>
-        /// Existing swapchain to replace, if any.
-        /// </summary>
-        public SwapchainKhr OldSwapchain;
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
@@ -456,7 +426,9 @@ namespace VulkanCore.Khr
         /// </summary>
         None = 0,
         /// <summary>
-        /// Allow images with <see cref="ImageCreateFlags.BindSfrKhx"/>.
+        /// Specifies that images created from the swapchain (i.e. with the swapchain member of <see
+        /// cref="Khx.ImageSwapchainCreateInfoKhx.Swapchain"/> set to this swapchain's
+        /// handle) must use <see cref="ImageCreateFlags.BindSfrKhx"/>.
         /// </summary>
         BindSfrKhx = 1 << 0
     }
@@ -467,62 +439,62 @@ namespace VulkanCore.Khr
     public enum ColorSpaceKhr
     {
         /// <summary>
-        /// The presentation engine supports the sRGB color space.
+        /// Indicates support for the sRGB color space.
         /// </summary>
         SRgbNonlinear = 0,
         /// <summary>
-        /// Supports the Display-P3 color space and applies an sRGB-like OETF.
+        /// Indicates support for the Display-P3 color space and applies an sRGB-like OETF.
         /// </summary>
         DisplayP3NonlinearExt = 1000104001,
         /// <summary>
-        /// Supports the extended sRGB color space and applies a linear OETF.
+        /// Indicates support for the extended sRGB color space and applies a linear OETF.
         /// </summary>
         ExtendedSRgbLinearExt = 1000104002,
         /// <summary>
-        /// Supports the DCI-P3 color space and applies a linear OETF.
+        /// Indicates support for the DCI-P3 color space and applies a linear OETF.
         /// </summary>
         DciP3LinearExt = 1000104003,
         /// <summary>
-        /// Supports the DCI-P3 color space and applies the Gamma 2.6 OETF.
+        /// Indicates support for the DCI-P3 color space and applies the Gamma 2.6 OETF.
         /// </summary>
         DciP3NonlinearExt = 1000104004,
         /// <summary>
-        /// Supports the BT709 color space and applies a linear OETF.
+        /// Indicates support for the BT709 color space and applies a linear OETF.
         /// </summary>
         BT709LinearExt = 1000104005,
         /// <summary>
-        /// Supports the BT709 color space and applies the SMPTE 170M OETF.
+        /// Indicates support for the BT709 color space and applies the SMPTE 170M OETF.
         /// </summary>
         BT709NonlinearExt = 1000104006,
         /// <summary>
-        /// Supports the BT2020 color space and applies a linear OETF.
+        /// Indicates support for the BT2020 color space and applies a linear OETF.
         /// </summary>
         BT2020LinearExt = 1000104007,
         /// <summary>
-        /// Supports HDR10 (BT2020 color) space and applies the SMPTE ST2084 Perceptual Quantizer
-        /// (PQ) OETF.
+        /// Indicates support for HDR10 (BT2020 color) space and applies the SMPTE ST2084 Perceptual
+        /// Quantizer (PQ) OETF.
         /// </summary>
         Hdr10ST2084Ext = 1000104008,
         /// <summary>
-        /// Supports Dolby Vision (BT2020 color space), proprietary encoding, and applies the SMPTE
-        /// ST2084 OETF.
+        /// Indicates support for Dolby Vision (BT2020 color space), proprietary encoding, and
+        /// applies the SMPTE ST2084 OETF.
         /// </summary>
         DolbyVisionExt = 1000104009,
         /// <summary>
-        /// Supports HDR10 (BT2020 color space) and applies the Hybrid Log Gamma (HLG) OETF.
+        /// Indicates support for HDR10 (BT2020 color space) and applies the Hybrid Log Gamma (HLG) OETF.
         /// </summary>
         Hdr10HlgExt = 1000104010,
         /// <summary>
-        /// Supports the AdobeRGB color space and applies a linear OETF.
+        /// Indicates support for the AdobeRGB color space and applies a linear OETF.
         /// </summary>
         AdobeRgbLinearExt = 1000104011,
         /// <summary>
-        /// Supports the AdobeRGB color space and applies the Gamma 2.2 OETF.
+        /// Indicates support for the AdobeRGB color space and applies the Gamma 2.2 OETF.
         /// </summary>
         AdobeRgbNonlinearExt = 1000104012,
         /// <summary>
-        /// Color components used "as is". Intended to allow application to supply data for color
-        /// spaces not described here.
+        /// Indicates that color components are used "as is". This is intended to allow application
+        /// to supply data for color spaces not described here.
         /// </summary>
         PassThroughExt = 1000104013
     }
@@ -534,39 +506,39 @@ namespace VulkanCore.Khr
     public enum SurfaceTransformsKhr
     {
         /// <summary>
-        /// The image content is presented without being transformed.
+        /// Indicates that image content is presented without being transformed.
         /// </summary>
         Identity = 1 << 0,
         /// <summary>
-        /// The image content is rotated 90 degrees clockwise.
+        /// Indicates that image content is rotated 90 degrees clockwise.
         /// </summary>
         Rotate90 = 1 << 1,
         /// <summary>
-        /// The image content is rotated 180 degrees clockwise.
+        /// Indicates that image content is rotated 180 degrees clockwise.
         /// </summary>
         Rotate180 = 1 << 2,
         /// <summary>
-        /// The image content is rotated 270 degrees clockwise.
+        /// Indicates that image content is rotated 270 degrees clockwise.
         /// </summary>
         Rotate270 = 1 << 3,
         /// <summary>
-        /// The image content is mirrored horizontally.
+        /// Indicates that image content is mirrored horizontally.
         /// </summary>
         HorizontalMirror = 1 << 4,
         /// <summary>
-        /// The image content is mirrored horizontally, then rotated 90 degrees clockwise.
+        /// Indicates that image content is mirrored horizontally, then rotated 90 degrees clockwise.
         /// </summary>
         HorizontalMirrorRotate90 = 1 << 5,
         /// <summary>
-        /// The image content is mirrored horizontally, then rotated 180 degrees clockwise.
+        /// Indicates that image content is mirrored horizontally, then rotated 180 degrees clockwise.
         /// </summary>
         HorizontalMirrorRotate180 = 1 << 6,
         /// <summary>
-        /// The image content is mirrored horizontally, then rotated 270 degrees clockwise.
+        /// Indicates that image content is mirrored horizontally, then rotated 270 degrees clockwise.
         /// </summary>
         HorizontalMirrorRotate270 = 1 << 7,
         /// <summary>
-        /// The presentation transform is not specified, and is instead determined by
+        /// Indicates that presentation transform is not specified, and is instead determined by
         /// platform-specific considerations and mechanisms outside Vulkan.
         /// </summary>
         Inherit = 1 << 8
@@ -612,61 +584,61 @@ namespace VulkanCore.Khr
     public enum PresentModeKhr
     {
         /// <summary>
-        /// The presentation engine does not wait for a vertical blanking period to update the
-        /// current image, meaning this mode may result in visible tearing. No internal queuing of
-        /// presentation requests is needed, as the requests are applied immediately.
+        /// Indicates that the presentation engine does not wait for a vertical blanking period to
+        /// update the current image, meaning this mode may result in visible tearing. No internal
+        /// queuing of presentation requests is needed, as the requests are applied immediately.
         /// </summary>
         Immediate = 0,
         /// <summary>
-        /// The presentation engine waits for the next vertical blanking period to update the current
-        /// image. Tearing cannot be observed. An internal single-entry queue is used to hold pending
-        /// presentation requests. If the queue is full when a new presentation request is received,
-        /// the new request replaces the existing entry, and any images associated with the prior
-        /// entry become available for re-use by the application. One request is removed from the
-        /// queue and processed during each vertical blanking period in which the queue is non-empty.
+        /// Indicates that the presentation engine waits for the next vertical blanking period to
+        /// update the current image. Tearing cannot be observed. An internal single-entry queue is
+        /// used to hold pending presentation requests. If the queue is full when a new presentation
+        /// request is received, the new request replaces the existing entry, and any images
+        /// associated with the prior entry become available for re-use by the application. One
+        /// request is removed from the queue and processed during each vertical blanking period in
+        /// which the queue is non-empty.
         /// </summary>
         Mailbox = 1,
         /// <summary>
-        /// The presentation engine waits for the next vertical blanking period to update the current
-        /// image. Tearing cannot be observed. An internal queue is used to hold pending presentation
-        /// requests. New requests are appended to the end of the queue, and one request is removed
-        /// from the beginning of the queue and processed during each vertical blanking period in
-        /// which the queue is non-empty. This is the only value of presentMode that is required: to
-        /// be supported.
+        /// Indicates that the presentation engine waits for the next vertical blanking period to
+        /// update the current image. Tearing cannot be observed. An internal queue is used to hold
+        /// pending presentation requests. New requests are appended to the end of the queue, and one
+        /// request is removed from the beginning of the queue and processed during each vertical
+        /// blanking period in which the queue is non-empty. This is the only value of presentMode
+        /// that is required: to be supported.
         /// </summary>
         Fifo = 2,
         /// <summary>
-        /// The presentation engine generally waits for the next vertical blanking period to update
-        /// the current image. If a vertical blanking period has already passed since the last update
-        /// of the current image then the presentation engine does not wait for another vertical
-        /// blanking period for the update, meaning this mode
-        /// may: result in visible tearing in this case. This mode is useful for reducing visual
-        /// stutter with an application that will mostly present a new image before the next vertical
-        /// blanking period, but may occasionally be late, and present a new image just after the
-        /// next vertical blanking period. An internal queue is used to hold pending presentation
-        /// requests. New requests are appended to the end of the queue, and one request is removed
-        /// from the beginning of the queue and processed during or after each vertical blanking
-        /// period in which the queue is non-empty.
+        /// Indicates that the presentation engine generally waits for the next vertical blanking
+        /// period to update the current image. If a vertical blanking period has already passed
+        /// since the last update of the current image then the presentation engine does not wait for
+        /// another vertical blanking period for the update, meaning this mode may result in visible
+        /// tearing in this case. This mode is useful for reducing visual stutter with an application
+        /// that will mostly present a new image before the next vertical blanking period, but may
+        /// occasionally be late, and present a new image just after the next vertical blanking
+        /// period. An internal queue is used to hold pending presentation requests. New requests are
+        /// appended to the end of the queue, and one request is removed from the beginning of the
+        /// queue and processed during or after each vertical blanking period in which the queue is non-empty.
         /// </summary>
         FifoRelaxed = 3,
         /// <summary>
-        /// The presentation engine and application have concurrent access to a single image, which
-        /// is referred to as a shared presentable image. The presentation engine is only required to
-        /// update the current image after a new presentation request is received. Therefore the
-        /// application must make a presentation request whenever an update is required. However, the
-        /// presentation engine may update the current image at any point, meaning this mode may
-        /// result in visible tearing.
+        /// Indicates that the presentation engine and application have concurrent access to a single
+        /// image, which is referred to as a shared presentable image. The presentation engine is
+        /// only required to update the current image after a new presentation request is received.
+        /// Therefore the application must make a presentation request whenever an update is
+        /// required. However, the presentation engine may update the current image at any point,
+        /// meaning this mode may result in visible tearing.
         /// </summary>
         SharedDemandRefreshKhr = 1000111000,
         /// <summary>
-        /// The presentation engine and application have concurrent access to a single image, which
-        /// is referred to as a shared presentable image. The presentation engine periodically
-        /// updates the current image on its regular refresh cycle. The application is only required
-        /// to make one initial presentation request, after which the presentation engine must update
-        /// the current image without any need for further presentation requests. The application can
-        /// indicate the image contents have been updated by making a presentation request, but this
-        /// does not guarantee the timing of when it will be updated. This mode may result in visible
-        /// tearing if rendering to the image is not timed correctly.
+        /// Indicates that the presentation engine and application have concurrent access to a single
+        /// image, which is referred to as a shared presentable image. The presentation engine
+        /// periodically updates the current image on its regular refresh cycle. The application is
+        /// only required to make one initial presentation request, after which the presentation
+        /// engine must update the current image without any need for further presentation requests.
+        /// The application can indicate the image contents have been updated by making a
+        /// presentation request, but this does not guarantee the timing of when it will be updated.
+        /// This mode may result in visible tearing if rendering to the image is not timed correctly.
         /// </summary>
         SharedContinuousRefreshKhr = 1000111001
     }

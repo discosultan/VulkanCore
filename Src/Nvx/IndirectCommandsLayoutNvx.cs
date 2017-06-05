@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Nvx
@@ -192,7 +192,7 @@ namespace VulkanCore.Nvx
         /// </summary>
         SparseSequences = 1 << 1,
         /// <summary>
-        /// Indicates that there is likely many draw or dispatch calls that are zero-sized (zero grid
+        /// Indicates that there are likely many draw or dispatch calls that are zero-sized (zero grid
         /// dimension, no primitives to render).
         /// </summary>
         EmptyExecutions = 1 << 2,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -168,23 +168,25 @@ namespace VulkanCore
     public struct SubpassDescription
     {
         /// <summary>
-        /// A bitmask indicating usage of the subpass.
+        /// A bitmask specifying usage of the subpass.
         /// </summary>
         public SubpassDescriptionFlags Flags;
         /// <summary>
-        /// Structures that lists which of the render pass’s attachments will be used as color
-        /// attachments in the subpass, and what layout each attachment will be in during the
-        /// subpass. Each element of the array corresponds to a fragment shader output location, i.e.
-        /// if the shader declared an output variable layout(location=X) then it uses the attachment
-        /// provided in <see cref="ColorAttachments"/>[X].
+        /// Structures that lists which of the render pass's attachments will be used as color
+        /// attachments in the subpass, and what layout each attachment will be in during the subpass.
+        /// <para>
+        /// Each element of the array corresponds to a fragment shader output location, i.e. if the
+        /// shader declared an output variable <c>layout(location=X)</c> then it uses the attachment
+        /// provided in <c>ColorAttachments[X]</c>.
+        /// </para>
         /// </summary>
         public AttachmentReference[] ColorAttachments;
         /// <summary>
         /// Structures that lists which of the render pass's attachments can be read in the shader
         /// during the subpass, and what layout each attachment will be in during the subpass. Each
         /// element of the array corresponds to an input attachment unit number in the shader, i.e.
-        /// if the shader declares an input variable `layout(inputAttachmentIndex=X, set=Y,
-        /// binding=Z)` then it uses the attachment provided in <see cref="InputAttachments"/>[X].
+        /// if the shader declares an input variable <c>layout(inputAttachmentIndex=X, set=Y,
+        /// binding=Z</c> then it uses the attachment provided in <c>InputAttachments[X]</c>.
         /// Input attachments must also be bound to the pipeline with a descriptor set, with the
         /// input attachment descriptor written in the location (set=Y, binding=Z).
         /// </summary>
@@ -225,17 +227,17 @@ namespace VulkanCore
         /// Structures that lists which of the render pass’s attachments will be used as color
         /// attachments in the subpass, and what layout each attachment will be in during the
         /// subpass. Each element of the array corresponds to a fragment shader output location, i.e.
-        /// if the shader declared an output variable layout(location=X) then it uses the attachment
-        /// provided in <see cref="ColorAttachments"/>[X].
+        /// if the shader declared an output variable <c>layout(location=X)</c> then it uses the
+        /// attachment provided in <c>ColorAttachments[X]</c>.
         /// </param>
         /// <param name="inputAttachments">
         /// Structures that lists which of the render pass's attachments can be read in the shader
         /// during the subpass, and what layout each attachment will be in during the subpass. Each
         /// element of the array corresponds to an input attachment unit number in the shader, i.e.
-        /// if the shader declares an input variable `layout(inputAttachmentIndex=X, set=Y,
-        /// binding=Z)` then it uses the attachment provided in <see cref="InputAttachments"/>[X].
-        /// Input attachments must also be bound to the pipeline with a descriptor set, with the
-        /// input attachment descriptor written in the location (set=Y, binding=Z).
+        /// if the shader declares an input variable <c>layout(inputAttachmentIndex=X, set=Y,
+        /// binding=Z)</c> then it uses the attachment provided in <c>InputAttachments[X]</c>. Input
+        /// attachments must also be bound to the pipeline with a descriptor set, with the input
+        /// attachment descriptor written in the location (set=Y, binding=Z).
         /// </param>
         /// <param name="resolveAttachments">
         /// Is <c>null</c> or an array of structures that lists which of the render pass's
@@ -356,14 +358,14 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Indicates that shaders compiled for this subpass write the attributes for all views in a
+        /// Specifies that shaders compiled for this subpass write the attributes for all views in a
         /// single invocation of each vertex processing stage. All pipelines compiled against a
-        /// subpass that includes this bit must write per-view attributes to the *PerViewNV[] shader
-        /// outputs, in addition to the non-per-view (e.g. <c>Position</c>) outputs.
+        /// subpass that includes this bit must write per-view attributes to the <c>*PerViewNV[]</c>
+        /// shader outputs, in addition to the non-per-view (e.g. <c>Position</c>) outputs.
         /// </summary>
         PerViewAttributesNvx = 1 << 0,
         /// <summary>
-        /// Indicates that shaders compiled for this subpass use per-view positions which only differ
+        /// Specifies that shaders compiled for this subpass use per-view positions which only differ
         /// in value in the x component. Per-view viewport mask can also be used.
         /// </summary>
         PerViewPositionXOnlyNvx = 1 << 1
@@ -379,11 +381,11 @@ namespace VulkanCore
     public enum PipelineBindPoint
     {
         /// <summary>
-        /// Pipeline will be bound as a graphics pipeline.
+        /// Specifies binding as a graphics pipeline.
         /// </summary>
         Graphics = 0,
         /// <summary>
-        /// Pipeline will be bound as a compute pipeline.
+        /// Specifies binding as a compute pipeline.
         /// </summary>
         Compute = 1
     }
@@ -439,19 +441,19 @@ namespace VulkanCore
         /// </summary>
         public int DstSubpass;
         /// <summary>
-        /// Defines a source stage mask.
+        /// Specifies a source stage mask.
         /// </summary>
         public PipelineStages SrcStageMask;
         /// <summary>
-        /// Defines a destination stage mask.
+        /// Specifies a destination stage mask.
         /// </summary>
         public PipelineStages DstStageMask;
         /// <summary>
-        /// Defines a source access mask.
+        /// Specifies a source access mask.
         /// </summary>
         public Accesses SrcAccessMask;
         /// <summary>
-        /// Defines a destination access mask.
+        /// Specifies a destination access mask.
         /// </summary>
         public Accesses DstAccessMask;
         /// <summary>
@@ -471,10 +473,16 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Dependency is per pixel region.
+        /// Specifies that dependencies will be framebuffer-local.
         /// </summary>
         ByRegion = 1 << 0,
+        /// <summary>
+        /// Specifies that a subpass has more than one view.
+        /// </summary>
         ViewLocalKhx = 1 << 1,
+        /// <summary>
+        /// Specifies that dependencies are non-device-local.
+        /// </summary>
         DeviceGroupKhx = 1 << 2
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -60,7 +60,7 @@ namespace VulkanCore
         internal long Image;
 
         /// <summary>
-        /// The type of the image view.
+        /// Specifies the type of the image view.
         /// </summary>
         public ImageViewType ViewType;
         /// <summary>
@@ -70,7 +70,7 @@ namespace VulkanCore
         public Format Format;
         /// <summary>
         /// Specifies a remapping of color components (or of depth or stencil components after they
-        /// have been converted into color components). See <see cref="ComponentMapping"/>.
+        /// have been converted into color components).
         /// </summary>
         public ComponentMapping Components;
         /// <summary>
@@ -96,8 +96,11 @@ namespace VulkanCore
         /// <param name="subresourceRange">
         /// A range selecting the set of mipmap levels and array layers to be accessible to the view.
         /// </param>
-        /// <param name="viewType">The type of the image view.</param>
-        /// <param name="components">Specifies a remapping of color components.</param>
+        /// <param name="viewType">Specifies the type of the image view.</param>
+        /// <param name="components">
+        /// Specifies a remapping of color components (or of depth or stencil components after they
+        /// have been converted into color components).
+        /// </param>
         public ImageViewCreateInfo(
             Format format,
             ImageSubresourceRange subresourceRange,
@@ -149,19 +152,19 @@ namespace VulkanCore
     public struct ComponentMapping
     {
         /// <summary>
-        /// Determines the component value placed in the R component of the output vector.
+        /// Specifies the component value placed in the R component of the output vector.
         /// </summary>
         public ComponentSwizzle R;
         /// <summary>
-        /// Determines the component value placed in the G component of the output vector.
+        /// Specifies the component value placed in the G component of the output vector.
         /// </summary>
         public ComponentSwizzle G;
         /// <summary>
-        /// Determines the component value placed in the B component of the output vector.
+        /// Specifies the component value placed in the B component of the output vector.
         /// </summary>
         public ComponentSwizzle B;
         /// <summary>
-        /// Determines the component value placed in the A component of the output vector.
+        /// Specifies the component value placed in the A component of the output vector.
         /// </summary>
         public ComponentSwizzle A;
 
@@ -169,16 +172,16 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="ComponentMapping"/> structure.
         /// </summary>
         /// <param name="r">
-        /// Determines the component value placed in the R component of the output vector.
+        /// Specifies the component value placed in the R component of the output vector.
         /// </param>
         /// <param name="g">
-        /// Determines the component value placed in the G component of the output vector.
+        /// Specifies the component value placed in the G component of the output vector.
         /// </param>
         /// <param name="b">
-        /// Determines the component value placed in the B component of the output vector.
+        /// Specifies the component value placed in the B component of the output vector.
         /// </param>
         /// <param name="a">
-        /// Determines the component value placed in the A component of the output vector.
+        /// Specifies the component value placed in the A component of the output vector.
         /// </param>
         public ComponentMapping(ComponentSwizzle r, ComponentSwizzle g, ComponentSwizzle b, ComponentSwizzle a)
         {
@@ -195,32 +198,32 @@ namespace VulkanCore
     public enum ComponentSwizzle
     {
         /// <summary>
-        /// The component is set to the identity swizzle.
+        /// Specifies that the component is set to the identity swizzle.
         /// </summary>
         Identity = 0,
         /// <summary>
-        /// The component is set to zero.
+        /// Specifies that the component is set to zero.
         /// </summary>
         Zero = 1,
         /// <summary>
-        /// The component is set to either 1 or 1.0 depending on whether the type of the image view
-        /// format is integer or floating-point respectively.
+        /// Specifies that the component is set to either 1 or 1.0, depending on whether the type of
+        /// the image view format is integer or floating-point respectively.
         /// </summary>
         One = 2,
         /// <summary>
-        /// The component is set to the value of the R component of the image.
+        /// Specifies that the component is set to the value of the R component of the image.
         /// </summary>
         R = 3,
         /// <summary>
-        /// The component is set to the value of the G component of the image.
+        /// Specifies that the component is set to the value of the G component of the image.
         /// </summary>
         G = 4,
         /// <summary>
-        /// The component is set to the value of the B component of the image.
+        /// Specifies that the component is set to the value of the B component of the image.
         /// </summary>
         B = 5,
         /// <summary>
-        /// The component is set to the value of the A component of the image.
+        /// Specifies that the component is set to the value of the A component of the image.
         /// </summary>
         A = 6
     }
@@ -232,7 +235,7 @@ namespace VulkanCore
     public struct ImageSubresourceRange
     {
         /// <summary>
-        /// A bitmask indicating which aspect(s) of the image are included in the view.
+        /// A bitmask specifying which aspect(s) of the image are included in the view.
         /// </summary>
         public ImageAspects AspectMask;
         /// <summary>
@@ -256,7 +259,7 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="ImageSubresourceRange"/> structure.
         /// </summary>
         /// <param name="aspectMask">
-        /// A bitmask indicating which aspect(s) of the image are included in the view.
+        /// A bitmask specifying which aspect(s) of the image are included in the view.
         /// </param>
         /// <param name="baseMipLevel">The first mipmap level accessible to the view.</param>
         /// <param name="levelCount">
@@ -284,9 +287,21 @@ namespace VulkanCore
     [Flags]
     public enum ImageAspects
     {
+        /// <summary>
+        /// Specifies the color aspect.
+        /// </summary>
         Color = 1 << 0,
+        /// <summary>
+        /// Specifies the depth aspect.
+        /// </summary>
         Depth = 1 << 1,
+        /// <summary>
+        /// Specifies the stencil aspect.
+        /// </summary>
         Stencil = 1 << 2,
+        /// <summary>
+        /// Specifies the metadata aspect, used for sparse resource operations.
+        /// </summary>
         Metadata = 1 << 3
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -237,12 +237,12 @@ namespace VulkanCore.Khx
     public enum ExternalMemoryHandleTypesKhx
     {
         /// <summary>
-        /// a POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
+        /// Specifies a POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
         /// other compatible APIs.
         /// <para>
-        /// It must be compatible with the POSIX system calls `dup`, `dup2`, `close`, and the
-        /// non-standard system call `dup3`. Additionally, it must be transportable over a socket
-        /// using an `SCM_RIGHTS` control message.
+        /// It must be compatible with the POSIX system calls <c>dup</c>, <c>dup2</c>, <c>close</c>, and the
+        /// non-standard system call <c>dup3</c>. Additionally, it must be transportable over a socket
+        /// using an <c>SCM_RIGHTS</c> control message.
         /// </para>
         /// <para>
         /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
@@ -250,10 +250,10 @@ namespace VulkanCore.Khx
         /// </summary>
         OpaqueFd = 1 << 0,
         /// <summary>
-        /// An NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
+        /// Specifies an NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
         /// <para>
-        /// It must: be compatible with the functions `DuplicateHandle`, `CloseHandle`,
-        /// `CompareObjectHandles`, `GetHandleInformation`, and `SetHandleInformation`.
+        /// It must: be compatible with the functions <c>DuplicateHandle</c>, <c>CloseHandle</c>,
+        /// <c>CompareObjectHandles</c>, <c>GetHandleInformation</c>, and <c>SetHandleInformation</c>.
         /// </para>
         /// <para>
         /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
@@ -261,7 +261,7 @@ namespace VulkanCore.Khx
         /// </summary>
         OpaqueWin32 = 1 << 1,
         /// <summary>
-        /// A global share handle that has only limited valid usage outside of Vulkan and other
+        /// Specifies a global share handle that has only limited valid usage outside of Vulkan and other
         /// compatible APIs.
         /// <para>It is not compatible with any native APIs.</para>
         /// <para>
@@ -272,13 +272,13 @@ namespace VulkanCore.Khx
         /// </summary>
         OpaqueWin32Kmt = 1 << 2,
         /// <summary>
-        /// An NT handle returned by `IDXGIResource1::CreateSharedHandle` referring to a Direct3D 10
+        /// Specifies an NT handle returned by <c>IDXGIResource1::CreateSharedHandle</c> referring to a Direct3D 10
         /// or 11 texture resource.
         /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
         /// </summary>
         D3D11Texture = 1 << 3,
         /// <summary>
-        /// A global share handle returned by `IDXGIResource::GetSharedHandle` referring to a
+        /// Specifies a global share handle returned by <c>IDXGIResource::GetSharedHandle</c> referring to a
         /// Direct3D 10 or 11 texture resource.
         /// <para>
         /// It does not own own a reference to the underlying Direct3D resource, and will therefore
@@ -288,13 +288,13 @@ namespace VulkanCore.Khx
         /// </summary>
         D3D11TextureKmt = 1 << 4,
         /// <summary>
-        /// An NT handle returned by `ID3D12Device::CreateSharedHandle` referring to a Direct3D 12
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a Direct3D 12
         /// heap resource.
         /// <para>It owns a reference to the resources used by the Direct3D heap.</para>
         /// </summary>
         D3D12Heap = 1 << 5,
         /// <summary>
-        /// An NT handle returned by `ID3D12Device::CreateSharedHandle` referring to a Direct3D 12
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a Direct3D 12
         /// committed resource.
         /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
         /// </summary>
@@ -424,12 +424,12 @@ namespace VulkanCore.Khx
     public enum ExternalSemaphoreHandleTypesKhx
     {
         /// <summary>
-        /// A POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
-        /// other compatible APIs.
+        /// Specifies a POSIX file descriptor handle that has only limited valid usage outside of
+        /// Vulkan and other compatible APIs.
         /// <para>
-        /// It must be compatible with the POSIX system calls `dup`, `dup2`, `close`, and the
-        /// non-standard system call `dup3`. Additionally, it must be transportable over a socket
-        /// using an `SCM_RIGHTS` control message.
+        /// It must be compatible with the POSIX system calls <c>dup</c>, <c>dup2</c>, <c>close</c>,
+        /// and the non-standard system call <c>dup3</c>. Additionally, it must be transportable over
+        /// a socket using an <c>SCM_RIGHTS</c> control message.
         /// </para>
         /// <para>
         /// It owns a reference to the underlying synchronization primitive represented by its Vulkan
@@ -438,10 +438,11 @@ namespace VulkanCore.Khx
         /// </summary>
         OpaqueFd = 1 << 0,
         /// <summary>
-        /// An NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
+        /// Specifies an NT handle that has only limited valid usage outside of Vulkan and other
+        /// compatible APIs.
         /// <para>
-        /// It must be compatible with the functions `DuplicateHandle`, `CloseHandle`,
-        /// `CompareObjectHandles`, `GetHandleInformation`, and `SetHandleInformation`.
+        /// It must be compatible with the functions <c>DuplicateHandle</c>, <c>CloseHandle</c>,
+        /// <c>CompareObjectHandles</c>, <c>GetHandleInformation</c>, and <c>SetHandleInformation</c>.
         /// </para>
         /// <para>
         /// It owns a reference to the underlying synchronization primitive represented by its Vulkan
@@ -450,8 +451,8 @@ namespace VulkanCore.Khx
         /// </summary>
         OpaqueWin32 = 1 << 1,
         /// <summary>
-        /// A global share handle that has only limited valid usage outside of Vulkan and other
-        /// compatible APIs.
+        /// Specifies a global share handle that has only limited valid usage outside of Vulkan and
+        /// other compatible APIs.
         /// <para>It is not compatible with any native APIs.</para>
         /// <para>
         /// It does not own own a reference to the underlying synchronization primitive represented
@@ -461,7 +462,8 @@ namespace VulkanCore.Khx
         /// </summary>
         OpaqueWin32Kmt = 1 << 2,
         /// <summary>
-        /// An NT handle returned by `ID3D12Device::CreateSharedHandle` referring to a Direct3D 12 fence.
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a
+        /// Direct3D 12 fence.
         /// <para>
         /// It owns a reference to the underlying synchronization primitive associated with the
         /// Direct3D fence.
@@ -469,7 +471,7 @@ namespace VulkanCore.Khx
         /// </summary>
         D3D12Fence = 1 << 3,
         /// <summary>
-        /// A POSIX file descriptor handle to a Linux or Android Fence object.
+        /// Specifies a POSIX file descriptor handle to a Linux or Android Fence object.
         /// <para>
         /// It can be used with any native API accepting a valid fence object file descriptor as input.
         /// </para>
@@ -491,19 +493,22 @@ namespace VulkanCore.Khx
     public enum PeerMemoryFeaturesKhx
     {
         /// <summary>
-        /// Can read with vkCmdCopy commands.
+        /// Indicates that the memory can be accessed as the source of a
+        /// <c>CommandBuffer.CmdCopy*</c> command.
         /// </summary>
         PeerMemoryFeatureCopySrcKhx = 1 << 0,
         /// <summary>
-        /// Can write with vkCmdCopy commands.
+        /// Indicates that the memory can be accessed as the destination of a
+        /// <c>CommandBuffer.CmdCopy*</c> command.
         /// </summary>
         PeerMemoryFeatureCopyDstKhx = 1 << 1,
         /// <summary>
-        /// Can read with any access type/command.
+        /// Indicates that the memory can be read as any other memory access type.
         /// </summary>
         PeerMemoryFeatureGenericSrcKhx = 1 << 2,
         /// <summary>
-        /// Can write with and access type/command.
+        /// Indicates that the memory can be written as any other memory access type.
+        /// <para>Shader atomics are considered to be writes.</para>
         /// </summary>
         PeerMemoryFeatureGenericDstKhx = 1 << 3
     }
@@ -723,21 +728,25 @@ namespace VulkanCore.Khx
     public enum DeviceGroupPresentModesKhx
     {
         /// <summary>
-        /// Present from local memory.
+        /// Indicates that any physical device with a presentation engine can present its own
+        /// swapchain images.
         /// </summary>
-        DeviceGroupPresentModeLocalKhx = 1 << 0,
+        Local = 1 << 0,
         /// <summary>
-        /// Present from remote memory.
+        /// Indicates that any physical device with a presentation engine can present swapchain
+        /// images from any physical device in its present mask.
         /// </summary>
-        DeviceGroupPresentModeRemoteKhx = 1 << 1,
+        Remote = 1 << 1,
         /// <summary>
-        /// Present sum of local and/or remote memory.
+        /// Indicates that any physical device with a presentation engine can present the sum of
+        /// swapchain images from any physical devices in its present mask.
         /// </summary>
-        DeviceGroupPresentModeSumKhx = 1 << 2,
+        Sum = 1 << 2,
         /// <summary>
-        /// Each physical device presents from local memory.
+        /// Indicates that multiple physical devices with a presentation engine can each present
+        /// their own swapchain images.
         /// </summary>
-        DeviceGroupPresentModeLocalMultiDeviceKhx = 1 << 3
+        LocalMultiDevice = 1 << 3
     }
 
     /// <summary>

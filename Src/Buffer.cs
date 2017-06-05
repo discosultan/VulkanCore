@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -111,7 +111,7 @@ namespace VulkanCore
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Additional parameters of the buffer.
+        /// A bitmask specifying additional parameters of the buffer.
         /// </summary>
         public BufferCreateFlags Flags;
         /// <summary>
@@ -119,7 +119,11 @@ namespace VulkanCore
         /// </summary>
         public long Size;
         /// <summary>
-        /// The allowed usages of the buffer.
+        /// A bitmask specifying allowed usages of the buffer.
+        /// <para>
+        /// Any combination of bits can be specified for usage, but at least one of the bits must be
+        /// set in order to create a valid buffer.
+        /// </para>
         /// </summary>
         public BufferUsages Usages;
         /// <summary>
@@ -136,8 +140,8 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="BufferCreateInfo"/> structure.
         /// </summary>
         /// <param name="size">The size in bytes of the buffer to be created.</param>
-        /// <param name="usages">The bitmask describing the allowed usages of the buffer.</param>
-        /// <param name="flags">Additional parameters of the buffer.</param>
+        /// <param name="usages">The bitmask specifying allowed usages of the buffer.</param>
+        /// <param name="flags">A bitmask specifying additional parameters of the buffer.</param>
         /// <param name="sharingMode">
         /// The sharing mode of the buffer when it will be accessed by multiple queue families.
         /// </param>
@@ -197,47 +201,47 @@ namespace VulkanCore
     public enum BufferUsages
     {
         /// <summary>
-        /// Indicates that the buffer can be used as the source of a transfer command. (see the
+        /// Specifies that the buffer can be used as the source of a transfer command. (see the
         /// definition of <see cref="PipelineStages.Transfer"/>).
         /// </summary>
         TransferSrc = 1 << 0,
         /// <summary>
-        /// Indicates that the buffer can be used as the destination of a transfer command.
+        /// Specifies that the buffer can be used as the destination of a transfer command.
         /// </summary>
         TransferDst = 1 << 1,
         /// <summary>
-        /// Indicates that the buffer can be used to create a <see cref="BufferView"/> suitable for
+        /// Specifies that the buffer can be used to create a <see cref="BufferView"/> suitable for
         /// occupying a <see cref="DescriptorSet"/> slot of type <see cref="DescriptorType.UniformTexelBuffer"/>.
         /// </summary>
         UniformTexelBuffer = 1 << 2,
         /// <summary>
-        /// Indicates that the buffer can be used to create a <see cref="BufferView"/> suitable for
+        /// Specifies that the buffer can be used to create a <see cref="BufferView"/> suitable for
         /// occupying a <see cref="DescriptorSet"/> slot of type <see cref="DescriptorType.StorageTexelBuffer"/>.
         /// </summary>
         StorageTexelBuffer = 1 << 3,
         /// <summary>
-        /// Indicates that the buffer can be used in a <see cref="DescriptorBufferInfo"/> suitable
+        /// Specifies that the buffer can be used in a <see cref="DescriptorBufferInfo"/> suitable
         /// for occupying a <see cref="DescriptorSet"/> slot either of type <see
         /// cref="DescriptorType.UniformBuffer"/> or <see cref="DescriptorType.UniformBufferDynamic"/>.
         /// </summary>
         UniformBuffer = 1 << 4,
         /// <summary>
-        /// Indicates that the buffer can be used in a <see cref="DescriptorBufferInfo"/> suitable
+        /// Specifies that the buffer can be used in a <see cref="DescriptorBufferInfo"/> suitable
         /// for occupying a <see cref="DescriptorSet"/> slot either of type <see
         /// cref="DescriptorType.StorageBuffer"/> or <see cref="DescriptorType.StorageBufferDynamic"/>.
         /// </summary>
         StorageBuffer = 1 << 5,
         /// <summary>
-        /// Indicates that the buffer is suitable for passing as the buffer parameter to <see cref="CommandBuffer.CmdBindIndexBuffer"/>.
+        /// Specifies that the buffer is suitable for passing as the buffer parameter to <see cref="CommandBuffer.CmdBindIndexBuffer"/>.
         /// </summary>
         IndexBuffer = 1 << 6,
         /// <summary>
-        /// Indicates that the buffer is suitable for passing as an element of the pBuffers array to
+        /// Specifies that the buffer is suitable for passing as an element of the pBuffers array to
         /// <see cref="CommandBuffer.CmdBindVertexBuffers"/>.
         /// </summary>
         VertexBuffer = 1 << 7,
         /// <summary>
-        /// Indicates that the buffer is suitable for passing as the buffer parameter to <see
+        /// Specifies that the buffer is suitable for passing as the buffer parameter to <see
         /// cref="CommandBuffer.CmdDrawIndirect"/>, <see
         /// cref="CommandBuffer.CmdDrawIndexedIndirect"/>, or <see
         /// cref="CommandBuffer.CmdDispatchIndirect"/>. It is also suitable for passing as the <see
@@ -259,16 +263,16 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// Indicates that the buffer will be backed using sparse memory binding.
+        /// Specifies that the buffer will be backed using sparse memory binding.
         /// </summary>
         SparseBinding = 1 << 0,
         /// <summary>
-        /// Indicates that the buffer can be partially backed using sparse memory binding. Buffers
+        /// Specifies that the buffer can be partially backed using sparse memory binding. Buffers
         /// created with this flag must also be created with the <see cref="SparseBinding"/> flag.
         /// </summary>
         SparseResidency = 1 << 1,
         /// <summary>
-        /// Indicates that the buffer will be backed using sparse memory binding with memory ranges
+        /// Specifies that the buffer will be backed using sparse memory binding with memory ranges
         /// that might also simultaneously be backing another buffer (or another portion of the same
         /// buffer). Buffers created with this flag must also be created with the <see
         /// cref="SparseBinding"/> flag.

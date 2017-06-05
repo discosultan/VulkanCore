@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Ext
@@ -94,16 +94,16 @@ namespace VulkanCore.Ext
     public struct DebugReportCallbackCreateInfoExt
     {
         /// <summary>
-        /// Indicate which event(s) will cause this callback to be called. Flags are interpreted as
-        /// bitmasks and multiple can be set.
+        /// A bitmask specifying which event(s) will cause this callback to be called. Flags are
+        /// interpreted as bitmasks and multiple can be set.
         /// </summary>
         public DebugReportFlagsExt Flags;
         /// <summary>
-        /// The callback function.
+        /// The application callback function to call.
         /// </summary>
         public Func<DebugReportCallbackInfo, bool> Callback;
         /// <summary>
-        /// <see cref="IntPtr.Zero"/> or a handle to user data provided to callback function.
+        /// User data to be passed to the callback.
         /// </summary>
         public IntPtr UserData;
 
@@ -111,11 +111,11 @@ namespace VulkanCore.Ext
         /// Initializes a new instance of the <see cref="DebugReportCallbackCreateInfoExt"/> structure.
         /// </summary>
         /// <param name="flags">
-        /// Indicate which event(s) will cause this callback to be called. Flags are interpreted as
-        /// bitmasks and multiple can be set.
+        /// A bitmask specifying which event(s) will cause this callback to be called. Flags are
+        /// interpreted as bitmasks and multiple can be set.
         /// </param>
-        /// <param name="callback">The callback function.</param>
-        /// <param name="userData">The handle to user data provided to callback function.</param>
+        /// <param name="callback">The application callback function to call.</param>
+        /// <param name="userData">User data to be passed to the callback.</param>
         public DebugReportCallbackCreateInfoExt(
             DebugReportFlagsExt flags,
             Func<DebugReportCallbackInfo, bool> callback,
@@ -195,12 +195,12 @@ namespace VulkanCore.Ext
     public enum DebugReportFlagsExt
     {
         /// <summary>
-        /// Indicates an informational message such as resource details that may be handy when
+        /// Specifies an informational message such as resource details that may be handy when
         /// debugging an application.
         /// </summary>
         Information = 1 << 0,
         /// <summary>
-        /// Indicates use of Vulkan that may expose an app bug. Such cases may not be immediately
+        /// Specifies use of Vulkan that may expose an app bug. Such cases may not be immediately
         /// harmful, such as a fragment shader outputting to a location with no attachment. Other
         /// cases may point to behavior that is almost certainly bad when unintended such as using an
         /// image whose memory has not been filled. In general if you see a warning but you know that
@@ -208,17 +208,17 @@ namespace VulkanCore.Ext
         /// </summary>
         Warning = 1 << 1,
         /// <summary>
-        /// Indicates a potentially non-optimal use of Vulkan. E.g. using <see
+        /// Specifies a potentially non-optimal use of Vulkan. E.g. using <see
         /// cref="CommandBuffer.CmdClearColorImage"/> when a <see cref="RenderPass"/> load op would
         /// have worked.
         /// </summary>
         PerformanceWarning = 1 << 2,
         /// <summary>
-        /// Indicates an error that may cause undefined results, including an application crash.
+        /// Specifies that an error that may cause undefined results, including an application crash.
         /// </summary>
         Error = 1 << 3,
         /// <summary>
-        /// Indicates diagnostic information from the loader and layers.
+        /// Specifies diagnostic information from the loader and layers.
         /// </summary>
         Debug = 1 << 4,
         /// <summary>
@@ -233,139 +233,139 @@ namespace VulkanCore.Ext
     public enum DebugReportObjectTypeExt
     {
         /// <summary>
-        /// Is an unknown object.
+        /// Specifies an unknown object.
         /// </summary>
         Unknown = 0,
         /// <summary>
-        /// Is an <see cref="VulkanCore.Instance"/>.
+        /// Specifies an <see cref="VulkanCore.Instance"/>.
         /// </summary>
         Instance = 1,
         /// <summary>
-        /// Is a <see cref="VulkanCore.PhysicalDevice"/>.
+        /// Specifies a <see cref="VulkanCore.PhysicalDevice"/>.
         /// </summary>
         PhysicalDevice = 2,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Device"/>.
+        /// Specifies a <see cref="VulkanCore.Device"/>.
         /// </summary>
         Device = 3,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Queue"/>.
+        /// Specifies a <see cref="VulkanCore.Queue"/>.
         /// </summary>
         Queue = 4,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Semaphore"/>.
+        /// Specifies a <see cref="VulkanCore.Semaphore"/>.
         /// </summary>
         Semaphore = 5,
         /// <summary>
-        /// Is a <see cref="VulkanCore.CommandBuffer"/>.
+        /// Specifies a <see cref="VulkanCore.CommandBuffer"/>.
         /// </summary>
         CommandBuffer = 6,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Fence"/>.
+        /// Specifies a <see cref="VulkanCore.Fence"/>.
         /// </summary>
         Fence = 7,
         /// <summary>
-        /// Is a <see cref="VulkanCore.DeviceMemory"/>.
+        /// Specifies a <see cref="VulkanCore.DeviceMemory"/>.
         /// </summary>
         DeviceMemory = 8,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Buffer"/>.
+        /// Specifies a <see cref="VulkanCore.Buffer"/>.
         /// </summary>
         Buffer = 9,
         /// <summary>
-        /// Is an <see cref="VulkanCore.Image"/>.
+        /// Specifies an <see cref="VulkanCore.Image"/>.
         /// </summary>
         Image = 10,
         /// <summary>
-        /// Is an <see cref="VulkanCore.Event"/>.
+        /// Specifies an <see cref="VulkanCore.Event"/>.
         /// </summary>
         Event = 11,
         /// <summary>
-        /// Is a <see cref="VulkanCore.QueryPool"/>.
+        /// Specifies a <see cref="VulkanCore.QueryPool"/>.
         /// </summary>
         QueryPool = 12,
         /// <summary>
-        /// Is an <see cref="VulkanCore.BufferView"/>.
+        /// Specifies an <see cref="VulkanCore.BufferView"/>.
         /// </summary>
         BufferView = 13,
         /// <summary>
-        /// Is an <see cref="VulkanCore.ImageView"/>.
+        /// Specifies an <see cref="VulkanCore.ImageView"/>.
         /// </summary>
         ImageView = 14,
         /// <summary>
-        /// Is a <see cref="VulkanCore.ShaderModule"/>.
+        /// Specifies a <see cref="VulkanCore.ShaderModule"/>.
         /// </summary>
         ShaderModule = 15,
         /// <summary>
-        /// Is a <see cref="VulkanCore.PipelineCache"/>.
+        /// Specifies a <see cref="VulkanCore.PipelineCache"/>.
         /// </summary>
         PipelineCache = 16,
         /// <summary>
-        /// Is a <see cref="VulkanCore.PipelineLayout"/>.
+        /// Specifies a <see cref="VulkanCore.PipelineLayout"/>.
         /// </summary>
         PipelineLayout = 17,
         /// <summary>
-        /// Is a <see cref="VulkanCore.RenderPass"/>.
+        /// Specifies a <see cref="VulkanCore.RenderPass"/>.
         /// </summary>
         RenderPass = 18,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Pipeline"/>.
+        /// Specifies a <see cref="VulkanCore.Pipeline"/>.
         /// </summary>
         Pipeline = 19,
         /// <summary>
-        /// Is a <see cref="VulkanCore.DescriptorSetLayout"/>.
+        /// Specifies a <see cref="VulkanCore.DescriptorSetLayout"/>.
         /// </summary>
         DescriptorSetLayout = 20,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Sampler"/>.
+        /// Specifies a <see cref="VulkanCore.Sampler"/>.
         /// </summary>
         Sampler = 21,
         /// <summary>
-        /// Is a <see cref="VulkanCore.DescriptorPool"/>.
+        /// Specifies a <see cref="VulkanCore.DescriptorPool"/>.
         /// </summary>
         DescriptorPool = 22,
         /// <summary>
-        /// Is a <see cref="VulkanCore.DescriptorSet"/>.
+        /// Specifies a <see cref="VulkanCore.DescriptorSet"/>.
         /// </summary>
         DescriptorSet = 23,
         /// <summary>
-        /// Is a <see cref="VulkanCore.Framebuffer"/>.
+        /// Specifies a <see cref="VulkanCore.Framebuffer"/>.
         /// </summary>
         Framebuffer = 24,
         /// <summary>
-        /// Is a <see cref="VulkanCore.CommandPool"/>.
+        /// Specifies a <see cref="VulkanCore.CommandPool"/>.
         /// </summary>
         CommandPool = 25,
         /// <summary>
-        /// Is a <see cref="Khr.SurfaceKhr"/>.
+        /// Specifies a <see cref="Khr.SurfaceKhr"/>.
         /// </summary>
         SurfaceKhr = 26,
         /// <summary>
-        /// Is a <see cref="Khr.SwapchainKhr"/>.
+        /// Specifies a <see cref="Khr.SwapchainKhr"/>.
         /// </summary>
         SwapchainKhr = 27,
         /// <summary>
-        /// Is a <see cref="DebugReportCallbackExt"/>.
+        /// Specifies a <see cref="DebugReportCallbackExt"/>.
         /// </summary>
         DebugReportCallback = 28,
         /// <summary>
-        /// Is a <see cref="Khr.DisplayKhr"/>.
+        /// Specifies a <see cref="Khr.DisplayKhr"/>.
         /// </summary>
         DisplayKhr = 29,
         /// <summary>
-        /// Is a <see cref="Khr.DisplayModeKhr"/>.
+        /// Specifies a <see cref="Khr.DisplayModeKhr"/>.
         /// </summary>
         DisplayModeKhr = 30,
         /// <summary>
-        /// Is a <see cref="Nvx.ObjectTableNvx"/>.
+        /// Specifies a <see cref="Nvx.ObjectTableNvx"/>.
         /// </summary>
         ObjectTableNvx = 31,
         /// <summary>
-        /// Is a <see cref="Nvx.IndirectCommandsLayoutNvx"/>.
+        /// Specifies a <see cref="Nvx.IndirectCommandsLayoutNvx"/>.
         /// </summary>
         IndirectCommandsLayoutNvx = 32,
         /// <summary>
-        /// Is a <see cref="Khr.DescriptorUpdateTemplateKhr"/>.
+        /// Specifies a <see cref="Khr.DescriptorUpdateTemplateKhr"/>.
         /// </summary>
         DescriptorUpdateTemplateKhrExt = 1000085000
     }

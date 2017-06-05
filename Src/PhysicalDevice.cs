@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -1253,25 +1253,34 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// If otherwise stated, then allocate memory on device.
+        /// Indicates that memory allocated with this type is the most efficient for device access.
+        /// This property will only be set for memory types belonging to heaps with the <see
+        /// cref="MemoryHeaps.DeviceLocal"/> set.
         /// </summary>
         DeviceLocal = 1 << 0,
         /// <summary>
-        /// Memory is mappable by host.
+        /// Indicates that memory allocated with this type can be mapped for host access using <see cref="DeviceMemory.Map"/>.
         /// </summary>
         HostVisible = 1 << 1,
         /// <summary>
-        /// Memory will have i/o coherency. If not set, application may need to use <see
+        /// Indicates that the host cache management commands <see
         /// cref="Device.FlushMappedMemoryRanges"/> and <see
-        /// cref="Device.InvalidateMappedMemoryRanges"/> to flush/invalidate host cache.
+        /// cref="Device.InvalidateMappedMemoryRanges"/> are not needed to flush host writes to the
+        /// device or make device writes visible to the host, respectively.
         /// </summary>
         HostCoherent = 1 << 2,
         /// <summary>
-        /// Memory will be cached by the host.
+        /// Indicates that memory allocated with this type is cached on the host. Host memory
+        /// accesses to uncached memory are slower than to cached memory, however uncached memory is
+        /// always host coherent.
         /// </summary>
         HostCached = 1 << 3,
         /// <summary>
-        /// Memory may be allocated by the driver when it is required.
+        /// Indicates that the memory type only allows device access to the memory. Memory types must
+        /// not have both <see cref="LazilyAllocated"/> and <see cref="HostVisible"/> set.
+        /// <para>
+        /// Additionally, the object's backing memory may be provided by the implementation lazily.
+        /// </para>
         /// </summary>
         LazilyAllocated = 1 << 4
     }
@@ -1287,7 +1296,7 @@ namespace VulkanCore
         /// </summary>
         None = 0,
         /// <summary>
-        /// If set, it means the heap corresponds to device local memory.
+        /// Indicates that the heap corresponds to device local memory.
         /// <para>
         /// Device local memory may have different performance characteristics than host local
         /// memory, and may support different memory property flags.
@@ -1295,7 +1304,7 @@ namespace VulkanCore
         /// </summary>
         DeviceLocal = 1 << 0,
         /// <summary>
-        /// If set, then in a logical device representing more than one physical device there is a
+        /// Indicates that in a logical device representing more than one physical device, there is a
         /// per-physical device instance of the heap memory.
         /// <para>
         /// By default, an allocation from such a heap will be replicated to each physical device's
@@ -1445,7 +1454,7 @@ namespace VulkanCore
     public struct QueueFamilyProperties
     {
         /// <summary>
-        /// Contains flags indicating the capabilities of the queues in this queue family.
+        /// A bitmask indicating capabilities of the queues in this queue family.
         /// </summary>
         public Queues QueueFlags;
         /// <summary>
@@ -1473,19 +1482,19 @@ namespace VulkanCore
     public enum Queues
     {
         /// <summary>
-        /// Queue supports graphics operations.
+        /// Indicates that queues in this queue family support graphics operations.
         /// </summary>
         Graphics = 1 << 0,
         /// <summary>
-        /// Queue supports compute operations.
+        /// Indicates that queues in this queue family support compute operations.
         /// </summary>
         Compute = 1 << 1,
         /// <summary>
-        /// Queue supports transfer operations.
+        /// Indicates that queues in this queue family support transfer operations.
         /// </summary>
         Transfer = 1 << 2,
         /// <summary>
-        /// Queue supports sparse resource memory management operations.
+        /// Indicates that queues in this queue family support sparse resource memory management operations.
         /// </summary>
         SparseBinding = 1 << 3
     }
@@ -1497,15 +1506,15 @@ namespace VulkanCore
     public struct FormatProperties
     {
         /// <summary>
-        /// Describes the features supported by <see cref="ImageTiling.Linear"/>.
+        /// A bitmask specifying features supported by images created with a tiling parameter of <see cref="ImageTiling.Linear"/>.
         /// </summary>
         public FormatFeatures LinearTilingFeatures;
         /// <summary>
-        /// Describes the features supported by <see cref="ImageTiling.Optimal"/>.
+        /// A bitmask specifying features supported by images created with a tiling parameter of <see cref="ImageTiling.Optimal"/>.
         /// </summary>
         public FormatFeatures OptimalTilingFeatures;
         /// <summary>
-        /// Describes the features supported by buffers.
+        /// A bitmask specifying features supported by buffers.
         /// </summary>
         public FormatFeatures BufferFeatures;
     }
@@ -1517,69 +1526,92 @@ namespace VulkanCore
     public enum FormatFeatures
     {
         /// <summary>
-        /// Format can be used for sampled images (<see cref="DescriptorType.SampledImage"/> and
-        /// <see cref="DescriptorType.CombinedImageSampler"/> descriptor types).
+        /// Specifies that an image view can be sampled from.
         /// </summary>
         SampledImage = 1 << 0,
         /// <summary>
-        /// Format can be used for storage images (<see cref="DescriptorType.StorageImage"/>
-        /// descriptor type).
+        /// Specifies that an image view can be used as a storage image.
         /// </summary>
         StorageImage = 1 << 1,
         /// <summary>
-        /// Format supports atomic operations in case it is used for storage images.
+        /// Specifies that an image view can be used as storage image that supports atomic operations.
         /// </summary>
         StorageImageAtomic = 1 << 2,
         /// <summary>
-        /// Format can be used for uniform texel buffers (TBOs).
+        /// Specifies that the format can be used to create a buffer view that can be bound to a <see
+        /// cref="DescriptorType.UniformTexelBuffer"/> descriptor.
         /// </summary>
         UniformTexelBuffer = 1 << 3,
         /// <summary>
-        /// Format can be used for storage texel buffers (IBOs).
+        /// Specifies that the format can be used to create a buffer view that can be bound to a <see
+        /// cref="DescriptorType.StorageTexelBuffer"/> descriptor.
         /// </summary>
         StorageTexelBuffer = 1 << 4,
         /// <summary>
-        /// Format supports atomic operations in case it is used for storage texel buffers.
+        /// Specifies that atomic operations are supported on <see
+        /// cref="DescriptorType.StorageTexelBuffer"/> with this format.
         /// </summary>
         StorageTexelBufferAtomic = 1 << 5,
         /// <summary>
-        /// Format can be used for vertex buffers (VBOs).
+        /// Specifies that the format can be used as a vertex attribute format ( <see cref="VertexInputAttributeDescription.Format"/>).
         /// </summary>
         VertexBuffer = 1 << 6,
         /// <summary>
-        /// Format can be used for color attachment images.
+        /// Specifies that an image view can be used as a framebuffer color attachment and as an
+        /// input attachment.
         /// </summary>
         ColorAttachment = 1 << 7,
         /// <summary>
-        /// Format supports blending in case it is used for color attachment images.
+        /// Specifies that an image view can be used as a framebuffer color attachment that supports
+        /// blending and as an input attachment.
         /// </summary>
         ColorAttachmentBlend = 1 << 8,
         /// <summary>
-        /// Format can be used for depth/stencil attachment images.
+        /// Specifies that an image view can be used as a framebuffer depth/stencil attachment and as
+        /// an input attachment.
         /// </summary>
         DepthStencilAttachment = 1 << 9,
         /// <summary>
-        /// Format can be used as the source image of blits with <see cref="CommandBuffer.CmdBlitImage"/>.
+        /// Specifies that an image can be used as source image for the <see
+        /// cref="CommandBuffer.CmdBlitImage"/> command.
         /// </summary>
         BlitSrc = 1 << 10,
         /// <summary>
-        /// Format can be used as the destination image of blits with <see cref="CommandBuffer.CmdBlitImage"/>.
+        /// Specifies that an image can be used as destination image for the <see
+        /// cref="CommandBuffer.CmdBlitImage"/> command.
         /// </summary>
         BlitDst = 1 << 11,
         /// <summary>
-        /// Format can be filtered with <see cref="Filter.Linear"/> when being sampled.
+        /// Specifies that if <see cref="SampledImage"/> is also set, an image view can be used with
+        /// a sampler that has either of magnification or minification filter set to <see
+        /// cref="Filter.Linear"/>, or mipmap mode set to <see cref="SamplerMipmapMode.Linear"/>.
+        /// <para>
+        /// If <see cref="BlitSrc"/> is also set, an image can be used as the source image to <see
+        /// cref="CommandBuffer.CmdBlitImage"/> with a <see cref="Filter.Linear"/>.
+        /// </para>
+        /// <para>
+        /// This bit must only be exposed for formats that also support the <see
+        /// cref="SampledImage"/> or <see cref="BlitSrc"/>.
+        /// </para>
         /// </summary>
         SampledImageFilterLinear = 1 << 12,
         /// <summary>
-        /// Format can be filtered with <see cref="Filter.CubicImg"/> when being sampled.
+        /// An <see cref="Image"/> can be used with a sampler that has either of magnification or
+        /// minification filter set to <see cref="Filter.CubicImg"/>, or be the source image for a
+        /// blit with filter set to <see cref="Filter.CubicImg"/>.
+        /// <para>This bit must only be exposed for formats that also support the <see cref="SampledImage"/>.</para>
+        /// <para>
+        /// If the format being queried is a depth/stencil format, this only indicates that the depth
+        /// aspect is cubic filterable.
+        /// </para>
         /// </summary>
         SampledImageFilterCubicImg = 1 << 13,
         /// <summary>
-        /// Format can be used as the source image of image transfer commands.
+        /// Specifies that an image can be used as a source image for copy commands.
         /// </summary>
         TransferSrcKhr = 1 << 14,
         /// <summary>
-        /// Format can be used as the destination image of image transfer commands.
+        /// Specifies that an image can be used as a destination image for copy commands and clear commands.
         /// </summary>
         TransferDstKhr = 1 << 15,
     }
@@ -1606,7 +1638,13 @@ namespace VulkanCore
     /// </summary>
     public enum Filter
     {
+        /// <summary>
+        /// Specifies nearest filtering.
+        /// </summary>
         Nearest = 0,
+        /// <summary>
+		/// Specifies linear filtering.
+		/// </summary>
         Linear = 1,
         CubicImg = 1000015000
     }

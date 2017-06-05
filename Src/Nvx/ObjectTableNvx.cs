@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Nvx
@@ -205,23 +205,23 @@ namespace VulkanCore.Nvx
         /// <summary>
         /// Indicates a <see cref="DescriptorSet"/> resource entry that is registered via <see cref="ObjectTableDescriptorSetEntryNvx"/>.
         /// </summary>
-        ObjectEntryDescriptorSet = 0,
+        DescriptorSet = 0,
         /// <summary>
         /// Indicates a <see cref="Pipeline"/> resource entry that is registered via <see cref="ObjectTablePipelineEntryNvx"/>.
         /// </summary>
-        ObjectEntryPipeline = 1,
+        Pipeline = 1,
         /// <summary>
         /// Indicates a <see cref="Buffer"/> resource entry that is registered via <see cref="ObjectTableIndexBufferEntryNvx"/>.
         /// </summary>
-        ObjectEntryIndexBuffer = 2,
+        IndexBuffer = 2,
         /// <summary>
         /// Indicates a <see cref="Buffer"/> resource entry that is registered via <see cref="ObjectTableVertexBufferEntryNvx"/>.
         /// </summary>
-        ObjectEntryVertexBuffer = 3,
+        VertexBuffer = 3,
         /// <summary>
         /// Indicates the resource entry is registered via <see cref="ObjectTablePushConstantEntryNvx"/>.
         /// </summary>
-        ObjectEntryPushConstant = 4
+        PushConstant = 4
     }
 
     [StructLayout(LayoutKind.Sequential)]

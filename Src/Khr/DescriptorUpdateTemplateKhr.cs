@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
@@ -175,11 +175,11 @@ namespace VulkanCore.Khr
     public enum DescriptorUpdateTemplateTypeKhr
     {
         /// <summary>
-        /// Indicates that the descriptor update template will be used for descriptor set updates only.
+        /// Specifies that the descriptor update template will be used for descriptor set updates only.
         /// </summary>
         DescriptorSet = 0,
         /// <summary>
-        /// Indicates that the descriptor update template will be used for push descriptor updates only.
+        /// Specifies that the descriptor update template will be used for push descriptor updates only.
         /// </summary>
         PushDescriptors = 1
     }

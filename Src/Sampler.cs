@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -57,27 +57,27 @@ namespace VulkanCore
         internal SamplerCreateFlags Flags;
 
         /// <summary>
-        /// The magnification filter to apply to lookups.
+        /// Specifies the magnification filter to apply to lookups.
         /// </summary>
         public Filter MagFilter;
         /// <summary>
-        /// The minification filter to apply to lookups.
+        /// Specifies the minification filter to apply to lookups.
         /// </summary>
         public Filter MinFilter;
         /// <summary>
-        /// The mipmap filter to apply to lookups.
+        /// Specifies the mipmap filter to apply to lookups.
         /// </summary>
         public SamplerMipmapMode MipmapMode;
         /// <summary>
-        /// The addressing mode for outside [0..1] range for U coordinate.
+        /// Specifies the addressing mode for outside [0..1] range for U coordinate.
         /// </summary>
         public SamplerAddressMode AddressModeU;
         /// <summary>
-        /// The addressing mode for outside [0..1] range for V coordinate.
+        /// Specifies the addressing mode for outside [0..1] range for V coordinate.
         /// </summary>
         public SamplerAddressMode AddressModeV;
         /// <summary>
-        /// The addressing mode for outside [0..1] range for W coordinate.
+        /// Specifies the addressing mode for outside [0..1] range for W coordinate.
         /// </summary>
         public SamplerAddressMode AddressModeW;
         /// <summary>
@@ -99,7 +99,7 @@ namespace VulkanCore
         /// </summary>
         public Bool CompareEnable;
         /// <summary>
-        /// The comparison function to apply to fetched data before filtering.
+        /// Specifies the comparison function to apply to fetched data before filtering.
         /// </summary>
         public CompareOp CompareOp;
         /// <summary>
@@ -113,7 +113,7 @@ namespace VulkanCore
         /// </summary>
         public float MaxLod;
         /// <summary>
-        /// The predefined border color to use.
+        /// Specifies the predefined border color to use.
         /// </summary>
         public BorderColor BorderColor;
         /// <summary>
@@ -143,11 +143,11 @@ namespace VulkanCore
     public enum SamplerMipmapMode
     {
         /// <summary>
-        /// Choose nearest mip level.
+        /// Specifies nearest filtering.
         /// </summary>
         Nearest = 0,
         /// <summary>
-        /// Linear filter between mip levels.
+        /// Specifies linear filtering.
         /// </summary>
         Linear = 1
     }
@@ -158,23 +158,23 @@ namespace VulkanCore
     public enum SamplerAddressMode
     {
         /// <summary>
-        /// Indicates that the repeat wrap mode will be used.
+        /// Specifies that the repeat wrap mode will be used.
         /// </summary>
         Repeat = 0,
         /// <summary>
-        /// Indicates that the mirrored repeat wrap mode will be used.
+        /// Specifies that the mirrored repeat wrap mode will be used.
         /// </summary>
         MirroredRepeat = 1,
         /// <summary>
-        /// Indicates that the clamp to edge wrap mode will be used.
+        /// Specifies that the clamp to edge wrap mode will be used.
         /// </summary>
         ClampToEdge = 2,
         /// <summary>
-        /// Indicates that the clamp to border wrap mode will be used.
+        /// Specifies that the clamp to border wrap mode will be used.
         /// </summary>
         ClampToBorder = 3,
         /// <summary>
-        /// Indicates that the mirror clamp to edge wrap mode will be used. This is only valid if the
+        /// Specifies that the mirror clamp to edge wrap mode will be used. This is only valid if the
         /// "VK_KHR_mirror_clamp_to_edge" extension is enabled.
         /// </summary>
         MirrorClampToEdge = 4
@@ -185,11 +185,29 @@ namespace VulkanCore
     /// </summary>
     public enum BorderColor
     {
+        /// <summary>
+        /// Specifies a transparent, floating-point format, black color.
+        /// </summary>
         FloatTransparentBlack = 0,
+        /// <summary>
+        /// Specifies a transparent, integer format, black color.
+        /// </summary>
         IntTransparentBlack = 1,
+        /// <summary>
+        /// Specifies an opaque, floating-point format, black color.
+        /// </summary>
         FloatOpaqueBlack = 2,
+        /// <summary>
+        /// Specifies an opaque, integer format, black color.
+        /// </summary>
         IntOpaqueBlack = 3,
+        /// <summary>
+        /// Specifies an opaque, floating-point format, white color.
+        /// </summary>
         FloatOpaqueWhite = 4,
+        /// <summary>
+        /// Specifies an opaque, integer format, white color.
+        /// </summary>
         IntOpaqueWhite = 5
     }
 }

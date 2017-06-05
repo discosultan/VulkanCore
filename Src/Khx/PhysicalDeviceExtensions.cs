@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 using static VulkanCore.Constant;
@@ -165,19 +165,19 @@ namespace VulkanCore.Khx
     public enum ExternalMemoryFeaturesKhx
     {
         /// <summary>
-        /// Indicates that images or buffers created with the specified parameters and handle type
-        /// must use the mechanisms defined in the "VKNVDedicatedAllocation" to create (or import) a
-        /// dedicated allocation for the image or buffer.
+        /// Specifies that images or buffers created with the specified parameters and handle type
+        /// must use the mechanisms defined in the "VK_NV_dedicated_allocation" extension to to
+        /// create (or import) a dedicated allocation for the image or buffer.
         /// </summary>
-        ExternalMemoryFeatureDedicatedOnly = 1 << 0,
+        DedicatedOnly = 1 << 0,
         /// <summary>
-        /// Indicates handles of this type can be exported from Vulkan memory objects.
+        /// Specifies that handles of this type can be exported from Vulkan memory objects.
         /// </summary>
-        ExternalMemoryFeatureExportable = 1 << 1,
+        Exportable = 1 << 1,
         /// <summary>
-        /// Indicates handles of this type can be imported as Vulkan memory objects.
+        /// Specifies that handles of this type can be imported as Vulkan memory objects.
         /// </summary>
-        ExternalMemoryFeatureImportable = 1 << 2
+        Importable = 1 << 2
     }
 
     /// <summary>
@@ -252,11 +252,11 @@ namespace VulkanCore.Khx
     public enum ExternalSemaphoreFeaturesKhx
     {
         /// <summary>
-        /// Indicates handles of this type can be exported from Vulkan semaphore objects.
+        /// Specifies that handles of this type can be exported from Vulkan semaphore objects.
         /// </summary>
         Exportable = 1 << 0,
         /// <summary>
-        /// Indicates handles of this type can be imported as Vulkan semaphore objects.
+        /// Specifies that handles of this type can be imported as Vulkan semaphore objects.
         /// </summary>
         Importable = 1 << 1
     }

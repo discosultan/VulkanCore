@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Ext;
 
@@ -558,14 +558,14 @@ namespace VulkanCore.Khr
         /// </summary>
         public int MaxImageArrayLayers;
         /// <summary>
-        /// A bitmask of <see cref="SurfaceTransformsKhr"/>, describing the presentation
-        /// transforms supported for the surface on the specified device, and at least one bit will
-        /// be set.
+        /// A bitmask of <see cref="SurfaceTransformsKhr"/>, indicating the presentation transforms
+        /// supported for the surface on the specified device.
+        /// <para>At least one bit will be set.</para>
         /// </summary>
         public SurfaceTransformsKhr SupportedTransforms;
         /// <summary>
-        /// The surface's current transform relative to the presentation engine's natural
-        /// orientation, as described by <see cref="SurfaceTransformsKhr"/>.
+        /// Indicates the surface's current transform relative to the presentation engine's natural
+        /// orientation.
         /// </summary>
         public SurfaceTransformsKhr CurrentTransform;
         /// <summary>
@@ -577,10 +577,12 @@ namespace VulkanCore.Khr
         /// </summary>
         public CompositeAlphasKhr SupportedCompositeAlpha;
         /// <summary>
-        /// A bitmask of <see cref="ImageUsages"/> representing the ways the application can use
-        /// the presentable images of a swapchain created for the surface on the specified device.
-        /// <see cref="ImageUsages.ColorAttachment"/> must be included in the set but
-        /// implementations may support additional usages.
+        /// A bitmask of <see cref="ImageUsages"/> representing the ways the application can use the
+        /// presentable images of a swapchain created for the surface on the specified device.
+        /// <para>
+        /// <see cref="ImageUsages.ColorAttachment"/> must be included in the set but implementations
+        /// may support additional usages.
+        /// </para>
         /// </summary>
         public ImageUsages SupportedUsageFlags;
     }
@@ -596,11 +598,11 @@ namespace VulkanCore.Khr
     public struct SurfaceFormatKhr
     {
         /// <summary>
-        /// A format that is compatible with the specified surface.
+        /// A <see cref="Format"/> that is compatible with the specified surface.
         /// </summary>
         public Format Format;
         /// <summary>
-        /// A presentation color space that is compatible with the surface.
+        /// A presentation <see cref="ColorSpaceKhr"/> that is compatible with the surface.
         /// </summary>
         public ColorSpaceKhr ColorSpace;
     }

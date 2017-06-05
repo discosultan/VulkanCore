@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -96,9 +96,9 @@ namespace VulkanCore.Khx
         /// </summary>
         None = 0,
         /// <summary>
-        /// Force allocation on specific devices.
+        /// Specifies that memory will be allocated for the devices in <see cref="MemoryAllocateFlagsInfoKhx.DeviceMask"/>.
         /// </summary>
-        MemoryAllocateDeviceMaskKhx = 1 << 0
+        DeviceMask = 1 << 0
     }
 
     /// <summary>

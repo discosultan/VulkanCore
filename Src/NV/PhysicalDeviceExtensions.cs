@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.NV
@@ -52,8 +52,8 @@ namespace VulkanCore.NV
         /// </summary>
         public ImageFormatProperties ImageFormatProperties;
         /// <summary>
-        /// A bitmask of <see cref="ExternalMemoryFeaturesNV"/> indicating properties of the
-        /// external memory handle type being queried, or 0 if the external memory handle type is 0.
+        /// A bitmask of <see cref="ExternalMemoryFeaturesNV"/> indicating properties of the external
+        /// memory handle type being queried, or 0 if the external memory handle type is 0.
         /// </summary>
         public ExternalMemoryFeaturesNV ExternalMemoryFeatures;
         /// <summary>
@@ -77,16 +77,16 @@ namespace VulkanCore.NV
     public enum ExternalMemoryFeaturesNV
     {
         /// <summary>
-        /// External memory of the specified type must be created as a dedicated allocation when used
-        /// in the manner specified.
+        /// Indicates that external memory of the specified type must be created as a dedicated
+        /// allocation when used in the manner specified.
         /// </summary>
         DedicatedOnly = 1 << 0,
         /// <summary>
-        /// The implementation supports exporting handles of the specified type.
+        /// Indicates that the implementation supports exporting handles of the specified type.
         /// </summary>
         Exportable = 1 << 1,
         /// <summary>
-        /// The implementation supports importing handles of the specified type.
+        /// Indicates that the implementation supports importing handles of the specified type.
         /// </summary>
         Importable = 1 << 2
     }

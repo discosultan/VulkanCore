@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -143,7 +143,7 @@ namespace VulkanCore
     public unsafe struct GraphicsPipelineCreateInfo
     {
         /// <summary>
-        /// A bitmask of <see cref="PipelineCreateFlags"/> controlling how the pipeline will be generated.
+        /// A bitmask specifying how the pipeline will be generated.
         /// </summary>
         public PipelineCreateFlags Flags;
         /// <summary>
@@ -428,7 +428,7 @@ namespace VulkanCore
     }
 
     /// <summary>
-    /// Bitmask controlling how a pipeline is generated.
+    /// Bitmask controlling how a pipeline is created.
     /// </summary>
     [Flags]
     public enum PipelineCreateFlags
@@ -469,7 +469,7 @@ namespace VulkanCore
     public unsafe struct ComputePipelineCreateInfo
     {
         /// <summary>
-        /// Provides options for pipeline creation.
+        /// A bitmask specifying options for pipeline creation.
         /// </summary>
         public PipelineCreateFlags Flags;
         /// <summary>
@@ -500,7 +500,7 @@ namespace VulkanCore
         /// The description of binding locations used by both the pipeline and descriptor sets used
         /// with the pipeline.
         /// </param>
-        /// <param name="flags">Provides options for pipeline creation.</param>
+        /// <param name="flags">A bitmask specifying options for pipeline creation.</param>
         /// <param name="basePipelineHandle">A pipeline to derive from.</param>
         /// <param name="basePipelineIndex">
         /// An index into the <see cref="Pipeline.CreateComputePipelines"/> create infos parameter to
@@ -551,15 +551,15 @@ namespace VulkanCore
     public unsafe struct PipelineShaderStageCreateInfo
     {
         /// <summary>
-        /// Names a single pipeline stage.
+        /// Specifies a single pipeline stage.
         /// </summary>
         public ShaderStages Stage;
         /// <summary>
-        /// Module containing entry point.
+        /// A <see cref="ShaderModule"/> object that contains the shader for this stage.
         /// </summary>
         public long Module;
         /// <summary>
-        /// Unicode entry point name.
+        /// Unicode string specifying the entry point name of the shader for this stage.
         /// </summary>
         public string Name;
         /// <summary>
@@ -570,9 +570,9 @@ namespace VulkanCore
         /// <summary>
         /// Initializes a new instance of the <see cref="PipelineShaderStageCreateInfo"/> structure.
         /// </summary>
-        /// <param name="stage">Names a single pipeline stage.</param>
-        /// <param name="module">Module containing entry point.</param>
-        /// <param name="name">Unicode entry point name.</param>
+        /// <param name="stage">Specifies a single pipeline stage.</param>
+        /// <param name="module">A <see cref="ShaderModule"/> object that contains the shader for this stage.</param>
+        /// <param name="name">Unicode string specifying the entry point name of the shader for this stage.</param>
         /// <param name="specializationInfo">
         /// Is <c>null</c> or a structure specifying specialization info.
         /// </param>
@@ -639,13 +639,39 @@ namespace VulkanCore
     [Flags]
     public enum ShaderStages
     {
+        /// <summary>
+        /// Specifies the vertex stage.
+        /// </summary>
         Vertex = 1 << 0,
+        /// <summary>
+        /// Specifies the tessellation control stage.
+        /// </summary>
         TessellationControl = 1 << 1,
+        /// <summary>
+        /// Specifies the tessellation evaluation stage.
+        /// </summary>
         TessellationEvaluation = 1 << 2,
+        /// <summary>
+        /// Specifies the geometry stage.
+        /// </summary>
         Geometry = 1 << 3,
+        /// <summary>
+        /// Specifies the fragment stage.
+        /// </summary>
         Fragment = 1 << 4,
+        /// <summary>
+        /// Specifies the compute stage.
+        /// </summary>
         Compute = 1 << 5,
+        /// <summary>
+        /// Is a combination of bits used as shorthand to specify all graphics stages defined above
+        /// (excluding the compute stage).
+        /// </summary>
         AllGraphics = 0x0000001F,
+        /// <summary>
+        /// Is a combination of bits used as shorthand to specify all shader stages supported by the
+        /// device, including all additional stages which are introduced by extensions.
+        /// </summary>
         All = 0x7FFFFFFF
     }
 
@@ -855,7 +881,13 @@ namespace VulkanCore
     /// </summary>
     public enum VertexInputRate
     {
+        /// <summary>
+        /// Specifies that vertex attribute addressing is a function of the vertex index.
+        /// </summary>
         Vertex = 0,
+        /// <summary>
+        /// Specifies that vertex attribute addressing is a function of the instance index.
+        /// </summary>
         Instance = 1
     }
 
@@ -1035,6 +1067,10 @@ namespace VulkanCore
     public unsafe struct PipelineViewportStateCreateInfo
     {
         /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
         /// An array of <see cref="Viewport"/> structures, defining the viewport transforms. If the
         /// viewport state is dynamic, this member is ignored.
         /// </summary>
@@ -1056,8 +1092,12 @@ namespace VulkanCore
         /// An array of <see cref="Rect2D"/> structures which define the rectangular bounds of the
         /// scissor for the corresponding viewport. If the scissor state is dynamic, this member is ignored.
         /// </param>
-        public PipelineViewportStateCreateInfo(Viewport[] viewports, Rect2D[] scissors)
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public PipelineViewportStateCreateInfo(Viewport[] viewports, Rect2D[] scissors, IntPtr next = default(IntPtr))
         {
+            Next = next;
             Viewports = viewports;
             Scissors = scissors;
         }
@@ -1072,8 +1112,12 @@ namespace VulkanCore
         /// Defines the rectangular bounds of the scissor for the viewport. If the scissor state is
         /// dynamic, this member is ignored.
         /// </param>
-        public PipelineViewportStateCreateInfo(Viewport viewport, Rect2D scissor)
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public PipelineViewportStateCreateInfo(Viewport viewport, Rect2D scissor, IntPtr next = default(IntPtr))
         {
+            Next = next;
             Viewports = new[] { viewport };
             Scissors = new[] { scissor };
         }
@@ -1099,7 +1143,7 @@ namespace VulkanCore
         internal void ToNative(Native* native)
         {
             native->Type = StructureType.PipelineViewportStateCreateInfo;
-            native->Next = IntPtr.Zero;
+            native->Next = Next;
             native->Flags = 0;
             native->ViewportCount = Viewports?.Length ?? 0;
             native->Viewports = Interop.Struct.AllocToPointer(Viewports);
@@ -1206,7 +1250,7 @@ namespace VulkanCore
         /// </summary>
         public CullModes CullMode;
         /// <summary>
-        /// The front-facing triangle orientation to be used for culling. See <see cref="VulkanCore.FrontFace"/>.
+        /// Specifies the front-facing triangle orientation to be used for culling.
         /// </summary>
         public FrontFace FrontFace;
         /// <summary>
@@ -1249,9 +1293,21 @@ namespace VulkanCore
     [Flags]
     public enum CullModes
     {
+        /// <summary>
+        /// Specifies that no triangles are discarded.
+        /// </summary>
         None = 0,
+        /// <summary>
+        /// Specifies that front-facing triangles are discarded.
+        /// </summary>
         Front = 1 << 0,
+        /// <summary>
+        /// Specifies that back-facing triangles are discarded.
+        /// </summary>
         Back = 1 << 1,
+        /// <summary>
+        /// Specifies that all triangles are discarded.
+        /// </summary>
         FrontAndBack = 0x00000003
     }
 
@@ -1260,8 +1316,17 @@ namespace VulkanCore
     /// </summary>
     public enum PolygonMode
     {
+        /// <summary>
+        /// Specifies that polygons are rendered using the polygon rasterization rules in this section.
+        /// </summary>
         Fill = 0,
+        /// <summary>
+        /// Specifies that polygon edges are drawn as line segments.
+        /// </summary>
         Line = 1,
+        /// <summary>
+        /// Specifies that polygon vertices are drawn as points.
+        /// </summary>
         Point = 2
     }
 
@@ -1270,7 +1335,13 @@ namespace VulkanCore
     /// </summary>
     public enum FrontFace
     {
+        /// <summary>
+        /// Specifies that a triangle with positive area is considered front-facing.
+        /// </summary>
         CounterClockwise = 0,
+        /// <summary>
+		/// Specifies that a triangle with negative area is considered front-facing.
+		/// </summary>
         Clockwise = 1
     }
 
@@ -1396,7 +1467,7 @@ namespace VulkanCore
         /// </summary>
         public BlendOp AlphaBlendOp;
         /// <summary>
-        /// A bitmask selecting which of the R, G, B, and/or A components are enabled for writing.
+        /// A bitmask specifying which of the R, G, B, and/or A components are enabled for writing.
         /// </summary>
         public ColorComponents ColorWriteMask;
     }
@@ -1408,28 +1479,28 @@ namespace VulkanCore
     public enum ColorComponents
     {
         /// <summary>
-        /// If set, then the R value is written to color attachment for the appropriate sample,
-        /// otherwise the value in memory is unmodified.
+        /// Specifies that the R value is written to color attachment for the appropriate sample.
+        /// Otherwise, the value in memory is unmodified.
         /// </summary>
         R = 1 << 0,
         /// <summary>
-        /// If set, then the G value is written to color attachment for the appropriate sample,
-        /// otherwise the value in memory is unmodified.
+        /// Specifies that the G value is written to color attachment for the appropriate sample.
+        /// Otherwise, the value in memory is unmodified.
         /// </summary>
         G = 1 << 1,
         /// <summary>
-        /// If set, then the B value is written to color attachment for the appropriate sample,
-        /// otherwise the value in memory is unmodified.
+        /// Specifies that the B value is written to color attachment for the appropriate sample.
+        /// Otherwise, the value in memory is unmodified.
         /// </summary>
         B = 1 << 2,
         /// <summary>
-        /// If set, then the A value is written to color attachment for the appropriate sample,
-        /// otherwise the value in memory is unmodified.
+        /// Specifies that the A value is written to color attachment for the appropriate sample.
+        /// Otherwise, the value in memory is unmodified.
         /// </summary>
         A = 1 << 3,
         /// <summary>
-        /// If set, all the values are written to color attachment for the appropriate sample,
-        /// otherwise the value in memory is unmodified.
+        /// Specifies that all the values are written to color attachment for the appropriate sample.
+        /// Otherwise, the value in memory is unmodified.
         /// </summary>
         All = R | G | B | A
     }
@@ -1686,19 +1757,19 @@ namespace VulkanCore
     public struct StencilOpState
     {
         /// <summary>
-        /// The action performed on samples that fail the stencil test.
+        /// Specifies the action performed on samples that fail the stencil test.
         /// </summary>
         public StencilOp FailOp;
         /// <summary>
-        /// The action performed on samples that pass both the depth and stencil tests.
+        /// Specifies the action performed on samples that pass both the depth and stencil tests.
         /// </summary>
         public StencilOp PassOp;
         /// <summary>
-        /// The action performed on samples that pass the stencil test and fail the depth test.
+        /// Specifies the action performed on samples that pass the stencil test and fail the depth test.
         /// </summary>
         public StencilOp DepthFailOp;
         /// <summary>
-        /// The comparison operator used in the stencil test.
+        /// Specifies the comparison operator used in the stencil test.
         /// </summary>
         public CompareOp CompareOp;
         /// <summary>
@@ -1722,35 +1793,35 @@ namespace VulkanCore
     public enum CompareOp
     {
         /// <summary>
-        /// The test never passes.
+        /// Specifies that the test never passes.
         /// </summary>
         Never = 0,
         /// <summary>
-        /// The test passes when R &lt; S.
+        /// Specifies that the test passes when R &lt; S.
         /// </summary>
         Less = 1,
         /// <summary>
-        /// The test passes when R = S.
+        /// Specifies that the test passes when R = S.
         /// </summary>
         Equal = 2,
         /// <summary>
-        /// The test passes when R &lt;= S.
+        /// Specifies that the test passes when R &lt;= S.
         /// </summary>
         LessOrEqual = 3,
         /// <summary>
-        /// The test passes when R &gt; S.
+        /// Specifies that the test passes when R &gt; S.
         /// </summary>
         Greater = 4,
         /// <summary>
-        /// The test passes when R != S.
+        /// Specifies that the test passes when R != S.
         /// </summary>
         NotEqual = 5,
         /// <summary>
-        /// The test passes when R &gt;= S.
+        /// Specifies that the test passes when R &gt;= S.
         /// </summary>
         GreaterOrEqual = 6,
         /// <summary>
-        /// The test always passes.
+        /// Specifies that the test always passes.
         /// </summary>
         Always = 7
     }
@@ -1762,8 +1833,8 @@ namespace VulkanCore
     public unsafe struct PipelineDynamicStateCreateInfo
     {
         /// <summary>
-        /// Enums which indicate which pieces of pipeline state will use the values from dynamic
-        /// state commands rather than from the pipeline state creation info.
+        /// Values specifying which pieces of pipeline state will use the values from dynamic state
+        /// commands rather than from the pipeline state creation info.
         /// </summary>
         public DynamicState[] DynamicStates;
 
@@ -1771,8 +1842,8 @@ namespace VulkanCore
         /// Initializes a new instance of the <see cref="PipelineDynamicStateCreateInfo"/> structure.
         /// </summary>
         /// <param name="dynamicStates">
-        /// Enums which indicate which pieces of pipeline state will use the values from dynamic
-        /// state commands rather than from the pipeline state creation info.
+        /// Values specifying which pieces of pipeline state will use the values from dynamic state
+        /// commands rather than from the pipeline state creation info.
         /// </param>
         public PipelineDynamicStateCreateInfo(params DynamicState[] dynamicStates)
         {
@@ -1815,28 +1886,28 @@ namespace VulkanCore
     public enum DynamicState
     {
         /// <summary>
-        /// Indicates that the <see cref="PipelineViewportStateCreateInfo.Viewports"/> state will be
+        /// Specifies that the <see cref="PipelineViewportStateCreateInfo.Viewports"/> state will be
         /// ignored and must be set dynamically with <see cref="CommandBuffer.CmdSetViewport"/>
         /// before any draw commands. The number of viewports used by a pipeline is still specified
         /// by the length of <see cref="PipelineViewportStateCreateInfo.Viewports"/>.
         /// </summary>
         Viewport = 0,
         /// <summary>
-        /// Indicates that the <see cref="PipelineViewportStateCreateInfo.Scissors"/> state will be
+        /// Specifies that the <see cref="PipelineViewportStateCreateInfo.Scissors"/> state will be
         /// ignored and must be set dynamically with <see cref="CommandBuffer.CmdSetScissor"/> before
         /// any draw commands. The number of scissor rectangles used by a pipeline is still specified
         /// by the length of <see cref="PipelineViewportStateCreateInfo.Scissors"/>.
         /// </summary>
         Scissor = 1,
         /// <summary>
-        /// Indicates that the <see cref="PipelineRasterizationStateCreateInfo.LineWidth"/> state
+        /// Specifies that the <see cref="PipelineRasterizationStateCreateInfo.LineWidth"/> state
         /// will be ignored and must be set dynamically with <see
         /// cref="CommandBuffer.CmdSetLineWidth"/> before any draw commands that generate line
         /// primitives for the rasterizer.
         /// </summary>
         LineWidth = 2,
         /// <summary>
-        /// Indicates that the <see
+        /// Specifies that the <see
         /// cref="PipelineRasterizationStateCreateInfo.DepthBiasConstantFactor"/>, <see
         /// cref="PipelineRasterizationStateCreateInfo.DepthBiasClamp"/> and <see
         /// cref="PipelineRasterizationStateCreateInfo.DepthBiasSlopeFactor"/> states will be ignored
@@ -1846,7 +1917,7 @@ namespace VulkanCore
         /// </summary>
         DepthBias = 3,
         /// <summary>
-        /// Indicates that the <see cref="PipelineColorBlendStateCreateInfo.BlendConstants"/> state
+        /// Specifies that the <see cref="PipelineColorBlendStateCreateInfo.BlendConstants"/> state
         /// will be ignored and must be set dynamically with <see
         /// cref="CommandBuffer.CmdSetBlendConstants"/> before any draws are performed with a
         /// pipeline state with <see cref="PipelineColorBlendAttachmentState.BlendEnable"/> member
@@ -1854,7 +1925,7 @@ namespace VulkanCore
         /// </summary>
         BlendConstants = 4,
         /// <summary>
-        /// Indicates that the <see cref="PipelineDepthStencilStateCreateInfo.MinDepthBounds"/> and
+        /// Specifies that the <see cref="PipelineDepthStencilStateCreateInfo.MinDepthBounds"/> and
         /// <see cref="PipelineDepthStencilStateCreateInfo.MaxDepthBounds"/> states will be ignored
         /// and must be set dynamically with <see cref="CommandBuffer.CmdSetDepthBounds"/> before any
         /// draws are performed with a pipeline state with <see
@@ -1862,7 +1933,7 @@ namespace VulkanCore
         /// </summary>
         DepthBounds = 5,
         /// <summary>
-        /// Indicates that the compare mask state in both <see
+        /// Specifies that the compare mask state in both <see
         /// cref="PipelineDepthStencilStateCreateInfo.Front"/> and <see
         /// cref="PipelineDepthStencilStateCreateInfo.Back"/> will be ignored and must be set
         /// dynamically with <see cref="CommandBuffer.CmdSetStencilCompareMask"/> before any draws
@@ -1871,7 +1942,7 @@ namespace VulkanCore
         /// </summary>
         StencilCompareMask = 6,
         /// <summary>
-        /// Indicates that the write mask state in both <see
+        /// Specifies that the write mask state in both <see
         /// cref="PipelineDepthStencilStateCreateInfo.Front"/> and <see
         /// cref="PipelineDepthStencilStateCreateInfo.Back"/> will be ignored and must be set
         /// dynamically with <see cref="CommandBuffer.CmdSetStencilWriteMask"/> before any draws are
@@ -1880,7 +1951,7 @@ namespace VulkanCore
         /// </summary>
         StencilWriteMask = 7,
         /// <summary>
-        /// Indicates that the reference state in both <see
+        /// Specifies that the reference state in both <see
         /// cref="PipelineDepthStencilStateCreateInfo.Front"/> and <see
         /// cref="PipelineDepthStencilStateCreateInfo.Back"/> will be ignored and must be set
         /// dynamically with <see cref="CommandBuffer.CmdSetStencilReference"/> before any draws are
@@ -1888,6 +1959,14 @@ namespace VulkanCore
         /// cref="PipelineDepthStencilStateCreateInfo.StencilTestEnable"/> member set to <c>true</c>.
         /// </summary>
         StencilReference = 8,
+        /// <summary>
+        /// Specifies that the <see
+        /// cref="NV.PipelineViewportWScalingStateCreateInfoNV.ViewportWScalings"/> state will be
+        /// ignored and must be set dynamically with <see
+        /// cref="NV.CommandBufferExtensions.CmdSetViewportWScalingNV"/> before any draws are
+        /// performed with a pipeline state with <see
+        /// cref="NV.PipelineViewportWScalingStateCreateInfoNV.ViewportWScalingEnable"/> set to <c>true</c>.
+        /// </summary>
         ViewportWScalingNV = 1000087000,
         DiscardRectangleExt = 1000099000
     }

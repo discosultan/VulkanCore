@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 using static VulkanCore.Ext.DeviceExtensions;
@@ -340,22 +340,22 @@ namespace VulkanCore.Ext
     }
 
     /// <summary>
-    /// Possible power states for a <see cref="DisplayKhr"/>.
+    /// Possible power states for a display.
     /// </summary>
     public enum DisplayPowerStateExt
     {
         /// <summary>
-        /// The display is powered down.
+        /// Specifies that the display is powered down.
         /// </summary>
         Off = 0,
         /// <summary>
-        /// The display is in a low power mode, but may be able to transition back to <see
-        /// cref="On"/> more quickly than if it were in <see cref="Off"/>.
+        /// Specifies that the display is in a low power mode, but may be able to transition back to
+        /// <see cref="On"/> more quickly than if it were in <see cref="Off"/>.
         /// <para>This state may be the same as <see cref="Off"/>.</para>
         /// </summary>
         Suspend = 1,
         /// <summary>
-        /// Is powered on.
+        /// Specifies that the display is powered on.
         /// </summary>
         On = 2
     }
@@ -428,9 +428,9 @@ namespace VulkanCore.Ext
     public enum DeviceEventTypeExt
     {
         /// <summary>
-        /// Occurs when a display is plugged into or unplugged from the specified device.
-        /// Applications can use this notification to determine when they need to re-enumerate the
-        /// available displays on a device.
+        /// Specifies that the fence is signaled when a display is plugged into or unplugged from the
+        /// specified device. Applications can use this notification to determine when they need to
+        /// re-enumerate the available displays on a device.
         /// </summary>
         DisplayHotplug = 0
     }
@@ -441,8 +441,8 @@ namespace VulkanCore.Ext
     public enum DisplayEventTypeExt
     {
         /// <summary>
-        /// Occurs when the first pixel of the next display refresh cycle leaves the display engine
-        /// for the display.
+        /// Specifies that the fence is signaled when the first pixel of the next display refresh
+        /// cycle leaves the display engine for the display.
         /// </summary>
         FirstPixelOut = 0
     }
