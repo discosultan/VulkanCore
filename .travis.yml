@@ -1,0 +1,21 @@
+language: csharp
+
+os:
+  - osx
+  - linux
+
+# .NET CLI requires Ubuntu 14.04.
+sudo: required
+dist: trusty
+
+# .NET CLI requires OSX 10.10.
+osx_image: xcode7.1
+
+mono: none
+dotnet: 1.0.4
+
+script:
+  - dotnet restore Src/VulkanCore.csproj
+  - dotnet build Src/VulkanCore.csproj
+  - dotnet restore Tests/VulkanCore.Tests.csproj
+  - dotnet build Tests/VulkanCore.Tests.csproj
