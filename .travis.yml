@@ -15,6 +15,7 @@ mono: none
 dotnet: 1.0.4
 
 script:
+  - ulimit -n 4096
   - dotnet restore Src/VulkanCore.csproj
   - dotnet build Src/VulkanCore.csproj
   - dotnet restore Tests/VulkanCore.Tests.csproj
