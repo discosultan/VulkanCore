@@ -120,12 +120,8 @@ namespace VulkanCore
         public long Size;
         /// <summary>
         /// A bitmask specifying allowed usages of the buffer.
-        /// <para>
-        /// Any combination of bits can be specified for usage, but at least one of the bits must be
-        /// set in order to create a valid buffer.
-        /// </para>
         /// </summary>
-        public BufferUsages Usages;
+        public BufferUsages Usage;
         /// <summary>
         /// The sharing mode of the buffer when it will be accessed by multiple queue families.
         /// </summary>
@@ -162,7 +158,7 @@ namespace VulkanCore
         {
             Next = next;
             Size = size;
-            Usages = usages;
+            Usage = usages;
             Flags = flags;
             SharingMode = sharingMode;
             QueueFamilyIndices = queueFamilyIndices;
@@ -175,7 +171,7 @@ namespace VulkanCore
             public IntPtr Next;
             public BufferCreateFlags Flags;
             public long Size;
-            public BufferUsages Usages;
+            public BufferUsages Usage;
             public SharingMode SharingMode;
             public int QueueFamilyIndexCount;
             public int* QueueFamilyIndices;
@@ -187,7 +183,7 @@ namespace VulkanCore
             native.Next = Next;
             native.Flags = Flags;
             native.Size = Size;
-            native.Usages = Usages;
+            native.Usage = Usage;
             native.SharingMode = SharingMode;
             native.QueueFamilyIndexCount = QueueFamilyIndices?.Length ?? 0;
             native.QueueFamilyIndices = queueFamilyIndices;

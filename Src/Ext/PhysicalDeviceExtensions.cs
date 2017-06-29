@@ -175,4 +175,39 @@ namespace VulkanCore.Ext
         /// </summary>
         public int MaxDiscardRectangles;
     }
+
+    /// <summary>
+    /// Structure describing advanced blending features that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceBlendOperationAdvancedFeaturesExt
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        public Bool AdvancedBlendCoherentOperations;
+    }
+
+    /// <summary>
+    /// Structure describing advanced blending limits that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceBlendOperationAdvancedPropertiesExt
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        public int AdvancedBlendMaxColorAttachments;
+        public Bool AdvancedBlendIndependentBlend;
+        public Bool AdvancedBlendNonPremultipliedSrcColor;
+        public Bool AdvancedBlendNonPremultipliedDstColor;
+        public Bool AdvancedBlendCorrelatedOverlap;
+        public Bool AdvancedBlendAllOperations;
+    }
 }

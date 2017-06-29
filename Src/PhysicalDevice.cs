@@ -490,7 +490,7 @@ namespace VulkanCore
         /// <summary>
         /// The maximum number of addressable texels for a buffer view created on a buffer which was
         /// created with the <see cref="BufferUsages.UniformTexelBuffer"/> or <see
-        /// cref="BufferUsages.StorageTexelBuffer"/> set in the <see cref="BufferCreateInfo.Usages"/> member.
+        /// cref="BufferUsages.StorageTexelBuffer"/> set in the <see cref="BufferCreateInfo.Usage"/> member.
         /// </summary>
         public int MaxTexelBufferElements;
         /// <summary>
@@ -936,7 +936,7 @@ namespace VulkanCore
         /// cref="BufferViewCreateInfo.Offset"/> member for texel buffers. When a buffer view is
         /// created for a buffer which was created with <see cref="BufferUsages.UniformTexelBuffer"/>
         /// or <see cref="BufferUsages.StorageTexelBuffer"/> set in the <see
-        /// cref="BufferCreateInfo.Usages"/> member, the offset must be an integer multiple of this limit.
+        /// cref="BufferCreateInfo.Usage"/> member, the offset must be an integer multiple of this limit.
         /// </summary>
         public long MinTexelBufferOffsetAlignment;
         /// <summary>
@@ -1614,6 +1614,11 @@ namespace VulkanCore
         /// Specifies that an image can be used as a destination image for copy commands and clear commands.
         /// </summary>
         TransferDstKhr = 1 << 15,
+        /// <summary>
+        /// <see cref="Image"/> can be used as a sampled image with a min or max <see cref="SamplerReductionModeExt"/>.
+        /// <para>This bit must only be exposed for formats that also support the <see cref="SampledImage"/>.</para>
+        /// </summary>
+        SampledImageFilterMinmaxExt = 1 << 16
     }
 
     /// <summary>

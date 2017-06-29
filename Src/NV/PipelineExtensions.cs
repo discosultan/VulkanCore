@@ -104,4 +104,65 @@ namespace VulkanCore.NV
         PositiveW = 6,
         NegativeW = 7
     }
+
+    /// <summary>
+    /// Specify the discard rectangle mode.
+    /// </summary>
+    public enum CoverageModulationModeNV
+    {
+        /// <summary>
+        /// Specifies that no components are multiplied by the modulation factor.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Specifies that the red, green, and blue components are multiplied by the
+        /// modulation factor.
+        /// </summary>
+        Rgb = 1,
+        /// <summary>
+        /// Specifies that the alpha component is multiplied by the modulation factor.
+        /// </summary>
+        Alpha = 2,
+        /// <summary>
+        /// Specifies that all components are multiplied by the modulation factor.
+        /// </summary>
+        Rgba = 3
+    }
+
+    /// <summary>
+    /// Structure specifying whether fragment coverage replaces a color.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineCoverageToColorStateCreateInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is reserved for future use.
+        /// </summary>
+        public PipelineCoverageToColorStateCreateFlagsNV Flags;
+        /// <summary>
+        /// Controls whether the fragment coverage value replaces a fragment color output.
+        /// </summary>
+        public Bool CoverageToColorEnable;
+        /// <summary>
+        /// Controls which fragment shader color output value is replaced.
+        /// </summary>
+        public int CoverageToColorLocation;
+    }
+
+    [Flags]
+    public enum PipelineCoverageToColorStateCreateFlagsNV
+    {
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0
+    }
 }

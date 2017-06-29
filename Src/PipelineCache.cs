@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -154,5 +154,16 @@ namespace VulkanCore
     internal enum PipelineCacheCreateFlags
     {
         None = 0
+    }
+
+    /// <summary>
+    /// Encode pipeline cache version.
+    /// </summary>
+    public enum PipelineCacheHeaderVersion
+    {
+        /// <summary>
+        /// Specifies version one of the pipeline cache.
+        /// </summary>
+        One = 1
     }
 }

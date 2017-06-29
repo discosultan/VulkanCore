@@ -1,4 +1,4 @@
-namespace VulkanCore
+﻿namespace VulkanCore
 {
     /// <summary>
     /// Structure type enumerant.
@@ -155,6 +155,13 @@ namespace VulkanCore
         SurfaceCapabilities2Khr = 1000119001,
         SurfaceFormat2Khr = 1000119002,
         IOSSurfaceCreateInfoMvk = 1000122000,
-        MacOSSurfaceCreateInfoMvk = 1000123000
+        MacOSSurfaceCreateInfoMvk = 1000123000,
+        PhysicalDeviceSamplerFilterMinmaxPropertiesExt = 1000130000,
+        SamplerReductionModeCreateInfoExt = 1000130001,
+        PhysicalDeviceBlendOperationAdvancedFeaturesExt = 1000148000,
+        PhysicalDeviceBlendOperationAdvancedPropertiesExt = 1000148001,
+        PipelineColorBlendAdvancedStateCreateInfoExt = 1000148002,
+        PipelineCoverageToColorStateCreateInfoNV = 1000149000,
+        PipelineCoverageModulationStateCreateInfoNV = 1000152000
     }
 }

@@ -183,6 +183,9 @@ namespace VulkanCore.Nvx
         Compute = 1 << 1
     }
 
+    /// <summary>
+    /// Common parameters of an object table resource entry.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTableEntryNvx
     {
@@ -224,6 +227,9 @@ namespace VulkanCore.Nvx
         PushConstant = 4
     }
 
+    /// <summary>
+    /// Parameters of an object table pipeline entry.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTablePipelineEntryNvx
     {
@@ -242,6 +248,9 @@ namespace VulkanCore.Nvx
         public long Pipeline;
     }
 
+    /// <summary>
+    /// Parameters of an object table descriptor set entry.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTableDescriptorSetEntryNvx
     {
@@ -265,6 +274,9 @@ namespace VulkanCore.Nvx
         public long DescriptorSet;
     }
 
+    /// <summary>
+    /// Parameters of an object table vertex buffer entry.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTableVertexBufferEntryNvx
     {
@@ -283,6 +295,9 @@ namespace VulkanCore.Nvx
         public long Buffer;
     }
 
+    /// <summary>
+    /// Parameters of an object table index buffer entry.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTableIndexBufferEntryNvx
     {
@@ -305,6 +320,9 @@ namespace VulkanCore.Nvx
         public IndexType IndexType;
     }
 
+    /// <summary>
+    /// Parameters of an object table push constant entry.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ObjectTablePushConstantEntryNvx
     {

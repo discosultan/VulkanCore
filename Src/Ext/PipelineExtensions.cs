@@ -89,4 +89,122 @@ namespace VulkanCore.Ext
         /// </summary>
         Exclusive = 1
     }
+
+    /// <summary>
+    /// Enumerant specifying the blend overlap parameter.
+    /// </summary>
+    public enum BlendOverlapExt
+    {
+        /// <summary>
+        /// Specifies that there is no correlation between the source and destination
+        /// coverage.
+        /// </summary>
+        Uncorrelated = 0,
+        /// <summary>
+        /// Specifies that the source and destination coverage are considered to have
+        /// minimal overlap.
+        /// </summary>
+        Disjoint = 1,
+        /// <summary>
+        /// Specifies that the source and destination coverage are considered to have
+        /// maximal overlap.
+        /// </summary>
+        Conjoint = 2
+    }
+
+    /// <summary>
+    /// Structure specifying parameters that affect advanced blend operations.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineColorBlendAdvancedStateCreateInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies whether the source color of the blend operation is treated as premultiplied.
+        /// </summary>
+        public Bool SrcPremultiplied;
+        /// <summary>
+        /// Specifies whether the destination color of the blend operation is treated as premultiplied.
+        /// </summary>
+        public Bool DstPremultiplied;
+        /// <summary>
+        /// Specifies how the source and destination sample's coverage is correlated.
+        /// </summary>
+        public BlendOverlapExt BlendOverlap;
+    }
+
+    /// <summary>
+    /// Structure specifying parameters controlling coverage modulation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineCoverageModulationStateCreateInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is reserved for future use.
+        /// </summary>
+        public PipelineCoverageModulationStateCreateFlagsNV Flags;
+        /// <summary>
+        /// Controls which color components are modulated and is of type <see cref="CoverageModulationModeNV"/>.
+        /// </summary>
+        public CoverageModulationModeNV CoverageModulationMode;
+        /// <summary>
+        /// Controls whether the modulation factor is looked up from a table in <see cref="CoverageModulationTable"/>.
+        /// </summary>
+        public Bool CoverageModulationTableEnable;
+        /// <summary>
+        /// The number of elements in <see cref="CoverageModulationTable"/>.
+        /// </summary>
+        public int CoverageModulationTableCount;
+        /// <summary>
+        /// A pointer to a table of modulation factors containing a value for each number of covered samples.
+        /// </summary>
+        public IntPtr CoverageModulationTable;
+    }
+
+    [Flags]
+    public enum PipelineCoverageModulationStateCreateFlagsNV
+    {
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0
+    }
+
+    /// <summary>
+    /// Specify the discard rectangle mode.
+    /// </summary>
+    public enum CoverageModulationModeNV
+    {
+        /// <summary>
+        /// Specifies that no components are multiplied by the modulation factor.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Specifies that the red, green, and blue components are multiplied by the modulation factor.
+        /// </summary>
+        Rgb = 1,
+        /// <summary>
+        /// Specifies that the alpha component is multiplied by the modulation factor.
+        /// </summary>
+        Alpha = 2,
+        /// <summary>
+        /// Specifies that all components are multiplied by the modulation factor.
+        /// </summary>
+        Rgba = 3
+    }
 }

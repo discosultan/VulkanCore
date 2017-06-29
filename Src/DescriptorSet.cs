@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -354,29 +354,11 @@ namespace VulkanCore
         /// <summary>
         /// The offset in bytes from the start of buffer. Access to buffer memory via this descriptor
         /// uses addressing that is relative to this starting offset.
-        /// <para>
-        /// Must be less than the size of buffer. If range is not equal to <see cref="WholeSize"/>,
-        /// range must be greater than 0. If range is not equal to <see cref="WholeSize"/>, range
-        /// must be less than or equal to the size of buffer minus offset.
-        /// </para>
         /// </summary>
         public long Offset;
         /// <summary>
         /// The size in bytes that is used for this descriptor update, or <see cref="WholeSize"/> to
-        /// use the range from offset to the end of the buffer.
-        /// <para>
-        /// When using <see cref="WholeSize"/>, the effective range must not be larger than the
-        /// maximum range for the descriptor type <see
-        /// cref="PhysicalDeviceLimits.MaxUniformBufferRange"/> or <see
-        /// cref="PhysicalDeviceLimits.MaxStorageBufferRange"/>. This means that <see
-        /// cref="WholeSize"/> is not typically useful in the common case where uniform buffer
-        /// descriptors are suballocated from a buffer that is much larger than <see
-        /// cref="PhysicalDeviceLimits.MaxUniformBufferRange"/>. For <see
-        /// cref="DescriptorType.UniformBufferDynamic"/> and <see
-        /// cref="DescriptorType.StorageBufferDynamic"/> descriptor types, offset is the base offset
-        /// from which the dynamic offset is applied and range is the static size used for all
-        /// dynamic offsets.
-        /// </para>
+        /// use the range from <see cref="Offset"/> to the end of the buffer.
         /// </summary>
         public long Range;
 
@@ -390,7 +372,7 @@ namespace VulkanCore
         /// </param>
         /// <param name="range">
         /// The size in bytes that is used for this descriptor update, or <see cref="WholeSize"/> to
-        /// use the range from offset to the end of the buffer.
+        /// use the range from <see cref="Offset"/> to the end of the buffer.
         /// </param>
         public DescriptorBufferInfo(Buffer buffer, long offset = 0, long range = WholeSize)
         {

@@ -106,7 +106,7 @@ namespace VulkanCore.Khx
         /// </summary>
         public BufferCreateFlags Flags;
         /// <summary>
-        /// A bitmask describing the intended usage of the buffer, corresponding to <see cref="BufferCreateInfo.Usages"/>.
+        /// A bitmask describing the intended usage of the buffer, corresponding to <see cref="BufferCreateInfo.Usage"/>.
         /// </summary>
         public BufferUsages Usage;
         /// <summary>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.NV
@@ -207,13 +207,77 @@ namespace VulkanCore.NV
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Is <c>0</c> or a <see cref="ExternalMemoryHandleTypesNV"/> value specifying the
-        /// type of memory handle in handle.
+        /// Is <c>0</c> or a <see cref="ExternalMemoryHandleTypesNV"/> value specifying the type of
+        /// memory handle in handle.
         /// </summary>
         public ExternalMemoryHandleTypesNV HandleType;
         /// <summary>
-        /// Is a Windows <c>HANDLE</c> referring to the memory.
+        /// A Windows <c>HANDLE</c> referring to the memory.
         /// </summary>
         public IntPtr Handle;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImportMemoryWin32HandleInfoNV"/> structure.
+        /// </summary>
+        /// <param name="handle">A Windows <c>HANDLE</c> referring to the memory.</param>
+        /// <param name="handleType">
+        /// Is <c>0</c> or a <see cref="ExternalMemoryHandleTypesNV"/> value specifying the type of
+        /// memory handle in handle.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public ImportMemoryWin32HandleInfoNV(IntPtr handle, ExternalMemoryHandleTypesNV handleType = 0,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.ImportMemoryWin32HandleInfoNV;
+            Next = next;
+            HandleType = handleType;
+            Handle = handle;
+        }
+    }
+
+    /// <summary>
+    /// Specify memory handle types that may be exported.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExportMemoryAllocateInfoNV
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies one or more memory handle types that may be exported.
+        /// <para>
+        /// Multiple handle types may be requested for the same allocation as long as they are
+        /// compatible, as reported by <see cref="PhysicalDeviceExtensions.GetExternalImageFormatPropertiesNV"/>.
+        /// </para>
+        /// </summary>
+        public ExternalMemoryHandleTypesNV HandleTypes;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExportMemoryAllocateInfoNV"/> structure.
+        /// </summary>
+        /// <param name="handleTypes">
+        /// Specifies one or more memory handle types that may be exported.
+        /// <para>
+        /// Multiple handle types may be requested for the same allocation as long as they are
+        /// compatible, as reported by <see cref="PhysicalDeviceExtensions.GetExternalImageFormatPropertiesNV"/>.
+        /// </para>
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public ExportMemoryAllocateInfoNV(ExternalMemoryHandleTypesNV handleTypes, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.ExportMemoryAllocateInfoNV;
+            Next = next;
+            HandleTypes = handleTypes;
+        }
     }
 }

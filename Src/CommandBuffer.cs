@@ -2450,6 +2450,10 @@ namespace VulkanCore
         /// Specifies writes to the target command buffer in <see cref="Nvx.CommandBufferExtensions.CmdProcessCommandsNvx"/>.
         /// </summary>
         CommandProcessWriteNvx = 1 << 18,
+        /// <summary>
+        /// Is similar to <see cref="ColorAttachmentRead"/>, but also includes advanced blend operations.
+        /// </summary>
+        ColorAttachmentReadNoncoherentExt = 1 << 19
     }
 
     /// <summary>
