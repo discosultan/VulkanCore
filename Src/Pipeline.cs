@@ -1341,16 +1341,16 @@ namespace VulkanCore
         /// produce a fragment that covers that sample during rasterization.
         /// </para>
         /// <para>
-        /// Polygons rendered in <see cref="FillRectangleNv"/> mode may be clipped by the frustum or
+        /// Polygons rendered in <see cref="FillRectangleNV"/> mode may be clipped by the frustum or
         /// by user clip planes.
         /// </para>
         /// <para>If clipping is applied, the triangle is culled rather than clipped.</para>
         /// <para>
-        /// Area calculation and facingness are determined for <see cref="FillRectangleNv"/> mode
+        /// Area calculation and facingness are determined for <see cref="FillRectangleNV"/> mode
         /// using the triangle's vertices.
         /// </para>
         /// </summary>
-        FillRectangleNv = 1000153000
+        FillRectangleNV = 1000153000
     }
 
     /// <summary>

@@ -198,7 +198,7 @@ namespace VulkanCore
         /// </summary>
         public int[] QueueFamilyIndices;
         /// <summary>
-        /// Specifies the initial <see cref="ImageLayout"/> state of all image subresources of the image.
+        /// Specifies the initial <see cref="ImageLayout"/> of all image subresources of the image.
         /// </summary>
         public ImageLayout InitialLayout;
 

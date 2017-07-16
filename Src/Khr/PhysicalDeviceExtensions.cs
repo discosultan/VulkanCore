@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Ext;
+using static VulkanCore.Constant;
 
 namespace VulkanCore.Khr
 {
@@ -440,7 +441,41 @@ namespace VulkanCore.Khr
             return formats;
         }
 
-        // static begins
+        /// <summary>
+        /// Query the external handle types supported by buffers.
+        /// </summary>
+        /// <param name="physicalDevice">The physical device from which to query the buffer capabilities.</param>
+        /// <param name="externalBufferInfo">
+        /// Structure, describing the parameters that would be consumed by <see cref="Device.CreateBuffer"/>.
+        /// </param>
+        /// <returns>A structure in which capabilities are returned.</returns>
+        public static ExternalBufferPropertiesKhr GetExternalBufferPropertiesKhr(this PhysicalDevice physicalDevice,
+            PhysicalDeviceExternalBufferInfoKhr externalBufferInfo)
+        {
+            ExternalBufferPropertiesKhr properties;
+            vkGetPhysicalDeviceExternalBufferPropertiesKHR(physicalDevice)(physicalDevice, &externalBufferInfo, &properties);
+            return properties;
+        }
+
+        /// <summary>
+        /// Function for querying external semaphore handle capabilities.
+        /// <para>Semaphores may support import and export of external semaphore handles.</para>
+        /// </summary>
+        /// <param name="physicalDevice">
+        /// The physical device from which to query the semaphore capabilities.
+        /// </param>
+        /// <param name="externalSemaphoreInfo">
+        /// Describes the parameters that would be consumed by <see cref="Device.CreateSemaphore"/>.
+        /// </param>
+        /// <returns>Structure in which capabilities are returned.</returns>
+        public static ExternalSemaphorePropertiesKhr GetExternalSemaphorePropertiesKhx(this PhysicalDevice physicalDevice,
+            PhysicalDeviceExternalSemaphoreInfoKhr externalSemaphoreInfo)
+        {
+            ExternalSemaphorePropertiesKhr properties;
+            vkGetPhysicalDeviceExternalSemaphorePropertiesKHR(physicalDevice)(physicalDevice, &externalSemaphoreInfo, &properties);
+            return properties;
+        }
+
         private delegate Result vkGetPhysicalDeviceSurfaceSupportKHRDelegate(IntPtr physicalDevice, int queueFamilyIndex, long surface, Bool* supported);
         private static readonly vkGetPhysicalDeviceSurfaceSupportKHRDelegate vkGetPhysicalDeviceSurfaceSupportKHR = VulkanLibrary.GetStaticProc<vkGetPhysicalDeviceSurfaceSupportKHRDelegate>(nameof(vkGetPhysicalDeviceSurfaceSupportKHR));
 
@@ -479,7 +514,6 @@ namespace VulkanCore.Khr
 
         private delegate Result vkGetDisplayPlaneCapabilitiesKHRDelegate(IntPtr physicalDevice, long mode, int planeIndex, DisplayPlaneCapabilitiesKhr* capabilities);
         private static readonly vkGetDisplayPlaneCapabilitiesKHRDelegate vkGetDisplayPlaneCapabilitiesKHR = VulkanLibrary.GetStaticProc<vkGetDisplayPlaneCapabilitiesKHRDelegate>(nameof(vkGetDisplayPlaneCapabilitiesKHR));
-        // static ends
 
         private delegate void vkGetPhysicalDeviceFeatures2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceFeatures2Khr* features);
         private static vkGetPhysicalDeviceFeatures2KHRDelegate vkGetPhysicalDeviceFeatures2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceFeatures2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceFeatures2KHR));
@@ -507,6 +541,12 @@ namespace VulkanCore.Khr
         
         private delegate Result vkGetPhysicalDeviceSurfaceFormats2KHRDelegate(IntPtr physicalDevice, PhysicalDeviceSurfaceInfo2Khr* surfaceInfo, int* surfaceFormatCount, SurfaceFormat2Khr* surfaceFormats);
         private static vkGetPhysicalDeviceSurfaceFormats2KHRDelegate vkGetPhysicalDeviceSurfaceFormats2KHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceSurfaceFormats2KHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceSurfaceFormats2KHR));
+
+        private delegate void vkGetPhysicalDeviceExternalBufferPropertiesKHRDelegate(IntPtr physicalDevice, PhysicalDeviceExternalBufferInfoKhr* externalBufferInfo, ExternalBufferPropertiesKhr* externalBufferProperties);
+        private static vkGetPhysicalDeviceExternalBufferPropertiesKHRDelegate vkGetPhysicalDeviceExternalBufferPropertiesKHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceExternalBufferPropertiesKHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceExternalBufferPropertiesKHR));
+
+        private delegate void vkGetPhysicalDeviceExternalSemaphorePropertiesKHRDelegate(IntPtr physicalDevice, PhysicalDeviceExternalSemaphoreInfoKhr* externalSemaphoreInfo, ExternalSemaphorePropertiesKhr* externalSemaphoreProperties);
+        private static vkGetPhysicalDeviceExternalSemaphorePropertiesKHRDelegate vkGetPhysicalDeviceExternalSemaphorePropertiesKHR(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceExternalSemaphorePropertiesKHRDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceExternalSemaphorePropertiesKHR));
 
         private static TDelegate GetProc<TDelegate>(PhysicalDevice physicalDevice, string name) where TDelegate : class => physicalDevice.Parent.GetProc<TDelegate>(name);
     }
@@ -1286,5 +1326,968 @@ namespace VulkanCore.Khr
         {
             Type = StructureType.SharedPresentSurfaceCapabilitiesKhr;
         }
+    }
+
+    /// <summary>
+    /// Structure specifying external image creation parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceExternalImageFormatInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bit indicating a memory handle type that will be used with the memory associated with
+        /// the image.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleType;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhysicalDeviceExternalImageFormatInfoKhr"/> structure.
+        /// </summary>
+        /// <param name="handleType">
+        /// A bit indicating a memory handle type that will be used with the memory associated with
+        /// the image.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public PhysicalDeviceExternalImageFormatInfoKhr(ExternalMemoryHandleTypesKhr handleType,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.PhysicalDeviceExternalImageFormatInfoKhr;
+            Next = next;
+            HandleType = handleType;
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying external memory handle type capabilities.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalMemoryPropertiesKhr
+    {
+        /// <summary>
+        /// A bitmask describing the features of handle type.
+        /// </summary>
+        public ExternalMemoryFeaturesKhr ExternalMemoryFeatures;
+        /// <summary>
+        /// A bitmask specifying handle types that can be used to import objects from which handle
+        /// type can be exported.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr ExportFromImportedHandleTypes;
+        /// <summary>
+        /// A bitmask specifying handle types which can be specified at the same time as handle type
+        /// when creating an image compatible with external memory.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr CompatibleHandleTypes;
+    }
+
+    /// <summary>
+    /// Structure specifying supported external handle capabilities.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalBufferPropertiesKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies various capabilities of the external handle type when used with the specified
+        /// buffer creation parameters.
+        /// </summary>
+        public ExternalMemoryPropertiesKhr ExternalMemoryProperties;
+    }
+
+    /// <summary>
+    /// Structure specifying buffer creation parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceExternalBufferInfoKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bitmask describing additional parameters of the buffer, corresponding to <see cref="BufferCreateInfo.Flags"/>.
+        /// </summary>
+        public BufferCreateFlags Flags;
+        /// <summary>
+        /// A bitmask describing the intended usage of the buffer, corresponding to <see cref="BufferCreateInfo.Usage"/>.
+        /// </summary>
+        public BufferUsages Usage;
+        /// <summary>
+        /// A bit indicating a memory handle type that will be used with the memory associated with
+        /// the buffer.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure specifying supported external handle properties.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalImageFormatPropertiesKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies various capabilities of the external handle type when used with the specified
+        /// image creation parameters.
+        /// </summary>
+        public ExternalMemoryPropertiesKhr ExternalMemoryProperties;
+    }
+
+    /// <summary>
+    /// Bitmask specifying external memory handle types.
+    /// </summary>
+    [Flags]
+    public enum ExternalMemoryHandleTypesKhr
+    {
+        /// <summary>
+        /// Specifies a POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
+        /// other compatible APIs.
+        /// <para>
+        /// It must be compatible with the POSIX system calls <c>dup</c>, <c>dup2</c>, <c>close</c>, and the
+        /// non-standard system call <c>dup3</c>. Additionally, it must be transportable over a socket
+        /// using an <c>SCM_RIGHTS</c> control message.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
+        /// </para>
+        /// </summary>
+        OpaqueFd = 1 << 0,
+        /// <summary>
+        /// Specifies an NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
+        /// <para>
+        /// It must: be compatible with the functions <c>DuplicateHandle</c>, <c>CloseHandle</c>,
+        /// <c>CompareObjectHandles</c>, <c>GetHandleInformation</c>, and <c>SetHandleInformation</c>.
+        /// </para>
+        /// <para>
+        /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
+        /// </para>
+        /// </summary>
+        OpaqueWin32 = 1 << 1,
+        /// <summary>
+        /// Specifies a global share handle that has only limited valid usage outside of Vulkan and other
+        /// compatible APIs.
+        /// <para>It is not compatible with any native APIs.</para>
+        /// <para>
+        /// It does not own own a reference to the underlying memory resource represented its Vulkan
+        /// memory object, and will therefore become invalid when all Vulkan memory objects
+        /// associated with it are destroyed.
+        /// </para>
+        /// </summary>
+        OpaqueWin32Kmt = 1 << 2,
+        /// <summary>
+        /// Specifies an NT handle returned by <c>IDXGIResource1::CreateSharedHandle</c> referring to a Direct3D 10
+        /// or 11 texture resource.
+        /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
+        /// </summary>
+        D3D11Texture = 1 << 3,
+        /// <summary>
+        /// Specifies a global share handle returned by <c>IDXGIResource::GetSharedHandle</c> referring to a
+        /// Direct3D 10 or 11 texture resource.
+        /// <para>
+        /// It does not own own a reference to the underlying Direct3D resource, and will therefore
+        /// become invalid when all Vulkan memory objects and Direct3D resources associated with it
+        /// are destroyed.
+        /// </para>
+        /// </summary>
+        D3D11TextureKmt = 1 << 4,
+        /// <summary>
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a Direct3D 12
+        /// heap resource.
+        /// <para>It owns a reference to the resources used by the Direct3D heap.</para>
+        /// </summary>
+        D3D12Heap = 1 << 5,
+        /// <summary>
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a Direct3D 12
+        /// committed resource.
+        /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
+        /// </summary>
+        D3D12Resource = 1 << 6
+    }
+
+    /// <summary>
+    /// Bitmask specifying features of an external memory handle type.
+    /// </summary>
+    [Flags]
+    public enum ExternalMemoryFeaturesKhr
+    {
+        /// <summary>
+        /// Specifies that images or buffers created with the specified parameters and handle type
+        /// must use the mechanisms defined in the "VK_NV_dedicated_allocation" extension to to
+        /// create (or import) a dedicated allocation for the image or buffer.
+        /// </summary>
+        DedicatedOnly = 1 << 0,
+        /// <summary>
+        /// Specifies that handles of this type can be exported from Vulkan memory objects.
+        /// </summary>
+        Exportable = 1 << 1,
+        /// <summary>
+        /// Specifies that handles of this type can be imported as Vulkan memory objects.
+        /// </summary>
+        Importable = 1 << 2
+    }
+
+    /// <summary>
+    /// Structure specifying semaphore creation parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceExternalSemaphoreInfoKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bit indicating an external semaphore handle type for which capabilities will be returned.
+        /// </summary>
+        public ExternalSemaphoreHandleTypesKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure describing supported external semaphore handle features.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalSemaphorePropertiesKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bitmask specifying handle types that can be used to import objects from which
+        /// handleType can be exported.
+        /// </summary>
+        public ExternalSemaphoreHandleTypesKhr ExportFromImportedHandleTypes;
+        /// <summary>
+        /// A bitmask specifying handle types which can be specified at the same time as handleType
+        /// when creating a semaphore.
+        /// </summary>
+        public ExternalSemaphoreHandleTypesKhr CompatibleHandleTypes;
+        /// <summary>
+        /// A bitmask describing the features of handle type.
+        /// </summary>
+        public ExternalSemaphoreFeaturesKhr ExternalSemaphoreFeatures;
+    }
+
+    /// <summary>
+    /// Bitfield describing features of an external semaphore handle type.
+    /// </summary>
+    [Flags]
+    public enum ExternalSemaphoreFeaturesKhr
+    {
+        /// <summary>
+        /// Specifies that handles of this type can be exported from Vulkan semaphore objects.
+        /// </summary>
+        Exportable = 1 << 0,
+        /// <summary>
+        /// Specifies that handles of this type can be imported as Vulkan semaphore objects.
+        /// </summary>
+        Importable = 1 << 1
+    }
+
+    /// <summary>
+    /// Structure describing variable pointers features that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceVariablePointerFeaturesKhr
+    {
+        public StructureType Type;
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        public Bool VariablePointersStorageBuffer;
+        public Bool VariablePointers;
+    }
+
+    /// <summary>
+    /// Bitmask specifying additional parameters of semaphore payload import.
+    /// </summary>
+    [Flags]
+    public enum SemaphoreImportFlagsKhr
+    {
+        /// <summary>
+        /// Indicates that the semaphore payload will be imported only temporarily, regardless of the
+        /// permanence of handleType.
+        /// </summary>
+        Temporary = 1 << 0
+    }
+    
+    /// <summary>
+    /// Bitmask of valid external fence handle types.
+    /// </summary>
+    [Flags]
+    public enum ExternalFenceHandleTypeFlagsKhr
+    {
+        /// <summary>
+        /// Indicates a POSIX file descriptor handle that has only limited valid usage outside of
+        /// Vulkan and other compatible APIs. It must be compatible with the POSIX system calls
+        /// <c>dup</c>, <c>dup2</c>, <c>close</c>, and the non-standard system call <c>dup3</c>.
+        /// Additionally, it must be transportable over a socket using an <c>SCMRIGHTS</c> control
+        /// message. It owns a reference to the underlying synchronization primitive represented by
+        /// its Vulkan fence object.
+        /// </summary>
+        OpaqueFd = 1 << 0,
+        /// <summary>
+        /// Indicates an NT handle that has only limited valid usage outside of Vulkan and other
+        /// compatible APIs. It must be compatible with the functions <c>DuplicateHandle</c>,
+        /// <c>CloseHandle</c>, <c>CompareObjectHandles</c>, <c>GetHandleInformation</c>, and
+        /// <c>SetHandleInformation</c>. It owns a reference to the underlying synchronization
+        /// primitive represented by its Vulkan fence object.
+        /// </summary>
+        OpaqueWin32 = 1 << 1,
+        /// <summary>
+        /// Indicates a global share handle that has only limited valid usage outside of Vulkan and
+        /// other compatible APIs. It is not compatible with any native APIs. It does not own a
+        /// reference to the underlying synchronization primitive represented by its Vulkan fence
+        /// object, and will therefore become invalid when all Vulkan fence objects associated with
+        /// it are destroyed.
+        /// </summary>
+        OpaqueWin32Kmt = 1 << 2,
+        /// <summary>
+        /// Indicates a POSIX file descriptor handle to a Linux Sync File or Android Fence. It can be
+        /// used with any native API accepting a valid sync file or fence as input. It owns a
+        /// reference to the underlying synchronization primitive associated with the file
+        /// descriptor. Implementations which support importing this handle type must accept any type
+        /// of sync or fence FD supported by the native system they are running on.
+        /// </summary>
+        SyncFd = 1 << 3
+    }
+    
+    /// <summary>
+    /// Bitfield describing features of an external fence handle type.
+    /// </summary>
+    [Flags]
+    public enum ExternalFenceFeatureFlagsKhr
+    {
+        /// <summary>
+        /// Indicates handles of this type can be exported from Vulkan fence objects.
+        /// </summary>
+        Exportable = 1 << 0,
+        /// <summary>
+        /// Indicates handles of this type can be imported to Vulkan fence objects.
+        /// </summary>
+        Importable = 1 << 1
+    }
+    
+    /// <summary>
+    /// Bitmask specifying additional parameters of fence payload import.
+    /// </summary>
+    [Flags]
+    public enum FenceImportFlagsKhr
+    {
+        /// <summary>
+        /// Specifies that the fence payload will be imported only temporarily, regardless of the
+        /// permanence of handle type.
+        /// </summary>
+        Temporary = 1 << 0
+    }
+
+    /// <summary>
+    /// Structure specifying IDs related to the physical device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct PhysicalDeviceIdPropertiesKhr
+    {
+        internal StructureType Type;
+
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// An array of size <see cref="UuidSize"/>, containing 8-bit values that represent a
+        /// universally unique identifier for the device.
+        /// </summary>
+        public fixed byte DeviceUuid[UuidSize];
+        /// <summary>
+        /// An array of size <see cref="UuidSize"/>, containing 8-bit values that represent a
+        /// universally unique identifier for the driver build in use by the device.
+        /// </summary>
+        public fixed byte DriverUuid[UuidSize];
+        /// <summary>
+        /// A array of size <see cref="LuidSizeKhr"/>, containing 8-bit values that represent a
+        /// locally unique identifier for the device.
+        /// </summary>
+        public fixed byte DeviceLuid[LuidSizeKhr];
+        /// <summary>
+        /// A bitfield identifying the node within a linked device adapter corresponding to the device.
+        /// </summary>
+        public int DeviceNodeMask;
+        /// <summary>
+        /// A boolean value that will be <c>true</c> if <see cref="DeviceLuid"/> contains a valid
+        /// LUID, and <c>false</c> if it does not.
+        /// </summary>
+        public Bool DeviceLuidValid;
+    }
+
+    /// <summary>
+    /// Specify that an image may be backed by external memory.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalMemoryImageCreateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies one or more external memory handle types.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleTypes;
+    }
+
+    /// <summary>
+    /// Specify that a buffer may be backed by external memory.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalMemoryBufferCreateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies one or more external memory handle types.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleTypes;
+    }
+
+    /// <summary>
+    /// Specify exportable handle types for a device memory object.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExportMemoryAllocateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies one or more memory handle types the application can export from the resulting
+        /// allocation. The application can request multiple handle types for the same allocation.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleTypes;
+    }
+
+    /// <summary>
+    /// Import Win32 memory created on the same physical device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImportMemoryWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies the type of handle or name.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleType;
+        /// <summary>
+        /// The external handle to import, or <c>null</c>.
+        /// </summary>
+        public IntPtr Handle;
+        /// <summary>
+        /// A NULL-terminated UTF-16 string naming the underlying memory resource to import, or <c>null</c>.
+        /// </summary>
+        public IntPtr Name;
+    }
+
+    /// <summary>
+    /// Structure specifying additional attributes of Windows handles exported from a memory.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExportMemoryWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A pointer to a Windows <c>SECURITY_ATTRIBUTES</c> structure specifying security
+        /// attributes of the handle.
+        /// </summary>
+        public IntPtr Attributes;
+        /// <summary>
+        /// A <c>DWORD</c> specifying access rights of the handle.
+        /// </summary>
+        public int Access;
+        /// <summary>
+        /// A NULL-terminated UTF-16 string to associate with the underlying resource referenced by
+        /// NT handles exported from the created memory.
+        /// </summary>
+        public IntPtr Name;
+    }
+
+    /// <summary>
+    /// Structure describing a Win32 handle semaphore export operation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MemoryGetWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The memory object from which the handle will be exported.
+        /// </summary>
+        public long Memory;
+        /// <summary>
+        /// The type of handle requested.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure describing a POSIX FD semaphore export operation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MemoryGetFdInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The memory object from which the handle will be exported.
+        /// </summary>
+        public long Memory;
+        /// <summary>
+        /// The type of handle requested.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure specifying additional attributes of Windows handles exported from a
+    /// semaphore.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExportSemaphoreWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A pointer to a Windows <c>SECURITY_ATTRIBUTES</c> structure specifying security
+        /// attributes of the handle.
+        /// </summary>
+        public IntPtr Attributes;
+        /// <summary>
+        /// A <c>DWORD</c> specifying access rights of the handle.
+        /// </summary>
+        public int Access;
+        /// <summary>
+        /// A NULL-terminated UTF-16 string to associate with the underlying synchronization
+        /// primitive referenced by NT handles exported from the created semaphore.
+        /// </summary>
+        public IntPtr Name;
+    }
+
+    /// <summary>
+    /// Structure describing a Win32 handle semaphore export operation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SemaphoreGetWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The semaphore from which state will be exported.
+        /// </summary>
+        public long Semaphore;
+        /// <summary>
+        /// The type of handle requested.
+        /// </summary>
+        public ExternalSemaphoreHandleTypesKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure describing a POSIX FD semaphore export operation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SemaphoreGetFdInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is the semaphore from which state will be exported.
+        /// </summary>
+        public long Semaphore;
+        /// <summary>
+        /// Is the type of handle requested.
+        /// </summary>
+        public ExternalSemaphoreHandleTypesKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure specifying fence creation parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceExternalFenceInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is NULL or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is a <see cref="ExternalFenceHandleTypeFlagsKhr"/> value indicating an external fence
+        /// handle type for which capabilities will be returned.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure describing supported external fence handle features.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExternalFencePropertiesKhr
+    {
+        public StructureType Type;
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is a bitmask of <see cref="ExternalFenceHandleTypeFlagsKhr"/> indicating which types of
+        /// imported handle handleType can be exported from.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr ExportFromImportedHandleTypes;
+        /// <summary>
+        /// Is a bitmask of <see cref="ExternalFenceHandleTypeFlagsKhr"/> specifying handle types
+        /// which can be specified at the same time as handleType when creating a fence.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr CompatibleHandleTypes;
+        /// <summary>
+        /// Is a bitmask of <see cref="ExternalFenceFeatureFlagsKhr"/> indicating the features of handleType.
+        /// </summary>
+        public ExternalFenceFeatureFlagsKhr ExternalFenceFeatures;
+    }
+
+    /// <summary>
+    /// Structure specifying handle types that can be exported from a fence.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExportFenceCreateInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is a bitmask of <see cref="ExternalFenceHandleTypeFlagsKhr"/> specifying one or more
+        /// fence handle types the application can export from the resulting fence. The application
+        /// can request multiple handle types for the same fence.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr HandleTypes;
+    }
+
+    /// <summary>
+    /// (None).
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImportFenceWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is the fence into which the state will be imported.
+        /// </summary>
+        public long Fence;
+        /// <summary>
+        /// Is a bitmask of <see cref="FenceImportFlagsKhr"/> specifying additional parameters for
+        /// the fence payload import operation.
+        /// </summary>
+        public FenceImportFlagsKhr Flags;
+        /// <summary>
+        /// Specifies the type of handle.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr HandleType;
+        /// <summary>
+        /// Is the external handle to import, or <c>null</c>.
+        /// </summary>
+        public IntPtr Handle;
+        /// <summary>
+        /// Is the NULL-terminated UTF-16 string naming the underlying synchronization primitive to
+        /// import, or <c>null</c>.
+        /// </summary>
+        public IntPtr Name;
+    }
+
+    /// <summary>
+    /// Structure specifying additional attributes of Windows handles exported from a
+    /// fence.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ExportFenceWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is a pointer to a Windows <c>SECURITY_ATTRIBUTES</c> structure specifying security
+        /// attributes of the handle.
+        /// </summary>
+        public IntPtr Attributes;
+        /// <summary>
+        /// Is a <c>xDWORD</c> specifying access rights of the handle.
+        /// </summary>
+        public int Access;
+        /// <summary>
+        /// Is a NULL-terminated UTF-16 string to associate with the underlying
+        /// synchronization primitive referenced by NT handles exported from the created
+        /// fence.
+        /// </summary>
+        public IntPtr Name;
+    }
+
+    /// <summary>
+    /// Structure describing a Win32 handle fence export operation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct FenceGetWin32HandleInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is the fence from which state will be exported.
+        /// </summary>
+        public long Fence;
+        /// <summary>
+        /// Is the type of handle requested.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr HandleType;
+    }
+
+    /// <summary>
+    /// (None).
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImportFenceFdInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is the fence into which the payload will be imported.
+        /// </summary>
+        public long Fence;
+        /// <summary>
+        /// Is a bitmask of <see cref="FenceImportFlagsKhr"/> specifying additional parameters for
+        /// the fence payload import operation.
+        /// </summary>
+        public FenceImportFlagsKhr Flags;
+        /// <summary>
+        /// Specifies the type of fd.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr HandleType;
+        /// <summary>
+        /// Is the external handle to import.
+        /// </summary>
+        public int Fd;
+    }
+
+    /// <summary>
+    /// Structure describing a POSIX FD fence export operation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct FenceGetFdInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is the fence from which state will be exported.
+        /// </summary>
+        public long Fence;
+        /// <summary>
+        /// Is the type of handle requested.
+        /// </summary>
+        public ExternalFenceHandleTypeFlagsKhr HandleType;
+    }
+
+    /// <summary>
+    /// Structure describing features supported by VKKHR16bitStorage.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDevice16BitStorageFeaturesKhr
+    {
+        public StructureType Type;
+        /// <summary>
+        /// Pointer to next structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// 16-bit integer/floating-point variables supported in BufferBlock.
+        /// </summary>
+        public Bool StorageBuffer16BitAccess;
+        /// <summary>
+        /// 16-bit integer/floating-point variables supported in BufferBlock and Block.
+        /// </summary>
+        public Bool UniformAndStorageBuffer16BitAccess;
+        /// <summary>
+        /// 16-bit integer/floating-point variables supported in PushConstant.
+        /// </summary>
+        public Bool StoragePushConstant16;
+        /// <summary>
+        /// 16-bit integer/floating-point variables supported in shader inputs and outputs.
+        /// </summary>
+        public Bool StorageInputOutput16;
+    }
+
+    /// <summary>
+    /// Structure describing dedicated allocation requirements of buffer and image resources.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MemoryDedicatedRequirementsKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Indicates that the implementation would prefer a dedicated allocation for this resource.
+        /// The application is still free to suballocate the resource but it may get better
+        /// performance if a dedicated allocation is used.
+        /// </summary>
+        public Bool PrefersDedicatedAllocation;
+        /// <summary>
+        /// Indicates that a dedicated allocation is required for this resource.
+        /// </summary>
+        public Bool RequiresDedicatedAllocation;
+    }
+
+    /// <summary>
+    /// Specify a dedicated memory allocation resource.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MemoryDedicatedAllocateInfoKhr
+    {
+        /// <summary>
+        /// Is the type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Is 0 or a handle of an image which this memory will be bound to.
+        /// </summary>
+        public long Image;
+        /// <summary>
+        /// Is 0 or a handle of a buffer which this memory will be bound to.
+        /// </summary>
+        public long Buffer;
     }
 }

@@ -1,4 +1,4 @@
-using VulkanCore.Tests.Utilities;
+﻿using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -245,7 +245,12 @@ namespace VulkanCore.Tests
         {
             var renderPassCreateInfo = new RenderPassCreateInfo(new[] { new SubpassDescription(
                 new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) }) },
-                new[] { new AttachmentDescription { Format = Format.B8G8R8A8UNorm, Samples = SampleCounts.Count1 } });
+                new[] { new AttachmentDescription {
+                    Format = Format.B8G8R8A8UNorm,
+                    Samples = SampleCounts.Count1,
+                    FinalLayout = ImageLayout.ColorAttachmentOptimal
+                }
+            });
             var imageCreateInfo = new ImageCreateInfo
             {
                 Usage = ImageUsages.ColorAttachment,

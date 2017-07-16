@@ -9,7 +9,7 @@
     {
         public const int MaxPhysicalDeviceNameSize = 256;
         public const int UuidSize = 16;
-        public const int LuidSizeKhx = 8;
+        public const int LuidSizeKhr = 8;
         public const int MaxExtensionNameSize = 256;
         public const int MaxDescriptionSize = 256;
         public const int MaxMemoryTypes = 32;
@@ -473,7 +473,7 @@
             /// </summary>
             public const string NVFramebufferMixedSamples = "VK_NV_framebuffer_mixed_samples";
             /// <summary>
-            /// This extension adds a new <see cref="PolygonMode.FillRectangleNv"/> enum where a
+            /// This extension adds a new <see cref="PolygonMode.FillRectangleNV"/> enum where a
             /// triangle is rasterized by computing and filling its axis-aligned screen-space
             /// bounding box, disregarding the actual triangle edges.
             /// </summary>

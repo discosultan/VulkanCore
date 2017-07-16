@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 
-namespace VulkanCore.Khx
+namespace VulkanCore.Khr
 {
     /// <summary>
-    /// Provides experimental Khronos specific extension methods for the <see cref="Semaphore"/> class.
+    /// Provides Khronos specific extension methods for the <see cref="Semaphore"/> class.
     /// </summary>
     public static unsafe class SemaphoreExtensions
     {
@@ -14,10 +14,10 @@ namespace VulkanCore.Khx
         /// <param name="handleType">The type of handle requested.</param>
         /// <returns>The Windows handle representing the semaphore state.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static IntPtr GetWin32HandleKhx(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhx handleType)
+        public static IntPtr GetWin32HandleKhr(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhr handleType)
         {
             IntPtr handle;
-            Result result = vkGetSemaphoreWin32HandleKHX(semaphore)(semaphore.Parent, semaphore, handleType, &handle);
+            Result result = vkGetSemaphoreWin32HandleKHR(semaphore)(semaphore.Parent, semaphore, handleType, &handle);
             VulkanException.ThrowForInvalidResult(result);
             return handle;
         }
@@ -29,19 +29,19 @@ namespace VulkanCore.Khx
         /// <param name="handleType">The type of handle requested.</param>
         /// <returns>The file descriptor representing the semaphore state.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static int GetFdKhx(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhx handleType)
+        public static int GetFdKhr(this Semaphore semaphore, ExternalSemaphoreHandleTypesKhr handleType)
         {
             int fd;
-            Result result = vkGetSemaphoreFdKHX(semaphore)(semaphore.Parent, semaphore, handleType, &fd);
+            Result result = vkGetSemaphoreFdKHR(semaphore)(semaphore.Parent, semaphore, handleType, &fd);
             VulkanException.ThrowForInvalidResult(result);
             return fd;
         }
 
-        private delegate Result vkGetSemaphoreWin32HandleKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhx handleType, IntPtr* handle);
-        private static vkGetSemaphoreWin32HandleKHXDelegate vkGetSemaphoreWin32HandleKHX(Semaphore semaphore) => GetProc<vkGetSemaphoreWin32HandleKHXDelegate>(semaphore, nameof(vkGetSemaphoreWin32HandleKHX));
+        private delegate Result vkGetSemaphoreWin32HandleKHRDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhr handleType, IntPtr* handle);
+        private static vkGetSemaphoreWin32HandleKHRDelegate vkGetSemaphoreWin32HandleKHR(Semaphore semaphore) => GetProc<vkGetSemaphoreWin32HandleKHRDelegate>(semaphore, nameof(vkGetSemaphoreWin32HandleKHR));
 
-        private delegate Result vkGetSemaphoreFdKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhx handleType, int* fd);
-        private static vkGetSemaphoreFdKHXDelegate vkGetSemaphoreFdKHX(Semaphore semaphore) => GetProc<vkGetSemaphoreFdKHXDelegate>(semaphore, nameof(vkGetSemaphoreFdKHX));
+        private delegate Result vkGetSemaphoreFdKHXDelegate(IntPtr device, long semaphore, ExternalSemaphoreHandleTypesKhr handleType, int* fd);
+        private static vkGetSemaphoreFdKHXDelegate vkGetSemaphoreFdKHR(Semaphore semaphore) => GetProc<vkGetSemaphoreFdKHXDelegate>(semaphore, nameof(vkGetSemaphoreFdKHR));
 
         private static TDelegate GetProc<TDelegate>(Semaphore semaphore, string name) where TDelegate : class => semaphore.Parent.GetProc<TDelegate>(name);
     }

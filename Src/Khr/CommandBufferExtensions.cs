@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
 {
@@ -77,5 +78,64 @@ namespace VulkanCore.Khr
 
         private delegate void vkCmdPushDescriptorSetWithTemplateKHRDelegate(IntPtr commandBuffer, long descriptorUpdateTemplate, long layout, int set, IntPtr data);
         private static readonly vkCmdPushDescriptorSetWithTemplateKHRDelegate vkCmdPushDescriptorSetWithTemplateKHR = VulkanLibrary.GetStaticProc<vkCmdPushDescriptorSetWithTemplateKHRDelegate>(nameof(vkCmdPushDescriptorSetWithTemplateKHR));
+    }
+
+    /// <summary>
+    /// Structure specifying values for Direct3D 12 fence-backed semaphores.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct D3D12FenceSubmitInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of semaphore wait values specified in <see cref="WaitSemaphoreValues"/>.
+        /// </summary>
+        public int WaitSemaphoreValuesCount;
+        /// <summary>
+        /// Values for the corresponding semaphores in <see cref="SubmitInfo.WaitSemaphores"/> to
+        /// wait for.
+        /// </summary>
+        public long[] WaitSemaphoreValues;
+        /// <summary>
+        /// The number of semaphore signal values specified in <see cref="SignalSemaphoreValues"/>.
+        /// </summary>
+        public int SignalSemaphoreValuesCount;
+        /// <summary>
+        /// Values for the corresponding semaphores in <see cref="SubmitInfo.SignalSemaphores"/> to
+        /// set when signaled.
+        /// </summary>
+        public long[] SignalSemaphoreValues;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="D3D12FenceSubmitInfoKhr"/> structure.
+        /// </summary>
+        /// <param name="waitSemaphoreValues">
+        /// Values for the corresponding semaphores in <see cref="SubmitInfo.WaitSemaphores"/> to
+        /// wait for.
+        /// </param>
+        /// <param name="signalSemaphoreValues">
+        /// Values for the corresponding semaphores in <see cref="SubmitInfo.SignalSemaphores"/> to
+        /// set when signaled.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public D3D12FenceSubmitInfoKhr(long[] waitSemaphoreValues = null, long[] signalSemaphoreValues = null,
+            IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.D3D12FenceSubmitInfoKhr;
+            Next = next;
+            WaitSemaphoreValuesCount = waitSemaphoreValues?.Length ?? 0;
+            WaitSemaphoreValues = waitSemaphoreValues;
+            SignalSemaphoreValuesCount = signalSemaphoreValues?.Length ?? 0;
+            SignalSemaphoreValues = signalSemaphoreValues;
+        }
     }
 }

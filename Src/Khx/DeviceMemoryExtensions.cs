@@ -4,50 +4,6 @@ using VulkanCore.Khr;
 
 namespace VulkanCore.Khx
 {
-    /// <summary>
-    /// Provides experimental Khronos specific extension methods for the <see cref="DeviceMemory"/> class.
-    /// </summary>
-    public static unsafe class DeviceMemoryExtensions
-    {
-        /// <summary>
-        /// Get a Windows HANDLE for a memory object.
-        /// </summary>
-        /// <param name="memory">The memory object from which the handle will be exported.</param>
-        /// <param name="handleType">The type of handle requested.</param>
-        /// <returns>The Windows handle representing the underlying resources of the device memory object.</returns>
-        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static IntPtr GetWin32HandleKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
-        {
-            IntPtr handle;
-            Result result = vkGetMemoryWin32HandleKHX(memory)(memory.Parent, memory, handleType, &handle);
-            VulkanException.ThrowForInvalidResult(result);
-            return handle;
-        }
-
-        /// <summary>
-        /// Get a POSIX file descriptor for a memory object.
-        /// </summary>
-        /// <param name="memory">The memory object from which the handle will be exported.</param>
-        /// <param name="handleType">The type of handle requested.</param>
-        /// <returns>A file descriptor representing the underlying resources of the device memory object.</returns>
-        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static int GetFdKhx(this DeviceMemory memory, ExternalMemoryHandleTypesKhx handleType)
-        {
-            int fd;
-            Result result = vkGetMemoryFdKHX(memory)(memory.Parent, memory, handleType, &fd);
-            VulkanException.ThrowForInvalidResult(result);
-            return fd;
-        }
-
-        private delegate Result vkGetMemoryWin32HandleKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, IntPtr* handle);
-        private static vkGetMemoryWin32HandleKHXDelegate vkGetMemoryWin32HandleKHX(DeviceMemory memory) => GetProc<vkGetMemoryWin32HandleKHXDelegate>(memory, nameof(vkGetMemoryWin32HandleKHX));
-
-        private delegate Result vkGetMemoryFdKHXDelegate(IntPtr device, long memory, ExternalMemoryHandleTypesKhx handleType, int* fd);
-        private static vkGetMemoryFdKHXDelegate vkGetMemoryFdKHX(DeviceMemory memory) => GetProc<vkGetMemoryFdKHXDelegate>(memory, nameof(vkGetMemoryFdKHX));
-
-        private static TDelegate GetProc<TDelegate>(DeviceMemory memory, string name) where TDelegate : class => memory.Parent.GetProc<TDelegate>(name);
-    }
-
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryAllocateFlagsInfoKhx
     {
@@ -65,17 +21,19 @@ namespace VulkanCore.Khx
         public MemoryAllocateFlagsKhx Flags;
         /// <summary>
         /// A mask of physical devices in the logical device, indicating that memory must be
-        /// allocated on each device in the mask, if <see
-        /// cref="MemoryAllocateFlagsKhx.MemoryAllocateDeviceMaskKhx"/> is set.
+        /// allocated on each device in the mask, if <see cref="MemoryAllocateFlagsKhx.DeviceMask"/>
+        /// is set.
         /// </summary>
         public int DeviceMask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryAllocateFlagsInfoKhx"/> structure.
         /// </summary>
-        /// <param name="flags">Pointer to next structure.</param>
-        /// <param name="deviceMask"></param>
-        /// <param name="next"></param>
+        /// <param name="flags">A bitmask of flags controlling the allocation.</param>
+        /// <param name="deviceMask">A mask of physical devices in the logical device, indicating that memory must be
+        /// allocated on each device in the mask, if <see cref="MemoryAllocateFlagsKhx.DeviceMask"/>
+        /// is set.</param>
+        /// <param name="next">Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.</param>
         public MemoryAllocateFlagsInfoKhx(MemoryAllocateFlagsKhx flags, int deviceMask, IntPtr next = default(IntPtr))
         {
             Type = StructureType.MemoryAllocateFlagsInfoKhx;

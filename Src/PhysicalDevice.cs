@@ -1615,7 +1615,7 @@ namespace VulkanCore
         /// </summary>
         TransferDstKhr = 1 << 15,
         /// <summary>
-        /// <see cref="Image"/> can be used as a sampled image with a min or max <see cref="SamplerReductionModeExt"/>.
+        /// Specifies <see cref="Image"/> can be used as a sampled image with a min or max <see cref="Ext.SamplerReductionModeExt"/>.
         /// <para>This bit must only be exposed for formats that also support the <see cref="SampledImage"/>.</para>
         /// </summary>
         SampledImageFilterMinmaxExt = 1 << 16
@@ -1648,9 +1648,12 @@ namespace VulkanCore
         /// </summary>
         Nearest = 0,
         /// <summary>
-		/// Specifies linear filtering.
-		/// </summary>
+        /// Specifies linear filtering.
+        /// </summary>
         Linear = 1,
+        /// <summary>
+        /// Cubic filtering computes a set of neighboring coordinates which bound the unnormalized coordinates.
+        /// </summary>
         CubicImg = 1000015000
     }
 
