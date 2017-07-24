@@ -169,7 +169,7 @@
             /// determine what types of "external" memory handles an implementation supports for a
             /// given set of use cases.
             /// </summary>
-            public const string KhxExternalMemoryCapabilities = "VK_KHX_external_memory_capabilities";
+            public const string KhrExternalMemoryCapabilities = "VK_KHR_external_memory_capabilities";
             /// <summary>
             /// An application may wish to reference device semaphores in multiple Vulkan logical
             /// devices or instances, in multiple processes, and/or in multiple APIs. This extension
@@ -177,7 +177,21 @@
             /// to determine what types of “external” semaphore handles an implementation supports
             /// for a given set of use cases.
             /// </summary>
-            public const string KhxExternalSemaphoreCapabilities = "VK_KHX_external_semaphore_capabilities";
+            public const string KhrExternalSemaphoreCapabilities = "VK_KHR_external_semaphore_capabilities";
+            /// <summary>
+            /// An application may wish to reference device fences in multiple Vulkan logical devices
+            /// or instances, in multiple processes, and/or in multiple APIs. This extension provides
+            /// a set of capability queries and handle definitions that allow an application to
+            /// determine what types of "external" fence handles an implementation supports for a
+            /// given set of use cases.
+            /// </summary>
+            public const string KhrExternalFenceCapabilities = "VK_KHR_external_fence_capabilities";
+            /// <summary>
+            /// This extension provides new entry points to query device surface capabilities in a
+            /// way that can be easily extended by other extensions, without introducing any further
+            /// entry points.
+            /// </summary>
+            public const string KhrGetSurfaceCapabilities2 = "VK_KHR_get_surface_capabilities2";
             /// <summary>
             /// The "VK_MVK_ios_surface" extension is an instance extension. It provides a mechanism
             /// to create a <see cref="Khr.SurfaceKhr"/> object (defined by the "VK_KHR_surface"
@@ -354,44 +368,49 @@
             /// objects such that the underlying resources can be referenced outside the scope of the
             /// Vulkan logical device that created them.
             /// </summary>
-            public const string KhxExternalMemory = "VK_KHX_external_memory";
+            public const string KhrExternalMemory = "VK_KHR_external_memory";
             /// <summary>
             /// This extension enables an application to export Windows handles from Vulkan memory
             /// objects and to import Vulkan memory objects from Windows handles exported from other
             /// Vulkan memory objects or from similar resources in other APIs.
             /// </summary>
-            public const string KhxExternalMemoryWin32 = "VK_KHX_external_memory_win32";
+            public const string KhrExternalMemoryWin32 = "VK_KHR_external_memory_win32";
             /// <summary>
             /// This extension enables an application to export POSIX file descriptor handles from
             /// Vulkan memory objects and to import Vulkan memory objects from POSIX file descriptor
             /// handles exported from other Vulkan memory objects or from similar resources in other APIs.
             /// </summary>
-            public const string KhxExternalMemoryFd = "VK_KHX_external_memory_fd";
+            public const string KhrExternalMemoryFd = "VK_KHR_external_memory_fd";
             /// <summary>
             /// This extension provides a way for an application to access the keyed mutex associated
             /// with an imported Vulkan memory object when submitting command buffers to a queue.
             /// </summary>
-            public const string KhxWin32KeyedMutex = "VK_KHX_win32_keyed_mutex";
+            public const string KhrWin32KeyedMutex = "VK_KHR_win32_keyed_mutex";
             /// <summary>
             /// This extension enables an application to create semaphores from which non-Vulkan
             /// handles that reference the underlying synchronization primitive can be exported.
             /// </summary>
-            public const string KhxExternalSemaphore = "VK_KHX_external_semaphore";
+            public const string KhrExternalSemaphore = "VK_KHR_external_semaphore";
             /// <summary>
             /// This extension enables an application to export semaphore state to and import
             /// semaphore state from Windows handles.
             /// </summary>
-            public const string KhxExternalSemaphoreWin32 = "VK_KHX_external_semaphore_win32";
+            public const string KhrExternalSemaphoreWin32 = "VK_KHR_external_semaphore_win32";
             /// <summary>
             /// This extension enables an application to export semaphore state to and import
             /// semaphore state from POSIX file descriptors.
             /// </summary>
-            public const string KhxExternalSemaphoreFd = "VK_KHX_external_semaphore_fd";
+            public const string KhrExternalSemaphoreFd = "VK_KHR_external_semaphore_fd";
             /// <summary>
             /// This extension allows descriptors to be written into the command buffer, with the
             /// implementation being responsible for managing their memory.
             /// </summary>
             public const string KhrPushDescriptor = "VK_KHR_push_descriptor";
+            /// <summary>
+            /// The VK_KHR_16bit_storage extension allows use of 16-bit types in shader input and
+            /// output interfaces, and push constant blocks.
+            /// </summary>
+            public const string Khr16BitStorage = "VK_KHR_16bit_storage";
             /// <summary>
             /// This extension provides a way to update a fixed set of descriptors in a single <see
             /// cref="DescriptorSet"/> with a pointer to a user defined data structure which
@@ -446,11 +465,48 @@
             /// </summary>
             public const string AmdTextureGatherBiasLod = "VK_AMD_texture_gather_bias_lod";
             /// <summary>
+            /// This extension extends VK_KHR_swapchain to enable creation of a shared presentable
+            /// image. This allows the application to use the image while the presention engine is
+            /// accessing it, in order to reduce the latency between rendering and presentation.
+            /// </summary>
+            public const string KhrSharedPresentableImage = "VK_KHR_shared_presentable_image";
+            /// <summary>
+            /// An application using external memory may wish to synchronize access to that memory
+            /// using fences. This extension enables an application to create fences from which
+            /// non-Vulkan handles that reference the underlying synchronization primitive can be exported.
+            /// </summary>
+            public const string KhrExternalFence = "VK_KHR_external_fence";
+            /// <summary>
+            /// An application using external memory may wish to synchronize access to that memory
+            /// using fences. This extension enables an application to export fence payload to and
+            /// import fence payload from Windows handles.
+            /// </summary>
+            public const string KhrExternalFenceWin32 = "VK_KHR_external_fence_win32";
+            /// <summary>
+            /// An application using external memory may wish to synchronize access to that memory
+            /// using fences. This extension enables an application to export fence payload to and
+            /// import fence payload from POSIX file descriptors.
+            /// </summary>
+            public const string KhrExternalFenceFD = "VK_KHR_external_fence_fd";
+            /// <summary>
+            /// The VK_KHR_variable_pointers extension allows implementations to indicate their level
+            /// of support for the SPV_KHR_variable_pointers SPIR-V extension.
+            /// </summary>
+            public const string KhrVariablePointers = "VK_KHR_variable_pointers";
+            /// <summary>
+            /// This extension enables resources to be bound to a dedicated allocation, rather than suballocated.
+            /// </summary>
+            public const string KhrDedicatedAllocation = "VK_KHR_dedicated_allocation";
+            /// <summary>
             /// This extension provides a new sampler parameter which allows applications to produce
             /// a filtered texel value by computing a component-wise minimum (MIN) or maximum (MAX)
             /// of the texels that would normally be averaged.
             /// </summary>
             public const string ExtSamplerFilterMinmax = "VK_EXT_sampler_filter_minmax";
+            /// <summary>
+            /// This extension adds support for the following SPIR-V extension in Vulkan: "SPV_KHR_storage_buffer_storage_class".
+            /// </summary>
+            public const string KhrStorageBufferStorageClass = "VK_KHR_storage_buffer_storage_class";
             /// <summary>
             /// This extension adds support for the following SPIR-V extension in Vulkan: "SPV_AMD_gpu_shader_int16".
             /// </summary>
