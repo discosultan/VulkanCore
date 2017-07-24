@@ -52,7 +52,13 @@
         BufferMemoryBarrier = 44,
         ImageMemoryBarrier = 45,
         MemoryBarrier = 46,
+        /// <summary>
+        /// Reserved for internal use by the loader, layers, and ICDs.
+        /// </summary>
         LoaderInstanceCreateInfo = 47,
+        /// <summary>
+        /// Reserved for internal use by the loader, layers, and ICDs.
+        /// </summary>
         LoaderDeviceCreateInfo = 48,
         SwapchainCreateInfoKhr = 1000001000,
         PresentInfoKhr = 1000001001,

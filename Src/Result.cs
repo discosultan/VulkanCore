@@ -1,4 +1,4 @@
-namespace VulkanCore
+﻿namespace VulkanCore
 {
     /// <summary>
     /// Vulkan command return codes.
@@ -107,6 +107,10 @@ namespace VulkanCore
         /// presenting to the surface.
         /// </summary>
         ErrorIncompatibleDisplayKhr = -1000003001,
+        /// <summary>
+        /// The application returned <c>true</c> from its callback and the Vulkan call being aborted
+        /// returned a <see cref="Result"/>.
+        /// </summary>
         ErrorValidationFailedExt = -1000011001,
         /// <summary>
         /// One or more shaders failed to compile or link. More details are reported back to the

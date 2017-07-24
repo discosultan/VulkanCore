@@ -443,11 +443,11 @@ namespace VulkanCore.Khr
         /// </summary>
         SRgbNonlinear = 0,
         /// <summary>
-        /// Indicates support for the Display-P3 color space and applies an sRGB-like OETF.
+        /// Indicates support for the Display-P3 color space and applies an sRGB-like transfer function.
         /// </summary>
         DisplayP3NonlinearExt = 1000104001,
         /// <summary>
-        /// Indicates support for the extended sRGB color space and applies a linear OETF.
+        /// Indicates support for the extended sRGB color space and applies a linear transfer function.
         /// </summary>
         ExtendedSRgbLinearExt = 1000104002,
         /// <summary>
@@ -496,7 +496,11 @@ namespace VulkanCore.Khr
         /// Indicates that color components are used "as is". This is intended to allow application
         /// to supply data for color spaces not described here.
         /// </summary>
-        PassThroughExt = 1000104013
+        PassThroughExt = 1000104013,
+        /// <summary>
+        /// Indicates support for the extended sRGB color space and applies an sRGB transfer function.
+        /// </summary>
+        ExtendedSRgbNonlinearExt = 1000104014
     }
 
     /// <summary>

@@ -456,6 +456,12 @@
             /// </summary>
             public const string AmdGpuShaderInt16 = "VK_AMD_gpu_shader_int16";
             /// <summary>
+            /// This extension provides new entry points to query memory requirements of images and
+            /// buffers in a way that can be easily extended by other extensions, without introducing
+            /// any further entry points.
+            /// </summary>
+            public const string KhrGetMemoryRequirements2 = "VK_KHR_get_memory_requirements2";
+            /// <summary>
             /// This extension adds a number of "advanced" blending operations that can be used to
             /// perform new color blending operations, many of which are more complex than the
             /// standard blend modes provided by unextended Vulkan.
