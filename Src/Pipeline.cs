@@ -444,7 +444,8 @@ namespace VulkanCore
         DisableOptimization = 1 << 0,
         /// <summary>
         /// Specifies that the pipeline to be created is allowed to be the parent of a pipeline that
-        /// will be created in a subsequent call to <see cref="Device.CreateGraphicsPipelines"/>.
+        /// will be created in a subsequent call to <see cref="Device.CreateGraphicsPipelines"/> or
+        /// <see cref="Device.CreateComputePipelines"/>.
         /// </summary>
         AllowDerivatives = 1 << 1,
         /// <summary>

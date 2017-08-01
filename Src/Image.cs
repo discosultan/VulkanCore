@@ -397,10 +397,10 @@ namespace VulkanCore
         /// and/or as a read-only image in a shader (which can be read as a sampled image, combined
         /// image/sampler and/or input attachment). This layout is valid only for image subresources
         /// of images created with the <see cref="ImageUsages.DepthStencilAttachment"/> usage bit
-        /// enabled. Only image subresources of images created with <see
-        /// cref="ImageUsages.Sampled"/> can be used as sampled image or combined image/sampler
-        /// in a shader. Similarly, only image subresources of images created with <see
-        /// cref="ImageUsages.InputAttachment"/> can be used as input attachments.
+        /// enabled. Only image subresources of images created with <see cref="ImageUsages.Sampled"/>
+        /// can be used as a sampled image or combined image/sampler in a shader. Similarly, only
+        /// image subresources of images created with <see cref="ImageUsages.InputAttachment"/> can
+        /// be used as input attachments.
         /// </summary>
         DepthStencilReadOnlyOptimal = 4,
         /// <summary>

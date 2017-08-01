@@ -835,7 +835,7 @@
         /// <summary>
         /// Specifies a four-component, ETC2 compressed format where each 64-bit compressed texel
         /// block encodes a 4x4 rectangle of unsigned normalized RGBA texel data with the first 64
-        /// bits encoding alpha values followed by 64 bits encoding RGB values with sRGB nonlinear
+        /// bits encoding alpha values followed by 128 bits encoding RGB values with sRGB nonlinear
         /// encoding applied.
         /// </summary>
         Etc2R8G8B8A8SRgbBlock = 152,

@@ -540,6 +540,7 @@
             /// bounding box, disregarding the actual triangle edges.
             /// </summary>
             public const string NVFillRectangle = "VK_NV_fill_rectangle";
+            public const string ExtPostDepthCoverage = "VK_EXT_post_depth_coverage";
         }
 
         /// <summary>
