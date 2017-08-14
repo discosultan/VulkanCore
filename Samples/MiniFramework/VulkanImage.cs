@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace VulkanCore.Samples
@@ -142,7 +142,7 @@ namespace VulkanCore.Samples
             // Copy the data from staging buffers to device local buffers.
             CommandBuffer cmdBuffer = ctx.GraphicsCommandPool.AllocateBuffers(new CommandBufferAllocateInfo(CommandBufferLevel.Primary, 1))[0];
             cmdBuffer.Begin(new CommandBufferBeginInfo(CommandBufferUsages.OneTimeSubmit));
-            cmdBuffer.CmdPipelineBarrier(PipelineStages.TopOfPipe, PipelineStages.TopOfPipe,
+            cmdBuffer.CmdPipelineBarrier(PipelineStages.TopOfPipe, PipelineStages.Transfer,
                 imageMemoryBarriers: new[]
                 {
                     new ImageMemoryBarrier(
@@ -151,7 +151,7 @@ namespace VulkanCore.Samples
                         ImageLayout.Undefined, ImageLayout.TransferDstOptimal)
                 });
             cmdBuffer.CmdCopyBufferToImage(stagingBuffer, image, ImageLayout.TransferDstOptimal, bufferCopyRegions);
-            cmdBuffer.CmdPipelineBarrier(PipelineStages.TopOfPipe, PipelineStages.TopOfPipe,
+            cmdBuffer.CmdPipelineBarrier(PipelineStages.Transfer, PipelineStages.FragmentShader,
                 imageMemoryBarriers: new[]
                 {
                     new ImageMemoryBarrier(

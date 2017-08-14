@@ -1,10 +1,11 @@
-
+﻿
 using Xunit;
 
 namespace VulkanCore.Tests
 {
     public class BoolTest
     {
+#pragma warning disable CS1718 // Comparison made to same variable.
         [Fact]
         public void ImplicitConversions()
         {
@@ -44,5 +45,6 @@ namespace VulkanCore.Tests
             Assert.Equal(true.ToString(), boolTrue.ToString());
             Assert.Equal(false.ToString(), boolFalse.ToString());
         }
+#pragma warning restore CS1718 // Comparison made to same variable.
     }
 }

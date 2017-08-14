@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -137,7 +137,7 @@ namespace VulkanCore.Samples.ComputeParticles
 
             // Add memory barrier to ensure that the (graphics) vertex shader has fetched attributes
             // before compute starts to write to the buffer.
-            _computeCmdBuffer.CmdPipelineBarrier(PipelineStages.VertexShader, PipelineStages.ComputeShader,
+            _computeCmdBuffer.CmdPipelineBarrier(PipelineStages.VertexInput, PipelineStages.ComputeShader,
                 bufferMemoryBarriers: new[] { graphicsToComputeBarrier });
             _computeCmdBuffer.CmdBindPipeline(PipelineBindPoint.Compute, _computePipeline);
             _computeCmdBuffer.CmdBindDescriptorSet(PipelineBindPoint.Compute, _computePipelineLayout, _computeDescriptorSet);
@@ -145,7 +145,7 @@ namespace VulkanCore.Samples.ComputeParticles
             // Add memory barrier to ensure that compute shader has finished writing to the buffer.
             // Without this the (rendering) vertex shader may display incomplete results (partial
             // data from last frame).
-            _computeCmdBuffer.CmdPipelineBarrier(PipelineStages.ComputeShader, PipelineStages.VertexShader,
+            _computeCmdBuffer.CmdPipelineBarrier(PipelineStages.ComputeShader, PipelineStages.VertexInput,
                 bufferMemoryBarriers: new[] { computeToGraphicsBarrier });
 
             _computeCmdBuffer.End();

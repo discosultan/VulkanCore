@@ -540,7 +540,18 @@
             /// bounding box, disregarding the actual triangle edges.
             /// </summary>
             public const string NVFillRectangle = "VK_NV_fill_rectangle";
+            /// <summary>
+            /// This extension adds support for the following SPIR-V extension in Vulkan:
+            /// "SPV_KHR_post_depth_coverage" which allows the fragment shader to control whether
+            /// values in the <c>SampleMask</c> built-in input variable reflect the coverage after
+            /// the early per-fragment depth and stencil tests are applied.
+            /// </summary>
             public const string ExtPostDepthCoverage = "VK_EXT_post_depth_coverage";
+            /// <summary>
+            /// This extension adds support for the <c>ShaderViewportIndexLayerEXT</c> capability
+            /// from the "SPV_EXT_shader_viewport_index_layer" extension in Vulkan.
+            /// </summary>
+            public const string ExtShaderViewportIndexLayer = "VK_EXT_shader_viewport_index_layer";
         }
 
         /// <summary>

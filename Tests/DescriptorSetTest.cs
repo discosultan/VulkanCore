@@ -1,4 +1,4 @@
-using VulkanCore.Tests.Utilities;
+﻿using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
