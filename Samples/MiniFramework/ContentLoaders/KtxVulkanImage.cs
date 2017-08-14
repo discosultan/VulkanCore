@@ -69,9 +69,11 @@ namespace VulkanCore.Samples.ContentLoaders
 
                 for (int i = 0; i < numberOfMipmapLevels; i++)
                 {
-                    var mipmap = new TextureData.Mipmap();
-                    mipmap.Size = reader.ReadInt32();
-                    mipmap.Extent = new Extent3D(pixelWidth, pixelHeight, pixelDepth);
+                    var mipmap = new TextureData.Mipmap
+                    {
+                        Size = reader.ReadInt32(),
+                        Extent = new Extent3D(pixelWidth, pixelHeight, pixelDepth)
+                    };
                     mipmap.Data = reader.ReadBytes(mipmap.Size);
                     data.Mipmaps[i] = mipmap;
                     break; // TODO: impl
