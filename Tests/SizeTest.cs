@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using Xunit;
 
 namespace VulkanCore.Tests
 {
     public class SizeTest
     {
-#pragma warning disable CS1718 // Comparison made to same variable.
         [Fact]
         public void ImplicitConversions()
         {
@@ -55,6 +54,5 @@ namespace VulkanCore.Tests
             Assert.Equal(0, val1.CompareTo(val1));
             Assert.Equal(1, val2.CompareTo(val1));
         }
-#pragma warning restore CS1718 // Comparison made to same variable.
     }
 }
