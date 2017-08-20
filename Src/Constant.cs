@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     // https://www.khronos.org/registry/vulkan/
 
@@ -552,6 +552,7 @@
             /// from the "SPV_EXT_shader_viewport_index_layer" extension in Vulkan.
             /// </summary>
             public const string ExtShaderViewportIndexLayer = "VK_EXT_shader_viewport_index_layer";
+            public const string ExtShaderStencilExport = "VK_EXT_shader_stencil_export";
         }
 
         /// <summary>
