@@ -1,11 +1,10 @@
-﻿
+
 using Xunit;
 
 namespace VulkanCore.Tests
 {
     public class OffsetTest
     {
-#pragma warning disable CS1718 // Comparison made to same variable.
         [Fact]
         public void Offset2DEquals()
         {
@@ -35,6 +34,5 @@ namespace VulkanCore.Tests
             Assert.True(val1 != val2);
             Assert.NotEqual(val1.GetHashCode(), val2.GetHashCode());
         }
-#pragma warning restore CS1718 // Comparison made to same variable.
     }
 }
