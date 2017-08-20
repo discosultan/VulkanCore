@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NoWarn>CS1718</NoWarn>
+    <NoWarn>$(NoWarn);CS1718</NoWarn>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
