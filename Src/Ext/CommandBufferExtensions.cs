@@ -87,6 +87,17 @@ namespace VulkanCore.Ext
                 vkCmdSetDiscardRectangleEXT(commandBuffer)(commandBuffer, firstDiscardRectangle, discardRectangles?.Length ?? 0, discardRectanglesPtr);
         }
 
+        /// <summary>
+        /// Set the dynamic sample locations state.
+        /// </summary>
+        /// <param name="commandBuffer">The command buffer into which the command will be recorded.</param>
+        /// <param name="sampleLocationsInfo">The sample locations state to set.</param>
+        public static void CmdSetSampleLocationsExt(this CommandBuffer commandBuffer,
+            SampleLocationsInfoExt sampleLocationsInfo)
+        {
+            vkCmdSetSampleLocationsEXT(commandBuffer)(commandBuffer, &sampleLocationsInfo);
+        }
+
         private delegate void vkCmdDebugMarkerBeginEXTDelegate(IntPtr commandBuffer, DebugMarkerMarkerInfoExt.Native* markerInfo);
         private static vkCmdDebugMarkerBeginEXTDelegate vkCmdDebugMarkerBeginEXT(CommandBuffer commandBuffer) => GetProc<vkCmdDebugMarkerBeginEXTDelegate>(commandBuffer, nameof(vkCmdDebugMarkerBeginEXT));
 
@@ -98,6 +109,9 @@ namespace VulkanCore.Ext
 
         private delegate void vkCmdSetDiscardRectangleEXTDelegate(IntPtr commandBuffer, int firstDiscardRectangle, int discardRectangleCount, Rect2D* discardRectangles);
         private static vkCmdSetDiscardRectangleEXTDelegate vkCmdSetDiscardRectangleEXT(CommandBuffer commandBuffer) => GetProc<vkCmdSetDiscardRectangleEXTDelegate>(commandBuffer, nameof(vkCmdSetDiscardRectangleEXT));
+
+        private delegate void vkCmdSetSampleLocationsEXTDelegate(IntPtr commandBuffer, SampleLocationsInfoExt* sampleLocationsInfo);
+        private static vkCmdSetSampleLocationsEXTDelegate vkCmdSetSampleLocationsEXT(CommandBuffer commandBuffer) => GetProc<vkCmdSetSampleLocationsEXTDelegate>(commandBuffer, nameof(vkCmdSetSampleLocationsEXT));
 
         private static TDelegate GetProc<TDelegate>(CommandBuffer commandBuffer, string name) where TDelegate : class => commandBuffer.Parent.Parent.GetProc<TDelegate>(name);
     }
@@ -148,6 +162,65 @@ namespace VulkanCore.Ext
             native.Next = IntPtr.Zero;
             native.MarkerName = markerName;
             native.Color = Color;
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying a set of sample locations.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SampleLocationsInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies the number of sample locations per pixel.
+        /// </summary>
+        public SampleCounts SampleLocationsPerPixel;
+        /// <summary>
+        /// The size of the sample location grid to select custom sample locations for.
+        /// </summary>
+        public Extent2D SampleLocationGridSize;
+        /// <summary>
+        /// The number of sample locations in <see cref="SampleLocations"/>.
+        /// </summary>
+        public int SampleLocationsCount;
+        /// <summary>
+        /// An array of <see cref="SampleLocationExt"/> structures.
+        /// </summary>
+        public IntPtr SampleLocations;
+    }
+
+    /// <summary>
+    /// Structure specifying the coordinates of a sample location.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SampleLocationExt
+    {
+        /// <summary>
+        /// The horizontal coordinate of the sample's location.
+        /// </summary>
+        public float X;
+        /// <summary>
+        /// The vertical coordinate of the sample's location.
+        /// </summary>
+        public float Y;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SampleLocationExt"/> structure.
+        /// </summary>
+        /// <param name="x">The horizontal coordinate of the sample's location.</param>
+        /// <param name="y">The vertical coordinate of the sample's location.</param>
+        public SampleLocationExt(float x, float y)
+        {
+            X = x;
+            Y = y;
         }
     }
 }

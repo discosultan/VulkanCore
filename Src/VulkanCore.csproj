@@ -1,13 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
+    <Version>1.0.0-alpha29</Version>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>1.0.0-alpha28</Version>
-    <Description>Vulkan bindings for .NET Standard</Description>
     <Authors>discosultan</Authors>
-    <Company>discosultan</Company>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <Description>Vulkan bindings for .NET Standard</Description>
     <PackageProjectUrl>https://github.com/discosultan/VulkanCore</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>

@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Structure type enumerant.
@@ -104,12 +104,7 @@
         DeviceGroupCommandBufferBeginInfoKhx = 1000060004,
         DeviceGroupSubmitInfoKhx = 1000060005,
         DeviceGroupBindSparseInfoKhx = 1000060006,
-        DeviceGroupPresentCapabilitiesKhx = 1000060007,
-        ImageSwapchainCreateInfoKhx = 1000060008,
-        BindImageMemorySwapchainInfoKhx = 1000060009,
         AcquireNextImageInfoKhx = 1000060010,
-        DeviceGroupPresentInfoKhx = 1000060011,
-        DeviceGroupSwapchainCreateInfoKhx = 1000060012,
         ValidationFlagsExt = 1000061000,
         VISurfaceCreateInfoNN = 1000062000,
         PhysicalDeviceGroupPropertiesKhx = 1000070000,
@@ -180,6 +175,11 @@
         MemoryDedicatedAllocateInfoKhr = 1000127001,
         PhysicalDeviceSamplerFilterMinmaxPropertiesExt = 1000130000,
         SamplerReductionModeCreateInfoExt = 1000130001,
+        SampleLocationsInfoExt = 1000143000,
+        RenderPassSampleLocationsBeginInfoExt = 1000143001,
+        PipelineSampleLocationsStateCreateInfoExt = 1000143002,
+        PhysicalDeviceSampleLocationsPropertiesExt = 1000143003,
+        MultisamplePropertiesExt = 1000143004,
         BufferMemoryRequirementsInfo2Khr = 1000146000,
         ImageMemoryRequirementsInfo2Khr = 1000146001,
         ImageSparseMemoryRequirementsInfo2Khr = 1000146002,
@@ -189,6 +189,8 @@
         PhysicalDeviceBlendOperationAdvancedPropertiesExt = 1000148001,
         PipelineColorBlendAdvancedStateCreateInfoExt = 1000148002,
         PipelineCoverageToColorStateCreateInfoNV = 1000149000,
-        PipelineCoverageModulationStateCreateInfoNV = 1000152000
+        PipelineCoverageModulationStateCreateInfoNV = 1000152000,
+        ValidationCacheCreateInfoExt = 1000160000,
+        ShaderModuleValidationCacheCreateInfoExt = 1000160001
     }
 }
