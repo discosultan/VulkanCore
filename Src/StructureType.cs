@@ -191,6 +191,13 @@ namespace VulkanCore
         PipelineCoverageToColorStateCreateInfoNV = 1000149000,
         PipelineCoverageModulationStateCreateInfoNV = 1000152000,
         ValidationCacheCreateInfoExt = 1000160000,
-        ShaderModuleValidationCacheCreateInfoExt = 1000160001
+        ShaderModuleValidationCacheCreateInfoExt = 1000160001,
+        // TODO: The entries below are for compatibility reasons.
+        // TODO: Remove when their corresponding structures have been removed from vk.xml.
+        DeviceGroupPresentCapabilitiesKhx = 1000060007,
+        ImageSwapchainCreateInfoKhx = 1000060008,
+        BindImageMemorySwapchainInfoKhx = 1000060009,
+        DeviceGroupPresentInfoKhx = 1000060011,
+        DeviceGroupSwapchainCreateInfoKhx = 1000060012
     }
 }

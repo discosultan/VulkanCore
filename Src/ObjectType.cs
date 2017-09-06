@@ -43,6 +43,7 @@ namespace VulkanCore
         DebugReportCallbackExt = 1000011000,
         DescriptorUpdateTemplateKhr = 1000085000,
         ObjectTableNvx = 1000086000,
-        IndirectCommandsLayoutNvx = 1000086001
+        IndirectCommandsLayoutNvx = 1000086001,
+        ValidationCacheExt = 1000160000
     }
 }

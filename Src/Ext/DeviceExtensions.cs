@@ -153,6 +153,20 @@ namespace VulkanCore.Ext
                 vkSetHdrMetadataEXT(device)(device, swapchainCount, swapchainPtrs, metadataPtr);
         }
 
+        /// <summary>
+        /// Creates a new validation cache.
+        /// </summary>
+        /// <param name="device">The logical device that creates the validation cache object.</param>
+        /// <param name="createInfo">The initial parameters for the validation cache object.</param>
+        /// <param name="allocator">Controls host memory allocation.</param>
+        /// <returns>Handle in which the resulting validation cache object is returned.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static ValidationCacheExt CreateValidationCacheExt(this Device device,
+            ValidationCacheCreateInfoExt createInfo, AllocationCallbacks? allocator)
+        {
+            return new ValidationCacheExt(device, &createInfo, ref allocator);
+        }
+
         private delegate Result vkDebugMarkerSetObjectNameEXTDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
         private static vkDebugMarkerSetObjectNameEXTDelegate vkDebugMarkerSetObjectNameEXT(Device device) => device.GetProc<vkDebugMarkerSetObjectNameEXTDelegate>(nameof(vkDebugMarkerSetObjectNameEXT));
 

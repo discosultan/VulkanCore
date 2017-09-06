@@ -223,4 +223,88 @@ namespace VulkanCore.Ext
             Y = y;
         }
     }
+
+    /// <summary>
+    /// Structure specifying the sample locations state to use in the initial layout transition of attachments.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct AttachmentSampleLocationsExt
+    {
+        /// <summary>
+        /// The index of the attachment for which the sample locations state is provided.
+        /// </summary>
+        public int AttachmentIndex;
+        /// <summary>
+        /// The sample locations state to use for the layout transition of the given attachment from
+        /// the initial layout of the attachment to the image layout specified for the attachment in
+        /// the first subpass using it.
+        /// </summary>
+        public SampleLocationsInfoExt SampleLocationsInfo;
+    }
+
+    /// <summary>
+    /// Structure specifying the sample locations state to use for layout transitions of
+    /// attachments performed after a given subpass.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SubpassSampleLocationsExt
+    {
+        /// <summary>
+        /// Is the index of the subpass for which the sample locations state is provided.
+        /// </summary>
+        public int SubpassIndex;
+        /// <summary>
+        /// Is the sample locations state to use for the layout transition of the depth/stencil
+        /// attachment away from the image layout the attachment is used with in the subpass
+        /// specified in <c>SubpassIndex</c>.
+        /// </summary>
+        public SampleLocationsInfoExt SampleLocationsInfo;
+    }
+
+    /// <summary>
+    /// Structure specifying sample locations to use for the layout transition of custom sample
+    /// locations compatible depth/stencil attachments.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RenderPassSampleLocationsBeginInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of elements in the <see cref="AttachmentInitialSampleLocations"/> array.
+        /// </summary>
+        public int AttachmentInitialSampleLocationsCount;
+        /// <summary>
+        /// Is an array of <see cref="AttachmentInitialSampleLocationsCount"/><see
+        /// cref="AttachmentSampleLocationsExt"/> structures specifying the attachment indices and
+        /// their corresponding sample location state. Each element of <see
+        /// cref="AttachmentInitialSampleLocations"/> can specify the sample location state to use in
+        /// the automatic layout transition performed to transition a depth/stencil attachment from
+        /// the initial layout of the attachment to the image layout specified for the attachment in
+        /// the first subpass using it.
+        /// </summary>
+        public IntPtr AttachmentInitialSampleLocations;
+        public SubpassSampleLocationsExt SubpassSampleLocations;
+    }
+
+    /// <summary>
+    /// Structure describing sample location limits that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct PhysicalDeviceSampleLocationsPropertiesExt
+    {
+        public StructureType Type;
+        public IntPtr Next;
+        public int SampleLocationSampleCounts;
+        public Extent2D MaxSampleLocationGridSize;
+        public fixed float SampleLocationCoordinateRange[2];
+        public int SampleLocationSubPixelBits;
+        public Bool VariableSampleLocations;
+    }
 }

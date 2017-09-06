@@ -2040,12 +2040,13 @@ namespace VulkanCore
         ViewportWScalingNV = 1000087000,
         DiscardRectangleExt = 1000099000,
         /// <summary>
-        /// Specifies that the <c>SampleLocationsInfo</c> state in <see
-        /// cref="PipelineSampleLocationsStateCreateInfoExt"/> will be ignored and must be set
-        /// dynamically with flink:vkCmdSetSampleLocationsEXT before any draw or clear commands.
-        /// Enabling custom sample locations is still indicated by the <c>SampleLocationsEnable</c>
-        /// member of <see cref="PipelineSampleLocationsStateCreateInfoExt"/>.
+        /// Specifies that the <see
+        /// cref="Ext.PipelineSampleLocationsStateCreateInfoExt.SampleLocationsInfo"/> state will be
+        /// ignored and must be set dynamically with <see
+        /// cref="Ext.CommandBufferExtensions.CmdSetSampleLocationsExt"/> before any draw or clear
+        /// commands. Enabling custom sample locations is still indicated by the <see
+        /// cref="Ext.PipelineSampleLocationsStateCreateInfoExt.SampleLocationsEnable"/> member.
         /// </summary>
-        SampleLocationsExt = 1000143000 // TODO
+        SampleLocationsExt = 1000143000
     }
 }

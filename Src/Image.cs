@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -289,7 +289,12 @@ namespace VulkanCore
         /// cref="Khx.DeviceExtensions.BindImageMemory2Khx"/>. This flag also has the effect of
         /// making the image use the standard sparse image block dimensions.
         /// </summary>
-        BindSfrKhx = 1 << 6
+        BindSfrKhx = 1 << 6,
+        /// <summary>
+        /// Specifies that an image with a depth or depth/stencil format can be used with custom
+        /// sample locations when used as a depth/stencil attachment.
+        /// </summary>
+        SampleLocationsCompatibleDepthExt = 1 << 12
     }
 
     /// <summary>
