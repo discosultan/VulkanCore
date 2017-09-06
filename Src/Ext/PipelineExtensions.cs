@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Ext
@@ -206,5 +206,31 @@ namespace VulkanCore.Ext
         /// Specifies that all components are multiplied by the modulation factor.
         /// </summary>
         Rgba = 3
+    }
+
+    /// <summary>
+    /// Structure specifying sample locations for a pipeline.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineSampleLocationsStateCreateInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Controls whether custom sample locations are used. If <c>false</c>, the default sample
+        /// locations are used and the values specified in <see cref="SampleLocationsInfo"/> are ignored.
+        /// </summary>
+        public Bool SampleLocationsEnable;
+        /// <summary>
+        /// The sample locations to use during rasterization if <see cref="SampleLocationsEnable"/>
+        /// is <c>true</c> and the graphics pipeline isn't created with <see cref="DynamicState.SampleLocationsExt"/>.
+        /// </summary>
+        public SampleLocationsInfoExt SampleLocationsInfo;
     }
 }

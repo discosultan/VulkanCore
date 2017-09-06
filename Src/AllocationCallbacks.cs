@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -255,7 +255,8 @@ namespace VulkanCore
         /// </summary>
         Object = 1,
         /// <summary>
-        /// Specifies that the allocation is scoped to the lifetime of a <see cref="PipelineCache"/> object.
+        /// Specifies that the allocation is scoped to the lifetime of a <see cref="PipelineCache"/>
+        /// or <see cref="Ext.ValidationCacheExt"/> object.
         /// </summary>
         Cache = 2,
         /// <summary>
