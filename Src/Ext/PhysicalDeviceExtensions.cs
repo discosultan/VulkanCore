@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
@@ -48,11 +48,33 @@ namespace VulkanCore.Ext
             return new DisplayKhr(physicalDevice, handle);
         }
 
+        /// <summary>
+        /// Report sample count specific multisampling capabilities of a physical device.
+        /// </summary>
+        /// <param name="physicalDevice">
+        /// The physical device from which to query the additional multisampling capabilities.
+        /// </param>
+        /// <param name="samples">The sample count to query the capabilities for.</param>
+        /// <returns>
+        /// A structure in which information about the additional multisampling capabilities specific
+        /// to the sample count is returned.
+        /// </returns>
+        public static MultisamplePropertiesExt GetMultisamplePropertiesExt(this PhysicalDevice physicalDevice,
+            SampleCounts samples)
+        {
+            MultisamplePropertiesExt properties;
+            vkGetPhysicalDeviceMultisamplePropertiesEXT(physicalDevice)(physicalDevice, samples, &properties);
+            return properties;
+        }
+
         private delegate Result vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate(IntPtr physicalDevice, long surface, SurfaceCapabilities2Ext* surfaceCapabilities);
         private static vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate vkGetPhysicalDeviceSurfaceCapabilities2EXT(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceSurfaceCapabilities2EXTDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceSurfaceCapabilities2EXT));
 
         private delegate Result vkGetRandROutputDisplayEXTDelegate(IntPtr physicalDevice, IntPtr* dpy, IntPtr rrOutput, long* display);
         private static vkGetRandROutputDisplayEXTDelegate vkGetRandROutputDisplayEXT(PhysicalDevice physicalDevice) => GetProc<vkGetRandROutputDisplayEXTDelegate>(physicalDevice, nameof(vkGetRandROutputDisplayEXT));
+
+        private delegate void vkGetPhysicalDeviceMultisamplePropertiesEXTDelegate(IntPtr physicalDevice, SampleCounts samples, MultisamplePropertiesExt* multisampleProperties);
+        private static vkGetPhysicalDeviceMultisamplePropertiesEXTDelegate vkGetPhysicalDeviceMultisamplePropertiesEXT(PhysicalDevice physicalDevice) => GetProc<vkGetPhysicalDeviceMultisamplePropertiesEXTDelegate>(physicalDevice, nameof(vkGetPhysicalDeviceMultisamplePropertiesEXT));
 
         private static TDelegate GetProc<TDelegate>(PhysicalDevice physicalDevice, string name) where TDelegate : class => physicalDevice.Parent.GetProc<TDelegate>(name);
     }
@@ -209,5 +231,25 @@ namespace VulkanCore.Ext
         public Bool AdvancedBlendNonPremultipliedDstColor;
         public Bool AdvancedBlendCorrelatedOverlap;
         public Bool AdvancedBlendAllOperations;
+    }
+
+    /// <summary>
+    /// Structure returning information about sample count specific additional multisampling capabilities.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MultisamplePropertiesExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The maximum size of the pixel grid in which sample locations can vary.
+        /// </summary>
+        public Extent2D MaxSampleLocationGridSize;
     }
 }

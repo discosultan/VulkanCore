@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Ext
@@ -364,6 +364,10 @@ namespace VulkanCore.Ext
         /// Specifies a <see cref="Nvx.IndirectCommandsLayoutNvx"/>.
         /// </summary>
         IndirectCommandsLayoutNvx = 32,
+        /// <summary>
+        /// Specifies a <see cref="ValidationCacheExt"/>.
+        /// </summary>
+        ValidationCache = 33,
         /// <summary>
         /// Specifies a <see cref="Khr.DescriptorUpdateTemplateKhr"/>.
         /// </summary>
