@@ -44,6 +44,7 @@ namespace VulkanCore
         DescriptorUpdateTemplateKhr = 1000085000,
         ObjectTableNvx = 1000086000,
         IndirectCommandsLayoutNvx = 1000086001,
+        SamplerYcbcrConversionKhr = 1000156000,
         ValidationCacheExt = 1000160000
     }
 }

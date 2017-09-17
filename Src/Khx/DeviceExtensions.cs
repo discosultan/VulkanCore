@@ -38,42 +38,6 @@ namespace VulkanCore.Khx
         }
 
         /// <summary>
-        /// Bind device memory to buffer objects.
-        /// </summary>
-        /// <param name="device">The logical device that owns the buffers and memory.</param>
-        /// <param name="bindInfos">Structures describing buffers and memory to bind.</param>
-        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static void BindBufferMemory2Khx(this Device device, params BindBufferMemoryInfoKhx[] bindInfos)
-        {
-            int count = bindInfos?.Length ?? 0;
-            var nativeBindInfos = stackalloc BindBufferMemoryInfoKhx.Native[count];
-            for (int i = 0; i < count; i++)
-                bindInfos[i].ToNative(out nativeBindInfos[i]);
-            Result result = vkBindBufferMemory2KHX(device)(device, count, nativeBindInfos);
-            for (int i = 0; i < count; i++)
-                nativeBindInfos[i].Free();
-            VulkanException.ThrowForInvalidResult(result);
-        }
-
-        /// <summary>
-        /// Bind device memory to image objects.
-        /// </summary>
-        /// <param name="device">The logical device that owns the images and memory.</param>
-        /// <param name="bindInfos">Structures describing images and memory to bind.</param>
-        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public static void BindImageMemory2Khx(this Device device, params BindImageMemoryInfoKhx[] bindInfos)
-        {
-            int count = bindInfos?.Length ?? 0;
-            var nativeBindInfos = stackalloc BindImageMemoryInfoKhx.Native[count];
-            for (int i = 0; i < count; i++)
-                bindInfos[i].ToNative(out nativeBindInfos[i]);
-            Result result = vkBindImageMemory2KHX(device)(device, count, nativeBindInfos);
-            for (int i = 0; i < count; i++)
-                nativeBindInfos[i].Free();
-            VulkanException.ThrowForInvalidResult(result);
-        }
-
-        /// <summary>
         /// Query present capabilities from other physical devices.
         /// <para>
         /// A logical device that represents multiple physical devices may support presenting from
@@ -128,12 +92,6 @@ namespace VulkanCore.Khx
         private delegate void vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate(IntPtr device, int heapIndex, int localDeviceIndex, int remoteDeviceIndex, PeerMemoryFeaturesKhx* peerMemoryFeatures);
         private static vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate vkGetDeviceGroupPeerMemoryFeaturesKHX(Device device) => device.GetProc<vkGetDeviceGroupPeerMemoryFeaturesKHXDelegate>(nameof(vkGetDeviceGroupPeerMemoryFeaturesKHX));
 
-        private delegate Result vkBindBufferMemory2KHXDelegate(IntPtr device, int bindInfoCount, BindBufferMemoryInfoKhx.Native* bindInfos);
-        private static vkBindBufferMemory2KHXDelegate vkBindBufferMemory2KHX(Device device) => device.GetProc<vkBindBufferMemory2KHXDelegate>(nameof(vkBindBufferMemory2KHX));
-
-        private delegate Result vkBindImageMemory2KHXDelegate(IntPtr device, int bindInfoCount, BindImageMemoryInfoKhx.Native* bindInfos);
-        private static vkBindImageMemory2KHXDelegate vkBindImageMemory2KHX(Device device) => device.GetProc<vkBindImageMemory2KHXDelegate>(nameof(vkBindImageMemory2KHX));
-
         private delegate Result vkGetDeviceGroupPresentCapabilitiesKHXDelegate(IntPtr device, DeviceGroupPresentCapabilitiesKhx* deviceGroupPresentCapabilities);
         private static vkGetDeviceGroupPresentCapabilitiesKHXDelegate vkGetDeviceGroupPresentCapabilitiesKHX(Device device) => device.GetProc<vkGetDeviceGroupPresentCapabilitiesKHXDelegate>(nameof(vkGetDeviceGroupPresentCapabilitiesKHX));
 
@@ -154,204 +112,21 @@ namespace VulkanCore.Khx
         /// Indicates that the memory can be accessed as the source of a
         /// <c>CommandBuffer.CmdCopy*</c> command.
         /// </summary>
-        PeerMemoryFeatureCopySrcKhx = 1 << 0,
+        CopySrcKhx = 1 << 0,
         /// <summary>
         /// Indicates that the memory can be accessed as the destination of a
         /// <c>CommandBuffer.CmdCopy*</c> command.
         /// </summary>
-        PeerMemoryFeatureCopyDstKhx = 1 << 1,
+        CopyDstKhx = 1 << 1,
         /// <summary>
-        /// Indicates that the memory can be read as any other memory access type.
+        /// Indicates that the memory can be read as any memory access type.
         /// </summary>
-        PeerMemoryFeatureGenericSrcKhx = 1 << 2,
+        GenericSrcKhx = 1 << 2,
         /// <summary>
-        /// Indicates that the memory can be written as any other memory access type.
+        /// Indicates that the memory can be written as any memory access type.
         /// <para>Shader atomics are considered to be writes.</para>
         /// </summary>
-        PeerMemoryFeatureGenericDstKhx = 1 << 3
-    }
-
-    /// <summary>
-    /// Structure specifying how to bind a buffer to memory.
-    /// </summary>
-    public struct BindBufferMemoryInfoKhx
-    {
-        /// <summary>
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
-        /// </summary>
-        public IntPtr Next;
-        /// <summary>
-        /// The <see cref="VulkanCore.Buffer"/> to be attached to memory.
-        /// </summary>
-        public long Buffer;
-        /// <summary>
-        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
-        /// </summary>
-        public long Memory;
-        /// <summary>
-        /// The start offset of the region of memory which is to be bound to the buffer. The number
-        /// of bytes returned in the <see cref="MemoryRequirements.Size"/> member in memory, starting
-        /// from <see cref="MemoryOffset"/> bytes, will be bound to the specified buffer.
-        /// </summary>
-        public long MemoryOffset;
-        /// <summary>
-        /// An array of device indices.
-        /// </summary>
-        public int[] DeviceIndices;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BindBufferMemoryInfoKhx"/> structure.
-        /// </summary>
-        /// <param name="buffer">The <see cref="VulkanCore.Buffer"/> to be attached to memory.</param>
-        /// <param name="memory">
-        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
-        /// </param>
-        /// <param name="memoryOffset">
-        /// The start offset of the region of memory which is to be bound to the buffer. The number
-        /// of bytes returned in the <see cref="MemoryRequirements.Size"/> member in memory, starting
-        /// from <see cref="MemoryOffset"/> bytes, will be bound to the specified buffer.
-        /// </param>
-        /// <param name="deviceIndices">An array of device indices.</param>
-        /// <param name="next">
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
-        /// </param>
-        public BindBufferMemoryInfoKhx(Buffer buffer, DeviceMemory memory, long memoryOffset,
-            int[] deviceIndices, IntPtr next = default(IntPtr))
-        {
-            Next = next;
-            Buffer = buffer;
-            Memory = memory;
-            MemoryOffset = memoryOffset;
-            DeviceIndices = deviceIndices;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct Native
-        {
-            public StructureType Type;
-            public IntPtr Next;
-            public long Buffer;
-            public long Memory;
-            public long MemoryOffset;
-            public int DeviceIndexCount;
-            public IntPtr DeviceIndices;
-
-            public void Free()
-            {
-                Interop.Free(DeviceIndices);
-            }
-        }
-
-        internal void ToNative(out Native native)
-        {
-            native.Type = StructureType.BindBufferMemoryInfoKhx;
-            native.Next = Next;
-            native.Buffer = Buffer;
-            native.Memory = Memory;
-            native.MemoryOffset = MemoryOffset;
-            native.DeviceIndexCount = DeviceIndices?.Length ?? 0;
-            native.DeviceIndices = Interop.Struct.AllocToPointer(DeviceIndices);
-        }
-    }
-
-    /// <summary>
-    /// Structure specifying how to bind an image to memory.
-    /// </summary>
-    public struct BindImageMemoryInfoKhx
-    {
-        /// <summary>
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
-        /// </summary>
-        public IntPtr Next;
-        /// <summary>
-        /// The <see cref="VulkanCore.Image"/> to be attached to memory.
-        /// </summary>
-        public long Image;
-        /// <summary>
-        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
-        /// </summary>
-        public long Memory;
-        /// <summary>
-        /// The start offset of the region of memory which is to be bound to the image. If the length
-        /// of <see cref="SFRRects"/> is zero, the number of bytes returned in the <see
-        /// cref="MemoryRequirements.Size"/> member in memory, starting from <see
-        /// cref="MemoryOffset"/> bytes, will be bound to the specified image.
-        /// </summary>
-        public long MemoryOffset;
-        /// <summary>
-        /// An array of device indices.
-        /// </summary>
-        public int[] DeviceIndices;
-        /// <summary>
-        /// An array of rectangles describing which regions of the image are attached to each
-        /// instance of memory.
-        /// </summary>
-        public Rect2D[] SFRRects;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BindImageMemoryInfoKhx"/> structure.
-        /// </summary>
-        /// <param name="image">The <see cref="VulkanCore.Image"/> to be attached to memory.</param>
-        /// <param name="memory">
-        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
-        /// </param>
-        /// <param name="memoryOffset">
-        /// The start offset of the region of memory which is to be bound to the image. If the length
-        /// of <see cref="SFRRects"/> is zero, the number of bytes returned in the <see
-        /// cref="MemoryRequirements.Size"/> member in memory, starting from <see
-        /// cref="MemoryOffset"/> bytes, will be bound to the specified image.
-        /// </param>
-        /// <param name="deviceIndices">An array of device indices.</param>
-        /// <param name="sfrRects">
-        /// An array of rectangles describing which regions of the image are attached to each
-        /// instance of memory.
-        /// </param>
-        /// <param name="next">
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
-        /// </param>
-        public BindImageMemoryInfoKhx(Image image, DeviceMemory memory, long memoryOffset,
-            int[] deviceIndices, Rect2D[] sfrRects = null, IntPtr next = default(IntPtr))
-        {
-            Next = next;
-            Image = image;
-            Memory = memory;
-            MemoryOffset = memoryOffset;
-            DeviceIndices = deviceIndices;
-            SFRRects = sfrRects;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct Native
-        {
-            public StructureType Type;
-            public IntPtr Next;
-            public long Image;
-            public long Memory;
-            public long MemoryOffset;
-            public int DeviceIndexCount;
-            public IntPtr DeviceIndices;
-            public int SFRRectCount;
-            public IntPtr SFRRects;
-
-            public void Free()
-            {
-                Interop.Free(DeviceIndices);
-                Interop.Free(SFRRects);
-            }
-        }
-
-        internal void ToNative(out Native native)
-        {
-            native.Type = StructureType.BindBufferMemoryInfoKhx;
-            native.Next = Next;
-            native.Image = Image;
-            native.Memory = Memory;
-            native.MemoryOffset = MemoryOffset;
-            native.DeviceIndexCount = DeviceIndices?.Length ?? 0;
-            native.DeviceIndices = Interop.Struct.AllocToPointer(DeviceIndices);
-            native.SFRRectCount = SFRRects?.Length ?? 0;
-            native.SFRRects = Interop.Struct.AllocToPointer(SFRRects);
-        }
+        GenericDstKhx = 1 << 3
     }
 
     /// <summary>
@@ -689,5 +464,38 @@ namespace VulkanCore.Khx
             DeviceMasks = deviceMasks;
             Mode = mode;
         }
+    }
+
+    /// <summary>
+    /// Structure specifying device within a group to bind to.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BindImageMemoryDeviceGroupInfoKhx
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of elements in <see cref="DeviceIndices"/>.
+        /// </summary>
+        public int DeviceIndexCount;
+        /// <summary>
+        /// A pointer to an array of device indices.
+        /// </summary>
+        public IntPtr DeviceIndices;
+        /// <summary>
+        /// The number of elements in <see cref="SFRRects"/>.
+        /// </summary>
+        public int SFRRectCount;
+        /// <summary>
+        /// A pointer to an array of rectangles describing which regions of the image are attached to
+        /// each instance of memory.
+        /// </summary>
+        public Rect2D SFRRects;
     }
 }

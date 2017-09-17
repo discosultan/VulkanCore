@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -1618,7 +1618,54 @@ namespace VulkanCore
         /// Specifies <see cref="Image"/> can be used as a sampled image with a min or max <see cref="Ext.SamplerReductionModeExt"/>.
         /// <para>This bit must only be exposed for formats that also support the <see cref="SampledImage"/>.</para>
         /// </summary>
-        SampledImageFilterMinmaxExt = 1 << 16
+        SampledImageFilterMinmaxExt = 1 << 16,
+        /// <summary>
+        /// Specifies that an application can define a sampler Y'C~B~C~R~ conversion using this
+        /// format as a source, and that an image of this format can be used with a <see
+        /// cref="Khr.SamplerYcbcrConversionCreateInfoKhr"/><c>XChromaOffset</c> and/or
+        /// <c>YChromaOffset</c> of <see cref="Khr.ChromaLocationKhr.Midpoint"/>. Otherwise both
+        /// <c>XChromaOffset</c> and <c>YChromaOffset</c> must be <see
+        /// cref="Khr.ChromaLocationKhr.CositedEven"/>. If a format does not incorporate chroma
+        /// downsampling (it is not a "`422`" or "`420`" format) but the implementation supports
+        /// sampler Y'C~B~C~R~ conversion for this format, the implementation must set <see cref="Khr.MidpointChromaSamplesKhr"/>.
+        /// </summary>
+        MidpointChromaSamplesKhr = 1 << 17,
+        /// <summary>
+        /// Specifies that the format can do linear sampler filtering (min/magFilter) whilst sampler
+        /// Y'C~B~C~R~ conversion is enabled.
+        /// </summary>
+        SampledImageYcbcrConversionLinearFilterKhr = 1 << 18,
+        /// <summary>
+        /// Specifies that the format can have different chroma, min, and mag filters.
+        /// </summary>
+        SampledImageYcbcrConversionSeparateReconstructionFilterKhr = 1 << 19,
+        /// <summary>
+        /// Specifies that reconstruction is explicit, as described in
+        /// textures-chroma-reconstruction. If this bit is not present, reconstruction is implicit by default.
+        /// </summary>
+        SampledImageYcbcrConversionChromaReconstructionExplicitKhr = 1 << 20,
+        /// <summary>
+        /// Specifies that reconstruction can be forcibly made explicit by setting <see
+        /// cref="Khr.VkSamplerYcbcrConversionCreateInfoKHR::pname:forceExplicitReconstruction"/> to True.
+        /// </summary>
+        SampledImageYcbcrConversionChromaReconstructionExplicitForceableKhr = 1 << 21,
+        /// <summary>
+        /// Specifies that a multi-planar image can have the <see
+        /// cref="ImageCreateFlags.DisjointKhr"/> set during image creation. An implementation must
+        /// not set <see cref="DisjointKhr"/> for single-plane Formats.
+        /// </summary>
+        DisjointKhr = 1 << 22,
+        /// <summary>
+        /// Specifies that an application can define a sampler Y'C~B~C~R~ conversion using this
+        /// format as a source, and that an image of this format can be used with a <see
+        /// cref="Khr.SamplerYcbcrConversionCreateInfoKhr"/><c>XChromaOffset</c> and/or
+        /// <c>YChromaOffset</c> of <see cref="Khr.ChromaLocationKhr.CositedEven"/>. Otherwise both
+        /// <c>XChromaOffset</c> and <c>YChromaOffset</c> must be <see
+        /// cref="Khr.ChromaLocationKhr.Midpoint"/>. If neither <see cref="CositedChromaSamplesKhr"/>
+        /// nor <see cref="MidpointChromaSamplesKhr"/> is set, the application must not define a
+        /// sampler Y'C~B~C~R~ conversion using this format as a source.
+        /// </summary>
+        CositedChromaSamplesKhr = 1 << 23
     }
 
     /// <summary>

@@ -577,6 +577,27 @@ namespace VulkanCore
             /// internal validation operations across multiple runs of a Vulkan application.
             /// </summary>
             public const string ExtValidationCache = "VK_EXT_validation_cache";
+            /// <summary>
+            /// This extension adds a collection of minor features that were intentionally left out
+            /// or overlooked from the original Vulkan 1.0 release.
+            /// </summary>
+            public const string KhrMaintenance2 = "VK_KHR_maintenance2";
+            /// <summary>
+            /// This extension allows an application to provide the list of all formats that can be
+            /// used with an image when it is created.
+            /// </summary>
+            public const string KhrImageFormatList = "VK_KHR_image_format_list";
+            /// <summary>
+            /// This extension provides the ability to perform specified color space conversions
+            /// during texture sampling operations.
+            /// </summary>
+            public const string KhrSamplerYcbcrConversion = "VK_KHR_sampler_ycbcr_conversion";
+            /// <summary>
+            /// This extension provides versions of <see cref="Buffer.BindMemory"/> and <see
+            /// cref="Image.BindMemory"/> that allow multiple bindings to be performed at once, and
+            /// are extensible.
+            /// </summary>
+            public const string KhrBindMemory2 = "VK_KHR_bind_memory2";
         }
 
         /// <summary>

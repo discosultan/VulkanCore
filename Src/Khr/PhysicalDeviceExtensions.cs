@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Ext;
 using static VulkanCore.Constant;
@@ -604,16 +604,15 @@ namespace VulkanCore.Khr
         /// </summary>
         public SurfaceTransformsKhr SupportedTransforms;
         /// <summary>
-        /// Indicates the surface's current transform relative to the presentation engine's natural
-        /// orientation.
+        /// Indicates the surface's current transform relative to the presentation engine's natural orientation.
         /// </summary>
         public SurfaceTransformsKhr CurrentTransform;
         /// <summary>
-        /// A bitmask of <see cref="CompositeAlphasKhr"/>, representing the alpha compositing
-        /// modes supported by the presentation engine for the surface on the specified device, and
-        /// at least one bit will be set. Opaque composition can be achieved in any alpha compositing
-        /// mode by either using an image format that has no alpha component, or by ensuring
-        /// that all pixels in the presentable images have an alpha value of 1.0.
+        /// A bitmask of <see cref="CompositeAlphasKhr"/>, representing the alpha compositing modes
+        /// supported by the presentation engine for the surface on the specified device, and at
+        /// least one bit will be set. Opaque composition can be achieved in any alpha compositing
+        /// mode by either using an image format that has no alpha component, or by ensuring that all
+        /// pixels in the presentable images have an alpha value of 1.0.
         /// </summary>
         public CompositeAlphasKhr SupportedCompositeAlpha;
         /// <summary>
@@ -772,8 +771,7 @@ namespace VulkanCore.Khr
     public struct DisplayPlaneCapabilitiesKhr
     {
         /// <summary>
-        /// A bitmask of <see cref="DisplayPlaneAlphasKhr"/> describing the supported alpha
-        /// blending modes.
+        /// A bitmask of <see cref="DisplayPlaneAlphasKhr"/> describing the supported alpha blending modes.
         /// </summary>
         public DisplayPlaneAlphasKhr SupportedAlpha;
         /// <summary>
@@ -1110,8 +1108,8 @@ namespace VulkanCore.Khr
         /// </summary>
         public ImageUsages SupportedUsageFlags;
         /// <summary>
-        /// Must not include <see cref="SurfaceCountersExt.VBlank"/> unless the surface queried
-        /// is a display surface.
+        /// Must not include <see cref="SurfaceCountersExt.VBlank"/> unless the surface queried is a
+        /// display surface.
         /// </summary>
         public SurfaceCountersExt SupportedSurfaceCounters;
     }
@@ -1461,12 +1459,12 @@ namespace VulkanCore.Khr
     public enum ExternalMemoryHandleTypesKhr
     {
         /// <summary>
-        /// Specifies a POSIX file descriptor handle that has only limited valid usage outside of Vulkan and
-        /// other compatible APIs.
+        /// Specifies a POSIX file descriptor handle that has only limited valid usage outside of
+        /// Vulkan and other compatible APIs.
         /// <para>
-        /// It must be compatible with the POSIX system calls <c>dup</c>, <c>dup2</c>, <c>close</c>, and the
-        /// non-standard system call <c>dup3</c>. Additionally, it must be transportable over a socket
-        /// using an <c>SCM_RIGHTS</c> control message.
+        /// It must be compatible with the POSIX system calls <c>dup</c>, <c>dup2</c>, <c>close</c>,
+        /// and the non-standard system call <c>dup3</c>. Additionally, it must be transportable over
+        /// a socket using an <c>SCM_RIGHTS</c> control message.
         /// </para>
         /// <para>
         /// It owns a reference to the underlying memory resource represented by its Vulkan memory object.
@@ -1474,7 +1472,8 @@ namespace VulkanCore.Khr
         /// </summary>
         OpaqueFd = 1 << 0,
         /// <summary>
-        /// Specifies an NT handle that has only limited valid usage outside of Vulkan and other compatible APIs.
+        /// Specifies an NT handle that has only limited valid usage outside of Vulkan and other
+        /// compatible APIs.
         /// <para>
         /// It must: be compatible with the functions <c>DuplicateHandle</c>, <c>CloseHandle</c>,
         /// <c>CompareObjectHandles</c>, <c>GetHandleInformation</c>, and <c>SetHandleInformation</c>.
@@ -1485,8 +1484,8 @@ namespace VulkanCore.Khr
         /// </summary>
         OpaqueWin32 = 1 << 1,
         /// <summary>
-        /// Specifies a global share handle that has only limited valid usage outside of Vulkan and other
-        /// compatible APIs.
+        /// Specifies a global share handle that has only limited valid usage outside of Vulkan and
+        /// other compatible APIs.
         /// <para>It is not compatible with any native APIs.</para>
         /// <para>
         /// It does not own own a reference to the underlying memory resource represented its Vulkan
@@ -1496,14 +1495,14 @@ namespace VulkanCore.Khr
         /// </summary>
         OpaqueWin32Kmt = 1 << 2,
         /// <summary>
-        /// Specifies an NT handle returned by <c>IDXGIResource1::CreateSharedHandle</c> referring to a Direct3D 10
-        /// or 11 texture resource.
+        /// Specifies an NT handle returned by <c>IDXGIResource1::CreateSharedHandle</c> referring to
+        /// a Direct3D 10 or 11 texture resource.
         /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
         /// </summary>
         D3D11Texture = 1 << 3,
         /// <summary>
-        /// Specifies a global share handle returned by <c>IDXGIResource::GetSharedHandle</c> referring to a
-        /// Direct3D 10 or 11 texture resource.
+        /// Specifies a global share handle returned by <c>IDXGIResource::GetSharedHandle</c>
+        /// referring to a Direct3D 10 or 11 texture resource.
         /// <para>
         /// It does not own own a reference to the underlying Direct3D resource, and will therefore
         /// become invalid when all Vulkan memory objects and Direct3D resources associated with it
@@ -1512,14 +1511,14 @@ namespace VulkanCore.Khr
         /// </summary>
         D3D11TextureKmt = 1 << 4,
         /// <summary>
-        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a Direct3D 12
-        /// heap resource.
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a
+        /// Direct3D 12 heap resource.
         /// <para>It owns a reference to the resources used by the Direct3D heap.</para>
         /// </summary>
         D3D12Heap = 1 << 5,
         /// <summary>
-        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a Direct3D 12
-        /// committed resource.
+        /// Specifies an NT handle returned by <c>ID3D12Device::CreateSharedHandle</c> referring to a
+        /// Direct3D 12 committed resource.
         /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
         /// </summary>
         D3D12Resource = 1 << 6
@@ -1913,8 +1912,7 @@ namespace VulkanCore.Khr
     }
 
     /// <summary>
-    /// Structure specifying additional attributes of Windows handles exported from a
-    /// semaphore.
+    /// Structure specifying additional attributes of Windows handles exported from a semaphore.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ExportSemaphoreWin32HandleInfoKhr
@@ -2100,8 +2098,7 @@ namespace VulkanCore.Khr
     }
 
     /// <summary>
-    /// Structure specifying additional attributes of Windows handles exported from a
-    /// fence.
+    /// Structure specifying additional attributes of Windows handles exported from a fence.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ExportFenceWin32HandleInfoKhr
@@ -2124,9 +2121,8 @@ namespace VulkanCore.Khr
         /// </summary>
         public int Access;
         /// <summary>
-        /// Is a NULL-terminated UTF-16 string to associate with the underlying
-        /// synchronization primitive referenced by NT handles exported from the created
-        /// fence.
+        /// Is a NULL-terminated UTF-16 string to associate with the underlying synchronization
+        /// primitive referenced by NT handles exported from the created fence.
         /// </summary>
         public IntPtr Name;
     }
@@ -2289,5 +2285,57 @@ namespace VulkanCore.Khr
         /// Is 0 or a handle of a buffer which this memory will be bound to.
         /// </summary>
         public long Buffer;
+    }
+
+    /// <summary>
+    /// Structure describing the point clipping behavior supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDevicePointClippingPropertiesKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The point clipping behavior supported by the implementation.
+        /// </summary>
+        public PointClippingBehaviorKhr PointClippingBehavior;
+    }
+
+    /// <summary>
+    /// Structure describing Y'CbCr conversion features that can be supported by an implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceSamplerYcbcrConversionFeaturesKhr
+    {
+        public StructureType Type;
+        public IntPtr Next;
+        public Bool SamplerYcbcrConversion;
+    }
+
+    /// <summary>
+    /// Structure specifying combined image sampler descriptor count for multi-planar images.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SamplerYcbcrConversionImageFormatPropertiesKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Tthe number of combined image sampler descriptors that the implementation uses to access
+        /// the format.
+        /// </summary>
+        public int CombinedImageSamplerDescriptorCount;
     }
 }

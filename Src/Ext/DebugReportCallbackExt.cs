@@ -371,6 +371,7 @@ namespace VulkanCore.Ext
         /// <summary>
         /// Specifies a <see cref="Khr.DescriptorUpdateTemplateKhr"/>.
         /// </summary>
-        DescriptorUpdateTemplateKhrExt = 1000085000
+        DescriptorUpdateTemplateKhrExt = 1000085000,
+        SamplerYcbcrConversionKhrExt = 1000156000
     }
 }

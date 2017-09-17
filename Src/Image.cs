@@ -270,7 +270,8 @@ namespace VulkanCore
         SparseAliased = 1 << 2,
         /// <summary>
         /// Specifies that the image can be used to create an <see cref="ImageView"/> with a
-        /// different format from the image.
+        /// different format from the image. For multi-planar formats, <see cref="MutableFormat"/>
+        /// indicates that a <see cref="ImageView"/> can be created of a plane of the image.
         /// </summary>
         MutableFormat = 1 << 3,
         /// <summary>
@@ -284,12 +285,35 @@ namespace VulkanCore
         /// </summary>
         Image2DArrayCompatibleKhr = 1 << 5,
         /// <summary>
-        /// Specifies that the image can be used with a non-zero length of the <see
-        /// cref="Khx.BindImageMemoryInfoKhx.SFRRects"/> member passed into <see
-        /// cref="Khx.DeviceExtensions.BindImageMemory2Khx"/>. This flag also has the effect of
-        /// making the image use the standard sparse image block dimensions.
+        /// Indicates that the image having a compressed format can be used to create a <see
+        /// cref="ImageView"/> with an uncompressed format where each texel in the image view
+        /// corresponds to a compressed texel block of the image.
         /// </summary>
-        BindSfrKhx = 1 << 6,
+        BlockTexelViewCompatibleKhr = 1 << 7,
+        /// <summary>
+        /// Indicates that the image can be created with usage flags that are not supported for the
+        /// format the image is created with but are supported for at least one format a <see
+        /// cref="ImageView"/> created from the image can have.
+        /// </summary>
+        ExtendedUsageKhr = 1 << 8,
+        /// <summary>
+        /// Indicates that an image with a multi-planar format must have each plane separately bound
+        /// to memory, rather than having a single memory binding for the whole image; the presence
+        /// of this bit distinguishes a disjoint Image from an image without this bit set.
+        /// </summary>
+        DisjointKhr = 1 << 9,
+        /// <summary>
+        /// Indicates that two images created with the same creation parameters and aliased to the
+        /// same memory can interpret the contents of the memory consistently with each other,
+        /// subject to the rules described in the Memory Aliasing section. This flag further
+        /// indicates that each plane of a disjoint image can share an in-memory non-linear
+        /// representation with single-plane images, and that a single-plane image can share an
+        /// in-memory non-linear representation with a plane of a multi-planar disjoint image,
+        /// according to the rules in features-formats-compatible-planes. If the <c>PNext</c> chain
+        /// includes a structure whose <c>HandleTypes</c> member is not `0`, it is as if <see
+        /// cref="AliasKhr"/> is set.
+        /// </summary>
+        AliasKhr = 1 << 10,
         /// <summary>
         /// Specifies that an image with a depth or depth/stencil format can be used with custom
         /// sample locations when used as a depth/stencil attachment.
@@ -449,7 +473,9 @@ namespace VulkanCore
         /// <summary>
         /// Is valid only for shared presentable images, and must be used for any usage the image supports.
         /// </summary>
-        SharedPresentKhr = 1000111000
+        SharedPresentKhr = 1000111000,
+        DepthReadOnlyStencilAttachmentOptimalKhr = 1000117000,
+        DepthAttachmentStencilReadOnlyOptimalKhr = 1000117001
     }
 
     /// <summary>

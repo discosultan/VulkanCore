@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -302,6 +302,9 @@ namespace VulkanCore
         /// <summary>
         /// Specifies the metadata aspect, used for sparse resource operations.
         /// </summary>
-        Metadata = 1 << 3
+        Metadata = 1 << 3,
+        Plane0Khr = 1 << 4,
+        Plane1Khr = 1 << 5,
+        Plane2Khr = 1 << 6
     }
 }
