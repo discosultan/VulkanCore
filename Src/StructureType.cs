@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Structure type enumerant.
@@ -98,18 +98,11 @@
         SparseImageFormatProperties2Khr = 1000059007,
         PhysicalDeviceSparseImageFormatInfo2Khr = 1000059008,
         MemoryAllocateFlagsInfoKhx = 1000060000,
-        BindBufferMemoryInfoKhx = 1000060001,
-        BindImageMemoryInfoKhx = 1000060002,
         DeviceGroupRenderPassBeginInfoKhx = 1000060003,
         DeviceGroupCommandBufferBeginInfoKhx = 1000060004,
         DeviceGroupSubmitInfoKhx = 1000060005,
         DeviceGroupBindSparseInfoKhx = 1000060006,
-        DeviceGroupPresentCapabilitiesKhx = 1000060007,
-        ImageSwapchainCreateInfoKhx = 1000060008,
-        BindImageMemorySwapchainInfoKhx = 1000060009,
         AcquireNextImageInfoKhx = 1000060010,
-        DeviceGroupPresentInfoKhx = 1000060011,
-        DeviceGroupSwapchainCreateInfoKhx = 1000060012,
         ValidationFlagsExt = 1000061000,
         VISurfaceCreateInfoNN = 1000062000,
         PhysicalDeviceGroupPropertiesKhx = 1000070000,
@@ -170,6 +163,10 @@
         FenceGetWin32HandleInfoKhr = 1000114002,
         ImportFenceFdInfoKhr = 1000115000,
         FenceGetFdInfoKhr = 1000115001,
+        PhysicalDevicePointClippingPropertiesKhr = 1000117000,
+        RenderPassInputAttachmentAspectCreateInfoKhr = 1000117001,
+        ImageViewUsageCreateInfoKhr = 1000117002,
+        PipelineTessellationDomainOriginStateCreateInfoKhr = 1000117003,
         PhysicalDeviceSurfaceInfo2Khr = 1000119000,
         SurfaceCapabilities2Khr = 1000119001,
         SurfaceFormat2Khr = 1000119002,
@@ -180,15 +177,38 @@
         MemoryDedicatedAllocateInfoKhr = 1000127001,
         PhysicalDeviceSamplerFilterMinmaxPropertiesExt = 1000130000,
         SamplerReductionModeCreateInfoExt = 1000130001,
+        SampleLocationsInfoExt = 1000143000,
+        RenderPassSampleLocationsBeginInfoExt = 1000143001,
+        PipelineSampleLocationsStateCreateInfoExt = 1000143002,
+        PhysicalDeviceSampleLocationsPropertiesExt = 1000143003,
+        MultisamplePropertiesExt = 1000143004,
         BufferMemoryRequirementsInfo2Khr = 1000146000,
         ImageMemoryRequirementsInfo2Khr = 1000146001,
         ImageSparseMemoryRequirementsInfo2Khr = 1000146002,
         MemoryRequirements2Khr = 1000146003,
         SparseImageMemoryRequirements2Khr = 1000146004,
+        ImageFormatListCreateInfoKhr = 1000147000,
         PhysicalDeviceBlendOperationAdvancedFeaturesExt = 1000148000,
         PhysicalDeviceBlendOperationAdvancedPropertiesExt = 1000148001,
         PipelineColorBlendAdvancedStateCreateInfoExt = 1000148002,
         PipelineCoverageToColorStateCreateInfoNV = 1000149000,
-        PipelineCoverageModulationStateCreateInfoNV = 1000152000
+        PipelineCoverageModulationStateCreateInfoNV = 1000152000,
+        SamplerYcbcrConversionCreateInfoKhr = 1000156000,
+        SamplerYcbcrConversionInfoKhr = 1000156001,
+        BindImagePlaneMemoryInfoKhr = 1000156002,
+        ImagePlaneMemoryRequirementsInfoKhr = 1000156003,
+        PhysicalDeviceSamplerYcbcrConversionFeaturesKhr = 1000156004,
+        SamplerYcbcrConversionImageFormatPropertiesKhr = 1000156005,
+        BindBufferMemoryInfoKhr = 1000157000,
+        BindImageMemoryInfoKhr = 1000157001,
+        ValidationCacheCreateInfoExt = 1000160000,
+        ShaderModuleValidationCacheCreateInfoExt = 1000160001,
+        // TODO: The entries below are for compatibility reasons.
+        // TODO: Remove when their corresponding structures have been removed from vk.xml.
+        DeviceGroupPresentCapabilitiesKhx = 1000060007,
+        ImageSwapchainCreateInfoKhx = 1000060008,
+        BindImageMemorySwapchainInfoKhx = 1000060009,
+        DeviceGroupPresentInfoKhx = 1000060011,
+        DeviceGroupSwapchainCreateInfoKhx = 1000060012
     }
 }

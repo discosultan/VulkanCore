@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -2038,6 +2038,15 @@ namespace VulkanCore
         /// cref="NV.PipelineViewportWScalingStateCreateInfoNV.ViewportWScalingEnable"/> set to <c>true</c>.
         /// </summary>
         ViewportWScalingNV = 1000087000,
-        DiscardRectangleExt = 1000099000
+        DiscardRectangleExt = 1000099000,
+        /// <summary>
+        /// Specifies that the <see
+        /// cref="Ext.PipelineSampleLocationsStateCreateInfoExt.SampleLocationsInfo"/> state will be
+        /// ignored and must be set dynamically with <see
+        /// cref="Ext.CommandBufferExtensions.CmdSetSampleLocationsExt"/> before any draw or clear
+        /// commands. Enabling custom sample locations is still indicated by the <see
+        /// cref="Ext.PipelineSampleLocationsStateCreateInfoExt.SampleLocationsEnable"/> member.
+        /// </summary>
+        SampleLocationsExt = 1000143000
     }
 }

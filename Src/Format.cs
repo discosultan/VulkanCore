@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Available image formats.
@@ -1022,6 +1022,416 @@
         Pvrtc12BppSrgbBlockImg = 1000054004,
         Pvrtc14BppSrgbBlockImg = 1000054005,
         Pvrtc22BppSrgbBlockImg = 1000054006,
-        Pvrtc24BppSrgbBlockImg = 1000054007
+        Pvrtc24BppSrgbBlockImg = 1000054007,
+        /// <summary>
+        /// Specifies a four-component, 32-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has an 8-bit G component for the even _i_ coordinate in byte 0,
+        /// an 8-bit B component in byte 1, an 8-bit G component for the odd _i_ coordinate in byte
+        /// 2, and an 8-bit R component in byte 3. Images in this format must be defined with a width
+        /// that is a multiple of two. For the purposes of the constraints on copy extents, this
+        /// format is treated as a compressed format with a 2{times}1 compressed texel block.
+        /// </summary>
+        G8B8G8R8422UNormKhr = 1000156000,
+        /// <summary>
+        /// Specifies a four-component, 32-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has an 8-bit B component in byte 0, an 8-bit G component for
+        /// the even _i_ coordinate in byte 1, an 8-bit R component in byte 2, and an 8-bit G
+        /// component for the odd _i_ coordinate in byte 3. Images in this format must be defined
+        /// with a width that is a multiple of two. For the purposes of the constraints on copy
+        /// extents, this format is treated as a compressed format with a 2{times}1 compressed texel block.
+        /// </summary>
+        B8G8R8G8422UNormKhr = 1000156001,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has an 8-bit G component in
+        /// plane 0, an 8-bit B component in plane 1, and an 8-bit R component in plane 2. The
+        /// horizontal and vertical dimensions of the R and B planes are halved relative to the image
+        /// dimensions, and each R and B component is shared with the G components for which
+        /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5
+        /// \rfloor = JB = JR]. The location of each plane when this image is in linear layout can be
+        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
+        /// the G plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width and height that is a multiple of two.
+        /// </summary>
+        G8B8R83Plane420UNormKhr = 1000156002,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has an 8-bit G component in
+        /// plane 0, and a two-component, 16-bit BR plane 1 consisting of an 8-bit B component in
+        /// byte 0 and an 8-bit R component in byte 1. The horizontal and vertical dimensions of the
+        /// BR plane is halved relative to the image dimensions, and each R and B value is shared
+        /// with the G components for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and
+        /// latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR]. The location of each plane when this
+        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width and height that is a
+        /// multiple of two.
+        /// </summary>
+        G8B8R82Plane420UNormKhr = 1000156003,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has an 8-bit G component in
+        /// plane 0, an 8-bit B component in plane 1, and an 8-bit R component in plane 2. The
+        /// horizontal dimension of the R and B plane is halved relative to the image dimensions, and
+        /// each R and B value is shared with the G components for which latexmath:[\lfloor IG \times
+        /// 0.5 \rfloor = IB = IR]. The location of each plane when this image is in linear layout
+        /// can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, <see cref="ImageAspects.Plane1Khr"/> for
+        /// the B plane, and <see cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this
+        /// format must be defined with a width that is a multiple of two.
+        /// </summary>
+        G8B8R83Plane422UNormKhr = 1000156004,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has an 8-bit G component in
+        /// plane 0, and a two-component, 16-bit BR plane 1 consisting of an 8-bit B component in
+        /// byte 0 and an 8-bit R component in byte 1. The horizontal dimensions of the BR plane is
+        /// halved relative to the image dimensions, and each R and B value is shared with the G
+        /// components for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of
+        /// each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// and <see cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format must be
+        /// defined with a width that is a multiple of two.
+        /// </summary>
+        G8B8R82Plane422UNormKhr = 1000156005,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has an 8-bit G component in
+        /// plane 0, an 8-bit B component in plane 1, and an 8-bit R component in plane 2. Each plane
+        /// has the same dimensions and each R, G and B component contributes to a single texel. The
+        /// location of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane.
+        /// </summary>
+        G8B8R83Plane444UNormKhr = 1000156006,
+        /// <summary>
+        /// Specifies a one-component, 16-bit unsigned normalized format that has a single 10-bit R
+        /// component in the top 10 bits of a 16-bit word, with the bottom 6 bits set to 0.
+        /// </summary>
+        R10X6UNormPack16Khr = 1000156007,
+        /// <summary>
+        /// Specifies a two-component, 32-bit unsigned normalized format that has a 10-bit R
+        /// component in the top 10 bits of the word in bytes 0..1, and a 10-bit G component in the
+        /// top 10 bits of the word in bytes 2..3, with the bottom 6 bits of each word set to 0.
+        /// </summary>
+        R10X6G10X6UNorm2Pack16Khr = 1000156008,
+        /// <summary>
+        /// Specifies a four-component, 64-bit unsigned normalized format that has a 10-bit R
+        /// component in the top 10 bits of the word in bytes 0..1, a 10-bit G component in the top
+        /// 10 bits of the word in bytes 2..3, a 10-bit B component in the top 10 bits of the word in
+        /// bytes 4..5, and a 10-bit A component in the top 10 bits of the word in bytes 6..7, with
+        /// the bottom 6 bits of each word set to 0.
+        /// </summary>
+        R10X6G10X6B10X6A10X6UNorm4Pack16Khr = 1000156009,
+        /// <summary>
+        /// Specifies a four-component, 64-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has a 10-bit G component for the even _i_ coordinate in the top
+        /// 10 bits of the word in bytes 0..1, a 10-bit B component in the top 10 bits of the word in
+        /// bytes 2..3, a 10-bit G component for the odd _i_ coordinate in the top 10 bits of the
+        /// word in bytes 4..5, and a 10-bit R component in the top 10 bits of the word in bytes
+        /// 6..7, with the bottom 6 bits of each word set to 0. Images in this format must be defined
+        /// with a width that is a multiple of two. For the purposes of the constraints on copy
+        /// extents, this format is treated as a compressed format with a 2{times}1 compressed texel block.
+        /// </summary>
+        G10X6B10X6G10X6R10X6422UNorm4Pack16Khr = 1000156010,
+        /// <summary>
+        /// Specifies a four-component, 64-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has a 10-bit B component in the top 10 bits of the word in
+        /// bytes 0..1, a 10-bit G component for the even _i_ coordinate in the top 10 bits of the
+        /// word in bytes 2..3, a 10-bit R component in the top 10 bits of the word in bytes 4..5,
+        /// and a 10-bit G component for the odd _i_ coordinate in the top 10 bits of the word in
+        /// bytes 6..7, with the bottom 6 bits of each word set to 0. Images in this format must be
+        /// defined with a width that is a multiple of two. For the purposes of the constraints on
+        /// copy extents, this format is treated as a compressed format with a 2{times}1 compressed
+        /// texel block.
+        /// </summary>
+        B10X6G10X6R10X6G10X6422UNorm4Pack16Khr = 1000156011,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 10-bit G component in
+        /// the top 10 bits of each 16-bit word of plane 0, a 10-bit B component in the top 10 bits
+        /// of each 16-bit word of plane 1, and a 10-bit R component in the top 10 bits of each
+        /// 16-bit word of plane 2, with the bottom 6 bits of each word set to 0. The horizontal and
+        /// vertical dimensions of the R and B planes are halved relative to the image dimensions,
+        /// and each R and B component is shared with the G components for which latexmath:[\lfloor
+        /// IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR].
+        /// The location of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width and height that is a multiple of two.
+        /// </summary>
+        G10X6B10X6R10X63Plane420UNorm3Pack16Khr = 1000156012,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 10-bit G component in
+        /// the top 10 bits of each 16-bit word of plane 0, and a two-component, 32-bit BR plane 1
+        /// consisting of a 10-bit B component in the top 10 bits of the word in bytes 0..1, and a
+        /// 10-bit R component in the top 10 bits of the word in bytes 2..3, the bottom 6 bits of
+        /// each word set to 0. The horizontal and vertical dimensions of the BR plane is halved
+        /// relative to the image dimensions, and each R and B value is shared with the G components
+        /// for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG
+        /// \times 0.5 \rfloor = JB = JR]. The location of each plane when this image is in linear
+        /// layout can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width and height that is a
+        /// multiple of two.
+        /// </summary>
+        G10X6B10X6R10X62Plane420UNorm3Pack16Khr = 1000156013,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 10-bit G component in
+        /// the top 10 bits of each 16-bit word of plane 0, a 10-bit B component in the top 10 bits
+        /// of each 16-bit word of plane 1, and a 10-bit R component in the top 10 bits of each
+        /// 16-bit word of plane 2, with the bottom 6 bits of each word set to 0. The horizontal
+        /// dimension of the R and B plane is halved relative to the image dimensions, and each R and
+        /// B value is shared with the G components for which latexmath:[\lfloor IG \times 0.5
+        /// \rfloor = IB = IR]. The location of each plane when this image is in linear layout can be
+        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
+        /// the G plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width that is a multiple of two.
+        /// </summary>
+        G10X6B10X6R10X63Plane422UNorm3Pack16Khr = 1000156014,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 10-bit G component in
+        /// the top 10 bits of each 16-bit word of plane 0, and a two-component, 32-bit BR plane 1
+        /// consisting of a 10-bit B component in the top 10 bits of the word in bytes 0..1, and a
+        /// 10-bit R component in the top 10 bits of the word in bytes 2..3, the bottom 6 bits of
+        /// each word set to 0. The horizontal dimensions of the BR plane is halved relative to the
+        /// image dimensions, and each R and B value is shared with the G components for which
+        /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of each plane when this
+        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width that is a multiple
+        /// of two.
+        /// </summary>
+        G10X6B10X6R10X62Plane422UNorm3Pack16Khr = 1000156015,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 10-bit G component in
+        /// the top 10 bits of each 16-bit word of plane 0, a 10-bit B component in the top 10 bits
+        /// of each 16-bit word of plane 1, and a 10-bit R component in the top 10 bits of each
+        /// 16-bit word of plane 2, with the bottom 6 bits of each word set to 0. Each plane has the
+        /// same dimensions and each R, G and B component contributes to a single texel. The location
+        /// of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane.
+        /// </summary>
+        G10X6B10X6R10X63Plane444UNorm3Pack16Khr = 1000156016,
+        /// <summary>
+        /// Specifies a one-component, 16-bit unsigned normalized format that has a single 12-bit R
+        /// component in the top 12 bits of a 16-bit word, with the bottom 4 bits set to 0.
+        /// </summary>
+        R12X4UNormPack16Khr = 1000156017,
+        /// <summary>
+        /// Specifies a two-component, 32-bit unsigned normalized format that has a 12-bit R
+        /// component in the top 12 bits of the word in bytes 0..1, and a 12-bit G component in the
+        /// top 12 bits of the word in bytes 2..3, with the bottom 4 bits of each word set to 0.
+        /// </summary>
+        R12X4G12X4UNorm2Pack16Khr = 1000156018,
+        /// <summary>
+        /// Specifies a four-component, 64-bit unsigned normalized format that has a 12-bit R
+        /// component in the top 12 bits of the word in bytes 0..1, a 12-bit G component in the top
+        /// 12 bits of the word in bytes 2..3, a 12-bit B component in the top 12 bits of the word in
+        /// bytes 4..5, and a 12-bit A component in the top 12 bits of the word in bytes 6..7, with
+        /// the bottom 4 bits of each word set to 0.
+        /// </summary>
+        R12X4G12X4B12X4A12X4UNorm4Pack16Khr = 1000156019,
+        /// <summary>
+        /// Specifies a four-component, 64-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has a 12-bit G component for the even _i_ coordinate in the top
+        /// 12 bits of the word in bytes 0..1, a 12-bit B component in the top 12 bits of the word in
+        /// bytes 2..3, a 12-bit G component for the odd _i_ coordinate in the top 12 bits of the
+        /// word in bytes 4..5, and a 12-bit R component in the top 12 bits of the word in bytes
+        /// 6..7, with the bottom 4 bits of each word set to 0. Images in this format must be defined
+        /// with a width that is a multiple of two. For the purposes of the constraints on copy
+        /// extents, this format is treated as a compressed format with a 2{times}1 compressed texel block.
+        /// </summary>
+        G12X4B12X4G12X4R12X4422UNorm4Pack16Khr = 1000156020,
+        /// <summary>
+        /// Specifies a four-component, 64-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has a 12-bit B component in the top 12 bits of the word in
+        /// bytes 0..1, a 12-bit G component for the even _i_ coordinate in the top 12 bits of the
+        /// word in bytes 2..3, a 12-bit R component in the top 12 bits of the word in bytes 4..5,
+        /// and a 12-bit G component for the odd _i_ coordinate in the top 12 bits of the word in
+        /// bytes 6..7, with the bottom 4 bits of each word set to 0. Images in this format must be
+        /// defined with a width that is a multiple of two. For the purposes of the constraints on
+        /// copy extents, this format is treated as a compressed format with a 2{times}1 compressed
+        /// texel block.
+        /// </summary>
+        B12X4G12X4R12X4G12X4422UNorm4Pack16Khr = 1000156021,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 12-bit G component in
+        /// the top 12 bits of each 16-bit word of plane 0, a 12-bit B component in the top 12 bits
+        /// of each 16-bit word of plane 1, and a 12-bit R component in the top 12 bits of each
+        /// 16-bit word of plane 2, with the bottom 4 bits of each word set to 0. The horizontal and
+        /// vertical dimensions of the R and B planes are halved relative to the image dimensions,
+        /// and each R and B component is shared with the G components for which latexmath:[\lfloor
+        /// IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR].
+        /// The location of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width and height that is a multiple of two.
+        /// </summary>
+        G12X4B12X4R12X43Plane420UNorm3Pack16Khr = 1000156022,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 12-bit G component in
+        /// the top 12 bits of each 16-bit word of plane 0, and a two-component, 32-bit BR plane 1
+        /// consisting of a 12-bit B component in the top 12 bits of the word in bytes 0..1, and a
+        /// 12-bit R component in the top 12 bits of the word in bytes 2..3, the bottom 4 bits of
+        /// each word set to 0. The horizontal and vertical dimensions of the BR plane is halved
+        /// relative to the image dimensions, and each R and B value is shared with the G components
+        /// for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG
+        /// \times 0.5 \rfloor = JB = JR]. The location of each plane when this image is in linear
+        /// layout can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width and height that is a
+        /// multiple of two.
+        /// </summary>
+        G12X4B12X4R12X42Plane420UNorm3Pack16Khr = 1000156023,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 12-bit G component in
+        /// the top 12 bits of each 16-bit word of plane 0, a 12-bit B component in the top 12 bits
+        /// of each 16-bit word of plane 1, and a 12-bit R component in the top 12 bits of each
+        /// 16-bit word of plane 2, with the bottom 4 bits of each word set to 0. The horizontal
+        /// dimension of the R and B plane is halved relative to the image dimensions, and each R and
+        /// B value is shared with the G components for which latexmath:[\lfloor IG \times 0.5
+        /// \rfloor = IB = IR]. The location of each plane when this image is in linear layout can be
+        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
+        /// the G plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width that is a multiple of two.
+        /// </summary>
+        G12X4B12X4R12X43Plane422UNorm3Pack16Khr = 1000156024,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 12-bit G component in
+        /// the top 12 bits of each 16-bit word of plane 0, and a two-component, 32-bit BR plane 1
+        /// consisting of a 12-bit B component in the top 12 bits of the word in bytes 0..1, and a
+        /// 12-bit R component in the top 12 bits of the word in bytes 2..3, the bottom 4 bits of
+        /// each word set to 0. The horizontal dimensions of the BR plane is halved relative to the
+        /// image dimensions, and each R and B value is shared with the G components for which
+        /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of each plane when this
+        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width that is a multiple
+        /// of two.
+        /// </summary>
+        G12X4B12X4R12X42Plane422UNorm3Pack16Khr = 1000156025,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 12-bit G component in
+        /// the top 12 bits of each 16-bit word of plane 0, a 12-bit B component in the top 12 bits
+        /// of each 16-bit word of plane 1, and a 12-bit R component in the top 12 bits of each
+        /// 16-bit word of plane 2, with the bottom 4 bits of each word set to 0. Each plane has the
+        /// same dimensions and each R, G and B component contributes to a single texel. The location
+        /// of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane.
+        /// </summary>
+        G12X4B12X4R12X43Plane444UNorm3Pack16Khr = 1000156026,
+        /// <summary>
+        /// Specifies a four-component, 64-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has a 16-bit G component for the even _i_ coordinate in the
+        /// word in bytes 0..1, a 16-bit B component in the word in bytes 2..3, a 16-bit G component
+        /// for the odd _i_ coordinate in the word in bytes 4..5, and a 16-bit R component in the
+        /// word in bytes 6..7. Images in this format must be defined with a width that is a multiple
+        /// of two. For the purposes of the constraints on copy extents, this format is treated as a
+        /// compressed format with a 2{times}1 compressed texel block.
+        /// </summary>
+        G16B16G16R16422UNormKhr = 1000156027,
+        /// <summary>
+        /// Specifies a four-component, 64-bit format containing a pair of G components, an R
+        /// component, and a B component, collectively encoding a 2{times}1 rectangle of unsigned
+        /// normalized RGB texel data. One G value is present at each _i_ coordinate, with the B and
+        /// R values shared across both G values and thus recorded at half the horizontal resolution
+        /// of the image. This format has a 16-bit B component in the word in bytes 0..1, a 16-bit G
+        /// component for the even _i_ coordinate in the word in bytes 2..3, a 16-bit R component in
+        /// the word in bytes 4..5, and a 16-bit G component for the odd _i_ coordinate in the word
+        /// in bytes 6..7. Images in this format must be defined with a width that is a multiple of
+        /// two. For the purposes of the constraints on copy extents, this format is treated as a
+        /// compressed format with a 2{times}1 compressed texel block.
+        /// </summary>
+        B16G16R16G16422UNormKhr = 1000156028,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 16-bit G component in
+        /// each 16-bit word of plane 0, a 16-bit B component in each 16-bit word of plane 1, and a
+        /// 16-bit R component in each 16-bit word of plane 2. The horizontal and vertical dimensions
+        /// of the R and B planes are halved relative to the image dimensions, and each R and B
+        /// component is shared with the G components for which latexmath:[\lfloor IG \times 0.5\
+        /// rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR]. The location
+        /// of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width and height that is a multiple of two.
+        /// </summary>
+        G16B16R163Plane420UNormKhr = 1000156029,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 16-bit G component in
+        /// each 16-bit word of plane 0, and a two-component, 32-bit BR plane 1 consisting of a
+        /// 16-bit B component in the word in bytes 0..1, and a 16-bit R component in the word in
+        /// bytes 2..3. The horizontal and vertical dimensions of the BR plane is halved relative to
+        /// the image dimensions, and each R and B value is shared with the G components for which
+        /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5
+        /// \rfloor = JB = JR]. The location of each plane when this image is in linear layout can be
+        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
+        /// the G plane, and <see cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this
+        /// format must be defined with a width and height that is a multiple of two.
+        /// </summary>
+        G16B16R162Plane420UNormKhr = 1000156030,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 16-bit G component in
+        /// each 16-bit word of plane 0, a 16-bit B component in each 16-bit word of plane 1, and a
+        /// 16-bit R component in each 16-bit word of plane 2. The horizontal dimension of the R and
+        /// B plane is halved relative to the image dimensions, and each R and B value is shared with
+        /// the G components for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The
+        /// location of each plane when this image is in linear layout can be determined via
+        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
+        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
+        /// with a width that is a multiple of two.
+        /// </summary>
+        G16B16R163Plane422UNormKhr = 1000156031,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 16-bit G component in
+        /// each 16-bit word of plane 0, and a two-component, 32-bit BR plane 1 consisting of a
+        /// 16-bit B component in the word in bytes 0..1, and a 16-bit R component in the word in
+        /// bytes 2..3. The horizontal dimensions of the BR plane is halved relative to the image
+        /// dimensions, and each R and B value is shared with the G components for which
+        /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of each plane when this
+        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width that is a multiple
+        /// of two.
+        /// </summary>
+        G16B16R162Plane422UNormKhr = 1000156032,
+        /// <summary>
+        /// Specifies a unsigned normalized _multi-planar Format_ that has a 16-bit G component in
+        /// each 16-bit word of plane 0, a 16-bit B component in each 16-bit word of plane 1, and a
+        /// 16-bit R component in each 16-bit word of plane 2. Each plane has the same dimensions and
+        /// each R, G and B component contributes to a single texel. The location of each plane when
+        /// this image is in linear layout can be determined via GetImageSubresourceLayout, using
+        /// <see cref="ImageAspects.Plane0Khr"/> for the G plane, <see
+        /// cref="ImageAspects.Plane1Khr"/> for the B plane, and <see cref="ImageAspects.Plane2Khr"/>
+        /// for the R plane.
+        /// </summary>
+        G16B16R163Plane444UNormKhr = 1000156033
     }
 }

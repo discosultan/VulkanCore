@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
@@ -151,7 +151,9 @@ namespace VulkanCore.Khr
         /// Returns the memory requirements for specified Vulkan object.
         /// </summary>
         /// <param name="device">The logical device that owns the buffer.</param>
-        /// <param name="info">Structure containing parameters required for the memory requirements query.</param>
+        /// <param name="info">
+        /// Structure containing parameters required for the memory requirements query.
+        /// </param>
         /// <returns>Structure in which the memory requirements of the buffer object are returned.</returns>
         public static MemoryRequirements2Khr GetBufferMemoryRequirements2Khr(this Device device, BufferMemoryRequirementsInfo2Khr info)
         {
@@ -164,7 +166,9 @@ namespace VulkanCore.Khr
         /// Returns the memory requirements for specified Vulkan object.
         /// </summary>
         /// <param name="device">The logical device that owns the image.</param>
-        /// <param name="info">Structure containing parameters required for the memory requirements query.</param>
+        /// <param name="info">
+        /// Structure containing parameters required for the memory requirements query.
+        /// </param>
         /// <returns>Structure in which the memory requirements of the image object are returned.</returns>
         public static MemoryRequirements2Khr GetImageMemoryRequirements2Khr(this Device device, ImageMemoryRequirementsInfo2Khr info)
         {
@@ -185,6 +189,59 @@ namespace VulkanCore.Khr
             return memoryRequirements;
         }
 
+
+        /// <summary>
+        /// Bind device memory to buffer objects.
+        /// </summary>
+        /// <param name="device">The logical device that owns the buffers and memory.</param>
+        /// <param name="bindInfos">Structures describing buffers and memory to bind.</param>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static void BindBufferMemory2Khr(this Device device, params BindBufferMemoryInfoKhr[] bindInfos)
+        {
+            int count = bindInfos?.Length ?? 0;
+            var nativeBindInfos = stackalloc BindBufferMemoryInfoKhr.Native[count];
+            for (int i = 0; i < count; i++)
+                bindInfos[i].ToNative(out nativeBindInfos[i]);
+            Result result = vkBindBufferMemory2KHR(device)(device, count, nativeBindInfos);
+            for (int i = 0; i < count; i++)
+                nativeBindInfos[i].Free();
+            VulkanException.ThrowForInvalidResult(result);
+        }
+
+        /// <summary>
+        /// Bind device memory to image objects.
+        /// </summary>
+        /// <param name="device">The logical device that owns the images and memory.</param>
+        /// <param name="bindInfos">Structures describing images and memory to bind.</param>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static void BindImageMemory2Khr(this Device device, params BindImageMemoryInfoKhr[] bindInfos)
+        {
+            int count = bindInfos?.Length ?? 0;
+            var nativeBindInfos = stackalloc BindImageMemoryInfoKhr.Native[count];
+            for (int i = 0; i < count; i++)
+                bindInfos[i].ToNative(out nativeBindInfos[i]);
+            Result result = vkBindImageMemory2KHR(device)(device, count, nativeBindInfos);
+            for (int i = 0; i < count; i++)
+                nativeBindInfos[i].Free();
+            VulkanException.ThrowForInvalidResult(result);
+        }
+
+        /// <summary>
+        /// Create a new Ycbcr conversion.
+        /// </summary>
+        /// <param name="device">The logical device that creates the sampler Y'C~B~C~R~ conversion.</param>
+        /// <param name="createInfo">
+        /// Specifies the requested sampler Y'C~B~C~R~ conversion.
+        /// </param>
+        /// <param name="allocator">Controls host memory allocation.</param>
+        /// <returns>The resulting sampler Y'C~B~C~R~ conversion.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static SamplerYcbcrConversionKhr CreateSamplerYcbcrConversionKhr(this Device device,
+            SamplerYcbcrConversionCreateInfoKhr createInfo, AllocationCallbacks? allocator = null)
+        {
+            return new SamplerYcbcrConversionKhr(device, &createInfo, ref allocator);
+        }
+
         private delegate Result vkGetMemoryWin32HandlePropertiesKHRDelegate(IntPtr device, ExternalMemoryHandleTypesKhr handleType, IntPtr handle, MemoryWin32HandlePropertiesKhr* memoryWin32HandleProperties);
         private static vkGetMemoryWin32HandlePropertiesKHRDelegate vkGetMemoryWin32HandlePropertiesKHR(Device device) => device.GetProc<vkGetMemoryWin32HandlePropertiesKHRDelegate>(nameof(vkGetMemoryWin32HandlePropertiesKHR));
 
@@ -199,12 +256,18 @@ namespace VulkanCore.Khr
 
         private delegate void vkGetBufferMemoryRequirements2KHRDelegate(IntPtr device, BufferMemoryRequirementsInfo2Khr* info, MemoryRequirements2Khr* memoryRequirements);
         private static vkGetBufferMemoryRequirements2KHRDelegate vkGetBufferMemoryRequirements2KHR(Device device) => device.GetProc<vkGetBufferMemoryRequirements2KHRDelegate>(nameof(vkGetBufferMemoryRequirements2KHR));
-        
+
         private delegate void vkGetImageMemoryRequirements2KHRDelegate(IntPtr device, ImageMemoryRequirementsInfo2Khr* info, MemoryRequirements2Khr* memoryRequirements);
         private static vkGetImageMemoryRequirements2KHRDelegate vkGetImageMemoryRequirements2KHR(Device device) => device.GetProc<vkGetImageMemoryRequirements2KHRDelegate>(nameof(vkGetImageMemoryRequirements2KHR));
-        
+
         private delegate void vkGetImageSparseMemoryRequirements2KHRDelegate(IntPtr device, ImageSparseMemoryRequirementsInfo2Khr* info, int* sparseMemoryRequirementCount, SparseImageMemoryRequirements2Khr* sparseMemoryRequirements);
         private static vkGetImageSparseMemoryRequirements2KHRDelegate vkGetImageSparseMemoryRequirements2KHR(Device device) => device.GetProc<vkGetImageSparseMemoryRequirements2KHRDelegate>(nameof(vkGetImageSparseMemoryRequirements2KHR));
+
+        private delegate Result vkBindBufferMemory2KHRDelegate(IntPtr device, int bindInfoCount, BindBufferMemoryInfoKhr.Native* bindInfos);
+        private static vkBindBufferMemory2KHRDelegate vkBindBufferMemory2KHR(Device device) => device.GetProc<vkBindBufferMemory2KHRDelegate>(nameof(vkBindBufferMemory2KHR));
+
+        private delegate Result vkBindImageMemory2KHRDelegate(IntPtr device, int bindInfoCount, BindImageMemoryInfoKhr.Native* bindInfos);
+        private static vkBindImageMemory2KHRDelegate vkBindImageMemory2KHR(Device device) => device.GetProc<vkBindImageMemory2KHRDelegate>(nameof(vkBindImageMemory2KHR));
     }
 
     /// <summary>
@@ -233,8 +296,8 @@ namespace VulkanCore.Khr
         /// </summary>
         public IntPtr Handle;
         /// <summary>
-        /// A NULL-terminated UTF-16 string naming the underlying synchronization primitive to import,
-        /// or <c>null</c>.
+        /// A NULL-terminated UTF-16 string naming the underlying synchronization primitive to
+        /// import, or <c>null</c>.
         /// </summary>
         public IntPtr Name;
 
@@ -491,5 +554,362 @@ namespace VulkanCore.Khr
         /// </summary>
         public IntPtr Next;
         public SparseImageMemoryRequirements MemoryRequirements;
+    }
+
+
+    /// <summary>
+    /// Structure specifying how to bind a buffer to memory.
+    /// </summary>
+    public struct BindBufferMemoryInfoKhr
+    {
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The <see cref="VulkanCore.Buffer"/> to be attached to memory.
+        /// </summary>
+        public long Buffer;
+        /// <summary>
+        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
+        /// </summary>
+        public long Memory;
+        /// <summary>
+        /// The start offset of the region of memory which is to be bound to the buffer. The number
+        /// of bytes returned in the <see cref="MemoryRequirements.Size"/> member in memory, starting
+        /// from <see cref="MemoryOffset"/> bytes, will be bound to the specified buffer.
+        /// </summary>
+        public long MemoryOffset;
+        /// <summary>
+        /// An array of device indices.
+        /// </summary>
+        public int[] DeviceIndices;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindBufferMemoryInfoKhr"/> structure.
+        /// </summary>
+        /// <param name="buffer">The <see cref="VulkanCore.Buffer"/> to be attached to memory.</param>
+        /// <param name="memory">
+        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
+        /// </param>
+        /// <param name="memoryOffset">
+        /// The start offset of the region of memory which is to be bound to the buffer. The number
+        /// of bytes returned in the <see cref="MemoryRequirements.Size"/> member in memory, starting
+        /// from <see cref="MemoryOffset"/> bytes, will be bound to the specified buffer.
+        /// </param>
+        /// <param name="deviceIndices">An array of device indices.</param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public BindBufferMemoryInfoKhr(Buffer buffer, DeviceMemory memory, long memoryOffset,
+            int[] deviceIndices, IntPtr next = default(IntPtr))
+        {
+            Next = next;
+            Buffer = buffer;
+            Memory = memory;
+            MemoryOffset = memoryOffset;
+            DeviceIndices = deviceIndices;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Native
+        {
+            public StructureType Type;
+            public IntPtr Next;
+            public long Buffer;
+            public long Memory;
+            public long MemoryOffset;
+            public int DeviceIndexCount;
+            public IntPtr DeviceIndices;
+
+            public void Free()
+            {
+                Interop.Free(DeviceIndices);
+            }
+        }
+
+        internal void ToNative(out Native native)
+        {
+            native.Type = StructureType.BindBufferMemoryInfoKhr;
+            native.Next = Next;
+            native.Buffer = Buffer;
+            native.Memory = Memory;
+            native.MemoryOffset = MemoryOffset;
+            native.DeviceIndexCount = DeviceIndices?.Length ?? 0;
+            native.DeviceIndices = Interop.Struct.AllocToPointer(DeviceIndices);
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying how to bind an image to memory.
+    /// </summary>
+    public struct BindImageMemoryInfoKhr
+    {
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The <see cref="VulkanCore.Image"/> to be attached to memory.
+        /// </summary>
+        public long Image;
+        /// <summary>
+        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
+        /// </summary>
+        public long Memory;
+        /// <summary>
+        /// The start offset of the region of memory which is to be bound to the image. The number of
+        /// bytes returned in the <see cref="MemoryRequirements.Size"/> member in memory, starting
+        /// from <see cref="MemoryOffset"/> bytes, will be bound to the specified image.
+        /// </summary>
+        public long MemoryOffset;
+        /// <summary>
+        /// An array of device indices.
+        /// </summary>
+        public int[] DeviceIndices;
+        /// <summary>
+        /// An array of rectangles describing which regions of the image are attached to each
+        /// instance of memory.
+        /// </summary>
+        public Rect2D[] SFRRects;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindImageMemoryInfoKhr"/> structure.
+        /// </summary>
+        /// <param name="image">The <see cref="VulkanCore.Image"/> to be attached to memory.</param>
+        /// <param name="memory">
+        /// A <see cref="DeviceMemory"/> object describing the device memory to attach.
+        /// </param>
+        /// <param name="memoryOffset">
+        /// The start offset of the region of memory which is to be bound to the image. If the length
+        /// of <see cref="SFRRects"/> is zero, the number of bytes returned in the <see
+        /// cref="MemoryRequirements.Size"/> member in memory, starting from <see
+        /// cref="MemoryOffset"/> bytes, will be bound to the specified image.
+        /// </param>
+        /// <param name="deviceIndices">An array of device indices.</param>
+        /// <param name="sfrRects">
+        /// An array of rectangles describing which regions of the image are attached to each
+        /// instance of memory.
+        /// </param>
+        /// <param name="next">
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </param>
+        public BindImageMemoryInfoKhr(Image image, DeviceMemory memory, long memoryOffset,
+            int[] deviceIndices, Rect2D[] sfrRects = null, IntPtr next = default(IntPtr))
+        {
+            Next = next;
+            Image = image;
+            Memory = memory;
+            MemoryOffset = memoryOffset;
+            DeviceIndices = deviceIndices;
+            SFRRects = sfrRects;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Native
+        {
+            public StructureType Type;
+            public IntPtr Next;
+            public long Image;
+            public long Memory;
+            public long MemoryOffset;
+            public int DeviceIndexCount;
+            public IntPtr DeviceIndices;
+            public int SFRRectCount;
+            public IntPtr SFRRects;
+
+            public void Free()
+            {
+                Interop.Free(DeviceIndices);
+                Interop.Free(SFRRects);
+            }
+        }
+
+        internal void ToNative(out Native native)
+        {
+            native.Type = StructureType.BindBufferMemoryInfoKhr;
+            native.Next = Next;
+            native.Image = Image;
+            native.Memory = Memory;
+            native.MemoryOffset = MemoryOffset;
+            native.DeviceIndexCount = DeviceIndices?.Length ?? 0;
+            native.DeviceIndices = Interop.Struct.AllocToPointer(DeviceIndices);
+            native.SFRRectCount = SFRRects?.Length ?? 0;
+            native.SFRRects = Interop.Struct.AllocToPointer(SFRRects);
+        }
+    }
+
+    /// <summary>
+    /// Enum specifying the point clipping behaviour.
+    /// </summary>
+    public enum PointClippingBehaviorKhr
+    {
+        AllClipPlanes = 0,
+        UserClipPlanesOnly = 1
+    }
+
+    /// <summary>
+    /// Enum describing tessellation domain origin.
+    /// </summary>
+    public enum TessellationDomainOriginKhr
+    {
+        /// <summary>
+        /// Indicates that the origin of the domain space is in the upper left corner, flipped
+        /// vertically from what is shown in figure img-tessellation-topology.
+        /// </summary>
+        UpperLeft = 0,
+        /// <summary>
+        /// Indicates that the origin of the domain space is in the lower left corner, as shown in
+        /// figure img-tessellation-topology.
+        /// </summary>
+        LowerLeft = 1
+    }
+
+    /// <summary>
+    /// Structure specifying a subpass/input attachment pair and an aspect mask that can be read.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct InputAttachmentAspectReferenceKhr
+    {
+        /// <summary>
+        /// An index into the parent <see cref="RenderPassCreateInfo.Subpasses"/>.
+        /// </summary>
+        public int Subpass;
+        public int InputAttachmentIndex;
+        /// <summary>
+        /// A mask of which aspect(s) can be accessed within the specified subpass.
+        /// </summary>
+        public int AspectMask;
+    }
+
+    /// <summary>
+    /// Structure specifying, for a given subpass/input attachment pair, which aspect can be read.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RenderPassInputAttachmentAspectCreateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of elements in the <see cref="AspectReferences"/> array.
+        /// </summary>
+        public int AspectReferenceCount;
+        /// <summary>
+        /// Points to an array of <see cref="AspectReferenceCount"/> number of <see
+        /// cref="InputAttachmentAspectReferenceKhr"/> structures describing which aspect(s) can be
+        /// accessed for a given input attachment within a given subpass.
+        /// </summary>
+        public IntPtr AspectReferences;
+    }
+
+    /// <summary>
+    /// Specify the intended usage of an image view.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImageViewUsageCreateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bitmask describing the allowed usages of the image view.
+        /// </summary>
+        public ImageUsages Usage;
+    }
+
+    /// <summary>
+    /// Structure specifying the orientation of the tessellation domain.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineTessellationDomainOriginStateCreateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Controls the origin of the tessellation domain space.
+        /// </summary>
+        public TessellationDomainOriginKhr DomainOrigin;
+    }
+
+    /// <summary>
+    /// Structure specifying how to bind an image plane to memory.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BindImagePlaneMemoryInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The aspect of the disjoint image plane to bind.
+        /// </summary>
+        public ImageAspects PlaneAspect;
+    }
+
+    /// <summary>
+    /// Structure specifying image plane for memory requirements.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImagePlaneMemoryRequirementsInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The aspect corresponding to the image plane to query.
+        /// </summary>
+        public ImageAspects PlaneAspect;
+    }
+
+    /// <summary>
+    /// Specify that an image can be used with a particular set of formats.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImageFormatListCreateInfoKhr
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The number of entries in the <see cref="ViewFormats"/> array.
+        /// </summary>
+        public int ViewFormatCount;
+        /// <summary>
+        /// An array which lists of all <see cref="Format"/> s which can be used when creating views
+        /// of this image.
+        /// </summary>
+        public IntPtr ViewFormats;
     }
 }
