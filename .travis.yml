@@ -12,11 +12,9 @@ dist: trusty
 osx_image: xcode8.3
 
 mono: none
-dotnet: 1.0.4
+dotnet: 2.0.0
 
 script:
   - ulimit -n 4096
-  - dotnet restore Src/VulkanCore.csproj
   - dotnet build Src/VulkanCore.csproj
-  - dotnet restore Tests/VulkanCore.Tests.csproj
   - dotnet build Tests/VulkanCore.Tests.csproj
