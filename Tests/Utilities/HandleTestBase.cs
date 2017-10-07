@@ -37,12 +37,6 @@ namespace VulkanCore.Tests.Utilities
         protected PhysicalDeviceFeatures PhysicalDeviceFeatures => _defaults.PhysicalDeviceFeatures;
         protected PhysicalDeviceMemoryProperties PhysicalDeviceMemoryProperties => _defaults.PhysicalDeviceMemoryProperties;
 
-        protected byte[] ReadAllBytes(string assetName)
-        {
-            string baseDirectory = AppContext.BaseDirectory;
-            return File.ReadAllBytes(Path.Combine(baseDirectory, Path.Combine("Content", assetName)));
-        }
-
         public virtual void Dispose()
         {
             // Unsubscribe from tracking memory.
@@ -58,8 +52,20 @@ namespace VulkanCore.Tests.Utilities
             }
         }
 
+        protected static byte[] ReadAllBytes(string assetName)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var assembly = typeof(HandleTestBase).Assembly;
+                string assemblyName = assembly.FullName.Substring(0, assembly.FullName.IndexOf(','));
+                string path = $"{assemblyName}.Content.{assetName}";
+                assembly.GetManifestResourceStream(path).CopyTo(ms);
+                return ms.ToArray();
+            }
+        }
+
         // Ignores alignment!
-        protected AllocationCallbacks? CustomAllocator => new AllocationCallbacks(
+        protected static AllocationCallbacks? CustomAllocator => new AllocationCallbacks(
             alloc: (userData, size, alignment, scope) => Interop.Alloc(size),
             realloc: (userData, original, size, alignment, scope) => Interop.ReAlloc(original, size),
             free: (userData, memory) => Interop.Free(memory),

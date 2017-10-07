@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
@@ -192,7 +192,8 @@ namespace VulkanCore.Khr
         /// </summary>
         public SwapchainCreateFlagsKhr Flags;
         /// <summary>
-        /// The <see cref="SurfaceKhr"/> that the swapchain will present images to.
+        /// The <see cref="SurfaceKhr"/> to which the swapchain will present images. The swapchain is
+        /// associated with <see cref="SurfaceKhr"/>.
         /// </summary>
         public long Surface;
         /// <summary>

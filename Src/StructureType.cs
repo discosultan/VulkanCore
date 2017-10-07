@@ -71,6 +71,7 @@ namespace VulkanCore
         MirSurfaceCreateInfoKhr = 1000007000,
         AndroidSurfaceCreateInfoKhr = 1000008000,
         Win32SurfaceCreateInfoKhr = 1000009000,
+        NativeBufferAndroid = 1000010000,
         DebugReportCallbackCreateInfoExt = 1000011000,
         PipelineRasterizationStateRasterizationOrderAmd = 1000018000,
         DebugMarkerObjectNameInfoExt = 1000022000,
