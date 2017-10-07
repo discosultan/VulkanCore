@@ -86,14 +86,14 @@ namespace VulkanCore.Tests
             int count = Interop.String.GetMaxByteCount(str);
             var bytes = stackalloc byte[count];
             Interop.String.ToPointer(str, bytes, count);
-            Assert.Equal(0, count);            
+            Assert.Equal(0, count);
         }
 
         [Fact]
         public void NullPtrToString()
         {
             string value = Interop.String.FromPointer(null);
-            Assert.Equal(null, value);
+            Assert.Null(value);
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace VulkanCore.Tests
             finally
             {
                 Interop.Free(ptr);
-            }            
+            }
         }
 
         [Fact]
