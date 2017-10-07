@@ -290,7 +290,34 @@ namespace VulkanCore.Ext
         /// the first subpass using it.
         /// </summary>
         public IntPtr AttachmentInitialSampleLocations;
-        public SubpassSampleLocationsExt SubpassSampleLocations;
+        /// <summary>
+        /// The number of elements in the <see cref="PostSubpassSampleLocations"/> array.
+        /// </summary>
+        public int PostSubpassSampleLocationsCount;
+        /// <summary>
+        /// Is an array of <see cref="PostSubpassSampleLocationsCount"/><see
+        /// cref="SubpassSampleLocationsExt"/> structures specifying the subpass indices and their
+        /// corresponding sample location state.
+        /// <para>
+        /// Each element of <see cref="PostSubpassSampleLocations"/> can specify the sample location
+        /// state to use in the automatic layout transition performed to transition the depth/stencil
+        /// attachment used by the specified subpass to the image layout specified in a dependent
+        /// subpass or to the final layout of the attachment in case the specified subpass is the
+        /// last subpass using that attachment.
+        /// </para>
+        /// <para>
+        /// In addition, if <see
+        /// cref="PhysicalDeviceSampleLocationsPropertiesExt.VariableSampleLocations"/> is
+        /// <c>false</c>, each element of <see cref="PostSubpassSampleLocations"/> must specify the
+        /// sample location state that matches the sample locations used by all pipelines that will
+        /// be bound to a command buffer during the specified subpass.
+        /// </para>
+        /// <para>
+        /// If <c>VariableSampleLocations</c> is <c>true</c>, the sample locations used for
+        /// rasterization do not depend on <see cref="PostSubpassSampleLocations"/>.
+        /// </para>
+        /// </summary>
+        public IntPtr PostSubpassSampleLocations;
     }
 
     /// <summary>

@@ -1,10 +1,12 @@
-using System;
 using Android.Content;
 using Android.Runtime;
 using Android.Views;
-using System.Runtime.InteropServices;
+using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
+using AndroidApplication = Android.App.Application;
+using AndroidFormat = Android.Graphics.Format;
 
 namespace VulkanCore.Samples
 {
@@ -55,12 +57,12 @@ namespace VulkanCore.Samples
             _gameTimer.Start();
             _tickTimer = new System.Threading.Timer(state =>
             {
-                Android.App.Application.SynchronizationContext.Send(_ => { if (!_appPaused) Tick(); }, state);
+                AndroidApplication.SynchronizationContext.Send(_ => { if (!_appPaused) Tick(); }, state);
                 _tickTimer.Change(_renderDueTime, Timeout.Infinite);
             }, null, _renderDueTime, Timeout.Infinite);
         }
 
-        public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Android.Graphics.Format format, int width, int height)
+        public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] AndroidFormat format, int width, int height)
         {
             _app.Resize();
         }

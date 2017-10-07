@@ -195,7 +195,7 @@ namespace VulkanCore.Khx
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// The <see cref="SwapchainKhr"/> from which an image is being acquired.
+        /// A non-retired <see cref="SwapchainKhr"/> from which an image is acquired.
         /// </summary>
         public long Swapchain;
         /// <summary>

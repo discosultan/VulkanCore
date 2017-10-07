@@ -598,6 +598,8 @@ namespace VulkanCore
             /// are extensible.
             /// </summary>
             public const string KhrBindMemory2 = "VK_KHR_bind_memory2";
+            public const string AndroidNativeBuffer = "VK_ANDROID_native_buffer";
+            public const string AmdShaderImageLoadStoreLod = "VK_AMD_shader_image_load_store_lod";
         }
 
         /// <summary>
