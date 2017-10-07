@@ -54,7 +54,7 @@ namespace VulkanCore.Tests.Issues
             IntPtr createInfoPtr = Interop.Struct.AllocToPointer(ref deviceGroupCreateInfo);
 
             // Finally, pass the device group create info pointer to the `Next` chain of device create info.
-            Device device = physicalDeviceGroup.PhysicalDevices[0].CreateDevice(new DeviceCreateInfo(
+            physicalDeviceGroup.PhysicalDevices[0].CreateDevice(new DeviceCreateInfo(
                 new[] { new DeviceQueueCreateInfo(0, 1, 1.0f) },
                 next: createInfoPtr));
 

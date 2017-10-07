@@ -20,7 +20,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Equals()
+        public void BoolEquals()
         {
             Bool boolTrue = true;
             Bool boolFalse = false;

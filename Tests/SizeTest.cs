@@ -30,7 +30,7 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void Equals()
+        public void SizeEquals()
         {
             var val1 = new Size(0);
             var val2 = new Size(1);
