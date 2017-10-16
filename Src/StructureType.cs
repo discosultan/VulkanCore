@@ -210,6 +210,7 @@ namespace VulkanCore
         ImageSwapchainCreateInfoKhx = 1000060008,
         BindImageMemorySwapchainInfoKhx = 1000060009,
         DeviceGroupPresentInfoKhx = 1000060011,
-        DeviceGroupSwapchainCreateInfoKhx = 1000060012
+        DeviceGroupSwapchainCreateInfoKhx = 1000060012,
+        DeviceQueueGlobalPriorityCreateInfoExt = 1000174000
     }
 }

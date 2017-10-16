@@ -530,4 +530,48 @@ namespace VulkanCore.Ext
         /// </summary>
         public float Y;
     }
+
+    /// <summary>
+    /// Specify a system wide priority.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DeviceQueueGlobalPriorityCreateInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// The system-wide priority associated to this queue as specified by <see
+        /// cref="QueueGlobalPriorityExt"/>.
+        /// </summary>
+        public QueueGlobalPriorityExt GlobalPriority;
+    }
+
+    /// <summary>
+    /// Values specifying a system-wide queue priority.
+    /// </summary>
+    public enum QueueGlobalPriorityExt
+    {
+        /// <summary>
+        /// Below the system default. Useful for non-interactive tasks.
+        /// </summary>
+        Low = 128,
+        /// <summary>
+        /// The system default priority.
+        /// </summary>
+        Medium = 256,
+        /// <summary>
+        /// Above the system default.
+        /// </summary>
+        High = 512,
+        /// <summary>
+        /// The highest priority. Useful for critical tasks.
+        /// </summary>
+        Realtime = 1024
+    }
 }

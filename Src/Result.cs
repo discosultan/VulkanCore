@@ -1,4 +1,4 @@
-﻿namespace VulkanCore
+namespace VulkanCore
 {
     /// <summary>
     /// Vulkan command return codes.
@@ -127,6 +127,7 @@
         /// <summary>
         /// An external handle is not a valid handle of the specified type.
         /// </summary>
-        ErrorInvalidExternalHandleKhx = 1000072003
+        ErrorInvalidExternalHandleKhx = 1000072003,
+        ErrorNotPermittedExt = 1000174001
     }
 }

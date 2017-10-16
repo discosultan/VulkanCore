@@ -577,19 +577,20 @@ namespace VulkanCore.Khr
         /// </summary>
         public Extent2D CurrentExtent;
         /// <summary>
-        /// Contains the smallest valid swapchain extent for the surface on the specified device. The
-        /// width and height of the extent will each be less than or equal to the corresponding width
-        /// and height of <see cref="CurrentExtent"/>, unless <see cref="CurrentExtent"/> has the
-        /// special value described above.
+        /// Contains the smallest valid swapchain extent for the surface on the specified device.
         /// </summary>
         public Extent2D MinImageExtent;
         /// <summary>
-        /// Contains the largest valid swapchain extent for the surface on the specified device. The
-        /// width and height of the extent will each be greater than or equal to the corresponding
-        /// width and height of <see cref="MinImageExtent"/>. The width and height of the extent will
-        /// each be greater than or equal to the corresponding width and height of <see
-        /// cref="CurrentExtent"/>, unless <see cref="CurrentExtent"/> has the special value
-        /// described above.
+        /// Contains the largest valid swapchain extent for the surface on the specified device.
+        /// <para>
+        /// The width and height of the extent will each be greater than or equal to the
+        /// corresponding width and height of <see cref="MinImageExtent"/>.
+        /// </para>
+        /// <para>
+        /// The width and height of the extent will each be greater than or equal to the
+        /// corresponding width and height of <see cref="CurrentExtent"/>, unless <see
+        /// cref="CurrentExtent"/> has the special value described above.
+        /// </para>
         /// </summary>
         public Extent2D MaxImageExtent;
         /// <summary>
