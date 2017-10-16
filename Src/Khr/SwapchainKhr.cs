@@ -213,7 +213,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public ColorSpaceKhr ImageColorSpace;
         /// <summary>
-        /// The size (in pixels) of the swapchain.
+        /// The non-zero size (in pixels) of the swapchain.
         /// <para>
         /// Behavior is platform-dependent when the image extent does not match the surface's <see
         /// cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.

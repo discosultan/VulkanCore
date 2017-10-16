@@ -600,6 +600,13 @@ namespace VulkanCore
             public const string KhrBindMemory2 = "VK_KHR_bind_memory2";
             public const string AndroidNativeBuffer = "VK_ANDROID_native_buffer";
             public const string AmdShaderImageLoadStoreLod = "VK_AMD_shader_image_load_store_lod";
+            /// <summary>
+            /// In Vulkan, users can specify device-scope queue priorities. In some cases it may be
+            /// useful to extend this concept to a system-wide scope. This extension provides a
+            /// mechanism for caller’s to set their system-wide priority. The default queue priority
+            /// is <see cref="Ext.QueueGlobalPriorityExt.Medium"/>.
+            /// </summary>
+            public const string ExtGlobalPriority = "VK_EXT_global_priority";
         }
 
         /// <summary>
