@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.NV
@@ -72,7 +72,7 @@ namespace VulkanCore.NV
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// The enable for viewport W scaling.
+        /// Controls whether viewport W scaling is enabled.
         /// </summary>
         public Bool ViewportWScalingEnable;
         /// <summary>
@@ -81,7 +81,7 @@ namespace VulkanCore.NV
         /// </summary>
         public int ViewportCount;
         /// <summary>
-        /// Structures which define the W scaling parameters for the corresponding viewport. If the
+        /// Structures, which define the W scaling parameters for the corresponding viewport. If the
         /// viewport W scaling state is dynamic, this member is ignored.
         /// </summary>
         public ViewportWScalingNV[] ViewportWScalings;

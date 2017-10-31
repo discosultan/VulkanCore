@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -90,7 +90,10 @@ namespace VulkanCore
         /// </summary>
         public Bool AnisotropyEnable;
         /// <summary>
-        /// The anisotropy value clamp.
+        /// The anisotropy value clamp used by the sampler when <see cref="AnisotropyEnable"/> is <c>true</c>.
+        /// <para>
+        /// If <see cref="AnisotropyEnable"/> is <c>false</c>, <see cref="MaxAnisotropy"/> is ignored.
+        /// </para>
         /// </summary>
         public float MaxAnisotropy;
         /// <summary>
@@ -103,12 +106,12 @@ namespace VulkanCore
         /// </summary>
         public CompareOp CompareOp;
         /// <summary>
-        /// The value used to clamp the computed level-of-detail value.
+        /// The value used to clamp the computed LOD value.
         /// <para>Must be less than or equal to <see cref="MaxLod"/>.</para>
         /// </summary>
         public float MinLod;
         /// <summary>
-        /// The value used to clamp the computed level-of-detail value.
+        /// The value used to clamp the computed LOD value.
         /// <para>Must be greater than or equal to <see cref="MinLod"/>.</para>
         /// </summary>
         public float MaxLod;
