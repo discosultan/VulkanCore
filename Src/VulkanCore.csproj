@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.0.0-alpha32</Version>
+    <Version>1.0.0-alpha34</Version>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Authors>discosultan</Authors>
     <Description>Vulkan bindings for .NET Standard</Description>

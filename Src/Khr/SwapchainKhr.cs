@@ -188,34 +188,34 @@ namespace VulkanCore.Khr
     public struct SwapchainCreateInfoKhr
     {
         /// <summary>
-        /// A bitmask indicating parameters of swapchain creation.
+        /// A bitmask indicating parameters of the swapchain creation.
         /// </summary>
         public SwapchainCreateFlagsKhr Flags;
         /// <summary>
-        /// The <see cref="SurfaceKhr"/> to which the swapchain will present images. The swapchain is
-        /// associated with <see cref="SurfaceKhr"/>.
+        /// The <see cref="SurfaceKhr"/> onto which the swapchain will present images. If the
+        /// creation succeeds, the swapchain becomes associated with <see cref="SurfaceKhr"/>.
         /// </summary>
         public long Surface;
         /// <summary>
         /// The minimum number of presentable images that the application needs.
         /// <para>
-        /// The platform will either create the swapchain with at least that many images, or will
-        /// fail to create the swapchain.
+        /// The implementation will either create the swapchain with at least that many images, or it
+        /// will fail to create the swapchain.
         /// </para>
         /// </summary>
         public int MinImageCount;
         /// <summary>
-        /// A format that is valid for swapchains on the specified surface.
+        /// A format value specifying the format the swapchain image(s) will be created with.
         /// </summary>
         public Format ImageFormat;
         /// <summary>
-        /// Color space that is valid for swapchains on the specified surface.
+        /// Color space value specifying the way the swapchain interprets image data.
         /// </summary>
         public ColorSpaceKhr ImageColorSpace;
         /// <summary>
-        /// The non-zero size (in pixels) of the swapchain.
+        /// The size (in pixels) of the swapchain image(s).
         /// <para>
-        /// Behavior is platform-dependent when the image extent does not match the surface's <see
+        /// The behavior is platform-dependent if the image extent does not match the surface's <see
         /// cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.
         /// </para>
         /// </summary>
@@ -226,20 +226,20 @@ namespace VulkanCore.Khr
         /// </summary>
         public int ImageArrayLayers;
         /// <summary>
-        /// A bitmask indicating how the application will use the swapchain's presentable images.
+        /// A bitmask describing the intended usage of the (acquired) swapchain images.
         /// </summary>
         public ImageUsages ImageUsage;
         /// <summary>
-        /// The sharing mode used for the images of the swapchain.
+        /// The sharing mode used for the image(s) of the swapchain.
         /// </summary>
         public SharingMode ImageSharingMode;
         /// <summary>
-        /// Queue family indices having access to the images of the swapchain in case <see
+        /// Queue family indices having access to the image(s) of the swapchain when <see
         /// cref="ImageSharingMode"/> is <see cref="SharingMode.Concurrent"/>.
         /// </summary>
         public int[] QueueFamilyIndices;
         /// <summary>
-        /// A bitmask describing the transform, relative to the presentation engine's natural
+        /// A value describing the transform, relative to the presentation engine's natural
         /// orientation, applied to the image content prior to presentation.
         /// <para>
         /// If it does not match the <see cref="SurfaceCapabilitiesKhr.CurrentTransform"/> value
@@ -249,7 +249,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public SurfaceTransformsKhr PreTransform;
         /// <summary>
-        /// A bitmask indicating the alpha compositing mode to use when this surface is composited
+        /// A value indicating the alpha compositing mode to use when this surface is composited
         /// together with other surfaces on certain window systems.
         /// </summary>
         public CompositeAlphasKhr CompositeAlpha;
@@ -263,23 +263,30 @@ namespace VulkanCore.Khr
         public PresentModeKhr PresentMode;
         /// <summary>
         /// Indicates whether the Vulkan implementation is allowed to discard rendering operations
-        /// that affect regions of the surface which are not visible.
+        /// that affect regions of the surface that are not visible.
         /// <para>
         /// If set to <c>true</c>, the presentable images associated with the swapchain may not own
         /// all of their pixels. Pixels in the presentable images that correspond to regions of the
-        /// target surface obscured by another window on the desktop or subject to some other
+        /// target surface obscured by another window on the desktop, or subject to some other
         /// clipping mechanism will have undefined content when read back. Pixel shaders may not
-        /// execute for these pixels, and thus any side affects they would have had will not occur.
+        /// execute for these pixels, and thus any side effects they would have had will not occur.
         /// </para>
         /// <para>
-        /// If set to <c>false</c>, presentable images associated with the swapchain will own all the
-        /// pixels they contain. Setting this value to <c>true</c> does not guarantee any clipping
-        /// will occur, but allows more optimal presentation methods to be used on some platforms.
+        /// <c>true</c> value does not guarantee any clipping will occur, but allows more optimal
+        /// presentation methods to be used on some platforms.
+        /// </para>
+        /// <para>
+        /// If set to <c>false</c>, presentable images associated with the swapchain will own all of
+        /// the pixels they contain.
         /// </para>
         /// </summary>
         public Bool Clipped;
         /// <summary>
-        /// Existing swapchain to replace, if any.
+        /// Is <c>null</c>, or the existing non-retired swapchain currently associated with <c>Surface</c>.
+        /// <para>
+        /// Providing a valid <see cref="OldSwapchain"/> may aid in the resource reuse, and also
+        /// allows the application to still present any images that are already acquired from it.
+        /// </para>
         /// </summary>
         public SwapchainKhr OldSwapchain;
 
@@ -425,13 +432,7 @@ namespace VulkanCore.Khr
         /// <summary>
         /// No flags.
         /// </summary>
-        None = 0,
-        /// <summary>
-        /// Specifies that images created from the swapchain (i.e. with the swapchain member of <see
-        /// cref="Khx.ImageSwapchainCreateInfoKhx.Swapchain"/> set to this swapchain's
-        /// handle) must use <see cref="ImageCreateFlags.BindSfrKhx"/>.
-        /// </summary>
-        BindSfrKhx = 1 << 0
+        None = 0
     }
 
     /// <summary>

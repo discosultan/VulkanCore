@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -182,13 +182,15 @@ namespace VulkanCore
         /// </summary>
         public AttachmentReference[] ColorAttachments;
         /// <summary>
-        /// Structures that lists which of the render pass's attachments can be read in the shader
-        /// during the subpass, and what layout each attachment will be in during the subpass. Each
-        /// element of the array corresponds to an input attachment unit number in the shader, i.e.
-        /// if the shader declares an input variable <c>layout(inputAttachmentIndex=X, set=Y,
-        /// binding=Z</c> then it uses the attachment provided in <c>InputAttachments[X]</c>.
+        /// Structures that lists which of the render pass's attachments can be read in the fragment
+        /// shader stage during the subpass, and what layout each attachment will be in during the
+        /// subpass. Each element of the array corresponds to an input attachment unit number in the
+        /// shader, i.e. if the shader declares an input variable <c>layout(inputAttachmentIndex=X,
+        /// set=Y, binding=Z</c> then it uses the attachment provided in <c>InputAttachments[X]</c>.
         /// Input attachments must also be bound to the pipeline with a descriptor set, with the
-        /// input attachment descriptor written in the location (set=Y, binding=Z).
+        /// input attachment descriptor written in the location (set=Y, binding=Z). Fragment shaders
+        /// can use subpass input variables to access the contents of an input attachment at the
+        /// fragment's (x, y, layer) framebuffer coordinates.
         /// </summary>
         public AttachmentReference[] InputAttachments;
         /// <summary>

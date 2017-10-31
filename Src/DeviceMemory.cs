@@ -158,8 +158,8 @@ namespace VulkanCore
         /// </summary>
         public long AllocationSize;
         /// <summary>
-        /// The memory type index, which selects the properties of the memory to be allocated, as
-        /// well as the heap the memory will come from.
+        /// An index identifying a memory type from the <see
+        /// cref="PhysicalDeviceMemoryProperties.MemoryTypes"/> array.
         /// </summary>
         public int MemoryTypeIndex;
 

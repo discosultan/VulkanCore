@@ -607,6 +607,12 @@ namespace VulkanCore
             /// is <see cref="Ext.QueueGlobalPriorityExt.Medium"/>.
             /// </summary>
             public const string ExtGlobalPriority = "VK_EXT_global_priority";
+            /// <summary>
+            /// This extension adds a way to query certain information about a compiled shader which
+            /// is part of a pipeline. This information may include shader disassembly, shader binary
+            /// and various statistics about a shader's resource usage.
+            /// </summary>
+            public const string AmdShaderInfo = "VK_AMD_shader_info";
         }
 
         /// <summary>

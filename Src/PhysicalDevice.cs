@@ -1254,7 +1254,7 @@ namespace VulkanCore
         None = 0,
         /// <summary>
         /// Indicates that memory allocated with this type is the most efficient for device access.
-        /// This property will only be set for memory types belonging to heaps with the <see
+        /// This property will be set if and only if the memory type belongs to a heap with the <see
         /// cref="MemoryHeaps.DeviceLocal"/> set.
         /// </summary>
         DeviceLocal = 1 << 0,
@@ -1627,7 +1627,7 @@ namespace VulkanCore
         /// <c>XChromaOffset</c> and <c>YChromaOffset</c> must be <see
         /// cref="Khr.ChromaLocationKhr.CositedEven"/>. If a format does not incorporate chroma
         /// downsampling (it is not a "`422`" or "`420`" format) but the implementation supports
-        /// sampler Y'C~B~C~R~ conversion for this format, the implementation must set <see cref="Khr.MidpointChromaSamplesKhr"/>.
+        /// sampler Y'C~B~C~R~ conversion for this format, the implementation must set <see cref="MidpointChromaSamplesKhr"/>.
         /// </summary>
         MidpointChromaSamplesKhr = 1 << 17,
         /// <summary>
@@ -1646,7 +1646,7 @@ namespace VulkanCore
         SampledImageYcbcrConversionChromaReconstructionExplicitKhr = 1 << 20,
         /// <summary>
         /// Specifies that reconstruction can be forcibly made explicit by setting <see
-        /// cref="Khr.VkSamplerYcbcrConversionCreateInfoKHR::pname:forceExplicitReconstruction"/> to True.
+        /// cref="Khr.SamplerYcbcrConversionCreateInfoKhr.ForceExplicitReconstruction"/> to <c>true</c>.
         /// </summary>
         SampledImageYcbcrConversionChromaReconstructionExplicitForceableKhr = 1 << 21,
         /// <summary>

@@ -1041,7 +1041,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public ImageType ImageType;
         /// <summary>
-        /// The number of samples per pixel as defined in <see cref="SampleCounts"/>.
+        /// The number of samples per texel as defined in <see cref="SampleCounts"/>.
         /// </summary>
         public SampleCounts Samples;
         /// <summary>

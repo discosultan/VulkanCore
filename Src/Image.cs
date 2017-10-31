@@ -699,8 +699,7 @@ namespace VulkanCore
         AlignedMipSize = 1 << 1,
         /// <summary>
         /// Specifies that the image uses non-standard sparse image block dimensions, and the image
-        /// granularity values do not match the standard sparse image block dimensions for the given
-        /// pixel format.
+        /// granularity values do not match the standard sparse image block dimensions for the given format.
         /// </summary>
         NonstandardBlockSize = 1 << 2
     }
