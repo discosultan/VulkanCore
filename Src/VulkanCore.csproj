@@ -10,7 +10,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/Doc/Vulkan64.png</PackageIconUrl>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\VulkanCore.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

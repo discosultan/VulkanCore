@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyName>MiniFramework</AssemblyName>
     <RootNamespace>VulkanCore.Samples</RootNamespace>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Numerics.Vectors" Version="4.4.0" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Src\VulkanCore.csproj" />
   </ItemGroup>
+
 </Project>
