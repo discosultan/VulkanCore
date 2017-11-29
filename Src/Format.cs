@@ -1054,10 +1054,10 @@ namespace VulkanCore
         /// dimensions, and each R and B component is shared with the G components for which
         /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5
         /// \rfloor = JB = JR]. The location of each plane when this image is in linear layout can be
-        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
-        /// the G plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
-        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
-        /// with a width and height that is a multiple of two.
+        /// determined via <see cref="Image.GetSubresourceLayout"/>, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, <see cref="ImageAspects.Plane1Khr"/> for
+        /// the B plane, and <see cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this
+        /// format must be defined with a width and height that is a multiple of two.
         /// </summary>
         G8B8R83Plane420UNormKhr = 1000156002,
         /// <summary>
@@ -1067,10 +1067,10 @@ namespace VulkanCore
         /// BR plane is halved relative to the image dimensions, and each R and B value is shared
         /// with the G components for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and
         /// latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR]. The location of each plane when this
-        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
-        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
-        /// for the BR plane. Images in this format must be defined with a width and height that is a
-        /// multiple of two.
+        /// image is in linear layout can be determined via <see cref="Image.GetSubresourceLayout"/>,
+        /// using <see cref="ImageAspects.Plane0Khr"/> for the G plane, and <see
+        /// cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format must be defined
+        /// with a width and height that is a multiple of two.
         /// </summary>
         G8B8R82Plane420UNormKhr = 1000156003,
         /// <summary>
@@ -1079,7 +1079,7 @@ namespace VulkanCore
         /// horizontal dimension of the R and B plane is halved relative to the image dimensions, and
         /// each R and B value is shared with the G components for which latexmath:[\lfloor IG \times
         /// 0.5 \rfloor = IB = IR]. The location of each plane when this image is in linear layout
-        /// can be determined via GetImageSubresourceLayout, using <see
+        /// can be determined via <see cref="Image.GetSubresourceLayout"/>, using <see
         /// cref="ImageAspects.Plane0Khr"/> for the G plane, <see cref="ImageAspects.Plane1Khr"/> for
         /// the B plane, and <see cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this
         /// format must be defined with a width that is a multiple of two.
@@ -1091,19 +1091,19 @@ namespace VulkanCore
         /// byte 0 and an 8-bit R component in byte 1. The horizontal dimensions of the BR plane is
         /// halved relative to the image dimensions, and each R and B value is shared with the G
         /// components for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of
-        /// each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// and <see cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format must be
-        /// defined with a width that is a multiple of two.
+        /// each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, and <see cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format
+        /// must be defined with a width that is a multiple of two.
         /// </summary>
         G8B8R82Plane422UNormKhr = 1000156005,
         /// <summary>
         /// Specifies a unsigned normalized _multi-planar Format_ that has an 8-bit G component in
         /// plane 0, an 8-bit B component in plane 1, and an 8-bit R component in plane 2. Each plane
         /// has the same dimensions and each R, G and B component contributes to a single texel. The
-        /// location of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// location of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane.
         /// </summary>
         G8B8R83Plane444UNormKhr = 1000156006,
@@ -1163,9 +1163,9 @@ namespace VulkanCore
         /// vertical dimensions of the R and B planes are halved relative to the image dimensions,
         /// and each R and B component is shared with the G components for which latexmath:[\lfloor
         /// IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR].
-        /// The location of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// The location of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
         /// with a width and height that is a multiple of two.
         /// </summary>
@@ -1179,7 +1179,7 @@ namespace VulkanCore
         /// relative to the image dimensions, and each R and B value is shared with the G components
         /// for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG
         /// \times 0.5 \rfloor = JB = JR]. The location of each plane when this image is in linear
-        /// layout can be determined via GetImageSubresourceLayout, using <see
+        /// layout can be determined via <see cref="Image.GetSubresourceLayout"/>, using <see
         /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
         /// for the BR plane. Images in this format must be defined with a width and height that is a
         /// multiple of two.
@@ -1193,10 +1193,10 @@ namespace VulkanCore
         /// dimension of the R and B plane is halved relative to the image dimensions, and each R and
         /// B value is shared with the G components for which latexmath:[\lfloor IG \times 0.5
         /// \rfloor = IB = IR]. The location of each plane when this image is in linear layout can be
-        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
-        /// the G plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
-        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
-        /// with a width that is a multiple of two.
+        /// determined via <see cref="Image.GetSubresourceLayout"/>, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, <see cref="ImageAspects.Plane1Khr"/> for
+        /// the B plane, and <see cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this
+        /// format must be defined with a width that is a multiple of two.
         /// </summary>
         G10X6B10X6R10X63Plane422UNorm3Pack16Khr = 1000156014,
         /// <summary>
@@ -1207,10 +1207,10 @@ namespace VulkanCore
         /// each word set to 0. The horizontal dimensions of the BR plane is halved relative to the
         /// image dimensions, and each R and B value is shared with the G components for which
         /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of each plane when this
-        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
-        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
-        /// for the BR plane. Images in this format must be defined with a width that is a multiple
-        /// of two.
+        /// image is in linear layout can be determined via <see cref="Image.GetSubresourceLayout"/>,
+        /// using <see cref="ImageAspects.Plane0Khr"/> for the G plane, and <see
+        /// cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format must be defined
+        /// with a width that is a multiple of two.
         /// </summary>
         G10X6B10X6R10X62Plane422UNorm3Pack16Khr = 1000156015,
         /// <summary>
@@ -1219,9 +1219,9 @@ namespace VulkanCore
         /// of each 16-bit word of plane 1, and a 10-bit R component in the top 10 bits of each
         /// 16-bit word of plane 2, with the bottom 6 bits of each word set to 0. Each plane has the
         /// same dimensions and each R, G and B component contributes to a single texel. The location
-        /// of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane.
         /// </summary>
         G10X6B10X6R10X63Plane444UNorm3Pack16Khr = 1000156016,
@@ -1281,9 +1281,9 @@ namespace VulkanCore
         /// vertical dimensions of the R and B planes are halved relative to the image dimensions,
         /// and each R and B component is shared with the G components for which latexmath:[\lfloor
         /// IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR].
-        /// The location of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// The location of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
         /// with a width and height that is a multiple of two.
         /// </summary>
@@ -1297,7 +1297,7 @@ namespace VulkanCore
         /// relative to the image dimensions, and each R and B value is shared with the G components
         /// for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG
         /// \times 0.5 \rfloor = JB = JR]. The location of each plane when this image is in linear
-        /// layout can be determined via GetImageSubresourceLayout, using <see
+        /// layout can be determined via <see cref="Image.GetSubresourceLayout"/>, using <see
         /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
         /// for the BR plane. Images in this format must be defined with a width and height that is a
         /// multiple of two.
@@ -1311,10 +1311,10 @@ namespace VulkanCore
         /// dimension of the R and B plane is halved relative to the image dimensions, and each R and
         /// B value is shared with the G components for which latexmath:[\lfloor IG \times 0.5
         /// \rfloor = IB = IR]. The location of each plane when this image is in linear layout can be
-        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
-        /// the G plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
-        /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
-        /// with a width that is a multiple of two.
+        /// determined via <see cref="Image.GetSubresourceLayout"/>, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, <see cref="ImageAspects.Plane1Khr"/> for
+        /// the B plane, and <see cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this
+        /// format must be defined with a width that is a multiple of two.
         /// </summary>
         G12X4B12X4R12X43Plane422UNorm3Pack16Khr = 1000156024,
         /// <summary>
@@ -1325,10 +1325,10 @@ namespace VulkanCore
         /// each word set to 0. The horizontal dimensions of the BR plane is halved relative to the
         /// image dimensions, and each R and B value is shared with the G components for which
         /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of each plane when this
-        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
-        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
-        /// for the BR plane. Images in this format must be defined with a width that is a multiple
-        /// of two.
+        /// image is in linear layout can be determined via <see cref="Image.GetSubresourceLayout"/>,
+        /// using <see cref="ImageAspects.Plane0Khr"/> for the G plane, and <see
+        /// cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format must be defined
+        /// with a width that is a multiple of two.
         /// </summary>
         G12X4B12X4R12X42Plane422UNorm3Pack16Khr = 1000156025,
         /// <summary>
@@ -1337,9 +1337,9 @@ namespace VulkanCore
         /// of each 16-bit word of plane 1, and a 12-bit R component in the top 12 bits of each
         /// 16-bit word of plane 2, with the bottom 4 bits of each word set to 0. Each plane has the
         /// same dimensions and each R, G and B component contributes to a single texel. The location
-        /// of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane.
         /// </summary>
         G12X4B12X4R12X43Plane444UNorm3Pack16Khr = 1000156026,
@@ -1376,9 +1376,9 @@ namespace VulkanCore
         /// of the R and B planes are halved relative to the image dimensions, and each R and B
         /// component is shared with the G components for which latexmath:[\lfloor IG \times 0.5\
         /// rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5 \rfloor = JB = JR]. The location
-        /// of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
         /// with a width and height that is a multiple of two.
         /// </summary>
@@ -1391,9 +1391,10 @@ namespace VulkanCore
         /// the image dimensions, and each R and B value is shared with the G components for which
         /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR] and latexmath:[\lfloor JG \times 0.5
         /// \rfloor = JB = JR]. The location of each plane when this image is in linear layout can be
-        /// determined via GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for
-        /// the G plane, and <see cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this
-        /// format must be defined with a width and height that is a multiple of two.
+        /// determined via <see cref="Image.GetSubresourceLayout"/>, using <see
+        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
+        /// for the BR plane. Images in this format must be defined with a width and height that is a
+        /// multiple of two.
         /// </summary>
         G16B16R162Plane420UNormKhr = 1000156030,
         /// <summary>
@@ -1402,9 +1403,9 @@ namespace VulkanCore
         /// 16-bit R component in each 16-bit word of plane 2. The horizontal dimension of the R and
         /// B plane is halved relative to the image dimensions, and each R and B value is shared with
         /// the G components for which latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The
-        /// location of each plane when this image is in linear layout can be determined via
-        /// GetImageSubresourceLayout, using <see cref="ImageAspects.Plane0Khr"/> for the G plane,
-        /// <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// location of each plane when this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
         /// cref="ImageAspects.Plane2Khr"/> for the R plane. Images in this format must be defined
         /// with a width that is a multiple of two.
         /// </summary>
@@ -1416,10 +1417,10 @@ namespace VulkanCore
         /// bytes 2..3. The horizontal dimensions of the BR plane is halved relative to the image
         /// dimensions, and each R and B value is shared with the G components for which
         /// latexmath:[\lfloor IG \times 0.5 \rfloor = IB = IR]. The location of each plane when this
-        /// image is in linear layout can be determined via GetImageSubresourceLayout, using <see
-        /// cref="ImageAspects.Plane0Khr"/> for the G plane, and <see cref="ImageAspects.Plane1Khr"/>
-        /// for the BR plane. Images in this format must be defined with a width that is a multiple
-        /// of two.
+        /// image is in linear layout can be determined via <see cref="Image.GetSubresourceLayout"/>,
+        /// using <see cref="ImageAspects.Plane0Khr"/> for the G plane, and <see
+        /// cref="ImageAspects.Plane1Khr"/> for the BR plane. Images in this format must be defined
+        /// with a width that is a multiple of two.
         /// </summary>
         G16B16R162Plane422UNormKhr = 1000156032,
         /// <summary>
@@ -1427,10 +1428,10 @@ namespace VulkanCore
         /// each 16-bit word of plane 0, a 16-bit B component in each 16-bit word of plane 1, and a
         /// 16-bit R component in each 16-bit word of plane 2. Each plane has the same dimensions and
         /// each R, G and B component contributes to a single texel. The location of each plane when
-        /// this image is in linear layout can be determined via GetImageSubresourceLayout, using
-        /// <see cref="ImageAspects.Plane0Khr"/> for the G plane, <see
-        /// cref="ImageAspects.Plane1Khr"/> for the B plane, and <see cref="ImageAspects.Plane2Khr"/>
-        /// for the R plane.
+        /// this image is in linear layout can be determined via <see
+        /// cref="Image.GetSubresourceLayout"/>, using <see cref="ImageAspects.Plane0Khr"/> for the G
+        /// plane, <see cref="ImageAspects.Plane1Khr"/> for the B plane, and <see
+        /// cref="ImageAspects.Plane2Khr"/> for the R plane.
         /// </summary>
         G16B16R163Plane444UNormKhr = 1000156033
     }

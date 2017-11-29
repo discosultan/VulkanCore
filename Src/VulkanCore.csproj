@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <Version>1.0.0-alpha34</Version>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Authors>discosultan</Authors>
     <Description>Vulkan bindings for .NET Standard</Description>
-    <PackageProjectUrl>https://github.com/discosultan/VulkanCore</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/LICENSE</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/Doc/Vulkan64.png</PackageIconUrl>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <PackageIconUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/Doc/Vulkan64.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/discosultan/VulkanCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Version>1.0.0-alpha35</Version>
   </PropertyGroup>
 
   <ItemGroup>
