@@ -211,6 +211,9 @@ namespace VulkanCore
         BindImageMemorySwapchainInfoKhx = 1000060009,
         DeviceGroupPresentInfoKhx = 1000060011,
         DeviceGroupSwapchainCreateInfoKhx = 1000060012,
-        DeviceQueueGlobalPriorityCreateInfoExt = 1000174000
+        DeviceQueueGlobalPriorityCreateInfoExt = 1000174000,
+        ImportMemoryHostPointerInfoExt = 1000178000,
+        MemoryHostPointerPropertiesExt = 1000178001,
+        PhysicalDeviceExternalMemoryHostPropertiesExt = 1000178002
     }
 }

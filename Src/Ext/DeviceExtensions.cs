@@ -167,6 +167,23 @@ namespace VulkanCore.Ext
             return new ValidationCacheExt(device, &createInfo, ref allocator);
         }
 
+        /// <summary>
+        /// Get properties of external memory host pointer.
+        /// </summary>
+        /// <param name="device">The logical device that will be importing <paramref name="hostPointer"/>.</param>
+        /// <param name="handleType">The type of the handle <paramref name="hostPointer"/>.</param>
+        /// <param name="hostPointer">The host pointer to import from.</param>
+        /// <returns>Properties of external memory host pointer.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static MemoryHostPointerPropertiesExt GetMemoryHostPointerPropertiesExt(this Device device,
+            ExternalMemoryHandleTypesKhr handleType, IntPtr hostPointer)
+        {
+            MemoryHostPointerPropertiesExt properties;
+            Result result = vkGetMemoryHostPointerPropertiesEXT(device)(device, handleType, hostPointer, &properties);
+            VulkanException.ThrowForInvalidResult(result);
+            return properties;
+        }
+
         private delegate Result vkDebugMarkerSetObjectNameEXTDelegate(IntPtr device, DebugMarkerObjectNameInfoExt.Native* nameInfo);
         private static vkDebugMarkerSetObjectNameEXTDelegate vkDebugMarkerSetObjectNameEXT(Device device) => device.GetProc<vkDebugMarkerSetObjectNameEXTDelegate>(nameof(vkDebugMarkerSetObjectNameEXT));
 
@@ -184,6 +201,9 @@ namespace VulkanCore.Ext
 
         private delegate void vkSetHdrMetadataEXTDelegate(IntPtr device, int swapchainCount, long* swapchains, HdrMetadataExt* metadata);
         private static vkSetHdrMetadataEXTDelegate vkSetHdrMetadataEXT(Device device) => device.GetProc<vkSetHdrMetadataEXTDelegate>(nameof(vkSetHdrMetadataEXT));
+
+        private delegate Result vkGetMemoryHostPointerPropertiesEXTDelegate(IntPtr device, ExternalMemoryHandleTypesKhr handleType, IntPtr hostPointer, MemoryHostPointerPropertiesExt* memoryHostPointerProperties);
+        private static vkGetMemoryHostPointerPropertiesEXTDelegate vkGetMemoryHostPointerPropertiesEXT(Device device) => device.GetProc<vkGetMemoryHostPointerPropertiesEXTDelegate>(nameof(vkGetMemoryHostPointerPropertiesEXT));
     }
 
     /// <summary>
@@ -573,5 +593,58 @@ namespace VulkanCore.Ext
         /// The highest priority. Useful for critical tasks.
         /// </summary>
         Realtime = 1024
+    }
+
+    /// <summary>
+    /// Import memory from a host pointer.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImportMemoryHostPointerInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Specifies the handle type.
+        /// </summary>
+        public ExternalMemoryHandleTypesKhr HandleType;
+        /// <summary>
+        /// The host pointer to import from.
+        /// </summary>
+        public IntPtr HostPointer;
+    }
+
+    /// <summary>
+    /// Roperties of external memory host pointer.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MemoryHostPointerPropertiesExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bitmask containing one bit set for every memory type which the specified host pointer
+        /// can be imported as.
+        /// </summary>
+        public int MemoryTypeBits;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceExternalMemoryHostPropertiesExt
+    {
+        public StructureType Type;
+        public IntPtr Next;
+        public long MinImportedHostPointerAlignment;
     }
 }

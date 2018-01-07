@@ -1522,7 +1522,24 @@ namespace VulkanCore.Khr
         /// Direct3D 12 committed resource.
         /// <para>It owns a reference to the memory used by the Direct3D resource.</para>
         /// </summary>
-        D3D12Resource = 1 << 6
+        D3D12Resource = 1 << 6,
+        /// <summary>
+        /// Is a file descriptor for a Linux DmaBuf. It owns a reference to the underlying memory
+        /// resource represented by its Vulkan memory object.
+        /// </summary>
+        DmaBufExt = 1 << 9,
+        /// <summary>
+        /// Specifies a host pointer returned by a host memory allocation command. It does not own a
+        /// reference to the underlying memory resource, and will therefore become invalid if the
+        /// host memory is freed.
+        /// </summary>
+        HostAllocationExt = 1 << 7,
+        /// <summary>
+        /// Specifies a host pointer to host mapped foreign Memory. It does not own a reference to
+        /// the underlying memory resource, and will therefore become invalid if the foreign memory
+        /// is unmapped or otherwise becomes no longer available.
+        /// </summary>
+        HostMappedForeignMemoryExt = 1 << 8
     }
 
     /// <summary>

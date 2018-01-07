@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -1746,7 +1746,8 @@ namespace VulkanCore
         /// </summary>
         public ImageSubresourceLayers SrcSubresource;
         /// <summary>
-        /// Selects the initial x, y, and z offsets in texels of the sub-region of the source image data.
+        /// Selects the initial <c>X</c>, <c>Y</c>, and <c>Z</c> offsets in texels of the sub-region
+        /// of the source image data.
         /// </summary>
         public Offset3D SrcOffset;
         /// <summary>
@@ -1754,7 +1755,8 @@ namespace VulkanCore
         /// </summary>
         public ImageSubresourceLayers DstSubresource;
         /// <summary>
-        /// Selects the initial x, y, and z offsets in texels of the sub-region of the source image data.
+        /// Selects the initial <c>X</c>, <c>Y</c>, and <c>Z</c> offsets in texels of the sub-region
+        /// of the source image data.
         /// </summary>
         public Offset3D DstOffset;
         /// <summary>
@@ -1882,8 +1884,8 @@ namespace VulkanCore
         /// </summary>
         public ImageSubresourceLayers ImageSubresource;
         /// <summary>
-        /// Selects the initial x, y, z offsets in texels of the sub-region of the source or
-        /// destination image data.
+        /// Selects the initial <c>X</c>, <c>Y</c><c>Z</c> offsets in texels of the sub-region of the
+        /// source or destination image data.
         /// </summary>
         public Offset3D ImageOffset;
         /// <summary>
@@ -2096,7 +2098,8 @@ namespace VulkanCore
         /// </summary>
         public ImageSubresourceLayers SrcSubresource;
         /// <summary>
-        /// Selects the initial x, y, and z offsets in texels of the sub-region of the source image data.
+        /// Selects the initial <c>X</c>, <c>Y</c>, and <c>Z</c> offsets in texels of the sub-region
+        /// of the source image data.
         /// </summary>
         public Offset3D SrcOffset;
         /// <summary>
@@ -2105,8 +2108,8 @@ namespace VulkanCore
         /// </summary>
         public ImageSubresourceLayers DstSubresource;
         /// <summary>
-        /// Selects the initial x, y, and z offsets in texels of the sub-region of the destination
-        /// image data.
+        /// Selects the initial <c>X</c>, <c>Y</c>, and <c>Z</c> offsets in texels of the sub-region
+        /// of the destination image data.
         /// </summary>
         public Offset3D DstOffset;
         /// <summary>

@@ -26,6 +26,7 @@ namespace VulkanCore
         public const int False = 0;
         public const int QueueFamilyIgnored = ~0;
         public const int QueueFamilyExternalKhx = ~0 - 1;
+        public const int QueueFamilyForeignExt = ~0 - 2;
         public const int SubpassExternal = ~0;
         public const int MaxDeviceGroupSizeKhx = 32;
 
@@ -613,6 +614,23 @@ namespace VulkanCore
             /// and various statistics about a shader's resource usage.
             /// </summary>
             public const string AmdShaderInfo = "VK_AMD_shader_info";
+            /// <summary>
+            /// This extension enables applications to import a dma_buf as <see
+            /// cref="DeviceMemory"/>; to export <see cref="DeviceMemory"/> as a dma_buf; and to
+            /// create <see cref="Buffer"/> objects that can be bound to that memory.
+            /// </summary>
+            public const string ExtExternalMemoryDmaBuf = "VK_EXT_external_memory_dma_buf";
+            /// <summary>
+            /// This extension defines a special queue family, VK_QUEUE_FAMILY_FOREIGN_EXT, which can
+            /// be used to transfer ownership of resources backed by external memory to foreign,
+            /// external queues.
+            /// </summary>
+            public const string ExtQueueFamilyForeign = "VK_EXT_queue_family_foreign";
+            /// <summary>
+            /// This extension enables an application to import host allocations and host mapped
+            /// foreign device memory to Vulkan memory objects.
+            /// </summary>
+            public const string ExtExternalMemoryHost = "VK_EXT_external_memory_host";
         }
 
         /// <summary>
