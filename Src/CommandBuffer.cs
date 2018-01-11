@@ -2379,7 +2379,7 @@ namespace VulkanCore
         /// </summary>
         UniformRead = 1 << 3,
         /// <summary>
-        /// Specifies read access to an input attachment within a renderpass during fragment shading.
+        /// Specifies read access to an input attachment within a render pass during fragment shading.
         /// </summary>
         InputAttachmentRead = 1 << 4,
         /// <summary>

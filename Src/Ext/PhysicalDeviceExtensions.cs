@@ -193,7 +193,7 @@ namespace VulkanCore.Ext
         /// </summary>
         public IntPtr Next;
         /// <summary>
-        /// Max number of active discard rectangles.
+        /// The maximum number of discard rectangles that can be specified.
         /// </summary>
         public int MaxDiscardRectangles;
     }
@@ -251,5 +251,25 @@ namespace VulkanCore.Ext
         /// The maximum size of the pixel grid in which sample locations can vary.
         /// </summary>
         public Extent2D MaxSampleLocationGridSize;
+    }
+
+    /// <summary>
+    /// Structure describing conservative raster properties that can be supported by an
+    /// implementation.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PhysicalDeviceConservativeRasterizationPropertiesExt
+    {
+        public StructureType Type;
+        public IntPtr Next;
+        public float PrimitiveOverestimationSize;
+        public float MaxExtraPrimitiveOverestimationSize;
+        public float ExtraPrimitiveOverestimationSizeGranularity;
+        public Bool PrimitiveUnderestimation;
+        public Bool ConservativePointAndLineRasterization;
+        public Bool DegenerateTrianglesRasterized;
+        public Bool DegenerateLinesRasterized;
+        public Bool FullyCoveredFragmentShaderInputVariable;
+        public Bool ConservativeRasterizationPostDepthCoverage;
     }
 }

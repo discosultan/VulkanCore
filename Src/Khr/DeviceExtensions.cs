@@ -754,13 +754,11 @@ namespace VulkanCore.Khr
     public enum TessellationDomainOriginKhr
     {
         /// <summary>
-        /// Indicates that the origin of the domain space is in the upper left corner, flipped
-        /// vertically from what is shown in figure img-tessellation-topology.
+        /// Indicates that the origin of the domain space is in the upper left corner.
         /// </summary>
         UpperLeft = 0,
         /// <summary>
-        /// Indicates that the origin of the domain space is in the lower left corner, as shown in
-        /// figure img-tessellation-topology.
+        /// Indicates that the origin of the domain space is in the lower left corner.
         /// </summary>
         LowerLeft = 1
     }

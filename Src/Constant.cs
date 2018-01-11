@@ -631,6 +631,11 @@ namespace VulkanCore
             /// foreign device memory to Vulkan memory objects.
             /// </summary>
             public const string ExtExternalMemoryHost = "VK_EXT_external_memory_host";
+            /// <summary>
+            /// This extension adds a new rasterization mode called conservative rasterization. There
+            /// are two modes of conservative rasterization; overestimation and underestimation.
+            /// </summary>
+            public const string ExtConservativeRasterization = "VK_EXT_conservative_rasterization";
         }
 
         /// <summary>
