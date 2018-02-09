@@ -1,4 +1,4 @@
-﻿using VulkanCore.Tests.Utilities;
+using VulkanCore.Tests.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -243,14 +243,18 @@ namespace VulkanCore.Tests
         [Fact]
         public void CmdDraw()
         {
-            var renderPassCreateInfo = new RenderPassCreateInfo(new[] { new SubpassDescription(
-                new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) }) },
-                new[] { new AttachmentDescription {
-                    Format = Format.B8G8R8A8UNorm,
-                    Samples = SampleCounts.Count1,
-                    FinalLayout = ImageLayout.ColorAttachmentOptimal
-                }
-            });
+            var renderPassCreateInfo = new RenderPassCreateInfo(
+                new[] { new SubpassDescription(new[] { new AttachmentReference(0, ImageLayout.ColorAttachmentOptimal) }) },
+                new[]
+                {
+                    new AttachmentDescription
+                    {
+                        Format = Format.B8G8R8A8UNorm,
+                        Samples = SampleCounts.Count1,
+                        FinalLayout = ImageLayout.ColorAttachmentOptimal,
+                        LoadOp = AttachmentLoadOp.DontCare
+                    }
+                });
             var imageCreateInfo = new ImageCreateInfo
             {
                 Usage = ImageUsages.ColorAttachment,
@@ -262,7 +266,7 @@ namespace VulkanCore.Tests
                 Samples = SampleCounts.Count1
             };
             var imageViewCreateInfo = new ImageViewCreateInfo(
-                Format.B8G8R8A8UNorm, 
+                Format.B8G8R8A8UNorm,
                 new ImageSubresourceRange(ImageAspects.Color, 0, 1, 0, 1));
 
             using (ShaderModule vertexShader = Device.CreateShaderModule(new ShaderModuleCreateInfo(ReadAllBytes("Shader.vert.spv"))))
