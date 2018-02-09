@@ -1,16 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Authors>discosultan</Authors>
     <Description>Vulkan bindings for .NET Standard</Description>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <!--
+      Disabled warnings:
+        - CS1591 - missing XML docs (Vulkan is not providing docs for every single type)
+        - IDE1006 - functions starting with lowercase char (used by private delegates to map name directly to Vulkan)
+    -->
+    <NoWarn>$(NoWarn);CS1591;IDE1006</NoWarn>
     <PackageIconUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/Doc/Vulkan64.png</PackageIconUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/discosultan/VulkanCore/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/discosultan/VulkanCore</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/discosultan/VulkanCore/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.0.0-alpha35</Version>
+    <Version>1.0.0-alpha36</Version>
   </PropertyGroup>
 
   <ItemGroup>

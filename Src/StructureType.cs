@@ -1,7 +1,7 @@
 namespace VulkanCore
 {
     /// <summary>
-    /// Structure type enumerant.
+    /// Vulkan structure types.
     /// </summary>
     public enum StructureType
     {
@@ -154,6 +154,8 @@ namespace VulkanCore
         PipelineViewportSwizzleStateCreateInfoNV = 1000098000,
         PhysicalDeviceDiscardRectanglePropertiesExt = 1000099000,
         PipelineDiscardRectangleStateCreateInfoExt = 1000099001,
+        PhysicalDeviceConservativeRasterizationPropertiesExt = 1000101000,
+        PipelineRasterizationConservativeStateCreateInfoExt = 1000101001,
         HdrMetadataExt = 1000105000,
         SharedPresentSurfaceCapabilitiesKhr = 1000111000,
         PhysicalDeviceExternalFenceInfoKhr = 1000112000,

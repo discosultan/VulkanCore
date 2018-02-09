@@ -52,11 +52,11 @@ namespace VulkanCore.Amd
     public struct ShaderResourceUsageAmd
     {
         /// <summary>
-        /// The number of vector instruction general purpose registers used by this shader.
+        /// The number of vector instruction general-purpose registers used by this shader.
         /// </summary>
         public int NumUsedVgprs;
         /// <summary>
-        /// The number of scalar instruction general purpose registers used by this shader.
+        /// The number of scalar instruction general-purpose registers used by this shader.
         /// </summary>
         public int NumUsedSgprs;
         /// <summary>

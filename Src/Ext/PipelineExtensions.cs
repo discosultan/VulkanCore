@@ -233,4 +233,62 @@ namespace VulkanCore.Ext
         /// </summary>
         public SampleLocationsInfoExt SampleLocationsInfo;
     }
+
+    /// <summary>
+    /// Specify the conservative rasterization mode.
+    /// </summary>
+    public enum ConservativeRasterizationModeExt
+    {
+        /// <summary>
+        /// Specifies that conservative rasterization is disabled and rasterization proceeds as normal.
+        /// </summary>
+        Disabled = 0,
+        /// <summary>
+        /// Specifies that conservative rasterization is enabled in overestimation mode.
+        /// </summary>
+        Overestimate = 1,
+        /// <summary>
+        /// Specifies that conservative rasterization is enabled in underestimation mode.
+        /// </summary>
+        Underestimate = 2
+    }
+
+    /// <summary>
+    /// Structure specifying conservative raster state.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PipelineRasterizationConservativeStateCreateInfoExt
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// Reserved for future use.
+        /// </summary>
+        public PipelineRasterizationConservativeStateCreateFlagsExt Flags;
+        /// <summary>
+        /// The conservative rasterization mode to use.
+        /// </summary>
+        public ConservativeRasterizationModeExt ConservativeRasterizationMode;
+        /// <summary>
+        /// The extra size in pixels to increase the generating primitive during conservative
+        /// rasterization at each of its edges in `X` and `Y` equally in screen space beyond the base
+        /// overestimation specified in <see cref="PhysicalDeviceConservativeRasterizationPropertiesExt.PrimitiveOverestimationSize"/>.
+        /// </summary>
+        public float ExtraPrimitiveOverestimationSize;
+    }
+
+    [Flags]
+    public enum PipelineRasterizationConservativeStateCreateFlagsExt
+    {
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0
+    }
 }
