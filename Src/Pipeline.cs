@@ -1390,7 +1390,7 @@ namespace VulkanCore
         /// Bitmasks of static coverage information that is ANDed with the coverage information
         /// generated during rasterization.
         /// <para>
-        /// If not <c>null</c>, must be a an array of `<see cref="RasterizationSamples"/> / 32`
+        /// If not <c>null</c>, must be a an array of <c>RasterizationSamples / 32</c>
         /// sample mask values.
         /// </para>
         /// </summary>

@@ -1,7 +1,7 @@
 # VulkanCore
 
 [![NuGet Pre Release](https://img.shields.io/nuget/vpre/VulkanCore.svg)](https://www.nuget.org/packages/VulkanCore)
-[![Vulkan](https://img.shields.io/badge/vulkan-1.0.68-brightgreen.svg)](https://www.khronos.org/vulkan/)
+[![Vulkan](https://img.shields.io/badge/vulkan-1.0.69-brightgreen.svg)](https://www.khronos.org/vulkan/)
 [![.NET Standard](https://img.shields.io/badge/netstandard-1.3-brightgreen.svg)](https://github.com/dotnet/standard/blob/master/docs/versions.md)
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/discosultan/vulkancore.svg?label=windows)](https://ci.appveyor.com/project/discosultan/vulkancore)
 [![Travis Build Status](https://img.shields.io/travis/discosultan/VulkanCore.svg?label=unix)](https://travis-ci.org/discosultan/VulkanCore)

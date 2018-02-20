@@ -1596,9 +1596,9 @@ namespace VulkanCore
         /// </summary>
         SampledImageFilterLinear = 1 << 12,
         /// <summary>
-        /// An <see cref="Image"/> can be used with a sampler that has either of magnification or
-        /// minification filter set to <see cref="Filter.CubicImg"/>, or be the source image for a
-        /// blit with filter set to <see cref="Filter.CubicImg"/>.
+        /// Specifies that <see cref="Image"/> can be used with a sampler that has either of
+        /// <c>MagFilter</c> or <c>MinFilter</c> set to <see cref="Filter.CubicImg"/>, or be the
+        /// source image for a blit with <c>Filter</c> set to <see cref="Filter.CubicImg"/>.
         /// <para>This bit must only be exposed for formats that also support the <see cref="SampledImage"/>.</para>
         /// <para>
         /// If the format being queried is a depth/stencil format, this only indicates that the depth
@@ -1699,7 +1699,7 @@ namespace VulkanCore
         /// </summary>
         Linear = 1,
         /// <summary>
-        /// Cubic filtering computes a set of neighboring coordinates which bound the unnormalized coordinates.
+        /// Specifies cubic filtering.
         /// </summary>
         CubicImg = 1000015000
     }

@@ -905,8 +905,7 @@ namespace VulkanCore.Khr
         /// </summary>
         public int ViewFormatCount;
         /// <summary>
-        /// An array which lists of all <see cref="Format"/> s which can be used when creating views
-        /// of this image.
+        /// An array which lists of all formats which can be used when creating views of this image.
         /// </summary>
         public IntPtr ViewFormats;
     }
