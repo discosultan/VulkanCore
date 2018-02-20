@@ -85,7 +85,7 @@ namespace VulkanCore.Amd
         /// <param name="dstOffset">The byte offset into the buffer where the marker will be written to.</param>
         /// <param name="marker">The 32-bit value of the marker.</param>
         public static void CmdWriteBufferMarkerAmd(this CommandBuffer commandBuffer,
-            PipelineStages pipelineStage, long dstBuffer, long dstOffset, int marker)
+            PipelineStages pipelineStage, Buffer dstBuffer, long dstOffset, int marker)
         {
             vkCmdWriteBufferMarkerAMD(commandBuffer)(commandBuffer, pipelineStage, dstBuffer, dstOffset, marker);
         }
