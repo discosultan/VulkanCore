@@ -10,7 +10,7 @@ namespace VulkanCore.Samples
 {
     public enum Platform
     {
-        Android, Win32
+        Android, Win32, MacOS
     }
 
     public interface IVulkanAppHost : IDisposable
