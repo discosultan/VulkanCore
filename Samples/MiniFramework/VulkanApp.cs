@@ -49,7 +49,8 @@ namespace VulkanCore.Samples
         {
             Host = host;
 #if DEBUG
-            const bool debug = true;
+            //At the moment molten-vk doesn't support the debug extension
+            bool debug = host.Platform != Platform.MacOS;
 #else
             const bool debug = false;
 #endif
