@@ -162,6 +162,9 @@ namespace VulkanCore.Samples
                 case Platform.Win32:
                     surfaceExtension = Constant.InstanceExtension.KhrWin32Surface;
                     break;
+                case Platform.MacOS:
+                    surfaceExtension = Constant.InstanceExtension.MvkMacOSSurface;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -216,6 +219,8 @@ namespace VulkanCore.Samples
                     return Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Host.WindowHandle));
                 case Platform.Win32:
                     return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(Host.InstanceHandle, Host.WindowHandle));
+                case Platform.MacOS:
+                    return Mvk.InstanceExtensions.CreateMacOSSurfaceMvk(Instance, new Mvk.MacOSSurfaceCreateInfoMvk { View = Host.WindowHandle });
                 default:
                     throw new NotImplementedException();
             }
