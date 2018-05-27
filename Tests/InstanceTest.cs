@@ -149,7 +149,7 @@ namespace VulkanCore.Tests
         public void EnumerateExtensionPropertiesForSingleLayer()
         {
             ExtensionProperties[] properties = Instance.EnumerateExtensionProperties(
-                Constant.InstanceLayer.LunarGStandardValidation);
+                InstanceLayer.LunarGStandardValidation);
             Assert.True(properties.Length > 0);
 
             ExtensionProperties firstProperty = properties[0];
