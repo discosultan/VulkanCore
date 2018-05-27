@@ -52,6 +52,8 @@ namespace VulkanCore.Samples
                         return true;
                     case Platform.Win32:
                         return physicalDevice.GetWin32PresentationSupportKhr(queueFamilyIndex);
+                    case Platform.MacOS:
+                        return true;
                     default:
                         throw new NotImplementedException();
                 }
