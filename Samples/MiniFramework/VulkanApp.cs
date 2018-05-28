@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using VulkanCore.Ext;
 using VulkanCore.Khr;
+using VulkanCore.Mvk;
 
 namespace VulkanCore.Samples
 {
@@ -221,7 +222,7 @@ namespace VulkanCore.Samples
                 case Platform.Win32:
                     return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(Host.InstanceHandle, Host.WindowHandle));
                 case Platform.MacOS:
-                    return Mvk.InstanceExtensions.CreateMacOSSurfaceMvk(Instance, new Mvk.MacOSSurfaceCreateInfoMvk { View = Host.WindowHandle });
+                    return Instance.CreateMacOSSurfaceMvk(new MacOSSurfaceCreateInfoMvk(Host.WindowHandle));
                 default:
                     throw new NotImplementedException();
             }
