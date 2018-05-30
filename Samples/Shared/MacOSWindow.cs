@@ -78,10 +78,6 @@ namespace VulkanCore.Samples
                 _timer.Tick();
                 if (!_appPaused)
                 {
-                    float elapsedMiliseconds = _timer.DeltaTime * 1000f;
-                    if(elapsedMiliseconds < 16)
-                        Thread.Sleep(16 - (int)elapsedMiliseconds);
-
                     CalculateFrameRateStats();
                     _app.Tick(_timer);
                 }
