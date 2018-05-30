@@ -41,6 +41,7 @@ namespace VulkanCore.Samples
         protected SwapchainKhr Swapchain { get; private set; }
         protected Image[] SwapchainImages { get; private set; }
         protected CommandBuffer[] CommandBuffers { get; private set; }
+        protected Fence[] SubmitFences { get; private set; }
 
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
@@ -73,6 +74,11 @@ namespace VulkanCore.Samples
             // Create a command buffer for each swapchain image.
             CommandBuffers = Context.GraphicsCommandPool.AllocateBuffers(
                 new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
+            // Create a fence for each commandbuffer so that we can wait before using it again
+            _initializingPermanent = true; //We need our fences to be there permanently
+            SubmitFences = new Fence[SwapchainImages.Length];
+            for (int i = 0; i < SubmitFences.Length; i++)
+                ToDispose(SubmitFences[i] = Context.Device.CreateFence(new FenceCreateInfo(FenceCreateFlags.Signaled))); 
 
             // Allow concrete samples to initialize their resources.
             _initializingPermanent = true;
@@ -130,12 +136,17 @@ namespace VulkanCore.Samples
             // Acquire an index of drawing image for this frame.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
+            // Use a fence to wait until the command buffer has finished execution before using it again
+            SubmitFences[imageIndex].Wait();
+            SubmitFences[imageIndex].Reset();
+
             // Submit recorded commands to graphics queue for execution.
             Context.GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.ColorAttachmentOutput,
                 CommandBuffers[imageIndex],
-                RenderingFinishedSemaphore
+                RenderingFinishedSemaphore,
+                SubmitFences[imageIndex]
             );
 
             // Present the color output to screen.
