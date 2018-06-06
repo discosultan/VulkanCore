@@ -63,7 +63,7 @@ namespace VulkanCore.Samples
             };
             _form.Activated += (sender, e) =>
             {
-                _appPaused = false;
+                _appPaused = _form.WindowState != FormWindowState.Normal;
                 _timer.Start();
             };
             _form.Deactivate += (sender, e) =>
