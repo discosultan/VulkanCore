@@ -135,6 +135,18 @@ namespace VulkanCore.Mvk
         /// </summary>
         public IntPtr View;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MacOSSurfaceCreateInfoMvk"/> structure.
+        /// </summary>
+        /// <param name="view">Pointer to a <c>NSView</c> that is backed by a <c>CALayer</c> instance of type <c>CAMetalLayer</c>.</param>
+        public MacOSSurfaceCreateInfoMvk(IntPtr view)
+        {
+            View = view;
+            Type = StructureType.MacOSSurfaceCreateInfoMvk;
+            Next = IntPtr.Zero;
+            Flags = 0;
+        }
+
         internal void Prepare()
         {
             Type = StructureType.MacOSSurfaceCreateInfoMvk;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using VulkanCore.Ext;
 using VulkanCore.Khr;
+using VulkanCore.Mvk;
 
 namespace VulkanCore.Samples
 {
@@ -49,8 +50,7 @@ namespace VulkanCore.Samples
         {
             Host = host;
 #if DEBUG
-            //At the moment molten-vk doesn't support the debug extension
-            bool debug = host.Platform != Platform.MacOS;
+            const bool debug = true;
 #else
             const bool debug = false;
 #endif
@@ -63,6 +63,16 @@ namespace VulkanCore.Samples
             Content                    = ToDispose(new ContentManager(Host, Context, "Content"));
             ImageAvailableSemaphore    = ToDispose(Context.Device.CreateSemaphore());
             RenderingFinishedSemaphore = ToDispose(Context.Device.CreateSemaphore());
+
+            if(host.Platform == Platform.MacOS)
+            {
+                //Setup MoltenVK specific device configuration.
+                MVKDeviceConfiguration deviceConfig = Context.Device.GetMVKDeviceConfiguration();
+                deviceConfig.DebugMode = debug;
+                deviceConfig.PerformanceTracking = debug;
+                deviceConfig.PerformanceLoggingFrameCount = debug ? 300 : 0;
+                Context.Device.SetMVKDeviceConfiguration(deviceConfig);
+            }
 
             _initializingPermanent = false;
             // Calling ToDispose here registers the resource to be automatically disposed on events
@@ -171,7 +181,9 @@ namespace VulkanCore.Samples
             }
 
             var createInfo = new InstanceCreateInfo();
-            if (debug)
+
+            //Currently MoltenVK (used for MacOS) doesn't support the debug layer.
+            if (debug && Host.Platform != Platform.MacOS)
             {
                 var availableLayers = Instance.EnumerateLayerProperties();
                 createInfo.EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation }
@@ -197,7 +209,8 @@ namespace VulkanCore.Samples
 
         private DebugReportCallbackExt CreateDebugReportCallback(bool debug)
         {
-            if (!debug) return null;
+            //Currently MoltenVK (used for MacOS) doesn't support the debug layer.
+            if (!debug || Host.Platform == Platform.MacOS) return null;
 
             // Attach debug callback.
             var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
@@ -221,7 +234,7 @@ namespace VulkanCore.Samples
                 case Platform.Win32:
                     return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(Host.InstanceHandle, Host.WindowHandle));
                 case Platform.MacOS:
-                    return Mvk.InstanceExtensions.CreateMacOSSurfaceMvk(Instance, new Mvk.MacOSSurfaceCreateInfoMvk { View = Host.WindowHandle });
+                    return Instance.CreateMacOSSurfaceMvk(new MacOSSurfaceCreateInfoMvk(Host.WindowHandle));
                 default:
                     throw new NotImplementedException();
             }
