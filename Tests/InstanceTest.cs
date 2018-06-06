@@ -69,12 +69,19 @@ namespace VulkanCore.Tests
                     },
                     userDataHandle);
 
-                // Registering the callback should generate DEBUG messages.
-                using (instance.CreateDebugReportCallbackExt(debugReportCallbackCreateInfo)) { }
-                using (instance.CreateDebugReportCallbackExt(debugReportCallbackCreateInfo, CustomAllocator)) { }
-
-                Assert.True(callbackArgs.Count > 0);
-                Assert.Equal(1, *(int*)callbackArgs[0].UserData);
+                using (instance.CreateDebugReportCallbackExt(debugReportCallbackCreateInfo))
+                {
+                    instance.DebugReportMessageExt(DebugReportFlagsExt.Debug, "test");
+                    Assert.NotEmpty(callbackArgs);
+                    Assert.Equal(1, *(int*)callbackArgs[0].UserData);
+                }
+                callbackArgs.Clear();
+                using (instance.CreateDebugReportCallbackExt(debugReportCallbackCreateInfo, CustomAllocator))
+                {
+                    instance.DebugReportMessageExt(DebugReportFlagsExt.Debug, "test");
+                    Assert.NotEmpty(callbackArgs);
+                    Assert.Equal(1, *(int*)callbackArgs[0].UserData);
+                }
             }
         }
 
@@ -142,15 +149,15 @@ namespace VulkanCore.Tests
         public void EnumerateExtensionPropertiesForAllLayers()
         {
             ExtensionProperties[] properties = Instance.EnumerateExtensionProperties();
-            Assert.True(properties.Length > 0);
+            Assert.NotEmpty(properties);
         }
 
-        [Fact]
+        [Fact(Skip = "Enumerating extensions for standard validation meta layer no longer returns data")]
         public void EnumerateExtensionPropertiesForSingleLayer()
         {
             ExtensionProperties[] properties = Instance.EnumerateExtensionProperties(
                 InstanceLayer.LunarGStandardValidation);
-            Assert.True(properties.Length > 0);
+            Assert.NotEmpty(properties);
 
             ExtensionProperties firstProperty = properties[0];
             Assert.StartsWith(firstProperty.ExtensionName, properties[0].ToString());
@@ -160,7 +167,7 @@ namespace VulkanCore.Tests
         private void EnumerateLayerProperties()
         {
             LayerProperties[] properties = Instance.EnumerateLayerProperties();
-            Assert.True(properties.Length > 0);
+            Assert.NotEmpty(properties);
 
             LayerProperties firstProperty = properties[0];
             Assert.StartsWith(firstProperty.LayerName, properties[0].ToString());
