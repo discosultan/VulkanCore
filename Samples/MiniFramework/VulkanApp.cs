@@ -81,7 +81,6 @@ namespace VulkanCore.Samples
                 ToDispose(SubmitFences[i] = Context.Device.CreateFence(new FenceCreateInfo(FenceCreateFlags.Signaled))); 
 
             // Allow concrete samples to initialize their resources.
-            _initializingPermanent = true;
             InitializePermanent();
             _initializingPermanent = false;
             InitializeFrame();
