@@ -1760,7 +1760,7 @@ namespace VulkanCore
         /// </summary>
         public Offset3D DstOffset;
         /// <summary>
-        /// The size in texels of the source image to copy in width, height and depth.
+        /// The size in texels of the image to copy in <c>Width</c>, <c>Height</c> and <c>Depth</c>.
         /// </summary>
         public Extent3D Extent;
     }

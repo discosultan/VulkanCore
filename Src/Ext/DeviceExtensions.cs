@@ -640,6 +640,9 @@ namespace VulkanCore.Ext
         public int MemoryTypeBits;
     }
 
+    /// <summary>
+    /// Structure describing external memory host pointer limits that can be supported by an implementation.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PhysicalDeviceExternalMemoryHostPropertiesExt
     {

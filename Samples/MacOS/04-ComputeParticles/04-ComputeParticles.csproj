@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <ItemGroup>
+  
+    <Compile Include="../../Shared/04-ComputeParticles/ComputeParticlesApp.cs">
+      <Link>ComputeParticlesApp.cs</Link>
+    </Compile>
+  
+    <None Include="../../Shared/04-ComputeParticles/Content/CompileShaders.bat">
+      <Link>../../Content/CompileShaders.bat</Link>
+    </None>
+    <None Include="../../Shared/04-ComputeParticles/Content/Shader.comp">
+      <Link>../../Content/Shader.comp</Link>
+    </None>
+    <None Include="../../Shared/04-ComputeParticles/Content/shader.comp.spv">
+      <Link>../../Content/shader.comp.spv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="../../Shared/04-ComputeParticles/Content/Shader.frag">
+      <Link>../../Content/Shader.frag</Link>
+    </None>
+    <None Include="../../Shared/04-ComputeParticles/Content/shader.frag.spv">
+      <Link>../../Content/shader.frag.spv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="../../Shared/04-ComputeParticles/Content/Shader.vert">
+      <Link>../../Content/Shader.vert</Link>
+    </None>
+    <None Include="../../Shared/04-ComputeParticles/Content/shader.vert.spv">
+      <Link>../../Content/shader.vert.spv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="../../Shared/04-ComputeParticles/Content/ParticleDiffuse.ktx">
+      <Link>../../Content/ParticleDiffuse.ktx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  
+    <Compile Include="../../Shared/MacOSWindow.cs">
+      <Link>MacOSWindow.cs</Link>
+    </Compile>
+  
+    <ProjectReference Include="../../../Src/VulkanCore.csproj">
+      <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
+      <Name>VulkanCore</Name>
+    </ProjectReference>
+  
+    <ProjectReference Include="../../MiniFramework/MiniFramework.csproj">
+      <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
+      <Name>MiniFramework</Name>
+    </ProjectReference>
+  
+    <Reference Include="NativeMacOS">
+      <HintPath>../../Shared/NativeMacOS/NativeMacOS.dll</HintPath> 
+    </Reference>
+  
+    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest"/>
+  
+  </ItemGroup>
+  
+</Project>

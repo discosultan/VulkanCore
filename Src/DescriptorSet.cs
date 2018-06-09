@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using static VulkanCore.Constant;
 
@@ -275,16 +275,49 @@ namespace VulkanCore
     /// </summary>
     public enum DescriptorType
     {
+        /// <summary>
+        /// Specifies a sampler descriptor.
+        /// </summary>
         Sampler = 0,
+        /// <summary>
+        /// Specifies a combined image sampler descriptor.
+        /// </summary>
         CombinedImageSampler = 1,
+        /// <summary>
+        /// Specifies a storage image descriptor.
+        /// </summary>
         SampledImage = 2,
+        /// <summary>
+        /// Specifies a sampled image descriptor.
+        /// </summary>
         StorageImage = 3,
+        /// <summary>
+        /// Specifies a uniform texel buffer descriptor.
+        /// </summary>
         UniformTexelBuffer = 4,
+        /// <summary>
+        /// Specifies a storage texel buffer descriptor.
+        /// </summary>
         StorageTexelBuffer = 5,
+        /// <summary>
+        /// Specifies a uniform buffer descriptor.
+        /// </summary>
         UniformBuffer = 6,
+        /// <summary>
+        /// Specifies a storage buffer descriptor.
+        /// </summary>
         StorageBuffer = 7,
+        /// <summary>
+        /// Specifies a dynamic uniform buffer descriptor.
+        /// </summary>
         UniformBufferDynamic = 8,
+        /// <summary>
+        /// Specifies a dynamic storage buffer descriptor.
+        /// </summary>
         StorageBufferDynamic = 9,
+        /// <summary>
+        /// Specifies a input attachment descriptor.
+        /// </summary>
         InputAttachment = 10
     }
 

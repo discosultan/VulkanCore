@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Amd
@@ -76,11 +76,28 @@ namespace VulkanCore.Amd
             vkCmdDrawIndexedIndirectCountAMD(commandBuffer)(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
         }
 
+        /// <summary>
+        /// Execute a pipelined write of a marker value into a buffer.
+        /// </summary>
+        /// <param name="commandBuffer">The command buffer into which the command will be recorded.</param>
+        /// <param name="pipelineStage">Specifies the pipeline stage whose completion triggers the marker write.</param>
+        /// <param name="dstBuffer">The buffer where the marker will be written to.</param>
+        /// <param name="dstOffset">The byte offset into the buffer where the marker will be written to.</param>
+        /// <param name="marker">The 32-bit value of the marker.</param>
+        public static void CmdWriteBufferMarkerAmd(this CommandBuffer commandBuffer,
+            PipelineStages pipelineStage, Buffer dstBuffer, long dstOffset, int marker)
+        {
+            vkCmdWriteBufferMarkerAMD(commandBuffer)(commandBuffer, pipelineStage, dstBuffer, dstOffset, marker);
+        }
+
         private delegate void vkCmdDrawIndirectCountAMDDelegate(IntPtr commandBuffer, long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
         private static vkCmdDrawIndirectCountAMDDelegate vkCmdDrawIndirectCountAMD(CommandBuffer commandBuffer) => GetProc<vkCmdDrawIndirectCountAMDDelegate>(commandBuffer, nameof(vkCmdDrawIndirectCountAMD));
 
         private delegate void vkCmdDrawIndexedIndirectCountAMDDelegate(IntPtr commandBuffer, long buffer, long offset, long countBuffer, long countBufferOffset, int maxDrawCount, int stride);
         private static vkCmdDrawIndexedIndirectCountAMDDelegate vkCmdDrawIndexedIndirectCountAMD(CommandBuffer commandBuffer) => GetProc<vkCmdDrawIndexedIndirectCountAMDDelegate>(commandBuffer, nameof(vkCmdDrawIndexedIndirectCountAMD));
+
+        private delegate void vkCmdWriteBufferMarkerAMDDelegate(IntPtr commandBuffer, PipelineStages pipelineStage, long dstBuffer, long dstOffset, int marker);
+        private static vkCmdWriteBufferMarkerAMDDelegate vkCmdWriteBufferMarkerAMD(CommandBuffer commandBuffer) => GetProc<vkCmdWriteBufferMarkerAMDDelegate>(commandBuffer, nameof(vkCmdWriteBufferMarkerAMD));
 
         private static TDelegate GetProc<TDelegate>(CommandBuffer commandBuffer, string name) where TDelegate : class => commandBuffer.Parent.Parent.GetProc<TDelegate>(name);
     }

@@ -35,12 +35,17 @@ namespace VulkanCore.Samples.ClearScreen
             // Acquire an index of drawing image for this frame.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
+            // Use a fence to wait until the command buffer has finished execution before using it again
+            SubmitFences[imageIndex].Wait();
+            SubmitFences[imageIndex].Reset();
+
             // Submit recorded commands to graphics queue for execution.
             Context.GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.Transfer,
                 CommandBuffers[imageIndex],
-                RenderingFinishedSemaphore
+                RenderingFinishedSemaphore,
+                SubmitFences[imageIndex]
             );
 
             // Present the color output to screen.

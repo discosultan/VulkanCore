@@ -636,6 +636,11 @@ namespace VulkanCore
             /// are two modes of conservative rasterization; overestimation and underestimation.
             /// </summary>
             public const string ExtConservativeRasterization = "VK_EXT_conservative_rasterization";
+            /// <summary>
+            /// This extension adds a new operation to execute pipelined writes of small marker
+            /// values into a <see cref="Buffer"/> object.
+            /// </summary>
+            public const string AmdBufferMarker = "VK_AMD_buffer_marker";
         }
 
         /// <summary>

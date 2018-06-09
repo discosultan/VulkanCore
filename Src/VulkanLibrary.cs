@@ -42,6 +42,10 @@ namespace VulkanCore
             {
                 handle = LibDLGetProcAddress(_handle, procName);
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                handle = LibDLGetProcAddress(_handle, procName);
+            }
             else
             {
                 throw new NotImplementedException();
@@ -59,6 +63,10 @@ namespace VulkanCore
                 handle = Kernel32LoadLibrary(fileName);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                handle = LibDLLoadLibrary(fileName, LibDLRtldNow);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 handle = LibDLLoadLibrary(fileName, LibDLRtldNow);
             }
@@ -80,7 +88,11 @@ namespace VulkanCore
                 yield return "libvulkan.so.1"; // Known to be present on Ubuntu 16.
                 yield return "libvulkan.so";   // Known to be present on Android 7.
             }
-            throw new NotImplementedException();
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                yield return "libMoltenVK.dylib"; //Using MoltenVK on macOS
+            }
+            throw new NotImplementedException("Ran out of places to look for the vulkan native library");
         }
 
         [DllImport("kernel32", EntryPoint = "LoadLibrary")]
@@ -89,10 +101,10 @@ namespace VulkanCore
         [DllImport("kernel32", EntryPoint = "GetProcAddress")]
         private static extern IntPtr Kernel32GetProcAddress(IntPtr module, string procName);
 
-        [DllImport("libdl.so", EntryPoint = "dlopen")]
+        [DllImport("libdl", EntryPoint = "dlopen")]
         private static extern IntPtr LibDLLoadLibrary(string fileName, int flags);
 
-        [DllImport("libdl.so", EntryPoint = "dlsym")]
+        [DllImport("libdl", EntryPoint = "dlsym")]
         private static extern IntPtr LibDLGetProcAddress(IntPtr handle, string name);
 
         private const int LibDLRtldNow = 2;

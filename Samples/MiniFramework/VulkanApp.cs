@@ -5,12 +5,13 @@ using System.IO;
 using System.Linq;
 using VulkanCore.Ext;
 using VulkanCore.Khr;
+using VulkanCore.Mvk;
 
 namespace VulkanCore.Samples
 {
     public enum Platform
     {
-        Android, Win32
+        Android, Win32, MacOS
     }
 
     public interface IVulkanAppHost : IDisposable
@@ -41,6 +42,7 @@ namespace VulkanCore.Samples
         protected SwapchainKhr Swapchain { get; private set; }
         protected Image[] SwapchainImages { get; private set; }
         protected CommandBuffer[] CommandBuffers { get; private set; }
+        protected Fence[] SubmitFences { get; private set; }
 
         protected Semaphore ImageAvailableSemaphore { get; private set; }
         protected Semaphore RenderingFinishedSemaphore { get; private set; }
@@ -63,6 +65,16 @@ namespace VulkanCore.Samples
             ImageAvailableSemaphore    = ToDispose(Context.Device.CreateSemaphore());
             RenderingFinishedSemaphore = ToDispose(Context.Device.CreateSemaphore());
 
+            if(host.Platform == Platform.MacOS)
+            {
+                //Setup MoltenVK specific device configuration.
+                MVKDeviceConfiguration deviceConfig = Context.Device.GetMVKDeviceConfiguration();
+                deviceConfig.DebugMode = debug;
+                deviceConfig.PerformanceTracking = debug;
+                deviceConfig.PerformanceLoggingFrameCount = debug ? 300 : 0;
+                Context.Device.SetMVKDeviceConfiguration(deviceConfig);
+            }
+
             _initializingPermanent = false;
             // Calling ToDispose here registers the resource to be automatically disposed on events
             // such as window resize.
@@ -72,9 +84,13 @@ namespace VulkanCore.Samples
             // Create a command buffer for each swapchain image.
             CommandBuffers = Context.GraphicsCommandPool.AllocateBuffers(
                 new CommandBufferAllocateInfo(CommandBufferLevel.Primary, SwapchainImages.Length));
+            // Create a fence for each commandbuffer so that we can wait before using it again
+            _initializingPermanent = true; //We need our fences to be there permanently
+            SubmitFences = new Fence[SwapchainImages.Length];
+            for (int i = 0; i < SubmitFences.Length; i++)
+                ToDispose(SubmitFences[i] = Context.Device.CreateFence(new FenceCreateInfo(FenceCreateFlags.Signaled))); 
 
             // Allow concrete samples to initialize their resources.
-            _initializingPermanent = true;
             InitializePermanent();
             _initializingPermanent = false;
             InitializeFrame();
@@ -129,12 +145,17 @@ namespace VulkanCore.Samples
             // Acquire an index of drawing image for this frame.
             int imageIndex = Swapchain.AcquireNextImage(semaphore: ImageAvailableSemaphore);
 
+            // Use a fence to wait until the command buffer has finished execution before using it again
+            SubmitFences[imageIndex].Wait();
+            SubmitFences[imageIndex].Reset();
+
             // Submit recorded commands to graphics queue for execution.
             Context.GraphicsQueue.Submit(
                 ImageAvailableSemaphore,
                 PipelineStages.ColorAttachmentOutput,
                 CommandBuffers[imageIndex],
-                RenderingFinishedSemaphore
+                RenderingFinishedSemaphore,
+                SubmitFences[imageIndex]
             );
 
             // Present the color output to screen.
@@ -162,12 +183,17 @@ namespace VulkanCore.Samples
                 case Platform.Win32:
                     surfaceExtension = Constant.InstanceExtension.KhrWin32Surface;
                     break;
+                case Platform.MacOS:
+                    surfaceExtension = Constant.InstanceExtension.MvkMacOSSurface;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
 
             var createInfo = new InstanceCreateInfo();
-            if (debug)
+
+            //Currently MoltenVK (used for MacOS) doesn't support the debug layer.
+            if (debug && Host.Platform != Platform.MacOS)
             {
                 var availableLayers = Instance.EnumerateLayerProperties();
                 createInfo.EnabledLayerNames = new[] { Constant.InstanceLayer.LunarGStandardValidation }
@@ -193,7 +219,8 @@ namespace VulkanCore.Samples
 
         private DebugReportCallbackExt CreateDebugReportCallback(bool debug)
         {
-            if (!debug) return null;
+            //Currently MoltenVK (used for MacOS) doesn't support the debug layer.
+            if (!debug || Host.Platform == Platform.MacOS) return null;
 
             // Attach debug callback.
             var debugReportCreateInfo = new DebugReportCallbackCreateInfoExt(
@@ -216,6 +243,8 @@ namespace VulkanCore.Samples
                     return Instance.CreateAndroidSurfaceKhr(new AndroidSurfaceCreateInfoKhr(Host.WindowHandle));
                 case Platform.Win32:
                     return Instance.CreateWin32SurfaceKhr(new Win32SurfaceCreateInfoKhr(Host.InstanceHandle, Host.WindowHandle));
+                case Platform.MacOS:
+                    return Instance.CreateMacOSSurfaceMvk(new MacOSSurfaceCreateInfoMvk(Host.WindowHandle));
                 default:
                     throw new NotImplementedException();
             }
