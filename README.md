@@ -30,7 +30,7 @@ Cons:
 
 [Visual Studio 2017](https://www.visualstudio.com/vs/whatsnew/) or equivalent tooling is required to successfully compile the source. The tooling must support the *new .csproj format* and *C# 7* language features. Latest [Rider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/) or [MonoDevelop](http://www.monodevelop.com/) should all work but have not been tested.
 
-## Samples <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Android64.png">
+## Samples <img height="24" src="Doc/Windows64.png"> <img height="24" src="Doc/Android64.png"> <img height="24" src="Doc/MacOS64.png">
 
 Vulkan-capable graphics hardware and drivers are required to run the samples. Win32 samples are based on WinForms (.NET Framework) and Android ones on Xamarin (Mono).
 
