@@ -3,36 +3,36 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <ItemGroup>
-  
+
     <Compile Include="../../Shared/01-ClearScreen/ClearScreenApp.cs">
       <Link>ClearScreenApp.cs</Link>
     </Compile>
-  
+
     <Compile Include="../../Shared/MacOSWindow.cs">
       <Link>MacOSWindow.cs</Link>
     </Compile>
-  
+
     <ProjectReference Include="../../../Src/VulkanCore.csproj">
       <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
       <Name>VulkanCore</Name>
     </ProjectReference>
-  
+
     <ProjectReference Include="../../MiniFramework/MiniFramework.csproj">
       <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
       <Name>MiniFramework</Name>
     </ProjectReference>
-  
+
     <Reference Include="NativeMacOS">
-      <HintPath>../../Shared/NativeMacOS/NativeMacOS.dll</HintPath> 
+      <HintPath>../../Shared/NativeMacOS/NativeMacOS.dll</HintPath>
     </Reference>
-  
-    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest"/>
-  
+
+    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest" />
+
   </ItemGroup>
-  
+
 </Project>

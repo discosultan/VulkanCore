@@ -50,6 +50,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Shared\03-TexturedCube\Content\CompileShaders.bat">
+      <Link>Content\CompileShaders.bat</Link>
+    </None>
     <None Include="..\..\Shared\03-TexturedCube\Content\Shader.frag">
       <Link>Content\Shader.frag</Link>
     </None>

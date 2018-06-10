@@ -14,20 +14,20 @@
     </Compile>
   
     <None Include="../../Shared/02-ColoredTriangle/Content/CompileShaders.bat">
-      <Link>../../Content/CompileShaders.bat</Link>
+      <Link>Content\CompileShaders.bat</Link>
     </None>
     <None Include="../../Shared/02-ColoredTriangle/Content/Shader.frag">
-      <Link>../../Content/Shader.frag</Link>
+      <Link>Content\Shader.frag</Link>
     </None>
     <None Include="../../Shared/02-ColoredTriangle/Content/Shader.frag.spv">
-      <Link>../../Content/Shader.frag.spv</Link>
+      <Link>Content\Shader.frag.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="../../Shared/02-ColoredTriangle/Content/Shader.vert">
-      <Link>../../Content/Shader.vert</Link>
+      <Link>Content\Shader.vert</Link>
     </None>
     <None Include="../../Shared/02-ColoredTriangle/Content/Shader.vert.spv">
-      <Link>../../Content/Shader.vert.spv</Link>
+      <Link>Content\Shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   
@@ -49,8 +49,12 @@
       <HintPath>../../Shared/NativeMacOS/NativeMacOS.dll</HintPath> 
     </Reference>
   
-    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest" />
   
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Content\" />
   </ItemGroup>
   
 </Project>

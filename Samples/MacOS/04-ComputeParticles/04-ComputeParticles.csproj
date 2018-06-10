@@ -14,31 +14,31 @@
     </Compile>
   
     <None Include="../../Shared/04-ComputeParticles/Content/CompileShaders.bat">
-      <Link>../../Content/CompileShaders.bat</Link>
+      <Link>Content\CompileShaders.bat</Link>
     </None>
     <None Include="../../Shared/04-ComputeParticles/Content/Shader.comp">
-      <Link>../../Content/Shader.comp</Link>
+      <Link>Content\Shader.comp</Link>
     </None>
     <None Include="../../Shared/04-ComputeParticles/Content/shader.comp.spv">
-      <Link>../../Content/shader.comp.spv</Link>
+      <Link>Content\Shader.comp.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="../../Shared/04-ComputeParticles/Content/Shader.frag">
-      <Link>../../Content/Shader.frag</Link>
+      <Link>Content\Shader.frag</Link>
     </None>
     <None Include="../../Shared/04-ComputeParticles/Content/shader.frag.spv">
-      <Link>../../Content/shader.frag.spv</Link>
+      <Link>Content\Shader.frag.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="../../Shared/04-ComputeParticles/Content/Shader.vert">
-      <Link>../../Content/Shader.vert</Link>
+      <Link>Content\Shader.vert</Link>
     </None>
     <None Include="../../Shared/04-ComputeParticles/Content/shader.vert.spv">
-      <Link>../../Content/shader.vert.spv</Link>
+      <Link>Content\Shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="../../Shared/04-ComputeParticles/Content/ParticleDiffuse.ktx">
-      <Link>../../Content/ParticleDiffuse.ktx</Link>
+      <Link>Content\ParticleDiffuse.ktx</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   
@@ -60,8 +60,12 @@
       <HintPath>../../Shared/NativeMacOS/NativeMacOS.dll</HintPath> 
     </Reference>
   
-    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest" />
   
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Content\" />
   </ItemGroup>
   
 </Project>

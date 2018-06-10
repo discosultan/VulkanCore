@@ -74,20 +74,20 @@
     <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.comp">
       <Link>Assets\Content\Shader.comp</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\shader.comp.spv">
-      <Link>Assets\Content\shader.comp.spv</Link>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\Shader.comp.spv">
+      <Link>Assets\Content\Shader.comp.spv</Link>
     </AndroidAsset>
     <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.frag">
       <Link>Assets\Content\Shader.frag</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\shader.frag.spv">
-      <Link>Assets\Content\shader.frag.spv</Link>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\Shader.frag.spv">
+      <Link>Assets\Content\Shader.frag.spv</Link>
     </AndroidAsset>
     <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.vert">
       <Link>Assets\Content\Shader.vert</Link>
     </None>
-    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\shader.vert.spv">
-      <Link>Assets\Content\shader.vert.spv</Link>
+    <AndroidAsset Include="..\..\Shared\04-ComputeParticles\Content\Shader.vert.spv">
+      <Link>Assets\Content\Shader.vert.spv</Link>
     </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

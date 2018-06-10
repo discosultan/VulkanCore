@@ -1,8 +1,8 @@
 REM Make the directory batch file resides in as the working directory.
 pushd %~dp0
 
-glslangvalidator -V shader.vert -o shader.vert.spv
-glslangvalidator -V shader.frag -o shader.frag.spv
-glslangvalidator -V shader.comp -o shader.comp.spv
+glslangvalidator -V Shader.vert -o Shader.vert.spv
+glslangvalidator -V Shader.frag -o Shader.frag.spv
+glslangvalidator -V Shader.comp -o Shader.comp.spv
 
 popd
