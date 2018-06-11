@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Ext
@@ -61,12 +61,32 @@ namespace VulkanCore.Ext
             var messageBytes = stackalloc byte[byteCount];
             Interop.String.ToPointer(message, messageBytes, byteCount);
 
-            vkDebugReportMessageEXT(instance)
-                (instance, flags, objectType, @object, location, messageCode, layerPrefixBytes, messageBytes);
+            vkDebugReportMessageEXT(instance)(
+                instance, flags, objectType, @object, location, messageCode, layerPrefixBytes, messageBytes);
         }
 
-        private delegate void vkDebugReportMessageEXTDelegate(IntPtr instance, DebugReportFlagsExt flags,
-            DebugReportObjectTypeExt objectType, long @object, IntPtr location, int messageCode, byte* layerPrefix, byte* message);
+        /// <summary>
+        /// Create a debug messenger object.
+        /// <para>
+        /// A debug messenger triggers a debug callback with a debug message when an event of
+        /// interest occurs.
+        /// </para>
+        /// </summary>
+        /// <param name="instance">The instance the messenger will be used with.</param>
+        /// <param name="createInfo">
+        /// Structure which contains the callback pointer as well as defines the conditions under
+        /// which this messenger will trigger the callback.
+        /// </param>
+        /// <param name="allocator">Controls host memory allocation.</param>
+        /// <returns>The created object.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public static DebugUtilsMessengerExt CreateDebugUtilsMessengerExt(this Instance instance,
+            DebugUtilsMessengerCreateInfoExt createInfo, AllocationCallbacks? allocator = null)
+        {
+            return new DebugUtilsMessengerExt(instance, &createInfo, ref allocator);
+        }
+
+        private delegate void vkDebugReportMessageEXTDelegate(IntPtr instance, DebugReportFlagsExt flags, DebugReportObjectTypeExt objectType, long @object, IntPtr location, int messageCode, byte* layerPrefix, byte* message);
         private static vkDebugReportMessageEXTDelegate vkDebugReportMessageEXT(Instance instance) => instance.GetProc<vkDebugReportMessageEXTDelegate>(nameof(vkDebugReportMessageEXT));
     }
 
