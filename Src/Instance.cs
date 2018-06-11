@@ -69,22 +69,21 @@ namespace VulkanCore
         /// <summary>
         /// Enumerates groups of physical devices that can be used to create a single logical device.
         /// </summary>
-        /// <param name="instance">A handle to a previously created Vulkan instance.</param>
         /// <returns>An array of <see cref="PhysicalDeviceGroupProperties"/> structures.</returns>
         /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
-        public PhysicalDeviceGroupProperties[] EnumeratePhysicalDeviceGroups(this Instance instance)
+        public PhysicalDeviceGroupProperties[] EnumeratePhysicalDeviceGroups()
         {
             int count;
-            Result result = vkEnumeratePhysicalDeviceGroups(instance)(instance, &count, null);
+            Result result = vkEnumeratePhysicalDeviceGroups(this)(this, &count, null);
             VulkanException.ThrowForInvalidResult(result);
 
             var nativeProperties = new PhysicalDeviceGroupProperties.Native[count];
-            result = vkEnumeratePhysicalDeviceGroups(instance)(instance, &count, nativeProperties);
+            result = vkEnumeratePhysicalDeviceGroups(this)(this, &count, nativeProperties);
             VulkanException.ThrowForInvalidResult(result);
 
             var groupProperties = new PhysicalDeviceGroupProperties[count];
             for (int i = 0; i < count; i++)
-                PhysicalDeviceGroupProperties.FromNative(ref nativeProperties[i], instance, out groupProperties[i]);
+                PhysicalDeviceGroupProperties.FromNative(ref nativeProperties[i], this, out groupProperties[i]);
             return groupProperties;
         }
 
@@ -540,9 +539,9 @@ namespace VulkanCore
         public PhysicalDevice[] PhysicalDevices;
         /// <summary>
         /// Indicates whether logical devices created from the group support allocating device memory
-        /// on a subset of devices, via the <see cref="MemoryAllocateFlagsInfo.DeviceMask"/>
-        /// member. If this is <c>false</c>, then all device memory allocations are made across all
-        /// physical devices in the group. If <see cref="PhysicalDevices"/> length is 1, then <see
+        /// on a subset of devices, via the <see cref="MemoryAllocateFlagsInfo.DeviceMask"/> member.
+        /// If this is <c>false</c>, then all device memory allocations are made across all physical
+        /// devices in the group. If <see cref="PhysicalDevices"/> length is 1, then <see
         /// cref="SubsetAllocation"/> must be <c>false</c>.
         /// </summary>
         public Bool SubsetAllocation;

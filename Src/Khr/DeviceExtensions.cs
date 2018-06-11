@@ -630,7 +630,7 @@ namespace VulkanCore.Khr
 
         internal void ToNative(out Native native)
         {
-            native.Type = StructureType.BindBufferMemoryInfoKhr;
+            native.Type = StructureType.BindBufferMemoryInfo;
             native.Next = Next;
             native.Buffer = Buffer;
             native.Memory = Memory;
@@ -727,7 +727,7 @@ namespace VulkanCore.Khr
 
         internal void ToNative(out Native native)
         {
-            native.Type = StructureType.BindBufferMemoryInfoKhr;
+            native.Type = StructureType.BindBufferMemoryInfo;
             native.Next = Next;
             native.Image = Image;
             native.Memory = Memory;

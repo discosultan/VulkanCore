@@ -1,64 +1,9 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using VulkanCore.Khr;
 
 namespace VulkanCore.Khx
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MemoryAllocateFlagsInfoKhx
-    {
-        /// <summary>
-        /// The type of this structure.
-        /// </summary>
-        public StructureType Type;
-        /// <summary>
-        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
-        /// </summary>
-        public IntPtr Next;
-        /// <summary>
-        /// A bitmask of flags controlling the allocation.
-        /// </summary>
-        public MemoryAllocateFlagsKhx Flags;
-        /// <summary>
-        /// A mask of physical devices in the logical device, indicating that memory must be
-        /// allocated on each device in the mask, if <see cref="MemoryAllocateFlagsKhx.DeviceMask"/>
-        /// is set.
-        /// </summary>
-        public int DeviceMask;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryAllocateFlagsInfoKhx"/> structure.
-        /// </summary>
-        /// <param name="flags">A bitmask of flags controlling the allocation.</param>
-        /// <param name="deviceMask">A mask of physical devices in the logical device, indicating that memory must be
-        /// allocated on each device in the mask, if <see cref="MemoryAllocateFlagsKhx.DeviceMask"/>
-        /// is set.</param>
-        /// <param name="next">Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.</param>
-        public MemoryAllocateFlagsInfoKhx(MemoryAllocateFlagsKhx flags, int deviceMask, IntPtr next = default(IntPtr))
-        {
-            Type = StructureType.MemoryAllocateFlagsInfoKhx;
-            Next = next;
-            Flags = flags;
-            DeviceMask = deviceMask;
-        }
-    }
-
-    /// <summary>
-    /// Bitmask specifying flags for a device memory allocation.
-    /// </summary>
-    [Flags]
-    public enum MemoryAllocateFlagsKhx
-    {
-        /// <summary>
-        /// No flags.
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// Specifies that memory will be allocated for the devices in <see cref="MemoryAllocateFlagsInfoKhx.DeviceMask"/>.
-        /// </summary>
-        DeviceMask = 1 << 0
-    }
-
     /// <summary>
     /// Specify that an image will be bound to swapchain memory.
     /// </summary>
@@ -89,7 +34,7 @@ namespace VulkanCore.Khx
         /// </param>
         public ImageSwapchainCreateInfoKhx(SwapchainKhr swapchain, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.ImageSwapchainCreateInfoKhx;
+            Type = StructureType.ImageSwapchainCreateInfoKhr;
             Next = next;
             Swapchain = swapchain;
         }
@@ -133,7 +78,7 @@ namespace VulkanCore.Khx
         public DeviceGroupBindSparseInfoKhx(int resourceDeviceIndex, int memoryDeviceIndex,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupBindSparseInfoKhx;
+            Type = StructureType.DeviceGroupBindSparseInfo;
             Next = next;
             ResourceDeviceIndex = resourceDeviceIndex;
             MemoryDeviceIndex = memoryDeviceIndex;

@@ -196,4 +196,59 @@ namespace VulkanCore
     {
         None = 0,
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MemoryAllocateFlagsInfo
+    {
+        /// <summary>
+        /// The type of this structure.
+        /// </summary>
+        public StructureType Type;
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// A bitmask of flags controlling the allocation.
+        /// </summary>
+        public MemoryAllocateFlags Flags;
+        /// <summary>
+        /// A mask of physical devices in the logical device, indicating that memory must be
+        /// allocated on each device in the mask, if <see cref="MemoryAllocateFlags.DeviceMask"/>
+        /// is set.
+        /// </summary>
+        public int DeviceMask;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemoryAllocateFlagsInfo"/> structure.
+        /// </summary>
+        /// <param name="flags">A bitmask of flags controlling the allocation.</param>
+        /// <param name="deviceMask">A mask of physical devices in the logical device, indicating that memory must be
+        /// allocated on each device in the mask, if <see cref="MemoryAllocateFlags.DeviceMask"/>
+        /// is set.</param>
+        /// <param name="next">Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.</param>
+        public MemoryAllocateFlagsInfo(MemoryAllocateFlags flags, int deviceMask, IntPtr next = default(IntPtr))
+        {
+            Type = StructureType.MemoryAllocateFlagsInfo;
+            Next = next;
+            Flags = flags;
+            DeviceMask = deviceMask;
+        }
+    }
+
+    /// <summary>
+    /// Bitmask specifying flags for a device memory allocation.
+    /// </summary>
+    [Flags]
+    public enum MemoryAllocateFlags
+    {
+        /// <summary>
+        /// No flags.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Specifies that memory will be allocated for the devices in <see cref="MemoryAllocateFlagsInfo.DeviceMask"/>.
+        /// </summary>
+        DeviceMask = 1 << 0
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khr
@@ -110,7 +110,7 @@ namespace VulkanCore.Khr
         internal void ToNative(out Native native,
             DescriptorUpdateTemplateEntryKhr* nativeDescriptorUpdateEntries)
         {
-            native.Type = StructureType.DescriptorUpdateTemplateCreateInfoKhr;
+            native.Type = StructureType.DescriptorUpdateTemplateCreateInfo;
             native.Next = IntPtr.Zero;
             native.Flags = 0;
             native.DescriptorUpdateEntryCount = DescriptorUpdateEntries?.Length ?? 0;

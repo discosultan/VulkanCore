@@ -25,6 +25,8 @@ namespace VulkanCore.Ext
             Parent = parent;
             Allocator = allocator;
 
+            createInfo->Prepare();
+
             long handle;
             Result result = vkCreateDebugUtilsMessengerEXT(parent)(parent, createInfo, NativeAllocator, &handle);
             VulkanException.ThrowForInvalidResult(result);
@@ -61,7 +63,7 @@ namespace VulkanCore.Ext
         /// <summary>
         /// The type of this structure.
         /// </summary>
-        public StructureType Type;
+        private StructureType Type;
         /// <summary>
         /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
         /// </summary>
@@ -69,27 +71,41 @@ namespace VulkanCore.Ext
         /// <summary>
         /// Is 0 and reserved for future use.
         /// </summary>
-        public int Flags;
+        private DebugUtilsMessengerCreateFlagsExt Flags;
         /// <summary>
         /// Specifies which severity of event(s) will cause this callback to be called.
         /// </summary>
-        public DebugUtilsMessageSeverityFlagsExt MessageSeverity;
-        public int MessageType;
+        public DebugUtilsMessageTypesExt MessageSeverity;
+        /// <summary>
+        /// Specifies which type of event(s) will cause this callback to be called.
+        /// </summary>
+        public DebugUtilsMessageTypesExt MessageTypes;
         /// <summary>
         /// The application callback function to call.
         /// </summary>
-        public IntPtr PfnUserCallback;
+        public IntPtr UserCallback;
         /// <summary>
         /// User data to be passed to the callback.
         /// </summary>
         public IntPtr UserData;
+
+        internal void Prepare()
+        {
+            Type = StructureType.DebugUtilsMessengerCreateInfoExt;
+        }
+    }
+
+    // Is reserved for future use.
+    internal enum DebugUtilsMessengerCreateFlagsExt
+    {
+        None = 0
     }
 
     /// <summary>
     /// Bitmask specifying which severities of events cause a debug messenger callback.
     /// </summary>
     [Flags]
-    public enum DebugUtilsMessageSeverityFlagsExt
+    public enum DebugUtilsMessageSeveritiesExt
     {
         /// <summary>
         /// Specifies the most verbose output indicating all diagnostic messages from the Vulkan
@@ -113,5 +129,29 @@ namespace VulkanCore.Ext
         /// Specifies that an error that may cause undefined results, including an application crash.
         /// </summary>
         Error = 1 << 12
+    }
+
+    /// <summary>
+    /// Bitmask specifying which types of events cause a debug messenger callback.
+    /// </summary>
+    [Flags]
+    public enum DebugUtilsMessageTypesExt
+    {
+        /// <summary>
+        /// Specifies that some general event has occurred. This is typically a non-specification,
+        /// non-performance event.
+        /// </summary>
+        General = 1 << 0,
+        /// <summary>
+        /// Specifies that something has occurred during validation against the Vulkan specification
+        /// that may indicate invalid behavior.
+        /// </summary>
+        Validation = 1 << 1,
+        /// <summary>
+        /// Specifies a potentially non-optimal use of Vulkan, e.g. using <see
+        /// cref="CommandBuffer.CmdClearColorImage"/> when setting <see
+        /// cref="AttachmentDescription.LoadOp"/> to <see cref="AttachmentLoadOp.Clear"/> would have worked.
+        /// </summary>
+        Performance = 1 << 2
     }
 }

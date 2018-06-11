@@ -1360,7 +1360,7 @@ namespace VulkanCore.Khr
         public PhysicalDeviceExternalImageFormatInfoKhr(ExternalMemoryHandleTypesKhr handleType,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.PhysicalDeviceExternalImageFormatInfoKhr;
+            Type = StructureType.PhysicalDeviceExternalImageFormatInfo;
             Next = next;
             HandleType = handleType;
         }

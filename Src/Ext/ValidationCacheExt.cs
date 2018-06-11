@@ -139,6 +139,7 @@ namespace VulkanCore.Ext
         }
     }
 
+    // Is reserved for future use.
     internal enum ValidationCacheCreateFlags
     {
         None = 0

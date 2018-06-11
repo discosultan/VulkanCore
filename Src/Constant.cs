@@ -28,7 +28,7 @@ namespace VulkanCore
         public const int QueueFamilyExternalKhx = ~0 - 1;
         public const int QueueFamilyForeignExt = ~0 - 2;
         public const int SubpassExternal = ~0;
-        public const int MaxDeviceGroupSizeKhx = 32;
+        public const int MaxDeviceGroupSize = 32;
 
         /// <summary>
         /// Provides name constants for common Vulkan instance extensions.
@@ -157,12 +157,6 @@ namespace VulkanCore
             /// This extension defines additional enums for <see cref="Khr.ColorSpaceKhr"/>.
             /// </summary>
             public const string ExtSwapchainColorspace = "VK_EXT_swapchain_colorspace";
-            /// <summary>
-            /// This extension provides instance-level commands to enumerate groups of physical
-            /// devices, and to create a logical device from a subset of one of those groups. Such a
-            /// logical device can then be used with new features in the "VK_KHX_device_group" extension.
-            /// </summary>
-            public const string KhxDeviceGroupCreation = "VK_KHX_device_group_creation";
             /// <summary>
             /// An application may wish to reference device memory in multiple Vulkan logical devices
             /// or instances, in multiple processes, and/or in multiple APIs. This extension provides

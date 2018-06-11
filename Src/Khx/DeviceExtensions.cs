@@ -237,7 +237,7 @@ namespace VulkanCore.Khx
         public AcquireNextImageInfoKhx(SwapchainKhr swapchain, long timeout,
             Semaphore semaphore = null, Fence fence = null, int deviceMask = 0, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.AcquireNextImageInfoKhx;
+            Type = StructureType.AcquireNextImageInfoKhr;
             Swapchain = swapchain;
             Timeout = timeout;
             Semaphore = semaphore;
@@ -248,7 +248,7 @@ namespace VulkanCore.Khx
 
         internal void Prepare()
         {
-            Type = StructureType.AcquireNextImageInfoKhx;
+            Type = StructureType.AcquireNextImageInfoKhr;
         }
     }
 
@@ -291,7 +291,7 @@ namespace VulkanCore.Khx
         public PhysicalDeviceMultiviewFeaturesKhx(bool multiview, bool multiviewGeometryShader, bool multiviewTessellationShader,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.PhysicalDeviceMultiviewFeaturesKhx;
+            Type = StructureType.PhysicalDeviceMultiviewFeatures;
             Next = next;
             Multiview = multiview;
             MultiviewGeometryShader = multiviewGeometryShader;
@@ -338,7 +338,7 @@ namespace VulkanCore.Khx
         /// </param>
         public DeviceGroupDeviceCreateInfoKhx(int physicalDeviceCount, IntPtr physicalDevices, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupDeviceCreateInfoKhx;
+            Type = StructureType.DeviceGroupDeviceCreateInfo;
             Next = next;
             PhysicalDeviceCount = physicalDeviceCount;
             PhysicalDevices = physicalDevices;
@@ -378,7 +378,7 @@ namespace VulkanCore.Khx
         /// </param>
         public BindImageMemorySwapchainInfoKhx(SwapchainKhr swapchain, int imageIndex, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.BindImageMemorySwapchainInfoKhx;
+            Type = StructureType.BindImageMemorySwapchainInfoKhr;
             Next = next;
             Swapchain = swapchain;
             ImageIndex = imageIndex;
@@ -413,7 +413,7 @@ namespace VulkanCore.Khx
         /// </param>
         public DeviceGroupSwapchainCreateInfoKhx(DeviceGroupPresentModesKhx modes, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupSwapchainCreateInfoKhx;
+            Type = StructureType.DeviceGroupSwapchainCreateInfoKhr;
             Next = next;
             Modes = modes;
         }
@@ -458,7 +458,7 @@ namespace VulkanCore.Khx
         public DeviceGroupPresentInfoKhx(int swapchainCount, int* deviceMasks, DeviceGroupPresentModesKhx mode,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupPresentInfoKhx;
+            Type = StructureType.DeviceGroupPresentInfoKhr;
             Next = next;
             SwapchainCount = swapchainCount;
             DeviceMasks = deviceMasks;

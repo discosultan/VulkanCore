@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore.Khx
@@ -74,7 +74,7 @@ namespace VulkanCore.Khx
         /// </param>
         public DeviceGroupCommandBufferBeginInfoKhx(int deviceMask, IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupCommandBufferBeginInfoKhx;
+            Type = StructureType.DeviceGroupCommandBufferBeginInfo;
             Next = next;
             DeviceMask = deviceMask;
         }
@@ -120,7 +120,7 @@ namespace VulkanCore.Khx
         public DeviceGroupRenderPassBeginInfoKhx(int deviceMask, Rect2D[] deviceRenderAreas,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupRenderPassBeginInfoKhx;
+            Type = StructureType.DeviceGroupRenderPassBeginInfo;
             Next = next;
             DeviceMask = deviceMask;
             DeviceRenderAreaCount = deviceRenderAreas?.Length ?? 0;
@@ -286,7 +286,7 @@ namespace VulkanCore.Khx
             int[] signalSemaphoreDeviceIndices = null,
             IntPtr next = default(IntPtr))
         {
-            Type = StructureType.DeviceGroupSubmitInfoKhx;
+            Type = StructureType.DeviceGroupSubmitInfo;
             Next = next;
             WaitSemaphoreCount = waitSemaphoreDeviceIndices?.Length ?? 0;
             WaitSemaphoreDeviceIndices = waitSemaphoreDeviceIndices;

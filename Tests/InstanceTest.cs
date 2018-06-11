@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using VulkanCore.Ext;
 using VulkanCore.Khx;
 using VulkanCore.Tests.Utilities;
@@ -94,15 +95,40 @@ namespace VulkanCore.Tests
         }
 
         [Fact]
-        public void EnumeratePhysicalDeviceGroupsKhx()
+        public void EnumeratePhysicalDeviceGroups()
         {
-            if (!AvailableDeviceExtensions.Contains(InstanceExtension.KhxDeviceGroupCreation)) return;
-
-            var createInfo = new InstanceCreateInfo(
-                enabledExtensionNames: new[] { InstanceExtension.KhxDeviceGroupCreation });
-            using (var instance = new Instance(createInfo))
+            using (var instance = new Instance())
             {
-                instance.EnumeratePhysicalDeviceGroupsKhx();
+                PhysicalDeviceGroupProperties[] groups = instance.EnumeratePhysicalDeviceGroups();
+
+                Assert.True(0 < groups.Length && groups.Length <= MaxDeviceGroupSize);
+                Assert.True(groups[0].PhysicalDevices.Length > 0);
+                Assert.True(groups[0].PhysicalDevices.All(physicalDevice => physicalDevice.Handle != IntPtr.Zero));
+            }
+        }
+
+        [Fact]
+        public void CreateDeviceWithDeviceGroupInfo()
+        {
+            using (var instance = new Instance())
+            {
+                PhysicalDeviceGroupProperties physicalDeviceGroup = instance.EnumeratePhysicalDeviceGroups()[0];
+                // We need a pointer to the array of native handles.
+                IntPtr devicePtrs = Interop.Struct.AllocToPointer(physicalDeviceGroup.PhysicalDevices.ToHandleArray());
+
+                // Fill in the device group create info struct.
+                var deviceGroupCreateInfo = new DeviceGroupDeviceCreateInfoKhx(physicalDeviceGroup.PhysicalDevices.Length, devicePtrs);
+                // We also need a pointer to the create info struct itself.
+                IntPtr createInfoPtr = Interop.Struct.AllocToPointer(ref deviceGroupCreateInfo);
+
+                // Finally, pass the device group create info pointer to the `Next` chain of device create info.
+                physicalDeviceGroup.PhysicalDevices[0].CreateDevice(new DeviceCreateInfo(
+                    new[] { new DeviceQueueCreateInfo(0, 1, 1.0f) },
+                    next: createInfoPtr));
+
+                // Make sure to free unmanaged allocations.
+                Interop.Free(createInfoPtr);
+                Interop.Free(devicePtrs);
             }
         }
 
