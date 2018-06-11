@@ -67,6 +67,28 @@ namespace VulkanCore
         }
 
         /// <summary>
+        /// Enumerates groups of physical devices that can be used to create a single logical device.
+        /// </summary>
+        /// <param name="instance">A handle to a previously created Vulkan instance.</param>
+        /// <returns>An array of <see cref="PhysicalDeviceGroupProperties"/> structures.</returns>
+        /// <exception cref="VulkanException">Vulkan returns an error code.</exception>
+        public PhysicalDeviceGroupProperties[] EnumeratePhysicalDeviceGroups(this Instance instance)
+        {
+            int count;
+            Result result = vkEnumeratePhysicalDeviceGroups(instance)(instance, &count, null);
+            VulkanException.ThrowForInvalidResult(result);
+
+            var nativeProperties = new PhysicalDeviceGroupProperties.Native[count];
+            result = vkEnumeratePhysicalDeviceGroups(instance)(instance, &count, nativeProperties);
+            VulkanException.ThrowForInvalidResult(result);
+
+            var groupProperties = new PhysicalDeviceGroupProperties[count];
+            for (int i = 0; i < count; i++)
+                PhysicalDeviceGroupProperties.FromNative(ref nativeProperties[i], instance, out groupProperties[i]);
+            return groupProperties;
+        }
+
+        /// <summary>
         /// Return a function handle for a command or <see cref="IntPtr.Zero"/> if not found.
         /// <para>
         /// Vulkan commands are not necessarily exposed statically on a platform. Function pointers
@@ -206,6 +228,9 @@ namespace VulkanCore
 
         private delegate Result vkEnumerateInstanceVersionDelegate(Version* apiVersion);
         private static readonly vkEnumerateInstanceVersionDelegate vkEnumerateInstanceVersion = VulkanLibrary.GetStaticProc<vkEnumerateInstanceVersionDelegate>(nameof(vkEnumerateInstanceVersion));
+
+        private delegate Result vkEnumeratePhysicalDeviceGroupsDelegate(IntPtr instance, int* physicalDeviceGroupCount, [Out]PhysicalDeviceGroupProperties.Native[] physicalDeviceGroupProperties);
+        private static vkEnumeratePhysicalDeviceGroupsDelegate vkEnumeratePhysicalDeviceGroups(Instance instance) => instance.GetProc<vkEnumeratePhysicalDeviceGroupsDelegate>(nameof(vkEnumeratePhysicalDeviceGroups));
     }
 
     /// <summary>
@@ -497,6 +522,49 @@ namespace VulkanCore
                     Description = Interop.String.FromPointer(descriptionPtr)
                 };
             }
+        }
+    }
+
+    /// <summary>
+    /// Structure specifying physical device group properties.
+    /// </summary>
+    public struct PhysicalDeviceGroupProperties
+    {
+        /// <summary>
+        /// Is <see cref="IntPtr.Zero"/> or a pointer to an extension-specific structure.
+        /// </summary>
+        public IntPtr Next;
+        /// <summary>
+        /// An array of physical device handles representing all physical devices in the group.
+        /// </summary>
+        public PhysicalDevice[] PhysicalDevices;
+        /// <summary>
+        /// Indicates whether logical devices created from the group support allocating device memory
+        /// on a subset of devices, via the <see cref="MemoryAllocateFlagsInfo.DeviceMask"/>
+        /// member. If this is <c>false</c>, then all device memory allocations are made across all
+        /// physical devices in the group. If <see cref="PhysicalDevices"/> length is 1, then <see
+        /// cref="SubsetAllocation"/> must be <c>false</c>.
+        /// </summary>
+        public Bool SubsetAllocation;
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Native
+        {
+            public StructureType Type;
+            public IntPtr Next;
+            public int PhysicalDeviceCount;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxDeviceGroupSize)]
+            public IntPtr[] PhysicalDevices;
+            public Bool SubsetAllocation;
+        }
+
+        internal static void FromNative(ref Native native, Instance instance, out PhysicalDeviceGroupProperties managed)
+        {
+            managed.Next = native.Next;
+            managed.PhysicalDevices = new PhysicalDevice[native.PhysicalDeviceCount];
+            for (int i = 0; i < native.PhysicalDeviceCount; i++)
+                managed.PhysicalDevices[i] = new PhysicalDevice(native.PhysicalDevices[i], instance);
+            managed.SubsetAllocation = native.SubsetAllocation;
         }
     }
 }
