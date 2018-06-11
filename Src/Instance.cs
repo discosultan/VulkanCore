@@ -167,6 +167,17 @@ namespace VulkanCore
         }
 
         /// <summary>
+        /// Query instance-level version before instance creation.
+        /// </summary>
+        /// <returns>The version of Vulkan supported by instance-level functionality.</returns>
+        public static Version EnumerateInstanceVersion()
+        {
+            var version = new Version();
+            vkEnumerateInstanceVersion(&version);
+            return version;
+        }
+
+        /// <summary>
         /// Destroy an instance of Vulkan.
         /// </summary>
         public override void Dispose()
@@ -192,6 +203,9 @@ namespace VulkanCore
 
         private delegate Result vkEnumerateInstanceExtensionPropertiesDelegate(byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
         private static readonly vkEnumerateInstanceExtensionPropertiesDelegate vkEnumerateInstanceExtensionProperties = VulkanLibrary.GetStaticProc<vkEnumerateInstanceExtensionPropertiesDelegate>(nameof(vkEnumerateInstanceExtensionProperties));
+
+        private delegate Result vkEnumerateInstanceVersionDelegate(Version* apiVersion);
+        private static readonly vkEnumerateInstanceVersionDelegate vkEnumerateInstanceVersion = VulkanLibrary.GetStaticProc<vkEnumerateInstanceVersionDelegate>(nameof(vkEnumerateInstanceVersion));
     }
 
     /// <summary>

@@ -212,6 +212,12 @@ namespace VulkanCore.Tests
             Assert.True(visitedCallback);
         }
 
+        [Fact]
+        public void EnumerateInstanceVersion()
+        {
+            Instance.EnumerateInstanceVersion();
+        }
+
         public InstanceTest(DefaultHandles defaults, ITestOutputHelper output) : base(defaults, output) { }
 
         private delegate Result CreateDebugReportCallbackExtDelegate(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4);
