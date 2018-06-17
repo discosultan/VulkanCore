@@ -462,6 +462,38 @@ namespace VulkanCore
         /// A bitmask of <see cref="Dependencies"/>.
         /// </summary>
         public Dependencies DependencyFlags;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SubpassDependency"/> structure.
+        /// </summary>
+        /// <param name="srcSubpass">
+        /// The subpass index of the first subpass in the dependency, or <see cref="Constant.SubpassExternal"/>.
+        /// </param>
+        /// <param name="dstSubpass">
+        /// The subpass index of the second subpass in the dependency, or <see cref="Constant.SubpassExternal"/>.
+        /// </param>
+        /// <param name="srcStageMask">Specifies a source stage mask.</param>
+        /// <param name="dstStageMask">Specifies a destination stage mask.</param>
+        /// <param name="srcAccessMask">Specifies a source access mask.</param>
+        /// <param name="dstAccessMask">Specifies a destination access mask.</param>
+        /// <param name="dependencyFlags">A bitmask of <see cref="Dependencies"/>.</param>
+        public SubpassDependency(
+            int srcSubpass,
+            int dstSubpass,
+            PipelineStages srcStageMask,
+            PipelineStages dstStageMask,
+            Accesses srcAccessMask,
+            Accesses dstAccessMask,
+            Dependencies dependencyFlags = Dependencies.None)
+        {
+            SrcSubpass = srcSubpass;
+            DstSubpass = dstSubpass;
+            SrcStageMask = srcStageMask;
+            DstStageMask = dstStageMask;
+            SrcAccessMask = srcAccessMask;
+            DstAccessMask = dstAccessMask;
+            DependencyFlags = dependencyFlags;
+        }
     }
 
     /// <summary>
