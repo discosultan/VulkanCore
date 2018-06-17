@@ -265,11 +265,11 @@ namespace VulkanCore.Samples
                 PresentModeKhr.Immediate;
 
             return Context.Device.CreateSwapchainKhr(new SwapchainCreateInfoKhr(
-                Surface,
-                format,
-                capabilities.CurrentExtent,
-                capabilities.CurrentTransform,
-                presentMode));
+                surface: Surface,
+                imageFormat: format,
+                imageExtent: capabilities.CurrentExtent,
+                preTransform: capabilities.CurrentTransform,
+                presentMode: presentMode));
         }
 
         private void RecordCommandBuffers()
