@@ -528,6 +528,62 @@ namespace VulkanCore
         /// each subpass, if desired.
         /// </summary>
         public ImageLayout FinalLayout;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttachmentDescription"/> structure.
+        /// </summary>
+        /// <param name="flags">A bitmask specifying additional properties of the attachment.</param>
+        /// <param name="format">
+        /// Specifies the format of the image that will be used for the attachment.
+        /// </param>
+        /// <param name="samples">The number of samples of the image.</param>
+        /// <param name="loadOp">
+        /// Specifies how the contents of color and depth components of the attachment are treated at
+        /// the beginning of the subpass where it is first used.
+        /// </param>
+        /// <param name="storeOp">
+        /// Specifies how the contents of color and depth components of the attachment are treated at
+        /// the end of the subpass where it is last used.
+        /// </param>
+        /// <param name="stencilLoadOp">
+        /// Specifies how the contents of stencil components of the attachment are treated at the
+        /// beginning of the subpass where it is first used, and must be one of the same values
+        /// allowed for <see cref="LoadOp"/> above.
+        /// </param>
+        /// <param name="stencilStoreOp">
+        /// Specifies how the contents of stencil components of the attachment are treated at the end
+        /// of the last subpass where it is used, and must be one of the same values allowed for <see
+        /// cref="StoreOp"/> above.
+        /// </param>
+        /// <param name="initialLayout">
+        /// The layout the attachment image subresource will be in when a render pass instance begins.
+        /// </param>
+        /// <param name="finalLayout">
+        /// The layout the attachment image subresource will be transitioned to when a render pass
+        /// instance ends. During a render pass instance, an attachment can use a different layout in
+        /// each subpass, if desired.
+        /// </param>
+        public AttachmentDescription(
+            AttachmentDescriptions flags,
+            Format format,
+            SampleCounts samples,
+            AttachmentLoadOp loadOp,
+            AttachmentStoreOp storeOp,
+            AttachmentLoadOp stencilLoadOp,
+            AttachmentStoreOp stencilStoreOp,
+            ImageLayout initialLayout,
+            ImageLayout finalLayout)
+        {
+            Flags = flags;
+            Format = format;
+            Samples = samples;
+            LoadOp = loadOp;
+            StoreOp = storeOp;
+            StencilLoadOp = stencilLoadOp;
+            StencilStoreOp = stencilStoreOp;
+            InitialLayout = initialLayout;
+            FinalLayout = finalLayout;
+        }
     }
 
     /// <summary>
