@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace VulkanCore
@@ -85,12 +85,15 @@ namespace VulkanCore
             base.Dispose();
         }
 
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkCreateCommandPoolDelegate(IntPtr device, CommandPoolCreateInfo* createInfo, AllocationCallbacks.Native* allocator, long* commandPool);
         private static readonly vkCreateCommandPoolDelegate vkCreateCommandPool = VulkanLibrary.GetStaticProc<vkCreateCommandPoolDelegate>(nameof(vkCreateCommandPool));
 
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate void vkDestroyCommandPoolDelegate(IntPtr device, long commandPool, AllocationCallbacks.Native* allocator);
         private static readonly vkDestroyCommandPoolDelegate vkDestroyCommandPool = VulkanLibrary.GetStaticProc<vkDestroyCommandPoolDelegate>(nameof(vkDestroyCommandPool));
 
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkResetCommandPoolDelegate(IntPtr device, long commandPool, CommandPoolResetFlags flags);
         private static readonly vkResetCommandPoolDelegate vkResetCommandPool = VulkanLibrary.GetStaticProc<vkResetCommandPoolDelegate>(nameof(vkResetCommandPool));
     }
