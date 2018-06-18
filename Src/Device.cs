@@ -1,3 +1,5 @@
+#pragma warning disable CS0618 // Type or member is obsolete.
+
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
@@ -628,6 +630,7 @@ namespace VulkanCore
         /// <summary>
         /// Is deprecated and ignored.
         /// </summary>
+        [Obsolete("Specify layers on Vulkan instance instead.")]
         public string[] EnabledLayerNames;
         /// <summary>
         /// Is <c>null</c> or unicode strings containing the names of extensions to enable for the
