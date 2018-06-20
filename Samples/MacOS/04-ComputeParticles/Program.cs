@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace VulkanCore.Samples.ComputeParticles
 {
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.

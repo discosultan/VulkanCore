@@ -1275,6 +1275,59 @@ namespace VulkanCore
         /// </summary>
         public float LineWidth;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineRasterizationStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="depthClampEnable">
+        /// Controls whether to clamp the fragment's depth values instead of clipping primitives to
+        /// the z planes of the frustum.
+        /// </param>
+        /// <param name="rasterizerDiscardEnable">
+        /// Controls whether primitives are discarded immediately before the rasterization stage.
+        /// </param>
+        /// <param name="polygonMode">
+        /// The triangle rendering mode. See <see cref="VulkanCore.PolygonMode"/>.
+        /// </param>
+        /// <param name="cullMode">
+        /// The triangle facing direction used for primitive culling. See <see cref="CullModes"/>.
+        /// </param>
+        /// <param name="frontFace">Specifies the front-facing triangle orientation to be used for culling.</param>
+        /// <param name="depthBiasEnable">Controls whether to bias fragment depth values.</param>
+        /// <param name="depthBiasConstantFactor">
+        /// A scalar factor controlling the constant depth value added to each fragment.
+        /// </param>
+        /// <param name="depthBiasClamp">The maximum (or minimum) depth bias of a fragment.</param>
+        /// <param name="depthBiasSlopeFactor">
+        /// A scalar factor applied to a fragment's slope in depth bias calculations.
+        /// </param>
+        /// <param name="lineWidth">The width of rasterized line segments.</param>
+        public PipelineRasterizationStateCreateInfo(
+            bool depthClampEnable = false,
+            bool rasterizerDiscardEnable = false,
+            PolygonMode polygonMode = PolygonMode.Fill,
+            CullModes cullMode = CullModes.Back,
+            FrontFace frontFace = FrontFace.Clockwise,
+            bool depthBiasEnable = false,
+            float depthBiasConstantFactor = 0f,
+            float depthBiasClamp = 0f,
+            float depthBiasSlopeFactor = 0f,
+            float lineWidth = 1f)
+        {
+            Type = StructureType.PipelineRasterizationStateCreateInfo;
+            Next = IntPtr.Zero;
+            Flags = PipelineRasterizationStateCreateFlags.None;
+            DepthClampEnable = depthClampEnable;
+            RasterizerDiscardEnable = rasterizerDiscardEnable;
+            PolygonMode = polygonMode;
+            CullMode = cullMode;
+            FrontFace = frontFace;
+            DepthBiasEnable = depthBiasEnable;
+            DepthBiasConstantFactor = depthBiasConstantFactor;
+            DepthBiasClamp = depthBiasClamp;
+            DepthBiasSlopeFactor = depthBiasSlopeFactor;
+            LineWidth = lineWidth;
+        }
+
         internal void Prepare()
         {
             Type = StructureType.PipelineRasterizationStateCreateInfo;
@@ -1406,6 +1459,48 @@ namespace VulkanCore
         /// </summary>
         public Bool AlphaToOneEnable;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineMultisampleStateCreateInfo"/> structure.
+        /// </summary>
+        /// <param name="rasterizationSamples">
+        /// Specifies the number of samples per pixel used in rasterization.
+        /// </param>
+        /// <param name="sampleShadingEnable">
+        /// Specifies that fragment shading executes per-sample if <c>true</c>, or per-fragment if <c>false</c>.
+        /// </param>
+        /// <param name="minSampleShading">The minimum fraction of sample shading.</param>
+        /// <param name="sampleMask">
+        /// Bitmasks of static coverage information that is ANDed with the coverage information
+        /// generated during rasterization.
+        /// <para>
+        /// If not <c>null</c>, must be a an array of <c>RasterizationSamples / 32</c>
+        /// sample mask values.
+        /// </para>
+        /// </param>
+        /// <param name="alphaToCoverageEnable">
+        /// Controls whether a temporary coverage value is generated based on the alpha component of
+        /// the fragment's first color output.
+        /// </param>
+        /// <param name="alphaToOneEnable">
+        /// Controls whether the alpha component of the fragment's first color output is replaced
+        /// with one.
+        /// </param>
+        public PipelineMultisampleStateCreateInfo(
+            SampleCounts rasterizationSamples = SampleCounts.Count1,
+            bool sampleShadingEnable = false,
+            float minSampleShading = 0f,
+            int[] sampleMask = null,
+            bool alphaToCoverageEnable = false,
+            bool alphaToOneEnable = false)
+        {
+            RasterizationSamples = rasterizationSamples;
+            SampleShadingEnable = sampleShadingEnable;
+            MinSampleShading = minSampleShading;
+            SampleMask = sampleMask;
+            AlphaToCoverageEnable = alphaToCoverageEnable;
+            AlphaToOneEnable = alphaToOneEnable;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Native
         {
@@ -1494,6 +1589,54 @@ namespace VulkanCore
         /// A bitmask specifying which of the R, G, B, and/or A components are enabled for writing.
         /// </summary>
         public ColorComponents ColorWriteMask;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipelineColorBlendAttachmentState"/> structure.
+        /// </summary>
+        /// <param name="blendEnable">
+        /// Controls whether blending is enabled for the corresponding color attachment. If blending
+        /// is not enabled, the source fragment's color for that attachment is passed through unmodified.
+        /// </param>
+        /// <param name="srcColorBlendFactor">
+        /// Selects which blend factor is used to determine the source factors.
+        /// </param>
+        /// <param name="dstColorBlendFactor">
+        /// Selects which blend factor is used to determine the destination factors.
+        /// </param>
+        /// <param name="colorBlendOp">
+        /// Selects which blend operation is used to calculate the RGB values to write to the color attachment.
+        /// </param>
+        /// <param name="srcAlphaBlendFactor">
+        /// Selects which blend factor is used to determine the source factor.
+        /// </param>
+        /// <param name="dstAlphaBlendFactor">
+        /// Selects which blend factor is used to determine the destination factor.
+        /// </param>
+        /// <param name="alphaBlendOp">
+        /// Selects which blend operation is use to calculate the alpha values to write to the color attachment.
+        /// </param>
+        /// <param name="colorWriteMask">
+        /// A bitmask specifying which of the R, G, B, and/or A components are enabled for writing.
+        /// </param>
+        public PipelineColorBlendAttachmentState(
+            bool blendEnable = false,
+            BlendFactor srcColorBlendFactor = BlendFactor.Zero,
+            BlendFactor dstColorBlendFactor = BlendFactor.Zero,
+            BlendOp colorBlendOp = BlendOp.Add,
+            BlendFactor srcAlphaBlendFactor = BlendFactor.Zero,
+            BlendFactor dstAlphaBlendFactor = BlendFactor.Zero,
+            BlendOp alphaBlendOp = BlendOp.Add,
+            ColorComponents colorWriteMask = ColorComponents.All)
+        {
+            BlendEnable = blendEnable;
+            SrcColorBlendFactor = srcColorBlendFactor;
+            DstColorBlendFactor = dstColorBlendFactor;
+            ColorBlendOp = colorBlendOp;
+            SrcAlphaBlendFactor = srcAlphaBlendFactor;
+            DstAlphaBlendFactor = dstAlphaBlendFactor;
+            AlphaBlendOp = alphaBlendOp;
+            ColorWriteMask = colorWriteMask;
+        }
     }
 
     /// <summary>

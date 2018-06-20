@@ -296,6 +296,7 @@ namespace VulkanCore.Khr
         /// <param name="surface">
         /// The <see cref="SurfaceKhr"/> that the swapchain will present images to.
         /// </param>
+        /// <param name="imageFormat">A format that is valid for swapchains on the specified surface.</param>
         /// <param name="imageExtent">
         /// The size (in pixels) of the swapchain.
         /// <para>
@@ -303,8 +304,23 @@ namespace VulkanCore.Khr
         /// cref="SurfaceCapabilitiesKhr.CurrentExtent"/> as returned by <see cref="PhysicalDeviceExtensions.GetSurfaceCapabilitiesKhr"/>.
         /// </para>
         /// </param>
+        /// <param name="minImageCount">
+        /// The minimum number of presentable images that the application needs. The platform will
+        /// either create the swapchain with at least that many images, or will fail to create the swapchain.
+        /// </param>
+        /// <param name="imageColorSpace">Color space value specifying the way the swapchain interprets image data.</param>
+        /// <param name="imageArrayLayers">
+        /// The number of views in a multiview/stereo surface.
+        /// <para>For non-stereoscopic-3D applications, this value is 1.</para>
+        /// </param>
+        /// <param name="imageUsage">A bitmask describing the intended usage of the (acquired) swapchain images.</param>
+        /// <param name="imageSharingMode">The sharing mode used for the image(s) of the swapchain.</param>
+        /// <param name="queueFamilyIndices">
+        /// Queue family indices having access to the image(s) of the swapchain when <see
+        /// cref="ImageSharingMode"/> is <see cref="SharingMode.Concurrent"/>.
+        /// </param>
         /// <param name="preTransform">
-        /// A bitmask describing the transform, relative to the presentation engine's natural
+        /// A value describing the transform, relative to the presentation engine's natural
         /// orientation, applied to the image content prior to presentation.
         /// <para>
         /// If it does not match the <see cref="SurfaceCapabilitiesKhr.CurrentTransform"/> value
@@ -312,22 +328,9 @@ namespace VulkanCore.Khr
         /// presentation engine will transform the image content as part of the presentation operation.
         /// </para>
         /// </param>
-        /// <param name="imageUsage">
-        /// A bitmask indicating how the application will use the swapchain's presentable images.
-        /// </param>
-        /// <param name="flags">A bitmask indicating parameters of swapchain creation.</param>
-        /// <param name="minImageCount">
-        /// The minimum number of presentable images that the application needs. The platform will
-        /// either create the swapchain with at least that many images, or will fail to create the swapchain.
-        /// </param>
-        /// <param name="imageFormat">A format that is valid for swapchains on the specified surface.</param>
         /// <param name="compositeAlpha">
         /// A bitmask indicating the alpha compositing mode to use when this surface is composited
         /// together with other surfaces on certain window systems.
-        /// </param>
-        /// <param name="imageArrayLayers">
-        /// The number of views in a multiview/stereo surface. For non-stereoscopic-3D applications,
-        /// this value is 1.
         /// </param>
         /// <param name="presentMode">
         /// The presentation mode the swapchain will use.
@@ -338,33 +341,34 @@ namespace VulkanCore.Khr
         /// </param>
         /// <param name="clipped">
         /// Indicates whether the Vulkan implementation is allowed to discard rendering operations
-        /// that affect regions of the surface which are not visible.
-        /// </param>
+        /// that affect regions of the surface which are not visible.</param>
         /// <param name="oldSwapchain">Existing swapchain to replace, if any.</param>
         public SwapchainCreateInfoKhr(
             SurfaceKhr surface,
             Format imageFormat,
             Extent2D imageExtent,
-            SurfaceTransformsKhr preTransform,
-            PresentModeKhr presentMode,
-            SwapchainCreateFlagsKhr flags = 0,
             int minImageCount = 2,
-            ImageUsages imageUsage = ImageUsages.ColorAttachment | ImageUsages.TransferDst,
-            CompositeAlphasKhr compositeAlpha = CompositeAlphasKhr.Opaque,
+            ColorSpaceKhr imageColorSpace = ColorSpaceKhr.SRgbNonlinear,
             int imageArrayLayers = 1,
+            ImageUsages imageUsage = ImageUsages.ColorAttachment | ImageUsages.TransferDst,
+            SharingMode imageSharingMode = SharingMode.Exclusive,
+            int[] queueFamilyIndices = null,
+            SurfaceTransformsKhr preTransform = SurfaceTransformsKhr.Identity,
+            CompositeAlphasKhr compositeAlpha = CompositeAlphasKhr.Opaque,
+            PresentModeKhr presentMode = PresentModeKhr.Fifo,
             bool clipped = true,
             SwapchainKhr oldSwapchain = null)
         {
-            Flags = flags;
+            Flags = SwapchainCreateFlagsKhr.None;
             Surface = surface;
-            ImageUsage = imageUsage;
             MinImageCount = minImageCount;
             ImageFormat = imageFormat;
-            ImageColorSpace = 0;
+            ImageColorSpace = imageColorSpace;
             ImageExtent = imageExtent;
             ImageArrayLayers = imageArrayLayers;
-            ImageSharingMode = 0;
-            QueueFamilyIndices = null;
+            ImageUsage = imageUsage;
+            ImageSharingMode = imageSharingMode;
+            QueueFamilyIndices = queueFamilyIndices;
             PreTransform = preTransform;
             CompositeAlpha = compositeAlpha;
             PresentMode = presentMode;

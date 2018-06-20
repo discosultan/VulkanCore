@@ -56,22 +56,22 @@
     <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.comp">
       <Link>Content\Shader.comp</Link>
     </None>
-    <None Include="..\..\Shared\04-ComputeParticles\Content\shader.comp.spv">
-      <Link>Content\shader.comp.spv</Link>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.comp.spv">
+      <Link>Content\Shader.comp.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.frag">
       <Link>Content\Shader.frag</Link>
     </None>
-    <None Include="..\..\Shared\04-ComputeParticles\Content\shader.frag.spv">
-      <Link>Content\shader.frag.spv</Link>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.frag.spv">
+      <Link>Content\Shader.frag.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.vert">
       <Link>Content\Shader.vert</Link>
     </None>
-    <None Include="..\..\Shared\04-ComputeParticles\Content\shader.vert.spv">
-      <Link>Content\shader.vert.spv</Link>
+    <None Include="..\..\Shared\04-ComputeParticles\Content\Shader.vert.spv">
+      <Link>Content\Shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />

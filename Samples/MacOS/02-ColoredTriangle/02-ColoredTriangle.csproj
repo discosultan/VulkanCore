@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,51 +6,51 @@
   <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <ItemGroup>
-  
-    <Compile Include="../../Shared/02-ColoredTriangle/ColoredTriangleApp.cs">
+
+    <Compile Include="..\..\Shared\02-ColoredTriangle\ColoredTriangleApp.cs">
       <Link>ColoredTriangleApp.cs</Link>
     </Compile>
-  
-    <None Include="../../Shared/02-ColoredTriangle/Content/CompileShaders.bat">
-      <Link>../../Content/CompileShaders.bat</Link>
+
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\CompileShaders.bat">
+      <Link>Content\CompileShaders.bat</Link>
     </None>
-    <None Include="../../Shared/02-ColoredTriangle/Content/Shader.frag">
-      <Link>../../Content/Shader.frag</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag">
+      <Link>Content\Shader.frag</Link>
     </None>
-    <None Include="../../Shared/02-ColoredTriangle/Content/Shader.frag.spv">
-      <Link>../../Content/Shader.frag.spv</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.frag.spv">
+      <Link>Content\Shader.frag.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="../../Shared/02-ColoredTriangle/Content/Shader.vert">
-      <Link>../../Content/Shader.vert</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.vert">
+      <Link>Content\Shader.vert</Link>
     </None>
-    <None Include="../../Shared/02-ColoredTriangle/Content/Shader.vert.spv">
-      <Link>../../Content/Shader.vert.spv</Link>
+    <None Include="..\..\Shared\02-ColoredTriangle\Content\Shader.vert.spv">
+      <Link>Content\Shader.vert.spv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  
-    <Compile Include="../../Shared/MacOSWindow.cs">
+
+    <Compile Include="..\..\Shared\MacOSWindow.cs">
       <Link>MacOSWindow.cs</Link>
     </Compile>
-  
-    <ProjectReference Include="../../../Src/VulkanCore.csproj">
+
+    <ProjectReference Include="..\..\..\Src\VulkanCore.csproj">
       <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
       <Name>VulkanCore</Name>
     </ProjectReference>
-  
-    <ProjectReference Include="../../MiniFramework/MiniFramework.csproj">
+
+    <ProjectReference Include="..\..\MiniFramework\MiniFramework.csproj">
       <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
       <Name>MiniFramework</Name>
     </ProjectReference>
-  
+
     <Reference Include="NativeMacOS">
-      <HintPath>../../Shared/NativeMacOS/NativeMacOS.dll</HintPath> 
+      <HintPath>..\..\Shared/NativeMacOS/NativeMacOS.dll</HintPath>
     </Reference>
-  
-    <None Include="../../Shared/NativeMacOS/libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest"/>
-  
+
+    <None Include="..\..\Shared\NativeMacOS\libmacwindow.dylib" CopyToOutputDirectory="PreserveNewest" />
+
   </ItemGroup>
-  
+
 </Project>

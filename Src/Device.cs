@@ -1,3 +1,5 @@
+#pragma warning disable CS0618 // Type or member is obsolete.
+
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
@@ -626,6 +628,11 @@ namespace VulkanCore
         /// </summary>
         public DeviceQueueCreateInfo[] QueueCreateInfos;
         /// <summary>
+        /// Is deprecated and ignored.
+        /// </summary>
+        [Obsolete("Specify layers on Vulkan instance instead.")]
+        public string[] EnabledLayerNames;
+        /// <summary>
         /// Is <c>null</c> or unicode strings containing the names of extensions to enable for the
         /// created device.
         /// </summary>
@@ -661,6 +668,7 @@ namespace VulkanCore
         {
             Next = next;
             QueueCreateInfos = queueCreateInfos;
+            EnabledLayerNames = null;
             EnabledExtensionNames = enabledExtensionNames;
             EnabledFeatures = enabledFeatures;
         }
@@ -684,6 +692,7 @@ namespace VulkanCore
                 for (int i = 0; i < QueueCreateInfoCount; i++)
                     QueueCreateInfos[i].Free();
                 Interop.Free(QueueCreateInfos);
+                Interop.Free(EnabledLayerNames, EnabledLayerCount);
                 Interop.Free(EnabledExtensionNames, EnabledExtensionCount);
                 Interop.Free(EnabledFeatures);
             }
@@ -701,8 +710,8 @@ namespace VulkanCore
             val.Flags = 0;
             val.QueueCreateInfoCount = queueCreateInfoCount;
             val.QueueCreateInfos = ptr;
-            val.EnabledLayerCount = 0;
-            val.EnabledLayerNames = null;
+            val.EnabledLayerCount = EnabledLayerNames?.Length ?? 0;
+            val.EnabledLayerNames = Interop.String.AllocToPointers(EnabledLayerNames);
             val.EnabledExtensionCount = EnabledExtensionNames?.Length ?? 0;
             val.EnabledExtensionNames = Interop.String.AllocToPointers(EnabledExtensionNames);
             val.EnabledFeatures = Interop.Struct.AllocToPointer(ref EnabledFeatures);

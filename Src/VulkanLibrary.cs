@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.OSPlatform;
+using static System.Runtime.InteropServices.RuntimeInformation;
 
 namespace VulkanCore
 {
-    internal static class VulkanLibrary
+    /// <summary>
+    /// Static vulkan library loaded from host platform.
+    /// </summary>
+    public static class VulkanLibrary
     {
         private static readonly IntPtr _handle;
 
@@ -34,15 +39,11 @@ namespace VulkanCore
             where TDelegate : class
         {
             IntPtr handle;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (IsOSPlatform(Windows))
             {
                 handle = Kernel32GetProcAddress(_handle, procName);
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                handle = LibDLGetProcAddress(_handle, procName);
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            else if (IsOSPlatform(Linux) || IsOSPlatform(OSX))
             {
                 handle = LibDLGetProcAddress(_handle, procName);
             }
@@ -58,15 +59,11 @@ namespace VulkanCore
         private static IntPtr LoadLibrary(string fileName)
         {
             IntPtr handle;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (IsOSPlatform(Windows))
             {
                 handle = Kernel32LoadLibrary(fileName);
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                handle = LibDLLoadLibrary(fileName, LibDLRtldNow);
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            else if (IsOSPlatform(Linux) || IsOSPlatform(OSX))
             {
                 handle = LibDLLoadLibrary(fileName, LibDLRtldNow);
             }
@@ -79,18 +76,18 @@ namespace VulkanCore
 
         private static IEnumerable<string> GetVulkanLibraryNameCandidates()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (IsOSPlatform(Windows))
             {
                 yield return "vulkan-1.dll";
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else if (IsOSPlatform(Linux))
             {
                 yield return "libvulkan.so.1"; // Known to be present on Ubuntu 16.
                 yield return "libvulkan.so";   // Known to be present on Android 7.
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            else if (IsOSPlatform(OSX))
             {
-                yield return "libMoltenVK.dylib"; //Using MoltenVK on macOS
+                yield return "libMoltenVK.dylib"; // Using MoltenVK on MacOS.
             }
             throw new NotImplementedException("Ran out of places to look for the vulkan native library");
         }
