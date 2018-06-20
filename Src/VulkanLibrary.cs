@@ -5,7 +5,10 @@ using System.Runtime.InteropServices;
 
 namespace VulkanCore
 {
-    internal static class VulkanLibrary
+    /// <summary>
+    /// Static vulkan library loaded from host platform.
+    /// </summary>
+    public static class VulkanLibrary
     {
         private static readonly IntPtr _handle;
 

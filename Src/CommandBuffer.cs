@@ -1963,6 +1963,18 @@ namespace VulkanCore
         {
             UInt4 = value;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClearColorValue"/> structure.
+        /// </summary>
+        /// <param name="r">The red clear value.</param>
+        /// <param name="g">The green clear value.</param>
+        /// <param name="b">The blue clear value.</param>
+        /// <param name="a">The alpha clear value.</param>
+        public ClearColorValue(float r, float g, float b, float a = 1.0f) : this()
+        {
+            Float4 = new ColorF4(r, g, b, a);
+        }
     }
 
     /// <summary>
