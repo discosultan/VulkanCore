@@ -61,16 +61,13 @@ namespace VulkanCore.Ext
             base.Dispose();
         }
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Bool DebugReportCallback(
             DebugReportFlagsExt flags, DebugReportObjectTypeExt objectType, long @object,
             IntPtr location, int messageCode, byte* layerPrefix, byte* message, IntPtr userData);
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkCreateDebugReportCallbackEXTDelegate(IntPtr instance, DebugReportCallbackCreateInfoExt.Native* createInfo, AllocationCallbacks.Native* allocator, long* callback);
         private static vkCreateDebugReportCallbackEXTDelegate vkCreateDebugReportCallbackEXT(Instance instance) => instance.GetProc<vkCreateDebugReportCallbackEXTDelegate>(nameof(vkCreateDebugReportCallbackEXT));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkDestroyDebugReportCallbackEXTDelegate(IntPtr instance, long callback, AllocationCallbacks.Native* allocator);
         private static vkDestroyDebugReportCallbackEXTDelegate vkDestroyDebugReportCallbackEXT(Instance instance) => instance.GetProc<vkDestroyDebugReportCallbackEXTDelegate>(nameof(vkDestroyDebugReportCallbackEXT));
     }

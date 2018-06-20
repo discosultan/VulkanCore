@@ -592,31 +592,24 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkCreateDeviceDelegate(IntPtr physicalDevice, DeviceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* device);
         private static readonly vkCreateDeviceDelegate vkCreateDevice = VulkanLibrary.GetStaticProc<vkCreateDeviceDelegate>(nameof(vkCreateDevice));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate void vkDestroyDeviceDelegate(IntPtr device, AllocationCallbacks.Native* allocator);
         private static readonly vkDestroyDeviceDelegate vkDestroyDevice = VulkanLibrary.GetStaticProc<vkDestroyDeviceDelegate>(nameof(vkDestroyDevice));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate IntPtr vkGetDeviceProcAddrDelegate(IntPtr device, byte* name);
         private static readonly vkGetDeviceProcAddrDelegate vkGetDeviceProcAddr = VulkanLibrary.GetStaticProc<vkGetDeviceProcAddrDelegate>(nameof(vkGetDeviceProcAddr));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate void vkGetDeviceQueueDelegate(IntPtr device, int queueFamilyIndex, int queueIndex, IntPtr* queue);
         private static readonly vkGetDeviceQueueDelegate vkGetDeviceQueue = VulkanLibrary.GetStaticProc<vkGetDeviceQueueDelegate>(nameof(vkGetDeviceQueue));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkDeviceWaitIdleDelegate(IntPtr device);
         private static readonly vkDeviceWaitIdleDelegate vkDeviceWaitIdle = VulkanLibrary.GetStaticProc<vkDeviceWaitIdleDelegate>(nameof(vkDeviceWaitIdle));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkFlushMappedMemoryRangesDelegate(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
         private static readonly vkFlushMappedMemoryRangesDelegate vkFlushMappedMemoryRanges = VulkanLibrary.GetStaticProc<vkFlushMappedMemoryRangesDelegate>(nameof(vkFlushMappedMemoryRanges));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkInvalidateMappedMemoryRangesDelegate(IntPtr device, int memoryRangeCount, MappedMemoryRange* memoryRanges);
         private static readonly vkInvalidateMappedMemoryRangesDelegate vkInvalidateMappedMemoryRanges = VulkanLibrary.GetStaticProc<vkInvalidateMappedMemoryRangesDelegate>(nameof(vkInvalidateMappedMemoryRanges));
     }

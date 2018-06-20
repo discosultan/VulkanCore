@@ -175,27 +175,21 @@ namespace VulkanCore
             base.Dispose();
         }
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkCreateInstanceDelegate(InstanceCreateInfo.Native* createInfo, AllocationCallbacks.Native* allocator, IntPtr* instance);
         private static readonly vkCreateInstanceDelegate vkCreateInstance = VulkanLibrary.GetStaticProc<vkCreateInstanceDelegate>(nameof(vkCreateInstance));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate void vkDestroyInstanceDelegate(IntPtr instance, AllocationCallbacks.Native* allocator);
         private static readonly vkDestroyInstanceDelegate vkDestroyInstance = VulkanLibrary.GetStaticProc<vkDestroyInstanceDelegate>(nameof(vkDestroyInstance));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkEnumeratePhysicalDevicesDelegate(IntPtr instance, int* physicalDeviceCount, IntPtr* physicalDevices);
         private static readonly vkEnumeratePhysicalDevicesDelegate vkEnumeratePhysicalDevices = VulkanLibrary.GetStaticProc<vkEnumeratePhysicalDevicesDelegate>(nameof(vkEnumeratePhysicalDevices));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate IntPtr vkGetInstanceProcAddrDelegate(IntPtr instance, byte* name);
         private static readonly vkGetInstanceProcAddrDelegate vkGetInstanceProcAddr = VulkanLibrary.GetStaticProc<vkGetInstanceProcAddrDelegate>(nameof(vkGetInstanceProcAddr));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkEnumerateInstanceLayerPropertiesDelegate(int* propertyCount, LayerProperties.Native* properties);
         private static readonly vkEnumerateInstanceLayerPropertiesDelegate vkEnumerateInstanceLayerProperties = VulkanLibrary.GetStaticProc<vkEnumerateInstanceLayerPropertiesDelegate>(nameof(vkEnumerateInstanceLayerProperties));
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private delegate Result vkEnumerateInstanceExtensionPropertiesDelegate(byte* layerName, int* propertyCount, ExtensionProperties.Native* properties);
         private static readonly vkEnumerateInstanceExtensionPropertiesDelegate vkEnumerateInstanceExtensionProperties = VulkanLibrary.GetStaticProc<vkEnumerateInstanceExtensionPropertiesDelegate>(nameof(vkEnumerateInstanceExtensionProperties));
     }

@@ -144,7 +144,6 @@ namespace VulkanCore
         /// <param name="allocationScope">
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate IntPtr AllocationFunction(
             IntPtr userData, Size size, Size alignment, SystemAllocationScope allocationScope);
 
@@ -192,7 +191,6 @@ namespace VulkanCore
         /// <param name="allocationScope">
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate IntPtr ReallocationFunction(
             IntPtr userData, IntPtr original, Size size, Size alignment, SystemAllocationScope allocationScope);
 
@@ -210,7 +208,6 @@ namespace VulkanCore
         /// by the application.
         /// </param>
         /// <param name="memory">Allocation to be freed.</param>
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate void FreeFunction(IntPtr userData, IntPtr memory);
 
         /// <summary>
@@ -225,7 +222,6 @@ namespace VulkanCore
         /// <param name="allocationScope">
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate void InternalAllocationNotification(
             IntPtr userData, Size size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
 
@@ -240,7 +236,6 @@ namespace VulkanCore
         /// <param name="allocationScope">
         /// Value specifying the allocation scope of the lifetime of the allocation.
         /// </param>
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate void InternalFreeNotification(
             IntPtr userData, Size size, InternalAllocationType allocationType, SystemAllocationScope allocationScope);
     }
