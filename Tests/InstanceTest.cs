@@ -26,7 +26,7 @@ namespace VulkanCore.Tests
         public void ConstructorWithApplicationInfo()
         {
             var createInfo1 = new InstanceCreateInfo(new ApplicationInfo());
-            var createInfo2 = new InstanceCreateInfo(new ApplicationInfo("app name", 1, "engine name", 2));
+            var createInfo2 = new InstanceCreateInfo(new ApplicationInfo("app name", new Version(1, 0, 0), "engine name", new Version(2, 0, 0)));
             using (new Instance(createInfo1)) { }
             using (new Instance(createInfo2)) { }
         }

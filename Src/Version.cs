@@ -62,5 +62,10 @@ namespace VulkanCore
         /// A shorthand for writing <c>new Version(0, 0, 0)</c>.
         /// </summary>
         public static Version Zero => new Version(0, 0, 0);
+
+        public static implicit operator int(Version version)
+        {
+            return version._value;
+        }
     }
 }

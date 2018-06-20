@@ -345,7 +345,7 @@ namespace VulkanCore
         /// The unsigned integer variable containing the developer-supplied version
         /// number of the application.
         /// </summary>
-        public int ApplicationVersion;
+        public Version ApplicationVersion;
         /// <summary>
         /// The unicode string containing the name of the engine (if any) used to create the application.
         /// </summary>
@@ -354,7 +354,7 @@ namespace VulkanCore
         /// The unsigned integer variable containing the developer-supplied version
         /// number of the engine used to create the application.
         /// </summary>
-        public int EngineVersion;
+        public Version EngineVersion;
         /// <summary>
         /// The version of the Vulkan API against which the application expects to run. If <see
         /// cref="ApiVersion"/> is <see cref="Version.Zero"/> the implementation must ignore it,
@@ -388,8 +388,8 @@ namespace VulkanCore
         /// the major and minor versions of the instance must match those requested in <see cref="ApiVersion"/>.
         /// </param>
         public ApplicationInfo(
-            string applicationName = null, int applicationVersion = 0,
-            string engineName = null, int engineVersion = 0,
+            string applicationName = null, Version applicationVersion = default(Version),
+            string engineName = null, Version engineVersion = default(Version),
             Version apiVersion = default(Version))
         {
             ApplicationName = applicationName;
@@ -408,7 +408,7 @@ namespace VulkanCore
             public int ApplicationVersion;
             public IntPtr EngineName;
             public int EngineVersion;
-            public Version ApiVersion;
+            public int ApiVersion;
 
             public void Free()
             {
