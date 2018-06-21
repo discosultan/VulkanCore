@@ -17,7 +17,7 @@
     <PackageReleaseNotes>https://github.com/discosultan/VulkanCore/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>
     <TargetFramework>netstandard1.3</TargetFramework>
-    <Version>1.0.0-alpha39</Version>
+    <Version>1.0.0-alpha40</Version>
   </PropertyGroup>
 
   <ItemGroup>
