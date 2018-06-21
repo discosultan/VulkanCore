@@ -101,7 +101,15 @@ namespace VulkanCore.Khr
             Handle = handle;
         }
 
-        internal SurfaceKhr(Instance parent, ref AllocationCallbacks? allocator, long handle)
+        /// <summary>
+        /// Create a SurfaceKhr from an already-created handle. This intended to be used only if your surface has
+        /// already been created externally, via a library such as GLFW or SDL. The Instance and AllocationCallbacks
+        /// that are used must be the same as were used to create the SurfaceKhr handle.
+        /// </summary>
+        /// <param name="parent">The <see cref="Instance"/> that the Surface was created with.</param>
+        /// <param name="allocator">The <see cref="AllocationCallbacks"/> used to define memory allocation.</param>
+        /// <param name="handle">The handle to the native SurfaceKhr representation.</param>
+        public SurfaceKhr(Instance parent, ref AllocationCallbacks? allocator, long handle)
         {
             Parent = parent;
             Allocator = allocator;
