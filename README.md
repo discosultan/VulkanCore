@@ -8,7 +8,7 @@
 
 - [Introduction](#introduction)
 - [Building](#building)
-- [Samples](#samples--)
+- [Samples](#samples---)
 - [Tests](#tests--)
 - [Related Work](#related-work)
 
