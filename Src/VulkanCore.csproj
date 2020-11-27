@@ -16,11 +16,11 @@
     <PackageProjectUrl>https://github.com/discosultan/VulkanCore</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/discosultan/VulkanCore/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/discosultan/VulkanCore</RepositoryUrl>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net5.0</TargetFrameworks>
     <Version>1.0.0-alpha40</Version>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'netstandard1.3'">
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
