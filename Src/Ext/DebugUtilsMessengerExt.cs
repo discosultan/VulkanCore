@@ -75,7 +75,7 @@ namespace VulkanCore.Ext
         /// <summary>
         /// Specifies which severity of event(s) will cause this callback to be called.
         /// </summary>
-        public DebugUtilsMessageTypesExt MessageSeverity;
+        public DebugUtilsMessageSeveritiesExt MessageSeverity;
         /// <summary>
         /// Specifies which type of event(s) will cause this callback to be called.
         /// </summary>
