@@ -6,9 +6,11 @@
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/discosultan/vulkancore.svg?label=windows)](https://ci.appveyor.com/project/discosultan/vulkancore)
 [![Travis Build Status](https://img.shields.io/travis/discosultan/VulkanCore.svg?label=unix)](https://travis-ci.org/discosultan/VulkanCore)
 
+> :warning: This project is no longer in active development. It fully implements the latest 1.0 version of Vulkan. Bugs in the core project will still be fixed and contributions for versions 1.1 and 1.2+ are welcome. Please see the "Related Work" list below for alternatives.
+
 - [Introduction](#introduction)
 - [Building](#building)
-- [Samples](#samples--)
+- [Samples](#samples---)
 - [Tests](#tests--)
 - [Related Work](#related-work)
 
@@ -77,3 +79,4 @@ Note that it's difficult to test vendor specific extensions due to requirements 
 - [SharpVulkan](https://github.com/jwollen/SharpVulkan)
 - [SharpVk](https://github.com/FacticiusVir/SharpVk)
 - [vk](https://github.com/mellinoe/vk)
+- [Vortice.Vulkan](https://github.com/amerkoleci/Vortice.Vulkan)

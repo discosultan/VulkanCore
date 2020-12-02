@@ -1,88 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48EBB243-DCD5-4D2C-B19E-1C4574A78DCE}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>VulkanCore.Samples.ClearScreen</RootNamespace>
-    <AssemblyName>ClearScreen</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\01-ClearScreen\ClearScreenApp.cs">
-      <Link>ClearScreenApp.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Shared\Win32Window.cs">
-      <Link>Win32Window.cs</Link>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Src\VulkanCore.csproj">
-      <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
-      <Name>VulkanCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MiniFramework\MiniFramework.csproj">
-      <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
-      <Name>MiniFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>4.5.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Title>Triangle.Win32</Title>
+        <OutputType>WinExe</OutputType>
+        <UseWindowsForms>true</UseWindowsForms>
+        <AssemblyName>ClearScreen</AssemblyName>
+        <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
+        <RootNamespace>VulkanCore.Samples.ClearScreen</RootNamespace>
+        <StartupObject>VulkanCore.Samples.ClearScreen.Program</StartupObject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Src\VulkanCore.csproj">
+            <Project>{1772437f-982d-4edf-80e8-11b826219041}</Project>
+            <Name>VulkanCore</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\MiniFramework\MiniFramework.csproj">
+            <Project>{9becf614-4e1a-4053-a7a0-3a7b0bca0cf0}</Project>
+            <Name>MiniFramework</Name>
+        </ProjectReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Compile Include="..\..\Shared\01-ClearScreen\ClearScreenApp.cs">
+            <Link>ClearScreenApp.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Shared\Win32Window.cs">
+            <Link>Win32Window.cs</Link>
+        </Compile>
+    </ItemGroup>
+    
+    <ItemGroup Condition="$(TargetFramework) == 'net461'">
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+            <Version>4.5.1</Version>
+        </PackageReference>
+        <Reference Include="System" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Windows.Forms" />
+    </ItemGroup>
 </Project>

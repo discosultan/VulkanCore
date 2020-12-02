@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace VulkanCore.Samples
 {
-    public class Win32Window : IVulkanAppHost
+    public sealed class Win32Window : IVulkanAppHost
     {
         private readonly string _title;
         private readonly Timer _timer = new Timer();
